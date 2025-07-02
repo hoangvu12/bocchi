@@ -1,14 +1,31 @@
 import fs from 'fs/promises'
 import path from 'path'
+import { app } from 'electron'
 
 export class ImageService {
+  private modsDir: string
+
   constructor() {
     // Service for loading custom skin images
+    this.modsDir = path.join(app.getPath('userData'), 'mods')
   }
 
   async getCustomSkinImage(modPath: string): Promise<string | null> {
     try {
-      const imageDir = path.join(modPath, 'IMAGE')
+      const stat = await fs.stat(modPath)
+      let imageDir: string
+
+      if (stat.isFile()) {
+        // New structure: look for metadata folder
+        const fileName = path.basename(modPath, path.extname(modPath))
+        const metadataPath = path.join(this.modsDir, fileName)
+        imageDir = path.join(metadataPath, 'IMAGE')
+      } else if (stat.isDirectory()) {
+        // Legacy structure: use the folder directly
+        imageDir = path.join(modPath, 'IMAGE')
+      } else {
+        return null
+      }
 
       // Check for various image formats
       const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp']

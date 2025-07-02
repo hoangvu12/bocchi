@@ -19,16 +19,19 @@ export interface FileImportOptions {
 export class FileImportService {
   private modsDir: string
   private tempDir: string
+  private modFilesDir: string
 
   constructor() {
     const userData = app.getPath('userData')
     this.modsDir = path.join(userData, 'mods')
     this.tempDir = path.join(userData, 'temp-imports')
+    this.modFilesDir = path.join(userData, 'mod-files')
   }
 
   async initialize(): Promise<void> {
     await fs.mkdir(this.modsDir, { recursive: true })
     await fs.mkdir(this.tempDir, { recursive: true })
+    await fs.mkdir(this.modFilesDir, { recursive: true })
   }
 
   async importFile(filePath: string, options: FileImportOptions = {}): Promise<ImportResult> {
@@ -112,11 +115,16 @@ export class FileImportService {
 
       await fs.rename(tempExtractPath, finalPath)
 
+      // Copy the original .wad file to mod-files directory
+      const modFileName = `${modFolderName}.wad`
+      const modFilePath = path.join(this.modFilesDir, modFileName)
+      await fs.copyFile(wadPath, modFilePath)
+
       const skinInfo: SkinInfo = {
         championName: championName || 'Custom',
         skinName: '[User] ' + skinName + '.wad',
         url: `file://${wadPath}`,
-        localPath: finalPath,
+        localPath: modFilePath, // Use the original file path
         source: 'user'
       }
 
@@ -172,11 +180,17 @@ export class FileImportService {
 
       await fs.rename(tempExtractPath, finalPath)
 
+      // Copy the original mod file to mod-files directory
+      const ext = path.extname(zipPath)
+      const modFileName = `${modFolderName}${ext}`
+      const modFilePath = path.join(this.modFilesDir, modFileName)
+      await fs.copyFile(zipPath, modFilePath)
+
       const skinInfo: SkinInfo = {
         championName: championName || 'Custom',
-        skinName: '[User] ' + skinName + path.extname(zipPath),
+        skinName: '[User] ' + skinName + ext,
         url: `file://${zipPath}`,
-        localPath: finalPath,
+        localPath: modFilePath, // Use the original file path
         source: 'user'
       }
 
@@ -239,43 +253,93 @@ export class FileImportService {
     newImagePath?: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      // Extract the old folder name parts
-      const folderName = path.basename(modPath)
-      const parts = folderName.split('_')
-      if (parts.length < 2) {
-        throw new Error('Invalid mod folder structure')
-      }
+      const stat = await fs.stat(modPath)
 
-      const championName = parts[0]
-
-      // Create new folder name
-      const newFolderName = `${championName}_${newName}`
-      const newModPath = path.join(path.dirname(modPath), newFolderName)
-
-      // Rename the folder if name changed
-      if (modPath !== newModPath) {
-        await fs.rename(modPath, newModPath)
-      }
-
-      // Update the image if provided
-      if (newImagePath) {
-        const imageDir = path.join(newModPath, 'IMAGE')
-        await fs.mkdir(imageDir, { recursive: true })
-
-        // Remove old preview images
-        const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp']
-        for (const ext of imageExtensions) {
-          try {
-            await fs.unlink(path.join(imageDir, `preview${ext}`))
-          } catch {
-            // Ignore if file doesn't exist
-          }
+      if (stat.isFile()) {
+        // New structure: handle mod file
+        const ext = path.extname(modPath)
+        const oldFileName = path.basename(modPath, ext)
+        const parts = oldFileName.split('_')
+        if (parts.length < 2) {
+          throw new Error('Invalid mod file name structure')
         }
 
-        // Copy new image
-        const ext = path.extname(newImagePath).toLowerCase()
-        const destPath = path.join(imageDir, `preview${ext}`)
-        await fs.copyFile(newImagePath, destPath)
+        const championName = parts[0]
+        const newFileName = `${championName}_${newName}${ext}`
+        const newModPath = path.join(path.dirname(modPath), newFileName)
+
+        // Rename the mod file if name changed
+        if (modPath !== newModPath) {
+          await fs.rename(modPath, newModPath)
+        }
+
+        // Update metadata folder
+        const oldMetadataPath = path.join(this.modsDir, oldFileName)
+        const newMetadataPath = path.join(this.modsDir, `${championName}_${newName}`)
+
+        if (await this.fileExists(oldMetadataPath)) {
+          if (oldMetadataPath !== newMetadataPath) {
+            await fs.rename(oldMetadataPath, newMetadataPath)
+          }
+
+          // Update image in metadata folder if provided
+          if (newImagePath) {
+            const imageDir = path.join(newMetadataPath, 'IMAGE')
+            await fs.mkdir(imageDir, { recursive: true })
+
+            // Remove old preview images
+            const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp']
+            for (const ext of imageExtensions) {
+              try {
+                await fs.unlink(path.join(imageDir, `preview${ext}`))
+              } catch {
+                // Continue to next extension
+              }
+            }
+
+            // Copy new image
+            const imgExt = path.extname(newImagePath).toLowerCase()
+            const destPath = path.join(imageDir, `preview${imgExt}`)
+            await fs.copyFile(newImagePath, destPath)
+          }
+        }
+      } else if (stat.isDirectory()) {
+        // Legacy structure: handle folder
+        const folderName = path.basename(modPath)
+        const parts = folderName.split('_')
+        if (parts.length < 2) {
+          throw new Error('Invalid mod folder structure')
+        }
+
+        const championName = parts[0]
+        const newFolderName = `${championName}_${newName}`
+        const newModPath = path.join(path.dirname(modPath), newFolderName)
+
+        // Rename the folder if name changed
+        if (modPath !== newModPath) {
+          await fs.rename(modPath, newModPath)
+        }
+
+        // Update the image if provided
+        if (newImagePath) {
+          const imageDir = path.join(newModPath, 'IMAGE')
+          await fs.mkdir(imageDir, { recursive: true })
+
+          // Remove old preview images
+          const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp']
+          for (const ext of imageExtensions) {
+            try {
+              await fs.unlink(path.join(imageDir, `preview${ext}`))
+            } catch {
+              // Continue to next extension
+            }
+          }
+
+          // Copy new image
+          const ext = path.extname(newImagePath).toLowerCase()
+          const destPath = path.join(imageDir, `preview${ext}`)
+          await fs.copyFile(newImagePath, destPath)
+        }
       }
 
       return { success: true }
@@ -289,8 +353,25 @@ export class FileImportService {
 
   async deleteCustomSkin(modPath: string): Promise<{ success: boolean; error?: string }> {
     try {
-      // Delete the mod folder
-      await fs.rm(modPath, { recursive: true, force: true })
+      const stat = await fs.stat(modPath)
+
+      if (stat.isFile()) {
+        // New structure: delete the mod file
+        await fs.unlink(modPath)
+
+        // Also delete the corresponding metadata folder if it exists
+        const fileName = path.basename(modPath, path.extname(modPath))
+        const metadataPath = path.join(this.modsDir, fileName)
+        try {
+          await fs.rm(metadataPath, { recursive: true, force: true })
+        } catch {
+          // Continue to next extension
+        }
+      } else if (stat.isDirectory()) {
+        // Legacy structure: delete the mod folder
+        await fs.rm(modPath, { recursive: true, force: true })
+      }
+
       return { success: true }
     } catch (error) {
       return {

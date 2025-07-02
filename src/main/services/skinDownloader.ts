@@ -9,16 +9,19 @@ import { SkinInfo } from '../types'
 export class SkinDownloader {
   private cacheDir: string
   private modsDir: string
+  private modFilesDir: string
 
   constructor() {
     const userData = app.getPath('userData')
     this.cacheDir = path.join(userData, 'downloaded-skins')
     this.modsDir = path.join(userData, 'mods')
+    this.modFilesDir = path.join(userData, 'mod-files')
   }
 
   async initialize(): Promise<void> {
     await fs.mkdir(this.cacheDir, { recursive: true })
     await fs.mkdir(this.modsDir, { recursive: true })
+    await fs.mkdir(this.modFilesDir, { recursive: true })
   }
 
   async downloadSkin(url: string): Promise<SkinInfo> {
@@ -128,6 +131,32 @@ export class SkinDownloader {
 
     // 2. List user-imported mods
     try {
+      // First try to list from mod-files directory (new structure)
+      const modFiles = await fs.readdir(this.modFilesDir).catch(() => [])
+      for (const modFile of modFiles) {
+        const modFilePath = path.join(this.modFilesDir, modFile)
+        if (seenPaths.has(modFilePath)) continue
+        const stat = await fs.stat(modFilePath)
+        if (stat.isFile()) {
+          const nameWithoutExt = path.basename(modFile, path.extname(modFile))
+          const parts = nameWithoutExt.split('_')
+          if (parts.length >= 2) {
+            const championName = parts[0]
+            const skinName = parts.slice(1).join('_')
+            const ext = path.extname(modFile)
+            skins.push({
+              championName,
+              skinName: `[User] ${skinName}${ext}`,
+              url: `file://${modFilePath}`,
+              localPath: modFilePath,
+              source: 'user'
+            })
+            seenPaths.add(modFilePath)
+          }
+        }
+      }
+
+      // Also check legacy mods directory for backward compatibility
       const modFolders = await fs.readdir(this.modsDir)
       for (const modFolder of modFolders) {
         const modPath = path.join(this.modsDir, modFolder)
@@ -138,14 +167,29 @@ export class SkinDownloader {
           if (parts.length >= 2) {
             const championName = parts[0]
             const skinName = parts.slice(1).join('_')
-            skins.push({
-              championName,
-              skinName: `[User] ${skinName}`,
-              url: `file://${modPath}`,
-              localPath: modPath,
-              source: 'user'
-            })
-            seenPaths.add(modPath)
+            // Check if there's a corresponding mod file
+            let hasModFile = false
+            for (const ext of ['.wad', '.zip', '.fantome']) {
+              const modFilePath = path.join(this.modFilesDir, `${modFolder}${ext}`)
+              try {
+                await fs.access(modFilePath)
+                hasModFile = true
+                break
+              } catch {
+                // Continue to next extension
+              }
+            }
+            // Only add if no corresponding mod file exists (legacy mod)
+            if (!hasModFile) {
+              skins.push({
+                championName,
+                skinName: `[User] ${skinName}`,
+                url: `file://${modPath}`,
+                localPath: modPath,
+                source: 'user'
+              })
+              seenPaths.add(modPath)
+            }
           }
         }
       }

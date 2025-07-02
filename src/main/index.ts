@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import path from 'path'
+import fs from 'fs'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { GameDetector } from './services/gameDetector'
@@ -245,11 +246,30 @@ function setupIpcHandlers(): void {
           // Handle user-imported skins
           if (skinFile.includes('[User]')) {
             const skinNameWithExt = skinFile.replace('[User] ', '')
-            // Remove file extension to match the folder naming convention
             const skinName = skinNameWithExt.replace(/\.(wad|zip|fantome)$/i, '')
-            const modPath = path.join(app.getPath('userData'), 'mods', `${champion}_${skinName}`)
 
-            return { localPath: modPath }
+            // First try to find the mod file in mod-files directory
+            const modFilesDir = path.join(app.getPath('userData'), 'mod-files')
+            const possibleExtensions = ['.wad', '.zip', '.fantome']
+            let modFilePath: string | null = null
+
+            for (const ext of possibleExtensions) {
+              const testPath = path.join(modFilesDir, `${champion}_${skinName}${ext}`)
+              try {
+                await fs.promises.access(testPath)
+                modFilePath = testPath
+                break
+              } catch {
+                // Continue to next extension
+              }
+            }
+
+            // If not found in mod-files, check legacy mods directory
+            if (!modFilePath) {
+              modFilePath = path.join(app.getPath('userData'), 'mods', `${champion}_${skinName}`)
+            }
+
+            return { localPath: modFilePath }
           }
 
           // Handle remote skins
