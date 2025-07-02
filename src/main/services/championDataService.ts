@@ -15,7 +15,22 @@ interface Skin {
   num: number
   name: string
   nameEn?: string // English name for download purposes
+  lolSkinsName?: string // Name used in lol-skins repository if different
   chromas: boolean
+}
+
+interface SkinMapping {
+  championKey: string
+  championName: string
+  skinNum: number
+  ddragonName: string
+  lolSkinsName: string
+}
+
+interface SkinMappingsData {
+  version: string
+  lastUpdated: string
+  skinMappings: SkinMapping[]
 }
 
 export class ChampionDataService {
@@ -24,9 +39,29 @@ export class ChampionDataService {
   private githubDataUrl =
     'https://raw.githubusercontent.com/hoangvu12/bocchi/refs/heads/champion-data/data'
   private cachedData: Map<string, { version: string; champions: Champion[] }> = new Map()
+  private skinMappings: Map<string, string> = new Map() // key: "championKey_skinNum", value: lolSkinsName
 
   constructor() {
     console.log('ChampionDataService constructor')
+    this.loadSkinMappings()
+  }
+
+  private async loadSkinMappings(): Promise<void> {
+    try {
+      const mappingsUrl = `${this.githubDataUrl}/skin-name-mappings.json`
+      const response = await axios.get<SkinMappingsData>(mappingsUrl)
+      const data = response.data
+
+      // Build mapping lookup table
+      data.skinMappings.forEach((mapping) => {
+        const key = `${mapping.championKey}_${mapping.skinNum}`
+        this.skinMappings.set(key, mapping.lolSkinsName)
+      })
+
+      console.log(`Loaded ${data.skinMappings.length} skin name mappings`)
+    } catch (error) {
+      console.error('Failed to load skin name mappings:', error)
+    }
   }
 
   private async getApiVersion(): Promise<string> {
@@ -50,6 +85,20 @@ export class ChampionDataService {
       try {
         const response = await axios.get(githubUrl)
         const data = response.data
+
+        // Add lol-skins skin names from pre-generated mappings
+        data.champions.forEach((champion: Champion) => {
+          champion.skins.forEach((skin: Skin) => {
+            if (!skin.lolSkinsName && skin.num > 0) {
+              // Skip default skins
+              const mappingKey = `${champion.key}_${skin.num}`
+              const lolSkinsName = this.skinMappings.get(mappingKey)
+              if (lolSkinsName) {
+                skin.lolSkinsName = lolSkinsName
+              }
+            }
+          })
+        })
 
         // If non-English, also fetch English data to add English skin names
         if (language !== 'en_US') {
@@ -132,13 +181,26 @@ export class ChampionDataService {
             title: champBasicInfo.title,
             image: `https://ddragon.leagueoflegends.com/cdn/${this.apiVersion}/img/champion/${champBasicInfo.image.full}`,
             tags: champDetails.tags || [],
-            skins: champDetails.skins.map((skin: any) => ({
-              id: skin.id,
-              num: skin.num,
-              name: skin.name,
-              nameEn: language !== 'en_US' ? englishSkinNames[skin.id] || skin.name : undefined,
-              chromas: skin.chromas || false
-            }))
+            skins: champDetails.skins.map((skin: any) => {
+              const skinName = skin.name
+
+              // Get lolSkinsName from mappings
+              let lolSkinsName: string | undefined
+              if (skin.num > 0) {
+                // Skip default skins
+                const mappingKey = `${champId}_${skin.num}`
+                lolSkinsName = this.skinMappings.get(mappingKey)
+              }
+
+              return {
+                id: skin.id,
+                num: skin.num,
+                name: skinName,
+                nameEn: language !== 'en_US' ? englishSkinNames[skin.id] || skinName : undefined,
+                lolSkinsName: lolSkinsName,
+                chromas: skin.chromas || false
+              }
+            })
           }
 
           champions.push(champion)
@@ -237,5 +299,17 @@ export class ChampionDataService {
         message: error instanceof Error ? error.message : 'Failed to fetch data'
       }
     }
+  }
+
+  // Get the lol-skins name for a skin, useful when downloading skins
+  public getSkinLolSkinsName(skin: Skin): string {
+    // Priority: lolSkinsName > nameEn > name
+    return skin.lolSkinsName || skin.nameEn || skin.name
+  }
+
+  // Reload skin mappings (useful if the mappings file is updated)
+  public async reloadSkinMappings(): Promise<void> {
+    this.skinMappings.clear()
+    await this.loadSkinMappings()
   }
 }
