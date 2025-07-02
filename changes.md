@@ -1,33 +1,19 @@
-## Version 1.2.0
-
-### New Features
-
-- Added custom mod/skin file import functionality
-  - Support for .wad, .zip, and .fantome file formats
-  - Custom preview image selection
-  - Automatic file validation before import
-- Added edit and delete functionality for custom mods
-  - Edit button to change mod name and preview image
-  - Delete button with confirmation dialog
-  - Visual indicators for custom/user-imported skins
-- Added downloaded skins management dialog
-  - View all downloaded skins organized by champion
-  - Search functionality to find specific skins
-  - Filter by category (All/Repository/Custom)
-  - One-click delete for any downloaded skin
-  - Shows total count and skin type indicators
+## Version 1.2.1
 
 ### Improvements
 
-- Enhanced UI for custom mods with edit/delete buttons
-- Better visual distinction between repository skins and user imports
-- Improved error handling and user feedback messages
-- Added loading states for delete operations
+- Enhanced favorites initialization with better error handling
+- Updated GitHub URLs to use champion names instead of IDs for better readability
+- Improved skin downloading logic for more reliable downloads
+- Enhanced user-imported skin management with better state handling
 
 ### Bug Fixes
 
-- Fixed cslol-tools must be reinstalled every new updates
-- Fixed delete functionality for custom mods
-- Fixed TypeScript compilation errors
-- Fixed ESLint warnings and unused code
-- Fixed custom skin image loading in selected skins drawer
+- Fixed favorites service initialization errors
+- Fixed GitHub URL generation to properly use champion names
+- Fixed skin download state management issues
+- Fixed error handling in user-imported skin operations
+
+### Credits
+
+- Special thanks to [@koobzaar](https://github.com/koobzaar) for contributing these fixes and improvements!
