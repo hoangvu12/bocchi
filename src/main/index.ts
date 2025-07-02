@@ -229,7 +229,7 @@ function setupIpcHandlers(): void {
       }
 
       for (const [champion, count] of championCounts.entries()) {
-        if (count > 1) {
+        if (count > 1 && champion !== 'Custom') {
           return {
             success: false,
             message: `Conflict: Only one skin per champion can be injected. You have selected ${count} skins for ${champion}.`
@@ -244,8 +244,11 @@ function setupIpcHandlers(): void {
 
           // Handle user-imported skins
           if (skinFile.includes('[User]')) {
-            const skinName = skinFile.replace('[User] ', '')
+            const skinNameWithExt = skinFile.replace('[User] ', '')
+            // Remove file extension to match the folder naming convention
+            const skinName = skinNameWithExt.replace(/\.(wad|zip|fantome)$/i, '')
             const modPath = path.join(app.getPath('userData'), 'mods', `${champion}_${skinName}`)
+
             return { localPath: modPath }
           }
 

@@ -458,23 +458,22 @@ function AppContent(): React.JSX.Element {
 
       // Download any skins that aren't downloaded yet
       for (const selectedSkin of selectedSkins) {
+        if (selectedSkin.championKey === 'Custom') {
+          // Find the custom mod in downloadedSkins
+          const userMod = downloadedSkins.find(
+            (ds) => ds.skinName.includes('[User]') && ds.skinName.includes(selectedSkin.skinName)
+          )
+          if (userMod) {
+            skinKeys.push(`${userMod.championName}/${userMod.skinName}`)
+          }
+          continue
+        }
+
         const champion = championData?.champions.find((c) => c.key === selectedSkin.championKey)
         if (!champion) continue
 
         const skin = champion.skins.find((s) => s.id === selectedSkin.skinId)
         if (!skin) continue
-
-        // Check if this is a custom mod
-        if (champion.key === 'Custom') {
-          // Custom mods are already downloaded, just add to the list
-          const customMod = downloadedSkins.find(
-            (ds) => ds.championName === 'Custom' && ds.skinName.includes(skin.name)
-          )
-          if (customMod) {
-            skinKeys.push(`${champion.key}/${customMod.skinName}`)
-          }
-          continue
-        }
 
         let skinFileName: string
         let githubUrl: string
@@ -523,6 +522,8 @@ function AppContent(): React.JSX.Element {
 
       // Reload downloaded skins list
       await loadDownloadedSkins()
+
+      console.log('skinKeys', skinKeys)
 
       setStatusMessage(t('status.applying', { name: `${selectedSkins.length} skins` }))
 
