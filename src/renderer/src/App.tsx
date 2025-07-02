@@ -489,7 +489,7 @@ function AppContent(): React.JSX.Element {
           )
 
           if (!isChromaDownloaded) {
-            githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion.key}/chromas/${encodeURIComponent(downloadName)}/${encodeURIComponent(skinFileName)}`
+            githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion.name}/chromas/${encodeURIComponent(downloadName)}/${encodeURIComponent(skinFileName)}`
 
             setStatusMessage(t('status.downloading', { name: `${skin.name} (Chroma)` }))
 
@@ -506,7 +506,7 @@ function AppContent(): React.JSX.Element {
           )
 
           if (!isSkinDownloaded) {
-            githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion.key}/${encodeURIComponent(skinFileName)}`
+            githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion.name}/${encodeURIComponent(skinFileName)}`
 
             setStatusMessage(t('status.downloading', { name: skin.name }))
 
@@ -518,7 +518,7 @@ function AppContent(): React.JSX.Element {
         }
 
         // Add skin key for the patcher
-        skinKeys.push(`${champion.key}/${skinFileName}`)
+        skinKeys.push(`${champion.name}/${skinFileName}`)
       }
 
       // Reload downloaded skins list

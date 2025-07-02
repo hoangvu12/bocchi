@@ -3,7 +3,6 @@ import fs from 'fs/promises'
 import path from 'path'
 import { createWriteStream } from 'fs'
 import { pipeline } from 'stream/promises'
-import AdmZip from 'adm-zip'
 import { app } from 'electron'
 import { SkinInfo } from '../types'
 
@@ -32,19 +31,15 @@ export class SkinDownloader {
 
     // Define paths
     const zipPath = path.join(championCacheDir, skinInfo.skinName)
-    const modName = skinInfo.skinName.replace('.zip', '')
-    const modPath = path.join(this.modsDir, `${skinInfo.championName}_${modName}`)
-    skinInfo.localPath = modPath
+    skinInfo.localPath = zipPath
 
-    // Check if already extracted
+    // Check if already downloaded
     try {
-      await fs.access(modPath)
-      const metaPath = path.join(modPath, 'META', 'info.json')
-      await fs.access(metaPath)
-      console.log(`Skin already extracted: ${modPath}`)
+      await fs.access(zipPath)
+      console.log(`Skin already downloaded: ${zipPath}`)
       return skinInfo
     } catch {
-      // Mod doesn't exist or is incomplete, proceed with download
+      // Skin not downloaded, proceed
     }
 
     // Convert blob URL to raw URL for direct download
@@ -63,32 +58,13 @@ export class SkinDownloader {
       const writer = createWriteStream(zipPath)
       await pipeline(response.data, writer)
 
-      console.log(`Downloaded ZIP: ${skinInfo.skinName}`)
-
-      // Extract the ZIP file
-      await this.extractZip(zipPath, modPath)
-
-      console.log(`Successfully extracted to: ${modPath}`)
+      console.log(`Downloaded ZIP: ${skinInfo.skinName} to ${zipPath}`)
       return skinInfo
     } catch (error) {
-      console.error(`Failed to download/extract skin: ${error}`)
+      console.error(`Failed to download skin: ${error}`)
       throw new Error(
         `Failed to download skin: ${error instanceof Error ? error.message : 'Unknown error'}`
       )
-    }
-  }
-
-  private async extractZip(zipPath: string, destPath: string): Promise<void> {
-    try {
-      await fs.mkdir(destPath, { recursive: true })
-
-      const zip = new AdmZip(zipPath)
-      zip.extractAllTo(destPath, true)
-
-      console.log(`Extracted ${zipPath} to ${destPath}`)
-    } catch (error) {
-      console.error('Error extracting ZIP:', error)
-      throw error
     }
   }
 
@@ -117,86 +93,81 @@ export class SkinDownloader {
 
   async listDownloadedSkins(): Promise<SkinInfo[]> {
     const skins: SkinInfo[] = []
+    const seenPaths = new Set<string>()
 
+    // 1. List downloaded skins from cache
     try {
-      const modFolders = await fs.readdir(this.modsDir)
-
-      for (const modFolder of modFolders) {
-        const modPath = path.join(this.modsDir, modFolder)
-        const stat = await fs.stat(modPath)
-
+      const championFolders = await fs.readdir(this.cacheDir)
+      for (const championFolder of championFolders) {
+        const championPath = path.join(this.cacheDir, championFolder)
+        const stat = await fs.stat(championPath)
         if (stat.isDirectory()) {
-          // Check if it's a valid mod (has META/info.json)
-          try {
-            const metaPath = path.join(modPath, 'META', 'info.json')
-            await fs.access(metaPath)
+          const skinFiles = await fs.readdir(championPath)
+          for (const skinFile of skinFiles) {
+            const skinPath = path.join(championPath, skinFile)
+            if (seenPaths.has(skinPath)) continue
+            seenPaths.add(skinPath)
 
-            // Parse champion name and skin name from folder name
-            const parts = modFolder.split('_')
-            if (parts.length >= 2) {
-              const championName = parts[0]
-              const restOfName = parts.slice(1).join('_')
-
-              // Check if this is a user mod by looking for [User] prefix or Custom champion
-              const isUserMod = championName === 'Custom' || restOfName.includes('[User]')
-
-              // For user mods, preserve the [User] prefix if it doesn't exist
-              let skinName = restOfName
-              if (isUserMod && !skinName.includes('[User]')) {
-                skinName = '[User] ' + skinName
-              }
-
-              // Add appropriate extension if missing
-              if (!skinName.match(/\.(zip|wad|fantome)$/)) {
-                skinName += '.zip'
-              }
-
-              skins.push({
-                championName,
-                skinName,
-                url: isUserMod
-                  ? `file://imported`
-                  : `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championName}/${encodeURIComponent(skinName)}`,
-                localPath: modPath,
-                source: isUserMod ? 'user' : 'repository'
-              })
-            }
-          } catch {
-            // Not a valid mod, skip
+            const skinName = path.basename(skinFile)
+            const championName = path.basename(championFolder)
+            skins.push({
+              championName,
+              skinName,
+              url: `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championName}/${encodeURIComponent(
+                skinName
+              )}`,
+              localPath: skinPath,
+              source: 'repository'
+            })
           }
         }
       }
     } catch (error) {
-      console.error('Error listing downloaded skins:', error)
+      console.error('Error listing downloaded skins from cache:', error)
+    }
+
+    // 2. List user-imported mods
+    try {
+      const modFolders = await fs.readdir(this.modsDir)
+      for (const modFolder of modFolders) {
+        const modPath = path.join(this.modsDir, modFolder)
+        if (seenPaths.has(modPath)) continue
+        const stat = await fs.stat(modPath)
+        if (stat.isDirectory()) {
+          const parts = modFolder.split('_')
+          if (parts.length >= 2) {
+            const championName = parts[0]
+            const skinName = parts.slice(1).join('_')
+            skins.push({
+              championName,
+              skinName: `[User] ${skinName}`,
+              url: `file://${modPath}`,
+              localPath: modPath,
+              source: 'user'
+            })
+            seenPaths.add(modPath)
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error listing user-imported skins:', error)
     }
 
     return skins
   }
 
   async deleteSkin(championName: string, skinName: string): Promise<void> {
-    // Delete the extracted mod folder
-    const modName = skinName.replace('.zip', '')
-    const modPath = path.join(this.modsDir, `${championName}_${modName}`)
-
-    try {
-      await fs.rm(modPath, { recursive: true, force: true })
-    } catch (error) {
-      console.error('Error deleting mod folder:', error)
-    }
-
-    // Also delete the cached ZIP file
     const zipPath = path.join(this.cacheDir, championName, skinName)
     try {
       await fs.unlink(zipPath)
-
       // Clean up empty champion directory
       const championDir = path.join(this.cacheDir, championName)
       const files = await fs.readdir(championDir)
       if (files.length === 0) {
         await fs.rmdir(championDir)
       }
-    } catch {
-      // File or directory doesn't exist
+    } catch (error) {
+      console.error(`Failed to delete skin ${zipPath}:`, error)
     }
   }
 }

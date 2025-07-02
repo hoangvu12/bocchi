@@ -1,5 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
+import path from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { GameDetector } from './services/gameDetector'
@@ -220,11 +221,48 @@ function setupIpcHandlers(): void {
   // Patcher controls
   ipcMain.handle('run-patcher', async (_, gamePath: string, selectedSkins: string[]) => {
     try {
+      // 0. Validate for single skin per champion
+      const championCounts = new Map<string, number>()
+      for (const skinKey of selectedSkins) {
+        const champion = skinKey.split('/')[0]
+        championCounts.set(champion, (championCounts.get(champion) || 0) + 1)
+      }
+
+      for (const [champion, count] of championCounts.entries()) {
+        if (count > 1) {
+          return {
+            success: false,
+            message: `Conflict: Only one skin per champion can be injected. You have selected ${count} skins for ${champion}.`
+          }
+        }
+      }
+
+      // 1. Download skins that are not local and get all local paths
+      const skinInfosToProcess = await Promise.all(
+        selectedSkins.map(async (skinKey) => {
+          const [champion, skinFile] = skinKey.split('/')
+
+          // Handle user-imported skins
+          if (skinFile.includes('[User]')) {
+            const skinName = skinFile.replace('[User] ', '')
+            const modPath = path.join(app.getPath('userData'), 'mods', `${champion}_${skinName}`)
+            return { localPath: modPath }
+          }
+
+          // Handle remote skins
+          const url = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion}/${encodeURIComponent(
+            skinFile
+          )}`
+          return skinDownloader.downloadSkin(url)
+        })
+      )
+
+      // 2. Prepare preset for patcher
       const preset = {
         id: 'temp_' + Date.now(),
         name: 'Temporary',
         description: 'Temporary preset for patcher',
-        selectedSkins,
+        selectedSkins: skinInfosToProcess.map((s) => s.localPath),
         gamePath,
         noTFT: true,
         ignoreConflict: false,
@@ -232,6 +270,7 @@ function setupIpcHandlers(): void {
         updatedAt: new Date()
       }
 
+      // 3. Apply the preset
       const result = await modToolsWrapper.applyPreset(preset)
       return result
     } catch (error) {

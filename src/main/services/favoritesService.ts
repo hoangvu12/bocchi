@@ -30,9 +30,15 @@ export class FavoritesService {
           addedAt: new Date(fav.addedAt)
         })
       })
-    } catch (error) {
-      console.error('Error initializing favorites:', error)
-      // File doesn't exist yet, that's fine
+    } catch (e) {
+      const error = e as NodeJS.ErrnoException
+      if (error.code === 'ENOENT') {
+        // File doesn't exist, create it with an empty array.
+        await this.save()
+      } else {
+        console.error('Error initializing favorites:', error)
+      }
+      // In any error case, start with an empty favorites list.
       this.favorites.clear()
     }
   }
