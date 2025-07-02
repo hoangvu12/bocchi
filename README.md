@@ -101,6 +101,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - [cslol-manager](https://github.com/LeagueToolkit/cslol-manager/) - Core modding tools
+- [lol-skins](https://github.com/darkseal-org/lol-skins) - A comprehensive collection of League of Legends skins available for custom use.
 
 ## ⚠️ Disclaimer
 
