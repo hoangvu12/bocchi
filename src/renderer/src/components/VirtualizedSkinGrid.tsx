@@ -144,7 +144,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       if (index >= skins.length) return null
 
       const { champion, skin } = skins[index]
-      const skinFileName = `${skin.nameEn || skin.name}.zip`.replace(/:/g, '')
+      const skinFileName = `${skin.lolSkinsName || skin.nameEn || skin.name}.zip`.replace(/:/g, '')
       const downloadedSkin = downloadedSkins.find((ds) => {
         if (champion.key === 'Custom') {
           // For custom mods, match by the skin name in the downloaded list

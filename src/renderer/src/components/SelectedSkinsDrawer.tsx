@@ -10,7 +10,10 @@ interface SelectedSkinsDrawerProps {
   isPatcherRunning: boolean
   downloadedSkins: Array<{ championName: string; skinName: string; localPath?: string }>
   championData?: {
-    champions: Array<{ key: string; skins: Array<{ id: string; nameEn?: string; name: string }> }>
+    champions: Array<{
+      key: string
+      skins: Array<{ id: string; nameEn?: string; name: string; lolSkinsName?: string }>
+    }>
   }
   statusMessage?: string
 }
@@ -121,20 +124,20 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
       return true
     }
 
-    // Look up the actual skin data to get the correct English name
-    let actualNameEn = skin.skinNameEn
+    // Look up the actual skin data to get the correct name (lolSkinsName > nameEn > name)
+    let actualName = skin.skinName
     if (championData) {
       const champion = championData.champions.find((c) => c.key === skin.championKey)
       if (champion) {
         const actualSkin = champion.skins.find((s) => s.id === skin.skinId)
         if (actualSkin) {
-          actualNameEn = actualSkin.nameEn
+          actualName = actualSkin.lolSkinsName || actualSkin.nameEn || actualSkin.name
         }
       }
     }
 
-    // Use English name if available, otherwise use regular name
-    const baseName = (actualNameEn || skin.skinName).replace(/:/g, '')
+    // Use the actual name for file checking
+    const baseName = actualName.replace(/:/g, '')
 
     if (skin.chromaId) {
       const chromaFileName = `${baseName} ${skin.chromaId}.zip`

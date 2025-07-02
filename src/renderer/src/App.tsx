@@ -41,6 +41,7 @@ export interface Skin {
   num: number
   name: string
   nameEn?: string
+  lolSkinsName?: string
   chromas: boolean
 }
 
@@ -477,8 +478,8 @@ function AppContent(): React.JSX.Element {
 
         let skinFileName: string
         let githubUrl: string
-        // Always use the English name from the actual skin data, not the stored one
-        const downloadName = (skin.nameEn || skin.name).replace(/:/g, '')
+        // Use lol-skins name if available, otherwise fall back to English name
+        const downloadName = (skin.lolSkinsName || skin.nameEn || skin.name).replace(/:/g, '')
 
         if (selectedSkin.chromaId) {
           // Handle chroma
