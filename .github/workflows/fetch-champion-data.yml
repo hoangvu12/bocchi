@@ -25,7 +25,7 @@ jobs:
         run: bun install
 
       - name: Fetch champion data
-        run: bun run scripts/fetch-champion-data.ts
+        run: bun run src/scripts/fetch-champion-data.ts
 
       - name: Configure Git
         run: |

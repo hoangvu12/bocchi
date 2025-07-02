@@ -6,8 +6,8 @@ import {
   findBestSkinMatch,
   findChampionFolder,
   initializeLolSkinsData
-} from '../src/main/utils/skinNameMatcher'
-import { LOL_SKINS_DIRECTORY } from '../src/main/data/lolSkinsDirectory'
+} from '../main/utils/skinNameMatcher'
+import { LOL_SKINS_DIRECTORY } from '../main/data/lolSkinsDirectory'
 
 const SUPPORTED_LANGUAGES = ['en_US', 'vi_VN']
 const DDRAGON_BASE_URL = 'https://ddragon.leagueoflegends.com'
