@@ -101,6 +101,9 @@ const api = {
   // App info
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
 
+  // External links
+  openExternal: (url: string) => ipcRenderer.invoke('open-external', url),
+
   // Custom skin images
   getCustomSkinImage: (modPath: string) => ipcRenderer.invoke('get-custom-skin-image', modPath),
   editCustomSkin: (modPath: string, newName: string, newImagePath?: string) =>

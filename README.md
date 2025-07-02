@@ -7,6 +7,7 @@
   [![Platform](https://img.shields.io/badge/platform-Windows-brightgreen.svg)](https://github.com/hoangvu12/bocchi/releases)
   [![Electron](https://img.shields.io/badge/electron-33.x-blue.svg)](https://www.electronjs.org/)
   [![React](https://img.shields.io/badge/react-19.x-61dafb.svg)](https://react.dev/)
+  [![Discord](https://img.shields.io/discord/1234567890?color=5865F2&logo=discord&logoColor=white)](https://discord.gg/frXDBTe4FW)
 </div>
 
 ## 📖 Overview
@@ -112,6 +113,8 @@ Use at your own risk. Skins are client-side only and do not provide any competit
 ## 📧 Contact
 
 - GitHub Issues: [Create an issue](https://github.com/hoangvu12/bocchi/issues)
+- Discord Server: [Join our community](https://discord.gg/frXDBTe4FW)
+- GitHub Repository: [Star on GitHub](https://github.com/hoangvu12/bocchi)
 
 ---
 

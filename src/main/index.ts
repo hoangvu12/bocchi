@@ -166,6 +166,16 @@ function setupIpcHandlers(): void {
     }
   })
 
+  // Open external links
+  ipcMain.handle('open-external', async (_, url: string) => {
+    try {
+      await shell.openExternal(url)
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
   // File import handlers
   ipcMain.handle('import-skin-file', async (_, filePath: string, options?: any) => {
     try {
