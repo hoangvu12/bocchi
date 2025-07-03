@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Button } from './ui/button'
 
 export function DarkModeToggle() {
   const [isDark, setIsDark] = useState(false)
@@ -23,9 +24,11 @@ export function DarkModeToggle() {
   }
 
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="icon"
       onClick={toggleDarkMode}
-      className="relative w-10 h-10 rounded-lg flex items-center justify-center hover:bg-charcoal-100 dark:hover:bg-charcoal-800 transition-all duration-200 group"
+      className="relative w-10 h-10 rounded-lg"
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       {isDark ? (
@@ -57,6 +60,6 @@ export function DarkModeToggle() {
           />
         </svg>
       )}
-    </button>
+    </Button>
   )
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from './ui/button'
 
 export type ViewMode = 'compact' | 'comfortable' | 'spacious' | 'list'
 
@@ -69,18 +70,20 @@ export const GridViewToggle: React.FC<GridViewToggleProps> = ({ viewMode, onView
   return (
     <div className="flex items-center gap-1 p-1 bg-cream-100 dark:bg-charcoal-800 rounded-lg">
       {viewModes.map(({ mode, icon, label }) => (
-        <button
+        <Button
           key={mode}
+          variant={viewMode === mode ? 'secondary' : 'ghost'}
+          size="icon"
           onClick={() => onViewModeChange(mode)}
-          className={`p-2 rounded-md transition-all duration-200 ${
+          className={`p-2 rounded-md ${
             viewMode === mode
               ? 'bg-white dark:bg-charcoal-700 text-terracotta-600 dark:text-terracotta-400 shadow-sm'
-              : 'text-charcoal-600 dark:text-charcoal-400 hover:text-charcoal-800 dark:hover:text-charcoal-200'
+              : 'text-charcoal-600 dark:text-charcoal-400'
           }`}
           title={label}
         >
           {icon}
-        </button>
+        </Button>
       ))}
     </div>
   )

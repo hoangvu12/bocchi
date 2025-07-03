@@ -2,6 +2,8 @@ import React, { useMemo, useRef, useCallback, useState, useEffect } from 'react'
 import { FixedSizeGrid as Grid } from 'react-window'
 import type { Champion, Skin } from '../App'
 import type { SelectedSkin } from '../store/atoms'
+import { Button } from './ui/button'
+import { Badge } from './ui/badge'
 
 interface VirtualizedSkinGridProps {
   skins: Array<{ champion: Champion; skin: Skin }>
@@ -219,9 +221,12 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                   )}
                 </div>
                 {skin.chromas && (
-                  <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded">
+                  <Badge
+                    variant="secondary"
+                    className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/40"
+                  >
                     Chromas
-                  </span>
+                  </Badge>
                 )}
                 {isDownloaded && (
                   <span
@@ -232,26 +237,29 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                     <span className="text-white text-xs">{isUserSkin ? 'U' : '↓'}</span>
                   </span>
                 )}
-                <button
-                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all
-                    ${
-                      isFavorite
-                        ? 'bg-red-100 dark:bg-red-900/30 text-red-500'
-                        : 'bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-400 hover:text-charcoal-600 dark:hover:text-charcoal-300'
-                    }`}
+                <Button
+                  variant={isFavorite ? 'secondary' : 'ghost'}
+                  size="icon"
+                  className={`w-8 h-8 rounded-full ${
+                    isFavorite
+                      ? 'bg-red-100 dark:bg-red-900/30 text-red-500 hover:bg-red-200 dark:hover:bg-red-900/40'
+                      : ''
+                  }`}
                   onClick={(e) => {
                     e.stopPropagation()
                     onToggleFavorite(champion, skin)
                   }}
                 >
                   {isFavorite ? '❤️' : '🤍'}
-                </button>
+                </Button>
                 {/* Edit and Delete buttons for custom mods in list view */}
                 {champion.key === 'Custom' && downloadedSkin && (
                   <>
                     {onEditCustomSkin && (
-                      <button
-                        className="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition-all"
+                      <Button
+                        variant="default"
+                        size="icon"
+                        className="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700"
                         onClick={(e) => {
                           e.stopPropagation()
                           onEditCustomSkin(downloadedSkin.localPath!, skin.name)
@@ -271,11 +279,13 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                           />
                         </svg>
-                      </button>
+                      </Button>
                     )}
                     {onDeleteCustomSkin && (
-                      <button
-                        className="w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition-all"
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        className="w-8 h-8 rounded-full"
                         onClick={(e) => {
                           e.stopPropagation()
                           if (confirm(`Are you sure you want to delete "${skin.name}"?`)) {
@@ -297,7 +307,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                           />
                         </svg>
-                      </button>
+                      </Button>
                     )}
                   </>
                 )}
@@ -358,11 +368,13 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                   <span className="text-white text-xs">{isUserSkin ? 'U' : '↓'}</span>
                 </div>
               )}
-              <button
-                className={`absolute bottom-2 left-2 w-8 h-8 rounded-full flex items-center justify-center transition-all
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`absolute bottom-2 left-2 w-8 h-8 rounded-full transition-all
                     ${
                       isFavorite
-                        ? 'bg-white/10 backdrop-blur-sm text-red-500'
+                        ? 'bg-white/10 backdrop-blur-sm text-red-500 hover:bg-white/20'
                         : 'bg-white/10 backdrop-blur-sm text-white/70 hover:text-white hover:bg-white/20'
                     }`}
                 onClick={(e) => {
@@ -372,13 +384,15 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                 title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
               >
                 {isFavorite ? '❤️' : '🤍'}
-              </button>
+              </Button>
               {/* Edit and Delete buttons for custom mods */}
               {champion.key === 'Custom' && downloadedSkin && (
                 <>
                   {onEditCustomSkin && (
-                    <button
-                      className="absolute top-2 right-2 w-6 h-6 rounded-full bg-blue-600/90 hover:bg-blue-700 text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 shadow-lg"
+                    <Button
+                      variant="default"
+                      size="icon"
+                      className="absolute top-2 right-2 w-6 h-6 rounded-full bg-blue-600/90 hover:bg-blue-700 opacity-0 group-hover:opacity-100 shadow-lg"
                       onClick={(e) => {
                         e.stopPropagation()
                         onEditCustomSkin(downloadedSkin.localPath!, skin.name)
@@ -398,11 +412,13 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                           d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                         />
                       </svg>
-                    </button>
+                    </Button>
                   )}
                   {onDeleteCustomSkin && (
-                    <button
-                      className="absolute top-10 right-2 w-6 h-6 rounded-full bg-red-600/90 hover:bg-red-700 text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 shadow-lg"
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      className="absolute top-10 right-2 w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 shadow-lg"
                       onClick={(e) => {
                         e.stopPropagation()
                         if (confirm(`Are you sure you want to delete "${skin.name}"?`)) {
@@ -424,7 +440,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                           d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                         />
                       </svg>
-                    </button>
+                    </Button>
                   )}
                 </>
               )}
@@ -440,9 +456,12 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
               {viewMode === 'spacious' && (
                 <div className="mt-2 flex items-center gap-2">
                   {skin.chromas && (
-                    <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded">
+                    <Badge
+                      variant="secondary"
+                      className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/40"
+                    >
                       Chromas
-                    </span>
+                    </Badge>
                   )}
                 </div>
               )}

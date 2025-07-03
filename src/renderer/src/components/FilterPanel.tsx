@@ -1,6 +1,9 @@
 import React from 'react'
 import { useAtom } from 'jotai'
 import { filterPanelExpandedAtom } from '../store/atoms'
+import { Button } from './ui/button'
+import { Badge } from './ui/badge'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
 export type SortOption = 'name-asc' | 'name-desc' | 'skin-asc' | 'skin-desc' | 'champion'
 export type DownloadFilter = 'all' | 'downloaded' | 'not-downloaded'
@@ -53,9 +56,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     <div className="bg-white dark:bg-charcoal-900 border-b-2 border-charcoal-200 dark:border-charcoal-800 transition-all duration-300">
       <div className="px-8 py-4">
         <div className="flex items-center justify-between">
-          <button
+          <Button
+            variant="ghost"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-2 text-sm font-medium text-charcoal-700 dark:text-charcoal-200 hover:text-charcoal-900 dark:hover:text-charcoal-50 transition-colors"
+            className="flex items-center gap-2 text-sm font-medium"
           >
             <svg
               className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
@@ -72,23 +76,27 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             </svg>
             <span>Filters & Sort</span>
             {hasActiveFilters && (
-              <span className="px-2 py-0.5 bg-terracotta-500 text-white text-xs rounded-full">
+              <Badge
+                variant="default"
+                className="bg-terracotta-500 hover:bg-terracotta-600 text-white"
+              >
                 Active
-              </span>
+              </Badge>
             )}
-          </button>
+          </Button>
 
           <div className="flex items-center gap-4 text-sm text-charcoal-600 dark:text-charcoal-400">
             <span>
               {downloadedCount} / {totalCount} downloaded
             </span>
             {hasActiveFilters && (
-              <button
+              <Button
+                variant="link"
                 onClick={onClearFilters}
-                className="text-terracotta-600 dark:text-terracotta-400 hover:text-terracotta-700 dark:hover:text-terracotta-300 font-medium"
+                className="text-terracotta-600 dark:text-terracotta-400 hover:text-terracotta-700 dark:hover:text-terracotta-300 font-medium h-auto p-0"
               >
                 Clear Filters
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -102,21 +110,23 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               </h3>
               <div className="flex flex-wrap gap-2">
                 {(['all', 'downloaded', 'not-downloaded'] as DownloadFilter[]).map((status) => (
-                  <button
+                  <Button
                     key={status}
+                    variant={filters.downloadStatus === status ? 'default' : 'secondary'}
+                    size="sm"
                     onClick={() => updateFilter('downloadStatus', status)}
-                    className={`px-3 py-1.5 text-sm rounded-lg transition-all duration-200 ${
+                    className={
                       filters.downloadStatus === status
-                        ? 'bg-terracotta-500 text-white shadow-sm'
-                        : 'bg-cream-100 dark:bg-charcoal-800 text-charcoal-700 dark:text-charcoal-300 hover:bg-cream-200 dark:hover:bg-charcoal-700'
-                    }`}
+                        ? 'bg-terracotta-500 hover:bg-terracotta-600'
+                        : ''
+                    }
                   >
                     {status === 'all'
                       ? 'All'
                       : status === 'downloaded'
                         ? 'Downloaded'
                         : 'Not Downloaded'}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -128,21 +138,23 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               </h3>
               <div className="flex flex-wrap gap-2">
                 {(['all', 'has-chromas', 'no-chromas'] as ChromaFilter[]).map((status) => (
-                  <button
+                  <Button
                     key={status}
+                    variant={filters.chromaStatus === status ? 'default' : 'secondary'}
+                    size="sm"
                     onClick={() => updateFilter('chromaStatus', status)}
-                    className={`px-3 py-1.5 text-sm rounded-lg transition-all duration-200 ${
+                    className={
                       filters.chromaStatus === status
-                        ? 'bg-terracotta-500 text-white shadow-sm'
-                        : 'bg-cream-100 dark:bg-charcoal-800 text-charcoal-700 dark:text-charcoal-300 hover:bg-cream-200 dark:hover:bg-charcoal-700'
-                    }`}
+                        ? 'bg-terracotta-500 hover:bg-terracotta-600'
+                        : ''
+                    }
                   >
                     {status === 'all'
                       ? 'All'
                       : status === 'has-chromas'
                         ? 'Has Chromas'
                         : 'No Chromas'}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -154,17 +166,19 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               </h3>
               <div className="flex flex-wrap gap-2">
                 {availableTags.map((tag) => (
-                  <button
+                  <Button
                     key={tag}
+                    variant={filters.championTags.includes(tag) ? 'default' : 'secondary'}
+                    size="sm"
                     onClick={() => toggleTag(tag)}
-                    className={`px-3 py-1.5 text-sm rounded-lg transition-all duration-200 ${
+                    className={
                       filters.championTags.includes(tag)
-                        ? 'bg-terracotta-500 text-white shadow-sm'
-                        : 'bg-cream-100 dark:bg-charcoal-800 text-charcoal-700 dark:text-charcoal-300 hover:bg-cream-200 dark:hover:bg-charcoal-700'
-                    }`}
+                        ? 'bg-terracotta-500 hover:bg-terracotta-600'
+                        : ''
+                    }
                   >
                     {tag}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -175,17 +189,46 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                 Sort By
               </h3>
               <div className="flex flex-wrap gap-2">
-                <select
+                <Select
                   value={filters.sortBy}
-                  onChange={(e) => updateFilter('sortBy', e.target.value as SortOption)}
-                  className="px-4 py-2 text-sm bg-cream-100 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 rounded-lg text-charcoal-700 dark:text-charcoal-200 focus:outline-none focus:ring-2 focus:ring-terracotta-500 focus:border-transparent"
+                  onValueChange={(value) => updateFilter('sortBy', value as SortOption)}
                 >
-                  <option value="name-asc">Name (A-Z)</option>
-                  <option value="name-desc">Name (Z-A)</option>
-                  <option value="skin-asc">Skin # (Low to High)</option>
-                  <option value="skin-desc">Skin # (High to Low)</option>
-                  <option value="champion">Champion Name</option>
-                </select>
+                  <SelectTrigger className="w-[200px] bg-cream-100 dark:bg-charcoal-800 border-charcoal-200 dark:border-charcoal-700 text-charcoal-700 dark:text-charcoal-200">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white dark:bg-charcoal-800 border-charcoal-200 dark:border-charcoal-700">
+                    <SelectItem
+                      value="name-asc"
+                      className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
+                    >
+                      Name (A-Z)
+                    </SelectItem>
+                    <SelectItem
+                      value="name-desc"
+                      className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
+                    >
+                      Name (Z-A)
+                    </SelectItem>
+                    <SelectItem
+                      value="skin-asc"
+                      className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
+                    >
+                      Skin # (Low to High)
+                    </SelectItem>
+                    <SelectItem
+                      value="skin-desc"
+                      className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
+                    >
+                      Skin # (High to Low)
+                    </SelectItem>
+                    <SelectItem
+                      value="champion"
+                      className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
+                    >
+                      Champion Name
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>

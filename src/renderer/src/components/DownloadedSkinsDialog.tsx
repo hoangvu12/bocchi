@@ -1,4 +1,8 @@
 import React, { useState, useMemo } from 'react'
+import { Button } from './ui/button'
+import { Input } from './ui/input'
+import { Badge } from './ui/badge'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
 
 interface DownloadedSkinsDialogProps {
   isOpen: boolean
@@ -89,73 +93,51 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
     }
   }
 
-  if (!isOpen) return null
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white dark:bg-charcoal-800 rounded-lg shadow-xl w-[800px] max-w-[90vw] max-h-[80vh] flex flex-col">
-        {/* Header */}
-        <div className="p-6 border-b border-charcoal-200 dark:border-charcoal-700">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-charcoal-900 dark:text-charcoal-100">
-              Downloaded Skins ({totalSkins})
-            </h2>
-            <button
-              onClick={onClose}
-              className="text-charcoal-500 hover:text-charcoal-700 dark:text-charcoal-400 dark:hover:text-charcoal-200"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-[800px] max-h-[80vh] flex flex-col">
+        <DialogHeader>
+          <DialogTitle>Downloaded Skins ({totalSkins})</DialogTitle>
+        </DialogHeader>
 
+        <div className="space-y-4">
           {/* Category Filter */}
           <div className="flex gap-2 mb-4">
-            <button
+            <Button
+              variant={selectedCategory === 'all' ? 'default' : 'secondary'}
               onClick={() => setSelectedCategory('all')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                selectedCategory === 'all'
-                  ? 'bg-terracotta-500 text-white'
-                  : 'bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-700 dark:text-charcoal-300 hover:bg-charcoal-200 dark:hover:bg-charcoal-600'
-              }`}
+              className={
+                selectedCategory === 'all' ? 'bg-terracotta-500 hover:bg-terracotta-600' : ''
+              }
             >
               All Skins
-            </button>
-            <button
+            </Button>
+            <Button
+              variant={selectedCategory === 'repo' ? 'default' : 'secondary'}
               onClick={() => setSelectedCategory('repo')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                selectedCategory === 'repo'
-                  ? 'bg-terracotta-500 text-white'
-                  : 'bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-700 dark:text-charcoal-300 hover:bg-charcoal-200 dark:hover:bg-charcoal-600'
-              }`}
+              className={
+                selectedCategory === 'repo' ? 'bg-terracotta-500 hover:bg-terracotta-600' : ''
+              }
             >
               Repository Skins
-            </button>
-            <button
+            </Button>
+            <Button
+              variant={selectedCategory === 'custom' ? 'default' : 'secondary'}
               onClick={() => setSelectedCategory('custom')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                selectedCategory === 'custom'
-                  ? 'bg-terracotta-500 text-white'
-                  : 'bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-700 dark:text-charcoal-300 hover:bg-charcoal-200 dark:hover:bg-charcoal-600'
-              }`}
+              className={
+                selectedCategory === 'custom' ? 'bg-terracotta-500 hover:bg-terracotta-600' : ''
+              }
             >
               Custom Imports
-            </button>
+            </Button>
           </div>
 
           {/* Search */}
-          <input
+          <Input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by champion or skin name..."
-            className="w-full px-4 py-2 border border-charcoal-300 dark:border-charcoal-600 rounded-md bg-white dark:bg-charcoal-700 text-charcoal-900 dark:text-charcoal-100 focus:outline-none focus:ring-2 focus:ring-terracotta-500"
           />
         </div>
 
@@ -210,25 +192,29 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                                   {displayName}
                                 </span>
                                 {skin.isCustom && (
-                                  <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded">
+                                  <Badge
+                                    variant="secondary"
+                                    className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/40"
+                                  >
                                     {championKey === 'Custom' ? 'Custom' : 'User Import'}
-                                  </span>
+                                  </Badge>
                                 )}
                               </div>
-                              <button
+                              <Button
+                                variant="destructive"
+                                size="sm"
                                 onClick={() => handleDeleteSkin(championKey, skin.skinName)}
                                 disabled={isDeleting}
-                                className="px-3 py-1 text-sm bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white rounded transition-colors flex items-center gap-1"
                               >
                                 {isDeleting ? (
                                   <>
-                                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
                                     Deleting...
                                   </>
                                 ) : (
                                   <>
                                     <svg
-                                      className="w-4 h-4"
+                                      className="w-4 h-4 mr-1"
                                       fill="none"
                                       stroke="currentColor"
                                       viewBox="0 0 24 24"
@@ -243,7 +229,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                                     Delete
                                   </>
                                 )}
-                              </button>
+                              </Button>
                             </div>
                           )
                         })}
@@ -255,19 +241,15 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
           )}
         </div>
 
-        {/* Footer */}
-        <div className="p-6 border-t border-charcoal-200 dark:border-charcoal-700 flex justify-between items-center">
+        <DialogFooter className="justify-between">
           <div className="text-sm text-charcoal-600 dark:text-charcoal-400">
             Total: {totalSkins} skins
           </div>
-          <button
-            onClick={onClose}
-            className="px-6 py-2 bg-charcoal-200 dark:bg-charcoal-700 hover:bg-charcoal-300 dark:hover:bg-charcoal-600 text-charcoal-700 dark:text-charcoal-300 rounded-md transition-colors"
-          >
+          <Button variant="secondary" onClick={onClose}>
             Close
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }

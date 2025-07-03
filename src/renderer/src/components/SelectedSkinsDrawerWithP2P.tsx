@@ -4,6 +4,7 @@ import { selectedSkinsAtom, selectedSkinsDrawerExpandedAtom, p2pRoomAtom } from 
 import type { SelectedSkin } from '../store/atoms'
 import type { P2PRoomMember } from '../../../main/types'
 import { p2pService } from '../services/p2pService'
+import { Badge } from './ui/badge'
 
 interface SelectedSkinsDrawerProps {
   onApplySkins: () => void
@@ -264,9 +265,12 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
               </>
             )}
             {p2pRoom && (
-              <span className="text-xs px-2 py-1 bg-terracotta-100 dark:bg-terracotta-900/30 text-terracotta-700 dark:text-terracotta-400 rounded">
+              <Badge
+                variant="secondary"
+                className="bg-terracotta-100 dark:bg-terracotta-900/30 text-terracotta-700 dark:text-terracotta-400 hover:bg-terracotta-200 dark:hover:bg-terracotta-900/40"
+              >
                 Room: {p2pRoom.id}
-              </span>
+              </Badge>
             )}
           </div>
         </div>
@@ -473,9 +477,12 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                                     className="absolute inset-0 bg-black/0 hover:bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-all"
                                     onClick={() => applySkinFromPeer(skin)}
                                   >
-                                    <span className="px-3 py-1 bg-terracotta-500 text-white text-xs rounded">
+                                    <Badge
+                                      variant="default"
+                                      className="bg-terracotta-500 hover:bg-terracotta-600 text-white"
+                                    >
                                       Apply
-                                    </span>
+                                    </Badge>
                                   </button>
                                 )}
                               </div>

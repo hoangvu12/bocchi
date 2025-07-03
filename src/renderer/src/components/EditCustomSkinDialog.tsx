@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { Button } from './ui/button'
+import { Input } from './ui/input'
+import { Label } from './ui/label'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
 
 interface EditCustomSkinDialogProps {
   isOpen: boolean
@@ -38,40 +42,31 @@ export const EditCustomSkinDialog: React.FC<EditCustomSkinDialogProps> = ({
     }
   }
 
-  if (!isOpen) return null
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white dark:bg-charcoal-800 rounded-lg shadow-xl p-6 w-96 max-w-[90vw]">
-        <h2 className="text-xl font-bold text-charcoal-900 dark:text-charcoal-100 mb-4">
-          Edit Custom Mod
-        </h2>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Edit Custom Mod</DialogTitle>
+        </DialogHeader>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-charcoal-700 dark:text-charcoal-300 mb-1">
-              Mod Name
-            </label>
-            <input
+            <Label htmlFor="mod-name">Mod Name</Label>
+            <Input
+              id="mod-name"
               type="text"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              className="w-full px-3 py-2 border border-charcoal-300 dark:border-charcoal-600 rounded-md bg-white dark:bg-charcoal-700 text-charcoal-900 dark:text-charcoal-100 focus:outline-none focus:ring-2 focus:ring-terracotta-500"
               placeholder="Enter mod name"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-charcoal-700 dark:text-charcoal-300 mb-1">
-              Preview Image (Optional)
-            </label>
+            <Label>Preview Image (Optional)</Label>
             <div className="flex items-center gap-2">
-              <button
-                onClick={handleSelectImage}
-                className="px-4 py-2 bg-charcoal-100 dark:bg-charcoal-700 hover:bg-charcoal-200 dark:hover:bg-charcoal-600 text-charcoal-700 dark:text-charcoal-300 rounded-md transition-colors text-sm"
-              >
+              <Button variant="secondary" onClick={handleSelectImage}>
                 Select Image
-              </button>
+              </Button>
               {selectedImageName && (
                 <span className="text-sm text-charcoal-600 dark:text-charcoal-400 truncate">
                   {selectedImageName}
@@ -86,22 +81,19 @@ export const EditCustomSkinDialog: React.FC<EditCustomSkinDialogProps> = ({
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 mt-6">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 text-charcoal-600 dark:text-charcoal-400 hover:text-charcoal-800 dark:hover:text-charcoal-200 transition-colors"
-          >
+        <DialogFooter>
+          <Button variant="ghost" onClick={onClose}>
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={handleSave}
             disabled={!newName.trim()}
-            className="px-4 py-2 bg-terracotta-500 hover:bg-terracotta-600 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-terracotta-500 hover:bg-terracotta-600"
           >
             Save Changes
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }

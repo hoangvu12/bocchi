@@ -7,6 +7,11 @@ import {
   generateRandomPlayerName
 } from '../store/atoms'
 import { useP2P } from '../contexts/P2PContext'
+import { Button } from './ui/button'
+import { Input } from './ui/input'
+import { Label } from './ui/label'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
+import { Separator } from './ui/separator'
 
 export const RoomPanel: React.FC = () => {
   const [p2pRoom] = useAtom(p2pRoomAtom)
@@ -76,80 +81,74 @@ export const RoomPanel: React.FC = () => {
   if (!p2pRoom) {
     return (
       <>
-        <button
+        <Button
           onClick={() => setShowModal(true)}
-          className="px-4 py-2 text-sm font-medium bg-terracotta-500 hover:bg-terracotta-600 text-white rounded-lg transition-colors"
+          className="bg-terracotta-500 hover:bg-terracotta-600"
         >
           Join/Create Room
-        </button>
+        </Button>
 
-        {showModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-charcoal-800 rounded-lg p-6 w-96 max-w-[90vw]">
-              <h2 className="text-xl font-bold mb-4 text-charcoal-900 dark:text-charcoal-100">
-                P2P Room
-              </h2>
+        <Dialog open={showModal} onOpenChange={setShowModal}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>P2P Room</DialogTitle>
+              <DialogDescription>
+                Create a new room or join an existing one to share skins with others.
+              </DialogDescription>
+            </DialogHeader>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1 text-charcoal-700 dark:text-charcoal-300">
-                    Display Name
-                  </label>
-                  <input
-                    type="text"
-                    value={displayNameInput}
-                    onChange={(e) => setDisplayNameInput(e.target.value)}
-                    className="w-full px-3 py-2 border border-charcoal-300 dark:border-charcoal-600 rounded-lg bg-white dark:bg-charcoal-900 text-charcoal-900 dark:text-charcoal-100"
-                    placeholder="Enter your name"
-                  />
-                </div>
-
-                <div className="border-t border-charcoal-200 dark:border-charcoal-700 pt-4">
-                  <h3 className="font-medium mb-3 text-charcoal-900 dark:text-charcoal-100">
-                    Create a New Room
-                  </h3>
-                  <button
-                    onClick={handleCreateRoom}
-                    disabled={loading || !displayNameInput.trim()}
-                    className="w-full px-4 py-2 bg-terracotta-500 hover:bg-terracotta-600 disabled:bg-charcoal-400 text-white rounded-lg transition-colors"
-                  >
-                    {loading ? 'Creating...' : 'Create Room'}
-                  </button>
-                </div>
-
-                <div className="border-t border-charcoal-200 dark:border-charcoal-700 pt-4">
-                  <h3 className="font-medium mb-3 text-charcoal-900 dark:text-charcoal-100">
-                    Join Existing Room
-                  </h3>
-                  <input
-                    type="text"
-                    value={roomIdInput}
-                    onChange={(e) => setRoomIdInput(e.target.value.toUpperCase())}
-                    className="w-full px-3 py-2 border border-charcoal-300 dark:border-charcoal-600 rounded-lg bg-white dark:bg-charcoal-900 text-charcoal-900 dark:text-charcoal-100 mb-2"
-                    placeholder="Enter room ID (e.g., ABC123)"
-                    maxLength={6}
-                  />
-                  <button
-                    onClick={handleJoinRoom}
-                    disabled={loading || !displayNameInput.trim() || !roomIdInput.trim()}
-                    className="w-full px-4 py-2 bg-terracotta-500 hover:bg-terracotta-600 disabled:bg-charcoal-400 text-white rounded-lg transition-colors"
-                  >
-                    {loading ? 'Joining...' : 'Join Room'}
-                  </button>
-                </div>
-
-                {error && <div className="text-red-600 dark:text-red-400 text-sm">{error}</div>}
-
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="w-full px-4 py-2 text-charcoal-600 dark:text-charcoal-400 hover:text-charcoal-900 dark:hover:text-charcoal-100 transition-colors"
-                >
-                  Cancel
-                </button>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="display-name">Display Name</Label>
+                <Input
+                  id="display-name"
+                  type="text"
+                  value={displayNameInput}
+                  onChange={(e) => setDisplayNameInput(e.target.value)}
+                  placeholder="Enter your name"
+                />
               </div>
+
+              <Separator />
+              <div>
+                <h3 className="font-medium mb-3 text-charcoal-900 dark:text-charcoal-100">
+                  Create a New Room
+                </h3>
+                <Button
+                  onClick={handleCreateRoom}
+                  disabled={loading || !displayNameInput.trim()}
+                  className="w-full bg-terracotta-500 hover:bg-terracotta-600"
+                >
+                  {loading ? 'Creating...' : 'Create Room'}
+                </Button>
+              </div>
+
+              <Separator />
+              <div>
+                <h3 className="font-medium mb-3 text-charcoal-900 dark:text-charcoal-100">
+                  Join Existing Room
+                </h3>
+                <Input
+                  type="text"
+                  value={roomIdInput}
+                  onChange={(e) => setRoomIdInput(e.target.value.toUpperCase())}
+                  placeholder="Enter room ID (e.g., ABC123)"
+                  maxLength={6}
+                  className="mb-2"
+                />
+                <Button
+                  onClick={handleJoinRoom}
+                  disabled={loading || !displayNameInput.trim() || !roomIdInput.trim()}
+                  className="w-full bg-terracotta-500 hover:bg-terracotta-600"
+                >
+                  {loading ? 'Joining...' : 'Join Room'}
+                </Button>
+              </div>
+
+              {error && <div className="text-red-600 dark:text-red-400 text-sm">{error}</div>}
             </div>
-          </div>
-        )}
+          </DialogContent>
+        </Dialog>
       </>
     )
   }
@@ -165,9 +164,11 @@ export const RoomPanel: React.FC = () => {
         <span className="text-sm font-medium text-charcoal-700 dark:text-charcoal-300">
           Room: {p2pRoom.id}
         </span>
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={copyRoomId}
-          className="p-1 hover:bg-charcoal-200 dark:hover:bg-charcoal-700 rounded transition-colors"
+          className="h-8 w-8"
           title="Copy room ID"
         >
           <svg
@@ -183,17 +184,19 @@ export const RoomPanel: React.FC = () => {
               d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
             />
           </svg>
-        </button>
+        </Button>
       </div>
       <span className="text-sm text-charcoal-600 dark:text-charcoal-400">
         ({totalMembers} {totalMembers === 1 ? 'member' : 'members'})
       </span>
-      <button
+      <Button
+        variant="ghost"
+        size="sm"
         onClick={handleLeaveRoom}
-        className="ml-auto px-3 py-1 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+        className="ml-auto text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
       >
         Leave
-      </button>
+      </Button>
     </div>
   )
 }
