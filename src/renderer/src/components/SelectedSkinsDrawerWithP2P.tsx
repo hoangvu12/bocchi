@@ -370,59 +370,65 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             {/* My Skins Tab */}
             {activeTab === 'my-skins' && (
               <>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3">
-                  {selectedSkins.map((skin) => {
-                    const isDownloaded = isSkinDownloaded(skin)
-                    return (
-                      <div
-                        key={`${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}`}
-                        className="relative group"
-                      >
-                        <div className="relative aspect-[0.67] overflow-hidden bg-charcoal-100 dark:bg-charcoal-800 rounded border border-charcoal-200 dark:border-charcoal-700">
-                          <img
-                            src={getSkinImageUrl(skin)}
-                            alt={skin.skinName}
-                            className="w-full h-full object-cover"
-                          />
-                          {!isDownloaded && (
-                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                              <div className="text-[10px] text-white bg-black/75 px-1.5 py-0.5 rounded text-center">
-                                Not
-                                <br />
-                                Downloaded
+                {selectedSkins.length === 0 ? (
+                  <div className="text-center py-8 text-charcoal-500 dark:text-charcoal-400">
+                    No skins selected yet. Click on skins above to add them to your selection.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3">
+                    {selectedSkins.map((skin) => {
+                      const isDownloaded = isSkinDownloaded(skin)
+                      return (
+                        <div
+                          key={`${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}`}
+                          className="relative group"
+                        >
+                          <div className="relative aspect-[0.67] overflow-hidden bg-charcoal-100 dark:bg-charcoal-800 rounded border border-charcoal-200 dark:border-charcoal-700">
+                            <img
+                              src={getSkinImageUrl(skin)}
+                              alt={skin.skinName}
+                              className="w-full h-full object-cover"
+                            />
+                            {!isDownloaded && (
+                              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                <div className="text-[10px] text-white bg-black/75 px-1.5 py-0.5 rounded text-center">
+                                  Not
+                                  <br />
+                                  Downloaded
+                                </div>
                               </div>
-                            </div>
-                          )}
-                          <button
-                            className="absolute top-0.5 right-0.5 w-5 h-5 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={() => removeSkin(skin)}
-                            disabled={loading}
-                          >
-                            <svg
-                              className="w-2.5 h-2.5 text-white"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
+                            )}
+                            <button
+                              className="absolute top-0.5 right-0.5 w-5 h-5 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                              onClick={() => removeSkin(skin)}
+                              disabled={loading}
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2.5}
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                          </button>
+                              <svg
+                                className="w-2.5 h-2.5 text-white"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2.5}
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                          <div className="mt-1">
+                            <p className="text-xs leading-tight font-medium text-charcoal-900 dark:text-charcoal-100 truncate">
+                              {skin.skinName}
+                              {skin.chromaId && ' (C)'}
+                            </p>
+                          </div>
                         </div>
-                        <div className="mt-1">
-                          <p className="text-xs leading-tight font-medium text-charcoal-900 dark:text-charcoal-100 truncate">
-                            {skin.skinName}
-                            {skin.chromaId && ' (C)'}
-                          </p>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
+                      )
+                    })}
+                  </div>
+                )}
 
                 {/* Patcher Messages */}
                 {patcherMessages.length > 0 && (

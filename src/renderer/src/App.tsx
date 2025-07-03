@@ -1048,99 +1048,16 @@ function AppContent(): React.JSX.Element {
           </div>
         )}
 
-        {selectedSkins.length > 0 && championData ? (
-          <SelectedSkinsDrawer
-            onApplySkins={applySelectedSkins}
-            onStopPatcher={stopPatcher}
-            loading={loading}
-            isPatcherRunning={isPatcherRunning}
-            downloadedSkins={downloadedSkins}
-            championData={championData}
-            statusMessage={statusMessage}
-            errorMessage={errorMessage}
-          />
-        ) : (
-          <div className="border-t-2 border-charcoal-200 dark:border-charcoal-800 bg-white dark:bg-charcoal-900 px-8 py-4 shadow-md dark:shadow-none">
-            <div className="text-sm text-charcoal-800 dark:text-charcoal-300 font-medium flex items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                {loading && (
-                  <div className="flex items-center gap-1.5">
-                    <div
-                      className="w-2 h-2 bg-terracotta-500 rounded-full animate-bounce"
-                      style={{ animationDelay: '0ms' }}
-                    ></div>
-                    <div
-                      className="w-2 h-2 bg-terracotta-500 rounded-full animate-bounce"
-                      style={{ animationDelay: '150ms' }}
-                    ></div>
-                    <div
-                      className="w-2 h-2 bg-terracotta-500 rounded-full animate-bounce"
-                      style={{ animationDelay: '300ms' }}
-                    ></div>
-                  </div>
-                )}
-                <span
-                  className={
-                    statusMessage?.includes('Error') || statusMessage?.includes('Failed')
-                      ? 'text-red-600 dark:text-red-400'
-                      : ''
-                  }
-                >
-                  {statusMessage || t('app.ready')}
-                </span>
-              </div>
-
-              {/* Error recovery actions */}
-              {(statusMessage?.includes('Error') ||
-                statusMessage?.includes('Failed') ||
-                statusMessage?.includes('timed out')) && (
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => {
-                      setStatusMessage('')
-                      // Reset all loading states
-                      setIsLoadingChampionData(false)
-                      setIsApplyingSkins(false)
-                      setIsDeletingSkin(false)
-                      setIsStoppingPatcher(false)
-                      activeOperationRef.current = null
-                    }}
-                    className="px-3 py-1.5 text-xs bg-charcoal-100 dark:bg-charcoal-800 hover:bg-charcoal-200 dark:hover:bg-charcoal-700 text-charcoal-700 dark:text-charcoal-300 rounded transition-colors"
-                  >
-                    Clear
-                  </button>
-                  {statusMessage?.includes('champion data') && (
-                    <button
-                      onClick={fetchChampionData}
-                      disabled={loading}
-                      className="px-3 py-1.5 text-xs bg-terracotta-500 hover:bg-terracotta-600 disabled:bg-terracotta-300 text-white rounded transition-colors disabled:cursor-not-allowed"
-                    >
-                      Retry
-                    </button>
-                  )}
-                </div>
-              )}
-
-              {/* Manual reset button for stuck states */}
-              {loading && (
-                <button
-                  onClick={() => {
-                    setIsLoadingChampionData(false)
-                    setIsApplyingSkins(false)
-                    setIsDeletingSkin(false)
-                    setIsStoppingPatcher(false)
-                    activeOperationRef.current = null
-                    setStatusMessage('Reset completed')
-                  }}
-                  className="px-3 py-1.5 text-xs bg-orange-500 hover:bg-orange-600 text-white rounded transition-colors"
-                  title="Force reset if the app seems stuck"
-                >
-                  Force Reset
-                </button>
-              )}
-            </div>
-          </div>
-        )}
+        <SelectedSkinsDrawer
+          onApplySkins={applySelectedSkins}
+          onStopPatcher={stopPatcher}
+          loading={loading}
+          isPatcherRunning={isPatcherRunning}
+          downloadedSkins={downloadedSkins}
+          championData={championData || undefined}
+          statusMessage={statusMessage}
+          errorMessage={errorMessage}
+        />
       </div>
 
       {editingCustomSkin && (
