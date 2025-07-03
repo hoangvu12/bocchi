@@ -667,6 +667,22 @@ function AppContent(): React.JSX.Element {
           }
         }
       })
+      
+      // Add imported custom skins for this champion
+      const customSkinsForChampion = downloadedSkins.filter(
+        (ds) => ds.skinName.startsWith('[User]') && ds.championName === selectedChampion.key
+      )
+      customSkinsForChampion.forEach((mod, index) => {
+        const customSkin: Skin = {
+          id: `custom_${selectedChampion.key}_${index}`,
+          num: 9000 + index, // High number to appear at the end
+          name: mod.skinName.replace('[User] ', '').replace(/\.(wad|zip|fantome)$/, ''),
+          chromas: false
+        }
+        if (!showFavoritesOnly || favorites.has(`${selectedChampion.key}_${customSkin.id}`)) {
+          allSkins.push({ champion: selectedChampion, skin: customSkin })
+        }
+      })
     } else if (selectedChampionKey === 'all') {
       // All champions skins
       championData.champions.forEach((champion) => {
@@ -680,7 +696,10 @@ function AppContent(): React.JSX.Element {
       })
     } else if (selectedChampionKey === 'custom') {
       // Custom mods - create fake skins from downloaded custom mods
-      const customMods = downloadedSkins.filter((ds) => ds.championName === 'Custom')
+      // Show all imported skins with [User] prefix
+      const customMods = downloadedSkins.filter((ds) => 
+        ds.skinName.startsWith('[User]')
+      )
       customMods.forEach((mod, index) => {
         // Create a fake champion and skin object for custom mods
         const customChampion: Champion = {

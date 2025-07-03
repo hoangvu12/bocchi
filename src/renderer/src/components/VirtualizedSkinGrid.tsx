@@ -104,13 +104,14 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
   const [customImages, setCustomImages] = useState<Record<string, string>>({})
 
   const getSkinImageUrl = useCallback(
-    (championKey: string, skinNum: number, modPath?: string) => {
-      if (championKey === 'Custom' && modPath && customImages[modPath]) {
+    (championKey: string, skinNum: number, skinId: string, modPath?: string) => {
+      // Check if it's a custom skin (either in Custom section or with custom ID)
+      if (modPath && customImages[modPath]) {
         return customImages[modPath]
       }
 
-      if (championKey === 'Custom') {
-        // Return a placeholder image for custom mods
+      if (championKey === 'Custom' || skinId.startsWith('custom_')) {
+        // Return a placeholder image for custom mods without custom image
         return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzA4IiBoZWlnaHQ9IjU2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMzA4IiBoZWlnaHQ9IjU2MCIgZmlsbD0iIzM3NDE1MSIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IiNhMGE0YWIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkN1c3RvbTwvdGV4dD4KPC9zdmc+'
       }
       return `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${championKey}_${skinNum}.jpg`
@@ -121,11 +122,15 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
   // Load custom images
   useEffect(() => {
     const loadCustomImages = async () => {
-      const customSkins = skins.filter((s) => s.champion.key === 'Custom')
+      // Find all custom skins (both in Custom section and champion sections)
+      const customSkins = skins.filter((s) => 
+        s.champion.key === 'Custom' || s.skin.id.startsWith('custom_')
+      )
 
-      for (const { skin } of customSkins) {
+      for (const { champion, skin } of customSkins) {
         const modPath = downloadedSkins.find(
-          (ds) => ds.championName === 'Custom' && ds.skinName.includes(skin.name)
+          (ds) => ds.skinName.startsWith('[User]') && ds.skinName.includes(skin.name) &&
+          (champion.key === 'Custom' || ds.championName === champion.key)
         )?.localPath
 
         if (modPath) {
@@ -149,8 +154,8 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       const skinFileName = `${skin.lolSkinsName || skin.nameEn || skin.name}.zip`.replace(/:/g, '')
       const downloadedSkin = downloadedSkins.find((ds) => {
         if (champion.key === 'Custom') {
-          // For custom mods, match by the skin name in the downloaded list
-          return ds.championName === 'Custom' && ds.skinName.includes(skin.name)
+          // For custom mods, match by [User] prefix and skin name
+          return ds.skinName.startsWith('[User]') && ds.skinName.includes(skin.name)
         }
         return (
           ds.championName === champion.key &&
@@ -187,7 +192,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
               onClick={() => !loading && onSkinClick(champion, skin)}
             >
               <img
-                src={getSkinImageUrl(champion.key, skin.num, downloadedSkin?.localPath)}
+                src={getSkinImageUrl(champion.key, skin.num, skin.id, downloadedSkin?.localPath)}
                 alt={skin.name}
                 className="w-16 h-16 object-cover rounded"
                 loading="lazy"
@@ -253,7 +258,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                   {isFavorite ? '❤️' : '🤍'}
                 </Button>
                 {/* Edit and Delete buttons for custom mods in list view */}
-                {champion.key === 'Custom' && downloadedSkin && (
+                {(champion.key === 'Custom' || skin.id.startsWith('custom_')) && downloadedSkin && isUserSkin && (
                   <>
                     {onEditCustomSkin && (
                       <Button
@@ -331,7 +336,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
           >
             <div className="relative aspect-[0.67] overflow-hidden bg-charcoal-100 dark:bg-charcoal-900">
               <img
-                src={getSkinImageUrl(champion.key, skin.num, downloadedSkin?.localPath)}
+                src={getSkinImageUrl(champion.key, skin.num, skin.id, downloadedSkin?.localPath)}
                 alt={skin.name}
                 className="w-full h-full object-cover"
                 onClick={() => !loading && onSkinClick(champion, skin)}
@@ -386,7 +391,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                 {isFavorite ? '❤️' : '🤍'}
               </Button>
               {/* Edit and Delete buttons for custom mods */}
-              {champion.key === 'Custom' && downloadedSkin && (
+              {(champion.key === 'Custom' || skin.id.startsWith('custom_')) && downloadedSkin && isUserSkin && (
                 <>
                   {onEditCustomSkin && (
                     <Button
