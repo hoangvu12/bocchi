@@ -3,7 +3,9 @@ import { useAtom } from 'jotai'
 import { selectedSkinsAtom, p2pRoomAtom } from '../store/atoms'
 import { useP2P } from '../contexts/P2PContext'
 
-export const useP2PSkinSync = () => {
+export const useP2PSkinSync = (
+  downloadedSkins: Array<{ championName: string; skinName: string; localPath?: string }>
+) => {
   const [selectedSkins] = useAtom(selectedSkinsAtom)
   const [p2pRoom] = useAtom(p2pRoomAtom)
   const { broadcastSkins } = useP2P()
@@ -15,7 +17,7 @@ export const useP2PSkinSync = () => {
     // Broadcast our selected skins whenever they change
     const sendSkins = () => {
       try {
-        broadcastSkins(selectedSkins)
+        broadcastSkins(selectedSkins, downloadedSkins)
       } catch (error) {
         console.error('Failed to broadcast skins:', error)
       }
@@ -25,5 +27,5 @@ export const useP2PSkinSync = () => {
     const timer = setTimeout(sendSkins, 500)
 
     return () => clearTimeout(timer)
-  }, [selectedSkins, p2pRoom, broadcastSkins])
+  }, [selectedSkins, p2pRoom, broadcastSkins, downloadedSkins])
 }

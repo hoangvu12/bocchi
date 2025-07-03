@@ -1,5 +1,6 @@
 import Peer, { DataConnection } from 'peerjs'
 import type { P2PRoom, P2PRoomMember, SelectedSkin } from '../../../main/types'
+import { p2pFileTransferService } from './p2pFileTransferService'
 
 export class P2PService {
   private peer: Peer | null = null
@@ -218,6 +219,20 @@ export class P2PService {
   private handlePeerMessage(peerId: string, message: any) {
     console.log(`[P2P] Message from ${peerId}:`, message.type)
 
+    // Handle file transfer messages
+    if (message.type && message.type.startsWith('file-')) {
+      const conn = this.connections.get(peerId)
+      if (conn) {
+        if (message.type === 'file-offer') {
+          p2pFileTransferService.handleFileTransferRequest(conn, message)
+        } else {
+          // Let file transfer service handle other file messages
+          conn.emit('data', message)
+        }
+      }
+      return
+    }
+
     switch (message.type) {
       case 'member-info':
         // Initial member info
@@ -295,6 +310,13 @@ export class P2PService {
     console.log(`[P2P] Peer disconnected: ${peerId}`)
     this.connections.delete(peerId)
 
+    // Cancel any active transfers with this peer
+    p2pFileTransferService.getActiveTransfers().forEach((transfer) => {
+      if (transfer.connection.peer === peerId) {
+        p2pFileTransferService.cancelTransfer(transfer.id)
+      }
+    })
+
     if (this.room && this.isHost) {
       const memberIndex = this.room.members.findIndex((m) => m.id === peerId)
       if (memberIndex !== -1) {
@@ -326,15 +348,45 @@ export class P2PService {
     })
   }
 
-  broadcastActiveSkins(skins: SelectedSkin[]) {
+  async broadcastActiveSkins(
+    skins: SelectedSkin[],
+    downloadedSkins: Array<{ championName: string; skinName: string; localPath?: string }>
+  ) {
     if (!this.peer || !this.room) return
 
-    // Filter out custom skins (championKey === 'Custom')
-    const shareableSkins = skins.filter((skin) => skin.championKey !== 'Custom')
+    // Prepare skins with transfer capability metadata
+    const preparedSkins = await Promise.all(
+      skins.map(async (skin) => {
+        if (skin.championKey === 'Custom') {
+          // Find the local path for this custom skin
+          const modInfo = downloadedSkins.find(
+            (ds) => ds.championName === 'Custom' && ds.skinName.includes(skin.skinName)
+          )
+
+          if (modInfo?.localPath) {
+            // Get file info for custom mod
+            const fileInfo = await window.api.getModFileInfo(modInfo.localPath)
+            if (fileInfo.success && fileInfo.data) {
+              return {
+                ...skin,
+                customModInfo: {
+                  localPath: modInfo.localPath,
+                  fileSize: fileInfo.data.size,
+                  fileHash: fileInfo.data.hash,
+                  fileName: fileInfo.data.fileName,
+                  supportsTransfer: true
+                }
+              }
+            }
+          }
+        }
+        return skin
+      })
+    )
 
     const message = {
       type: 'skins-update',
-      data: shareableSkins
+      data: preparedSkins
     }
 
     // Update own skins in room
@@ -342,7 +394,7 @@ export class P2PService {
       // Create new room object for React state update
       this.room = {
         ...this.room,
-        host: { ...this.room.host, activeSkins: shareableSkins }
+        host: { ...this.room.host, activeSkins: preparedSkins }
       }
       this.emit('room-updated', this.room)
       this.broadcastRoomUpdate()
@@ -356,7 +408,7 @@ export class P2PService {
     }
 
     console.log(
-      `[P2P] Broadcasting ${shareableSkins.length} active skins (filtered from ${skins.length})`
+      `[P2P] Broadcasting ${preparedSkins.length} active skins (filtered from ${skins.length})`
     )
   }
 
@@ -395,6 +447,10 @@ export class P2PService {
 
   isCurrentUserHost(): boolean {
     return this.isHost
+  }
+
+  getConnectionToPeer(peerId: string): DataConnection | null {
+    return this.connections.get(peerId) || null
   }
 }
 

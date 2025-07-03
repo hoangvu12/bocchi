@@ -102,6 +102,35 @@ export interface IApi {
   onPatcherError: (callback: (error: string) => void) => () => void
 
   openExternal: (url: string) => Promise<{ success: boolean; error?: string }>
+
+  // P2P File Transfer APIs
+  getModFileInfo: (filePath: string) => Promise<{
+    success: boolean
+    data?: {
+      fileName: string
+      size: number
+      hash: string
+      mimeType: string
+    }
+    error?: string
+  }>
+  readFileChunk: (
+    filePath: string,
+    offset: number,
+    length: number
+  ) => Promise<{ success: boolean; data?: ArrayBuffer; error?: string }>
+  prepareTempFile: (
+    fileName: string
+  ) => Promise<{ success: boolean; path?: string; error?: string }>
+  writeFileFromChunks: (
+    filePath: string,
+    chunks: ArrayBuffer[],
+    expectedHash: string
+  ) => Promise<{ success: boolean; error?: string }>
+  importFile: (
+    filePath: string,
+    options?: any
+  ) => Promise<{ success: boolean; skinInfo?: SkinInfo; error?: string }>
 }
 
 declare global {

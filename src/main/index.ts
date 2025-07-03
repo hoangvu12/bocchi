@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import path from 'path'
 import fs from 'fs'
+import crypto from 'crypto'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { GameDetector } from './services/gameDetector'
@@ -110,6 +111,16 @@ app.whenReady().then(async () => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
+  }
+})
+
+// Cleanup temp transfers on exit
+app.on('before-quit', async () => {
+  const tempTransfersDir = path.join(app.getPath('userData'), 'temp-transfers')
+  try {
+    await fs.promises.rm(tempTransfersDir, { recursive: true, force: true })
+  } catch {
+    // Ignore errors during cleanup
   }
 })
 
@@ -529,6 +540,109 @@ function setupIpcHandlers(): void {
   ipcMain.handle('delete-custom-skin', async (_, modPath: string) => {
     try {
       const result = await fileImportService.deleteCustomSkin(modPath)
+      return result
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  // P2P File Transfer handlers
+  ipcMain.handle('get-mod-file-info', async (_, filePath: string) => {
+    try {
+      const stat = await fs.promises.stat(filePath)
+      const fileBuffer = await fs.promises.readFile(filePath)
+      const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex')
+
+      const mimeType = filePath.endsWith('.wad')
+        ? 'application/x-wad'
+        : filePath.endsWith('.zip')
+          ? 'application/zip'
+          : filePath.endsWith('.fantome')
+            ? 'application/x-fantome'
+            : 'application/octet-stream'
+
+      return {
+        success: true,
+        data: {
+          fileName: path.basename(filePath),
+          size: stat.size,
+          hash,
+          mimeType
+        }
+      }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('read-file-chunk', async (_, filePath: string, offset: number, length: number) => {
+    try {
+      const fileHandle = await fs.promises.open(filePath, 'r')
+      const buffer = Buffer.alloc(length)
+      const { bytesRead } = await fileHandle.read(buffer, 0, length, offset)
+      await fileHandle.close()
+
+      // Convert to ArrayBuffer for transfer
+      const arrayBuffer = buffer.subarray(0, bytesRead).buffer
+
+      return {
+        success: true,
+        data: arrayBuffer
+      }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('prepare-temp-file', async (_, fileName: string) => {
+    try {
+      const tempDir = path.join(app.getPath('userData'), 'temp-transfers')
+      await fs.promises.mkdir(tempDir, { recursive: true })
+
+      const tempPath = path.join(tempDir, `${Date.now()}_${fileName}`)
+      return { success: true, path: tempPath }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle(
+    'write-file-from-chunks',
+    async (_, filePath: string, chunks: ArrayBuffer[], expectedHash: string) => {
+      try {
+        // Combine chunks
+        const totalLength = chunks.reduce((sum, chunk) => sum + chunk.byteLength, 0)
+        const combined = new Uint8Array(totalLength)
+        let offset = 0
+
+        for (const chunk of chunks) {
+          combined.set(new Uint8Array(chunk), offset)
+          offset += chunk.byteLength
+        }
+
+        // Write to file
+        await fs.promises.writeFile(filePath, combined)
+
+        // Verify hash
+        const fileBuffer = await fs.promises.readFile(filePath)
+        const actualHash = crypto.createHash('sha256').update(fileBuffer).digest('hex')
+
+        if (actualHash !== expectedHash) {
+          await fs.promises.unlink(filePath) // Delete corrupted file
+          return { success: false, error: 'File hash mismatch' }
+        }
+
+        return { success: true }
+      } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+      }
+    }
+  )
+
+  // Import file (alias for import-skin-file used by file transfer)
+  ipcMain.handle('import-file', async (_, filePath: string, options?: any) => {
+    try {
+      const result = await fileImportService.importFile(filePath, options)
       return result
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }

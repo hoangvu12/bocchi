@@ -8,7 +8,10 @@ interface P2PContextValue {
   createRoom: (displayName: string) => Promise<string>
   joinRoom: (roomId: string, displayName: string) => Promise<void>
   leaveRoom: () => Promise<void>
-  broadcastSkins: (skins: any[]) => void
+  broadcastSkins: (
+    skins: any[],
+    downloadedSkins: Array<{ championName: string; skinName: string; localPath?: string }>
+  ) => void
   isConnected: boolean
 }
 
@@ -54,8 +57,11 @@ export const P2PProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     leaveRoom: async () => {
       await p2pService.leaveRoom()
     },
-    broadcastSkins: (skins: any[]) => {
-      p2pService.broadcastActiveSkins(skins)
+    broadcastSkins: (
+      skins: any[],
+      downloadedSkins: Array<{ championName: string; skinName: string; localPath?: string }>
+    ) => {
+      p2pService.broadcastActiveSkins(skins, downloadedSkins)
     },
     isConnected: p2pService.isConnected()
   }

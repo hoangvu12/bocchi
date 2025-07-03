@@ -4,7 +4,22 @@ import { selectedSkinsAtom, selectedSkinsDrawerExpandedAtom, p2pRoomAtom } from 
 import type { SelectedSkin } from '../store/atoms'
 import type { P2PRoomMember } from '../../../main/types'
 import { p2pService } from '../services/p2pService'
+import { p2pFileTransferService } from '../services/p2pFileTransferService'
 import { Badge } from './ui/badge'
+
+interface ExtendedSelectedSkin extends SelectedSkin {
+  customModInfo?: {
+    localPath: string
+    fileSize: number
+    fileHash: string
+    fileName: string
+    supportsTransfer: boolean
+  }
+}
+
+interface ExtendedMember extends Omit<P2PRoomMember, 'activeSkins'> {
+  activeSkins: ExtendedSelectedSkin[]
+}
 
 interface SelectedSkinsDrawerProps {
   onApplySkins: () => void
@@ -166,7 +181,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
     }
   }
 
-  const applySkinFromPeer = (skin: SelectedSkin) => {
+  const applySkinFromPeer = async (skin: ExtendedSelectedSkin, peerId: string) => {
     // Check if skin is already selected
     const isAlreadySelected = selectedSkins.some(
       (s) =>
@@ -175,24 +190,38 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
         s.chromaId === skin.chromaId
     )
 
-    if (!isAlreadySelected) {
-      setSelectedSkins((prev) => [...prev, skin])
+    if (isAlreadySelected) return
+
+    // Check if this is a custom skin that needs file transfer
+    if (skin.championKey === 'Custom' && skin.customModInfo?.supportsTransfer) {
+      // Check if we already have this mod locally
+      const localMod = downloadedSkins.find(
+        (ds) => ds.championName === 'Custom' && ds.skinName.includes(skin.skinName)
+      )
+
+      if (!localMod) {
+        // Need to request file transfer
+        const connection = p2pService.getConnectionToPeer(peerId)
+        if (connection) {
+          try {
+            await p2pFileTransferService.requestFile(connection, skin, skin.customModInfo.localPath)
+            // File transfer initiated, skin will be added once transfer completes
+            return
+          } catch (error) {
+            console.error('Failed to initiate file transfer:', error)
+            return
+          }
+        }
+      }
     }
+
+    // Add skin to selection (either it's not custom or we already have it)
+    setSelectedSkins((prev) => [...prev, skin])
   }
 
-  const applyAllPeerSkins = (member: P2PRoomMember) => {
-    const newSkins = member.activeSkins.filter(
-      (peerSkin) =>
-        !selectedSkins.some(
-          (s) =>
-            s.championKey === peerSkin.championKey &&
-            s.skinId === peerSkin.skinId &&
-            s.chromaId === peerSkin.chromaId
-        )
-    )
-
-    if (newSkins.length > 0) {
-      setSelectedSkins((prev) => [...prev, ...newSkins])
+  const applyAllPeerSkins = async (member: ExtendedMember) => {
+    for (const peerSkin of member.activeSkins) {
+      await applySkinFromPeer(peerSkin, member.id)
     }
   }
 
@@ -202,8 +231,8 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   // Get all room members (host + other members), excluding self
   const currentPeerId = p2pService.getCurrentPeerId()
   const isHost = p2pService.isCurrentUserHost()
-  const allMembers: P2PRoomMember[] = p2pRoom
-    ? [p2pRoom.host, ...p2pRoom.members]
+  const allMembers: ExtendedMember[] = p2pRoom
+    ? ([p2pRoom.host, ...p2pRoom.members] as ExtendedMember[])
         .filter((m) => m.activeSkins && m.activeSkins.length > 0)
         .filter((m) => {
           // Filter out self
@@ -481,7 +510,9 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                                 {!isSelected && (
                                   <button
                                     className="absolute inset-0 bg-black/0 hover:bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-all"
-                                    onClick={() => applySkinFromPeer(skin)}
+                                    onClick={() =>
+                                      applySkinFromPeer(skin as ExtendedSelectedSkin, member.id)
+                                    }
                                   >
                                     <Badge
                                       variant="default"

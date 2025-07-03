@@ -131,7 +131,17 @@ const api = {
     }
     ipcRenderer.on('patcher-error', handler)
     return () => ipcRenderer.removeListener('patcher-error', handler)
-  }
+  },
+
+  // P2P File Transfer APIs
+  getModFileInfo: (filePath: string) => ipcRenderer.invoke('get-mod-file-info', filePath),
+  readFileChunk: (filePath: string, offset: number, length: number) =>
+    ipcRenderer.invoke('read-file-chunk', filePath, offset, length),
+  prepareTempFile: (fileName: string) => ipcRenderer.invoke('prepare-temp-file', fileName),
+  writeFileFromChunks: (filePath: string, chunks: ArrayBuffer[], expectedHash: string) =>
+    ipcRenderer.invoke('write-file-from-chunks', filePath, chunks, expectedHash),
+  importFile: (filePath: string, options?: any) =>
+    ipcRenderer.invoke('import-file', filePath, options)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

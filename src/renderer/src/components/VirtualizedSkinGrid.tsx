@@ -123,14 +123,16 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
   useEffect(() => {
     const loadCustomImages = async () => {
       // Find all custom skins (both in Custom section and champion sections)
-      const customSkins = skins.filter((s) => 
-        s.champion.key === 'Custom' || s.skin.id.startsWith('custom_')
+      const customSkins = skins.filter(
+        (s) => s.champion.key === 'Custom' || s.skin.id.startsWith('custom_')
       )
 
       for (const { champion, skin } of customSkins) {
         const modPath = downloadedSkins.find(
-          (ds) => ds.skinName.startsWith('[User]') && ds.skinName.includes(skin.name) &&
-          (champion.key === 'Custom' || ds.championName === champion.key)
+          (ds) =>
+            ds.skinName.startsWith('[User]') &&
+            ds.skinName.includes(skin.name) &&
+            (champion.key === 'Custom' || ds.championName === champion.key)
         )?.localPath
 
         if (modPath) {
@@ -258,64 +260,66 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                   {isFavorite ? '❤️' : '🤍'}
                 </Button>
                 {/* Edit and Delete buttons for custom mods in list view */}
-                {(champion.key === 'Custom' || skin.id.startsWith('custom_')) && downloadedSkin && isUserSkin && (
-                  <>
-                    {onEditCustomSkin && (
-                      <Button
-                        variant="default"
-                        size="icon"
-                        className="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          onEditCustomSkin(downloadedSkin.localPath!, skin.name)
-                        }}
-                        title="Edit custom mod"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+                {(champion.key === 'Custom' || skin.id.startsWith('custom_')) &&
+                  downloadedSkin &&
+                  isUserSkin && (
+                    <>
+                      {onEditCustomSkin && (
+                        <Button
+                          variant="default"
+                          size="icon"
+                          className="w-8 h-8 rounded-full bg-blue-600 hover:bg-blue-700"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onEditCustomSkin(downloadedSkin.localPath!, skin.name)
+                          }}
+                          title="Edit custom mod"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                          />
-                        </svg>
-                      </Button>
-                    )}
-                    {onDeleteCustomSkin && (
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        className="w-8 h-8 rounded-full"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          if (confirm(`Are you sure you want to delete "${skin.name}"?`)) {
-                            onDeleteCustomSkin(downloadedSkin.localPath!, downloadedSkin.skinName)
-                          }
-                        }}
-                        title="Delete custom mod"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                            />
+                          </svg>
+                        </Button>
+                      )}
+                      {onDeleteCustomSkin && (
+                        <Button
+                          variant="destructive"
+                          size="icon"
+                          className="w-8 h-8 rounded-full"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            if (confirm(`Are you sure you want to delete "${skin.name}"?`)) {
+                              onDeleteCustomSkin(downloadedSkin.localPath!, downloadedSkin.skinName)
+                            }
+                          }}
+                          title="Delete custom mod"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </Button>
-                    )}
-                  </>
-                )}
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                        </Button>
+                      )}
+                    </>
+                  )}
               </div>
             </div>
           </div>
@@ -391,64 +395,66 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                 {isFavorite ? '❤️' : '🤍'}
               </Button>
               {/* Edit and Delete buttons for custom mods */}
-              {(champion.key === 'Custom' || skin.id.startsWith('custom_')) && downloadedSkin && isUserSkin && (
-                <>
-                  {onEditCustomSkin && (
-                    <Button
-                      variant="default"
-                      size="icon"
-                      className="absolute top-2 right-2 w-6 h-6 rounded-full bg-blue-600/90 hover:bg-blue-700 opacity-0 group-hover:opacity-100 shadow-lg"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onEditCustomSkin(downloadedSkin.localPath!, skin.name)
-                      }}
-                      title="Edit custom mod"
-                    >
-                      <svg
-                        className="w-3 h-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+              {(champion.key === 'Custom' || skin.id.startsWith('custom_')) &&
+                downloadedSkin &&
+                isUserSkin && (
+                  <>
+                    {onEditCustomSkin && (
+                      <Button
+                        variant="default"
+                        size="icon"
+                        className="absolute top-2 right-2 w-6 h-6 rounded-full bg-blue-600/90 hover:bg-blue-700 opacity-0 group-hover:opacity-100 shadow-lg"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onEditCustomSkin(downloadedSkin.localPath!, skin.name)
+                        }}
+                        title="Edit custom mod"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2.5}
-                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                        />
-                      </svg>
-                    </Button>
-                  )}
-                  {onDeleteCustomSkin && (
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      className="absolute top-10 right-2 w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 shadow-lg"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        if (confirm(`Are you sure you want to delete "${skin.name}"?`)) {
-                          onDeleteCustomSkin(downloadedSkin.localPath!, downloadedSkin.skinName)
-                        }
-                      }}
-                      title="Delete custom mod"
-                    >
-                      <svg
-                        className="w-3 h-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2.5}
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                          />
+                        </svg>
+                      </Button>
+                    )}
+                    {onDeleteCustomSkin && (
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        className="absolute top-10 right-2 w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 shadow-lg"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          if (confirm(`Are you sure you want to delete "${skin.name}"?`)) {
+                            onDeleteCustomSkin(downloadedSkin.localPath!, downloadedSkin.skinName)
+                          }
+                        }}
+                        title="Delete custom mod"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2.5}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    </Button>
-                  )}
-                </>
-              )}
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2.5}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                      </Button>
+                    )}
+                  </>
+                )}
             </div>
             <div
               className={`${viewMode === 'spacious' ? 'p-4' : viewMode === 'comfortable' ? 'p-3' : 'p-2'} bg-white dark:bg-charcoal-800`}

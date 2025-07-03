@@ -18,6 +18,7 @@ import { useLocale } from './contexts/useLocale'
 import { FileUploadButton } from './components/FileUploadButton'
 import { EditCustomSkinDialog } from './components/EditCustomSkinDialog'
 import { DownloadedSkinsDialog } from './components/DownloadedSkinsDialog'
+import { FileTransferDialog } from './components/FileTransferDialog'
 import {
   championSearchQueryAtom,
   filtersAtom,
@@ -66,8 +67,7 @@ function AppContent(): React.JSX.Element {
   const { currentLanguage } = useLocale()
   const [gamePath, setGamePath] = useState<string>('')
 
-  // Initialize P2P skin sync
-  useP2PSkinSync()
+  // Removed - will use it after downloadedSkins is loaded
   // Granular loading states
   const [isLoadingChampionData, setIsLoadingChampionData] = useState<boolean>(false)
   const [isApplyingSkins, setIsApplyingSkins] = useState<boolean>(false)
@@ -112,6 +112,9 @@ function AppContent(): React.JSX.Element {
   )
   // Downloaded skins dialog state
   const [showDownloadedSkinsDialog, setShowDownloadedSkinsDialog] = useState<boolean>(false)
+
+  // Initialize P2P skin sync with downloadedSkins
+  useP2PSkinSync(downloadedSkins)
 
   const loadChampionData = useCallback(
     async (preserveSelection = false) => {
@@ -1177,6 +1180,8 @@ function AppContent(): React.JSX.Element {
         onDeleteCustomSkin={handleDeleteCustomSkin}
         onRefresh={loadDownloadedSkins}
       />
+
+      <FileTransferDialog />
     </>
   )
 }
