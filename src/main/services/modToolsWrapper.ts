@@ -134,7 +134,9 @@ export class ModToolsWrapper {
       const importPromises = validSkinMods.map(async (modPath, index): Promise<string | null> => {
         try {
           // Use a unique name for each mod to avoid conflicts
-          const modName = `mod_${index}_${path.basename(modPath, path.extname(modPath))}`
+          // Remove trailing spaces from mod name to avoid validation issues
+          const baseName = path.basename(modPath, path.extname(modPath)).trim()
+          const modName = `mod_${index}_${baseName}`
           const modInstallPath = path.join(this.installedPath, modName)
 
           await fs.mkdir(modInstallPath, { recursive: true })

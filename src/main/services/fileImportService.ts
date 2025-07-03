@@ -32,6 +32,9 @@ export class FileImportService {
     await fs.mkdir(this.modsDir, { recursive: true })
     await fs.mkdir(this.tempDir, { recursive: true })
     await fs.mkdir(this.modFilesDir, { recursive: true })
+
+    // Clean up existing mods with trailing spaces
+    await this.cleanupTrailingSpaces()
   }
 
   async importFile(filePath: string, options: FileImportOptions = {}): Promise<ImportResult> {
@@ -75,7 +78,8 @@ export class FileImportService {
     // Use provided championName, even if empty string
     const championName = options.championName !== undefined ? options.championName : ''
     const baseName = path.basename(wadPath, '.wad')
-    const skinName = options.skinName || baseName
+    // Remove trailing spaces from skin name
+    const skinName = (options.skinName || baseName).trim()
 
     const tempExtractPath = path.join(this.tempDir, `${Date.now()}_${skinName}`)
 
@@ -88,7 +92,7 @@ export class FileImportService {
       const infoJson = {
         Author: 'User Import',
         Description: `Imported from ${path.basename(wadPath)}`,
-        Name: skinName,
+        Name: skinName.trim(), // Ensure no trailing spaces in metadata
         Version: '1.0.0'
       }
 
@@ -122,7 +126,7 @@ export class FileImportService {
 
       const skinInfo: SkinInfo = {
         championName: championName || 'Custom',
-        skinName: '[User] ' + skinName + '.wad',
+        skinName: '[User] ' + skinName.trim() + '.wad', // Ensure trimmed name
         url: `file://${wadPath}`,
         localPath: modFilePath, // Use the original file path
         source: 'user'
@@ -169,7 +173,8 @@ export class FileImportService {
         championName = detected !== 'Unknown' ? detected : ''
       }
       // If empty string (user selected "No specific champion"), keep it empty
-      const skinName = options.skinName || info.Name || fileName
+      // Remove trailing spaces from skin name
+      const skinName = (options.skinName || info.Name || fileName).trim()
 
       const modFolderName = championName ? `${championName}_${skinName}` : `Custom_${skinName}`
       const finalPath = path.join(this.modsDir, modFolderName)
@@ -188,7 +193,7 @@ export class FileImportService {
 
       const skinInfo: SkinInfo = {
         championName: championName || 'Custom',
-        skinName: '[User] ' + skinName + ext,
+        skinName: '[User] ' + skinName.trim() + ext, // Ensure trimmed name
         url: `file://${zipPath}`,
         localPath: modFilePath, // Use the original file path
         source: 'user'
@@ -378,6 +383,43 @@ export class FileImportService {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error'
       }
+    }
+  }
+
+  private async cleanupTrailingSpaces(): Promise<void> {
+    try {
+      const modDirs = await fs.readdir(this.modsDir)
+
+      for (const dir of modDirs) {
+        const modPath = path.join(this.modsDir, dir)
+        const stat = await fs.stat(modPath)
+
+        if (stat.isDirectory()) {
+          const infoPath = path.join(modPath, 'META', 'info.json')
+
+          try {
+            const infoContent = await fs.readFile(infoPath, 'utf-8')
+            const info = JSON.parse(infoContent)
+
+            // Check if Name has trailing spaces
+            if (info.Name && info.Name !== info.Name.trim()) {
+              console.log(`[FileImportService] Cleaning trailing spaces from: ${info.Name}`)
+              info.Name = info.Name.trim()
+
+              // Update other fields that might have trailing spaces
+              if (info.Author) info.Author = info.Author.trim()
+              if (info.Description) info.Description = info.Description.trim()
+              if (info.Version) info.Version = info.Version.trim()
+
+              await fs.writeFile(infoPath, JSON.stringify(info, null, 2))
+            }
+          } catch {
+            // Skip if info.json doesn't exist or is invalid
+          }
+        }
+      }
+    } catch (error) {
+      console.error('[FileImportService] Error cleaning up trailing spaces:', error)
     }
   }
 }
