@@ -25,5 +25,37 @@ export interface SkinInfo {
   skinName: string
   url: string
   localPath?: string
-  source?: 'repository' | 'user'
+  source?: 'repository' | 'user' | 'p2p'
+  sharedBy?: string
+}
+
+export interface P2PRoom {
+  id: string
+  createdAt: Date
+  host: P2PRoomMember
+  members: P2PRoomMember[]
+}
+
+export interface P2PRoomMember {
+  id: string
+  name: string
+  activeSkins: SelectedSkin[]
+  isHost: boolean
+  connected: boolean
+}
+
+export interface P2PSettings {
+  displayName: string
+  autoSync: boolean
+}
+
+export interface SelectedSkin {
+  championKey: string
+  championName: string
+  skinId: string
+  skinName: string
+  skinNameEn?: string
+  skinNum: number
+  chromaId?: string
+  isDownloaded?: boolean
 }

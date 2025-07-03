@@ -2,6 +2,7 @@ import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import type { ViewMode } from '../components/GridViewToggle'
 import type { FilterOptions } from '../components/FilterPanel'
+import type { P2PRoom, P2PSettings } from '../../../main/types'
 
 // View mode atom with localStorage persistence
 export const viewModeAtom = atomWithStorage<ViewMode>('cslol-view-mode', 'comfortable')
@@ -47,4 +48,46 @@ export const filterPanelExpandedAtom = atomWithStorage<boolean>(
 export const selectedSkinsDrawerExpandedAtom = atomWithStorage<boolean>(
   'cslol-selected-skins-drawer-expanded',
   false
+)
+
+// Generate random player name
+export const generateRandomPlayerName = () => {
+  const adjectives = [
+    'Swift',
+    'Brave',
+    'Clever',
+    'Noble',
+    'Fierce',
+    'Bold',
+    'Mighty',
+    'Silent',
+    'Shadow',
+    'Storm'
+  ]
+  const nouns = [
+    'Dragon',
+    'Phoenix',
+    'Wolf',
+    'Eagle',
+    'Tiger',
+    'Lion',
+    'Hawk',
+    'Fox',
+    'Bear',
+    'Raven'
+  ]
+  const adj = adjectives[Math.floor(Math.random() * adjectives.length)]
+  const noun = nouns[Math.floor(Math.random() * nouns.length)]
+  const num = Math.floor(Math.random() * 999) + 1
+  return `${adj}${noun}${num}`
+}
+
+// P2P state atoms
+export const p2pRoomAtom = atom<P2PRoom | null>(null)
+export const p2pSettingsAtom = atomWithStorage<P2PSettings>('p2p-settings', {
+  displayName: 'Player',
+  autoSync: false
+})
+export const p2pConnectionStatusAtom = atom<'disconnected' | 'connecting' | 'connected'>(
+  'disconnected'
 )

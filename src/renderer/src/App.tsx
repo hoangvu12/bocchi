@@ -7,7 +7,10 @@ import { GridViewToggle } from './components/GridViewToggle'
 import { TitleBar } from './components/TitleBar'
 import { UpdateDialog } from './components/UpdateDialog'
 import { ChampionDataUpdateDialog } from './components/ChampionDataUpdateDialog'
-import { SelectedSkinsDrawer } from './components/SelectedSkinsDrawer'
+import { SelectedSkinsDrawer } from './components/SelectedSkinsDrawerWithP2P'
+import { RoomPanel } from './components/RoomPanel'
+import { useP2PSkinSync } from './hooks/useP2PSkinSync'
+import { P2PProvider } from './contexts/P2PContext'
 import { VirtualizedSkinGrid } from './components/VirtualizedSkinGrid'
 import { VirtualizedChampionList } from './components/VirtualizedChampionList'
 import { LocaleProvider } from './contexts/LocaleContextProvider'
@@ -62,6 +65,9 @@ function AppContent(): React.JSX.Element {
   const { t } = useTranslation()
   const { currentLanguage } = useLocale()
   const [gamePath, setGamePath] = useState<string>('')
+
+  // Initialize P2P skin sync
+  useP2PSkinSync()
   // Granular loading states
   const [isLoadingChampionData, setIsLoadingChampionData] = useState<boolean>(false)
   const [isApplyingSkins, setIsApplyingSkins] = useState<boolean>(false)
@@ -839,6 +845,7 @@ function AppContent(): React.JSX.Element {
                 {t('champion.updateData')}
               </button>
             )}
+            <RoomPanel />
           </div>
         </div>
 
@@ -1150,7 +1157,9 @@ function AppContent(): React.JSX.Element {
 function App(): React.JSX.Element {
   return (
     <LocaleProvider>
-      <AppContent />
+      <P2PProvider>
+        <AppContent />
+      </P2PProvider>
     </LocaleProvider>
   )
 }
