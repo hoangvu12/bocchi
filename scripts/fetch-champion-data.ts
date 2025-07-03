@@ -10375,7 +10375,16 @@ Directory structure:
 
 const SUPPORTED_LANGUAGES = ['en_US', 'vi_VN']
 const DDRAGON_BASE_URL = 'https://ddragon.leagueoflegends.com'
+const CDRAGON_BASE_URL =
+  'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1'
 const DELAY_BETWEEN_REQUESTS = 50
+
+interface Chroma {
+  id: number
+  name: string
+  chromaPath: string
+  colors: string[]
+}
 
 interface Skin {
   id: string
@@ -10402,6 +10411,13 @@ interface ChampionData {
   champions: Champion[]
 }
 
+interface ChromaData {
+  version: string
+  lastUpdated: string
+  // Map from skinId (e.g., "266002") to array of chromas
+  chromaMap: Record<string, Chroma[]>
+}
+
 async function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
@@ -10409,6 +10425,64 @@ async function delay(ms: number): Promise<void> {
 async function getLatestVersion(): Promise<string> {
   const response = await axios.get(`${DDRAGON_BASE_URL}/api/versions.json`)
   return response.data[0]
+}
+
+async function fetchChromaDataForChampion(championId: number): Promise<Record<string, Chroma[]>> {
+  try {
+    const url = `${CDRAGON_BASE_URL}/champions/${championId}.json`
+    const response = await axios.get(url)
+    const data = response.data
+
+    const chromaMap: Record<string, Chroma[]> = {}
+
+    if (data.skins) {
+      for (const skin of data.skins) {
+        if (skin.chromas && skin.chromas.length > 0) {
+          const chromas: Chroma[] = skin.chromas.map((chroma: any) => ({
+            id: chroma.id,
+            name: chroma.name,
+            chromaPath: chroma.chromaPath
+              ? `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default${chroma.chromaPath.replace('/lol-game-data/assets/', '/')}`
+              : '',
+            colors: chroma.colors || []
+          }))
+          // Create skinId in format "championId_skinNum" (e.g., "266_2")
+          const skinNum = Math.floor(skin.id / 1000) === championId ? skin.id % 1000 : 0
+          const skinId = `${championId}_${skinNum}`
+          chromaMap[skinId] = chromas
+        }
+      }
+    }
+
+    return chromaMap
+  } catch (error) {
+    console.warn(`Failed to fetch chroma data for champion ${championId}:`, error.message)
+    return {}
+  }
+}
+
+async function fetchAllChromaData(champions: Champion[]): Promise<ChromaData> {
+  console.log('Fetching chroma data for all champions...')
+  const chromaMap: Record<string, Chroma[]> = {}
+
+  for (let i = 0; i < champions.length; i++) {
+    const champion = champions[i]
+    console.log(`  Fetching chromas for ${champion.name} (${i + 1}/${champions.length})...`)
+
+    const chromaData = await fetchChromaDataForChampion(champion.id)
+    Object.assign(chromaMap, chromaData)
+
+    // Add delay between requests
+    if (i < champions.length - 1) {
+      await delay(DELAY_BETWEEN_REQUESTS)
+    }
+  }
+
+  return {
+    version: champions.length > 0 ? await getLatestVersion() : '',
+    lastUpdated: new Date().toISOString(),
+    chromaMap
+  }
 }
 
 async function fetchChampionData(
@@ -10818,6 +10892,57 @@ async function main() {
     await fs.writeFile(mappingPath, JSON.stringify(mappingData, null, 2))
     console.log(`Saved skin name mappings to ${mappingPath}`)
     console.log(`Total skin mappings: ${mappingData.skinMappings.length}`)
+
+    // Fetch and save chroma data
+    if (allData['en_US']) {
+      const chromaDataPath = path.join(dataDir, 'chroma-data.json')
+
+      // Check if chroma data already exists with the current version
+      let chromaData: ChromaData | null = null
+      try {
+        const existingChromaData = await fs.readFile(chromaDataPath, 'utf-8')
+        const parsedChromaData = JSON.parse(existingChromaData)
+
+        if (parsedChromaData.version === version) {
+          console.log(`Chroma data already exists with latest version ${version}, skipping...`)
+          chromaData = parsedChromaData
+        }
+      } catch {
+        // File doesn't exist or can't be read, continue with fetching
+      }
+
+      if (!chromaData) {
+        chromaData = await fetchAllChromaData(allData['en_US'].champions)
+        await fs.writeFile(chromaDataPath, JSON.stringify(chromaData, null, 2))
+        console.log(`Saved chroma data to ${chromaDataPath}`)
+      }
+
+      // Add chroma statistics
+      console.log('\n=== Chroma Data Summary ===')
+      let totalChampionsWithChromas = 0
+      let totalSkinsWithChromas = 0
+      let totalChromas = 0
+
+      allData['en_US'].champions.forEach((champion) => {
+        let championHasChromas = false
+        champion.skins.forEach((skin) => {
+          const skinChromas = chromaData.chromaMap[skin.id]
+          if (skinChromas && skinChromas.length > 0) {
+            championHasChromas = true
+            totalSkinsWithChromas++
+            totalChromas += skinChromas.length
+          }
+        })
+        if (championHasChromas) {
+          totalChampionsWithChromas++
+        }
+      })
+
+      console.log(`Champions with chromas: ${totalChampionsWithChromas}`)
+      console.log(`Skins with chromas: ${totalSkinsWithChromas}`)
+      console.log(`Total chromas: ${totalChromas}`)
+      console.log('===========================\n')
+    }
 
     console.log('All champion data fetched successfully!')
   } catch (error) {

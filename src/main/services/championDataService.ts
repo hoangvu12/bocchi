@@ -42,7 +42,6 @@ export class ChampionDataService {
   private skinMappings: Map<string, string> = new Map() // key: "championKey_skinNum", value: lolSkinsName
 
   constructor() {
-    console.log('ChampionDataService constructor')
     this.loadSkinMappings()
   }
 
