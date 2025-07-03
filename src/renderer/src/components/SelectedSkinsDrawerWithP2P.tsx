@@ -19,6 +19,7 @@ interface SelectedSkinsDrawerProps {
     }>
   }
   statusMessage?: string
+  errorMessage?: string
 }
 
 export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
@@ -28,7 +29,8 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   isPatcherRunning,
   downloadedSkins,
   championData,
-  statusMessage
+  statusMessage,
+  errorMessage
 }) => {
   const [selectedSkins, setSelectedSkins] = useAtom(selectedSkinsAtom)
   const [isExpanded, setIsExpanded] = useAtom(selectedSkinsDrawerExpandedAtom)
@@ -232,7 +234,11 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
           </svg>
           <div className="flex items-center gap-3">
-            {(loading || patcherStatus) && (statusMessage || patcherStatus) ? (
+            {errorMessage ? (
+              <span className="text-sm text-red-600 dark:text-red-400 font-medium">
+                {errorMessage}
+              </span>
+            ) : (loading || patcherStatus) && (statusMessage || patcherStatus) ? (
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1.5">
                   <div

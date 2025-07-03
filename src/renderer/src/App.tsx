@@ -73,6 +73,7 @@ function AppContent(): React.JSX.Element {
   const [isApplyingSkins, setIsApplyingSkins] = useState<boolean>(false)
   const [isDeletingSkin, setIsDeletingSkin] = useState<boolean>(false)
   const [isStoppingPatcher, setIsStoppingPatcher] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   // Computed loading state for UI
   const loading = isLoadingChampionData || isApplyingSkins || isDeletingSkin || isStoppingPatcher
@@ -545,7 +546,14 @@ function AppContent(): React.JSX.Element {
         throw new Error(patcherResult.message || 'Failed to apply skins')
       }
     } catch (error) {
-      setStatusMessage(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      const errorMsg = `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
+      setErrorMessage(errorMsg)
+      setStatusMessage(errorMsg)
+      // Clear error after 10 seconds
+      setTimeout(() => {
+        setErrorMessage('')
+        setStatusMessage('')
+      }, 10000)
     } finally {
       setIsApplyingSkins(false)
       activeOperationRef.current = null
@@ -1046,6 +1054,7 @@ function AppContent(): React.JSX.Element {
             downloadedSkins={downloadedSkins}
             championData={championData}
             statusMessage={statusMessage}
+            errorMessage={errorMessage}
           />
         ) : (
           <div className="border-t-2 border-charcoal-200 dark:border-charcoal-800 bg-white dark:bg-charcoal-900 px-8 py-4 shadow-md dark:shadow-none">
