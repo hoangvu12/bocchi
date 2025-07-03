@@ -667,7 +667,7 @@ function AppContent(): React.JSX.Element {
           }
         }
       })
-      
+
       // Add imported custom skins for this champion
       const customSkinsForChampion = downloadedSkins.filter(
         (ds) => ds.skinName.startsWith('[User]') && ds.championName === selectedChampion.key
@@ -697,9 +697,7 @@ function AppContent(): React.JSX.Element {
     } else if (selectedChampionKey === 'custom') {
       // Custom mods - create fake skins from downloaded custom mods
       // Show all imported skins with [User] prefix
-      const customMods = downloadedSkins.filter((ds) => 
-        ds.skinName.startsWith('[User]')
-      )
+      const customMods = downloadedSkins.filter((ds) => ds.skinName.startsWith('[User]'))
       customMods.forEach((mod, index) => {
         // Create a fake champion and skin object for custom mods
         const customChampion: Champion = {
@@ -1167,6 +1165,7 @@ function AppContent(): React.JSX.Element {
         downloadedSkins={downloadedSkins}
         championData={championData || undefined}
         onDeleteSkin={handleDeleteDownloadedSkin}
+        onDeleteCustomSkin={handleDeleteCustomSkin}
         onRefresh={loadDownloadedSkins}
       />
     </>

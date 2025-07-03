@@ -12,6 +12,7 @@ interface DownloadedSkinsDialogProps {
     champions: Array<{ key: string; name: string }>
   }
   onDeleteSkin: (championName: string, skinName: string) => Promise<void>
+  onDeleteCustomSkin?: (skinPath: string, skinName: string) => Promise<void>
   onRefresh: () => Promise<void>
 }
 
@@ -21,6 +22,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
   downloadedSkins,
   championData,
   onDeleteSkin,
+  onDeleteCustomSkin,
   onRefresh
 }) => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -77,12 +79,22 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
     return Object.values(groupedSkins).reduce((acc, skins) => acc + skins.length, 0)
   }, [groupedSkins])
 
-  const handleDeleteSkin = async (championName: string, skinName: string) => {
+  const handleDeleteSkin = async (
+    championName: string,
+    skinName: string,
+    localPath?: string,
+    isCustom?: boolean
+  ) => {
     const key = `${championName}_${skinName}`
     setDeletingSkins((prev) => new Set(prev).add(key))
 
     try {
-      await onDeleteSkin(championName, skinName)
+      // Use custom skin delete for user imported skins
+      if (isCustom && localPath && onDeleteCustomSkin) {
+        await onDeleteCustomSkin(localPath, skinName)
+      } else {
+        await onDeleteSkin(championName, skinName)
+      }
       await onRefresh()
     } finally {
       setDeletingSkins((prev) => {
@@ -203,7 +215,14 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                               <Button
                                 variant="destructive"
                                 size="sm"
-                                onClick={() => handleDeleteSkin(championKey, skin.skinName)}
+                                onClick={() =>
+                                  handleDeleteSkin(
+                                    championKey,
+                                    skin.skinName,
+                                    skin.localPath,
+                                    skin.isCustom
+                                  )
+                                }
                                 disabled={isDeleting}
                               >
                                 {isDeleting ? (
