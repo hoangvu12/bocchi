@@ -3,7 +3,8 @@ import { FixedSizeGrid as Grid } from 'react-window'
 import type { Champion, Skin } from '../App'
 import type { SelectedSkin } from '../store/atoms'
 import { Button } from './ui/button'
-import { Badge } from './ui/badge'
+import { useChromaData } from '../hooks/useChromaData'
+import { ChromaSelectionDialog } from './ChromaSelectionDialog'
 
 interface VirtualizedSkinGridProps {
   skins: Array<{ champion: Champion; skin: Skin }>
@@ -12,7 +13,7 @@ interface VirtualizedSkinGridProps {
   selectedSkins: SelectedSkin[]
   favorites: Set<string>
   loading: boolean
-  onSkinClick: (champion: Champion, skin: Skin) => void
+  onSkinClick: (champion: Champion, skin: Skin, chromaId?: string) => void
   onToggleFavorite: (champion: Champion, skin: Skin) => void
   onDeleteCustomSkin?: (skinPath: string, skinName: string) => void
   onEditCustomSkin?: (skinPath: string, currentName: string) => void
@@ -35,6 +36,11 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
   containerHeight
 }) => {
   const gridRef = useRef<Grid>(null)
+  const [chromaDialogState, setChromaDialogState] = useState<{
+    open: boolean
+    champion: Champion | null
+    skin: Skin | null
+  }>({ open: false, champion: null, skin: null })
 
   // Calculate grid dimensions based on view mode
   const { columnCount, columnWidth, rowHeight } = useMemo(() => {
@@ -102,6 +108,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
 
   const rowCount = Math.ceil(skins.length / columnCount)
   const [customImages, setCustomImages] = useState<Record<string, string>>({})
+  const { getChromasForSkin, prefetchChromas } = useChromaData()
 
   const getSkinImageUrl = useCallback(
     (championKey: string, skinNum: number, skinId: string, modPath?: string) => {
@@ -146,6 +153,13 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
 
     loadCustomImages()
   }, [skins, downloadedSkins])
+
+  // Prefetch chromas for skins that have them
+  useEffect(() => {
+    const skinsWithChromas = skins.filter((s) => s.skin.chromas)
+    const skinIds = skinsWithChromas.map(({ skin }) => skin.id)
+    prefetchChromas(skinIds)
+  }, [skins, prefetchChromas])
 
   const Cell = useCallback(
     ({ columnIndex, rowIndex, style }) => {
@@ -228,12 +242,32 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                   )}
                 </div>
                 {skin.chromas && (
-                  <Badge
-                    variant="secondary"
-                    className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/40"
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 px-2 bg-terracotta-50 dark:bg-terracotta-900/20 hover:bg-terracotta-100 dark:hover:bg-terracotta-900/30"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setChromaDialogState({ open: true, champion, skin })
+                    }}
                   >
-                    Chromas
-                  </Badge>
+                    <svg
+                      className="w-4 h-4 text-terracotta-600 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                      />
+                    </svg>
+                    <span className="text-xs text-terracotta-600">
+                      {getChromasForSkin(skin.id).length}
+                    </span>
+                  </Button>
                 )}
                 {isDownloaded && (
                   <span
@@ -327,10 +361,12 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       }
 
       // Card views
+      const chromas = skin.chromas ? getChromasForSkin(skin.id) : []
+
       return (
         <div style={adjustedStyle}>
           <div
-            className={`group relative bg-cream-50 dark:bg-charcoal-800 rounded-xl overflow-hidden transform transition-all duration-300 ease-out border-2 h-full
+            className={`group relative bg-cream-50 dark:bg-charcoal-800 rounded-xl overflow-hidden transform transition-all duration-300 ease-out border-2
               ${
                 isSelected
                   ? 'border-terracotta-500 shadow-xl dark:shadow-dark-large scale-[1.02]'
@@ -338,12 +374,14 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
               } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
             `}
           >
-            <div className="relative aspect-[0.67] overflow-hidden bg-charcoal-100 dark:bg-charcoal-900">
+            <div
+              className="relative aspect-[0.67] overflow-hidden bg-charcoal-100 dark:bg-charcoal-900"
+              onClick={() => !loading && onSkinClick(champion, skin)}
+            >
               <img
                 src={getSkinImageUrl(champion.key, skin.num, skin.id, downloadedSkin?.localPath)}
                 alt={skin.name}
                 className="w-full h-full object-cover"
-                onClick={() => !loading && onSkinClick(champion, skin)}
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
@@ -394,6 +432,28 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
               >
                 {isFavorite ? '❤️' : '🤍'}
               </Button>
+              {/* Floating chroma button for grid mode */}
+              {skin.chromas && chromas.length > 0 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute bottom-2 left-12 w-8 h-8 rounded-full bg-terracotta-600/20 backdrop-blur-sm text-terracotta-400 hover:bg-terracotta-600/30 hover:text-terracotta-300 transition-all"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setChromaDialogState({ open: true, champion, skin })
+                  }}
+                  title={`${chromas.length} chromas available`}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                    />
+                  </svg>
+                </Button>
+              )}
               {/* Edit and Delete buttons for custom mods */}
               {(champion.key === 'Custom' || skin.id.startsWith('custom_')) &&
                 downloadedSkin &&
@@ -457,25 +517,17 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                 )}
             </div>
             <div
-              className={`${viewMode === 'spacious' ? 'p-4' : viewMode === 'comfortable' ? 'p-3' : 'p-2'} bg-white dark:bg-charcoal-800`}
+              className={`bg-white dark:bg-charcoal-800 ${viewMode === 'spacious' ? 'p-4' : viewMode === 'comfortable' ? 'p-3' : 'p-2'} cursor-pointer hover:bg-charcoal-50 dark:hover:bg-charcoal-700 transition-colors`}
+              onClick={(e) => {
+                e.stopPropagation()
+                !loading && onSkinClick(champion, skin)
+              }}
             >
               <p
                 className={`${viewMode === 'spacious' ? 'text-base' : viewMode === 'comfortable' ? 'text-sm' : 'text-xs'} font-semibold text-charcoal-900 dark:text-charcoal-100 truncate`}
               >
                 {skin.name}
               </p>
-              {viewMode === 'spacious' && (
-                <div className="mt-2 flex items-center gap-2">
-                  {skin.chromas && (
-                    <Badge
-                      variant="secondary"
-                      className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/40"
-                    >
-                      Chromas
-                    </Badge>
-                  )}
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -493,22 +545,42 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       onToggleFavorite,
       onDeleteCustomSkin,
       onEditCustomSkin,
-      getSkinImageUrl
+      getSkinImageUrl,
+      getChromasForSkin
     ]
   )
 
   return (
-    <Grid
-      ref={gridRef}
-      columnCount={columnCount}
-      columnWidth={columnWidth}
-      height={containerHeight}
-      rowCount={rowCount}
-      rowHeight={rowHeight}
-      width={containerWidth}
-      className="scrollbar-thin scrollbar-thumb-charcoal-300 dark:scrollbar-thumb-charcoal-700 scrollbar-track-transparent"
-    >
-      {Cell}
-    </Grid>
+    <>
+      <Grid
+        ref={gridRef}
+        columnCount={columnCount}
+        columnWidth={columnWidth}
+        height={containerHeight}
+        rowCount={rowCount}
+        rowHeight={rowHeight}
+        width={containerWidth}
+        className="scrollbar-thin scrollbar-thumb-charcoal-300 dark:scrollbar-thumb-charcoal-700 scrollbar-track-transparent"
+      >
+        {Cell}
+      </Grid>
+
+      {chromaDialogState.champion && chromaDialogState.skin && (
+        <ChromaSelectionDialog
+          open={chromaDialogState.open}
+          onOpenChange={(open) => {
+            if (!open) {
+              setChromaDialogState({ open: false, champion: null, skin: null })
+            }
+          }}
+          champion={chromaDialogState.champion}
+          skin={chromaDialogState.skin}
+          chromas={getChromasForSkin(chromaDialogState.skin.id)}
+          selectedSkins={selectedSkins}
+          downloadedSkins={downloadedSkins}
+          onChromaSelect={onSkinClick}
+        />
+      )}
+    </>
   )
 }

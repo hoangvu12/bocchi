@@ -371,6 +371,15 @@ function setupIpcHandlers(): void {
     }
   })
 
+  ipcMain.handle('get-chromas-for-skin', async (_, skinId: string) => {
+    try {
+      const chromas = championDataService.getChromasForSkin(skinId)
+      return { success: true, chromas }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
   // Favorites management
   ipcMain.handle(
     'add-favorite',

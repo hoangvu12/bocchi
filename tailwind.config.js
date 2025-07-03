@@ -1,15 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/renderer/index.html', './src/renderer/src/**/*.{js,ts,jsx,tsx}'],
-  darkMode: 'class',
+  darkMode: ['class'],
   theme: {
     extend: {
       colors: {
-        // Improved light theme colors with better contrast
         cream: {
           50: '#fefefe',
           100: '#fcfbfa',
-          200: '#f8f6f3', // Main light background - less bright
+          200: '#f8f6f3',
           300: '#f0ebe5',
           400: '#e5ddd2',
           500: '#d3c5b6',
@@ -25,7 +24,7 @@ module.exports = {
           200: '#fcc7bc',
           300: '#f9a08c',
           400: '#f47560',
-          500: '#d4654e', // Primary accent
+          500: '#d4654e',
           600: '#c24b35',
           700: '#a13829',
           800: '#842f24',
@@ -43,9 +42,8 @@ module.exports = {
           700: '#4f4f4f',
           800: '#3d3d3d',
           900: '#2d2d2d',
-          950: '#1a1a1a' // Main dark background
+          950: '#1a1a1a'
         },
-        // Semantic colors
         background: {
           light: '#f5f2ed',
           dark: '#1a1a1a'
@@ -56,15 +54,15 @@ module.exports = {
         },
         text: {
           primary: {
-            light: '#0a0a0a', // Much darker for better contrast
+            light: '#0a0a0a',
             dark: '#ffffff'
           },
           secondary: {
-            light: '#2d2d2d', // Darker secondary text
+            light: '#2d2d2d',
             dark: '#b0b0b0'
           },
           muted: {
-            light: '#4a4a4a', // Darker muted text
+            light: '#4a4a4a',
             dark: '#888888'
           }
         },
@@ -83,7 +81,9 @@ module.exports = {
         'slide-up': 'slideUp 0.3s ease-out',
         progress: 'progress 2s ease-in-out infinite',
         'card-hover': 'cardHover 0.3s ease-out forwards',
-        'scale-in': 'scaleIn 0.2s ease-out'
+        'scale-in': 'scaleIn 0.2s ease-out',
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out'
       },
       keyframes: {
         dots: {
@@ -105,8 +105,12 @@ module.exports = {
           }
         },
         fadeIn: {
-          from: { opacity: '0' },
-          to: { opacity: '1' }
+          from: {
+            opacity: '0'
+          },
+          to: {
+            opacity: '1'
+          }
         },
         slideDown: {
           from: {
@@ -129,8 +133,12 @@ module.exports = {
           }
         },
         progress: {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(100%)' }
+          '0%': {
+            transform: 'translateX(-100%)'
+          },
+          '100%': {
+            transform: 'translateX(100%)'
+          }
         },
         cardHover: {
           '0%': {
@@ -148,6 +156,22 @@ module.exports = {
           '100%': {
             transform: 'scale(1)',
             opacity: '1'
+          }
+        },
+        'accordion-down': {
+          from: {
+            height: '0'
+          },
+          to: {
+            height: 'var(--radix-accordion-content-height)'
+          }
+        },
+        'accordion-up': {
+          from: {
+            height: 'var(--radix-accordion-content-height)'
+          },
+          to: {
+            height: '0'
           }
         }
       },
@@ -169,16 +193,16 @@ module.exports = {
         pill: '9999px'
       },
       fontSize: {
-        xxs: '0.625rem', // 10px
-        xs: '0.75rem', // 12px
-        sm: '0.875rem', // 14px
-        base: '1rem', // 16px
-        lg: '1.125rem', // 18px
-        xl: '1.25rem', // 20px
-        '2xl': '1.5rem', // 24px
-        '3xl': '1.875rem', // 30px
-        '4xl': '2.25rem', // 36px
-        '5xl': '3rem' // 48px
+        xxs: '0.625rem',
+        xs: '0.75rem',
+        sm: '0.875rem',
+        base: '1rem',
+        lg: '1.125rem',
+        xl: '1.25rem',
+        '2xl': '1.5rem',
+        '3xl': '1.875rem',
+        '4xl': '2.25rem',
+        '5xl': '3rem'
       },
       spacing: {
         18: '4.5rem',

@@ -72,19 +72,40 @@ export class SkinDownloader {
   }
 
   private parseGitHubUrl(url: string): SkinInfo {
-    // Example: https://github.com/darkseal-org/lol-skins/blob/main/skins/Aatrox/DRX%20Aatrox.zip
-    const urlPattern =
-      /github\.com\/darkseal-org\/lol-skins\/blob\/main\/skins\/([^\\/]+)\/([^\\/]+)$/
-    const match = url.match(urlPattern)
+    // Example regular skin: https://github.com/darkseal-org/lol-skins/blob/main/skins/Aatrox/DRX%20Aatrox.zip
+    // Example chroma: https://github.com/darkseal-org/lol-skins/blob/main/skins/Aatrox/chromas/DRX%20Aatrox/DRX%20Aatrox%20266032.zip
 
-    if (!match) {
+    // First try to match chroma URL pattern
+    const chromaPattern =
+      /github\.com\/darkseal-org\/lol-skins\/blob\/main\/skins\/([^\\/]+)\/chromas\/([^\\/]+)\/([^\\/]+)$/
+    const chromaMatch = url.match(chromaPattern)
+
+    if (chromaMatch) {
+      const championName = chromaMatch[1]
+      // const skinName = decodeURIComponent(chromaMatch[2]) // Not needed, we use the full chroma filename
+      const chromaFileName = decodeURIComponent(chromaMatch[3])
+
+      return {
+        championName,
+        skinName: chromaFileName, // Use the full chroma filename (e.g., "DRX Aatrox 266032.zip")
+        url,
+        source: 'repository' as const
+      }
+    }
+
+    // Otherwise try regular skin pattern
+    const skinPattern =
+      /github\.com\/darkseal-org\/lol-skins\/blob\/main\/skins\/([^\\/]+)\/([^\\/]+)$/
+    const skinMatch = url.match(skinPattern)
+
+    if (!skinMatch) {
       throw new Error(
-        'Invalid GitHub URL format. Expected format: https://github.com/darkseal-org/lol-skins/blob/main/skins/[Champion]/[SkinName].zip'
+        'Invalid GitHub URL format. Expected format: https://github.com/darkseal-org/lol-skins/blob/main/skins/[Champion]/[SkinName].zip or .../chromas/[SkinName]/[ChromaFile].zip'
       )
     }
 
-    const championName = match[1]
-    const skinName = decodeURIComponent(match[2])
+    const championName = skinMatch[1]
+    const skinName = decodeURIComponent(skinMatch[2])
 
     return {
       championName,
@@ -113,12 +134,27 @@ export class SkinDownloader {
 
             const skinName = path.basename(skinFile)
             const championName = path.basename(championFolder)
+            // Check if this is a chroma file (contains a number ID at the end)
+            const chromaMatch = skinName.match(/^(.+)\s+(\d{6})\.zip$/)
+            let reconstructedUrl: string
+
+            if (chromaMatch) {
+              // This is a chroma file
+              const baseSkinName = chromaMatch[1]
+              reconstructedUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championName}/chromas/${encodeURIComponent(
+                baseSkinName
+              )}/${encodeURIComponent(skinName)}`
+            } else {
+              // Regular skin file
+              reconstructedUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championName}/${encodeURIComponent(
+                skinName
+              )}`
+            }
+
             skins.push({
               championName,
               skinName,
-              url: `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championName}/${encodeURIComponent(
-                skinName
-              )}`,
+              url: reconstructedUrl,
               localPath: skinPath,
               source: 'repository'
             })

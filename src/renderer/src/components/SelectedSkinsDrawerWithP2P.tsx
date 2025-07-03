@@ -6,6 +6,7 @@ import type { P2PRoomMember } from '../../../main/types'
 import { p2pService } from '../services/p2pService'
 import { p2pFileTransferService } from '../services/p2pFileTransferService'
 import { Badge } from './ui/badge'
+import { useChromaData } from '../hooks/useChromaData'
 
 interface ExtendedSelectedSkin extends SelectedSkin {
   customModInfo?: {
@@ -52,6 +53,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   const [patcherStatus, setPatcherStatus] = useState<string>('')
   const [patcherMessages, setPatcherMessages] = useState<string[]>([])
   const [customImages, setCustomImages] = useState<Record<string, string>>({})
+  const { chromaData, prefetchChromas } = useChromaData()
   const [p2pRoom] = useAtom(p2pRoomAtom)
   const [activeTab, setActiveTab] = useState<'my-skins' | 'room-skins'>('my-skins')
 
@@ -61,6 +63,12 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
       setActiveTab('my-skins')
     }
   }, [p2pRoom, activeTab])
+
+  // Fetch chroma data for selected skins
+  useEffect(() => {
+    const uniqueSkinIds = [...new Set(selectedSkins.map((s) => s.skinId))]
+    prefetchChromas(uniqueSkinIds)
+  }, [selectedSkins, prefetchChromas])
 
   useEffect(() => {
     // Listen for patcher status updates
@@ -131,6 +139,14 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   }
 
   const getSkinImageUrl = (skin: SelectedSkin) => {
+    // Check if it's a chroma and we have chroma data
+    if (skin.chromaId && chromaData[skin.skinId]) {
+      const chroma = chromaData[skin.skinId].find((c) => c.id.toString() === skin.chromaId)
+      if (chroma && chroma.chromaPath) {
+        return chroma.chromaPath
+      }
+    }
+
     if (skin.championKey === 'Custom') {
       // Find the mod path for this custom skin
       const modPath = downloadedSkins.find(
@@ -145,6 +161,22 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
       return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzA4IiBoZWlnaHQ9IjU2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMzA4IiBoZWlnaHQ9IjU2MCIgZmlsbD0iIzM3NDE1MSIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IiNhMGE0YWIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkN1c3RvbTwvdGV4dD4KPC9zdmc+'
     }
     return `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${skin.championKey}_${skin.skinNum}.jpg`
+  }
+
+  const getSkinDisplayName = (skin: SelectedSkin) => {
+    if (skin.chromaId && chromaData) {
+      // Try to find the chroma name
+      const chromas = chromaData[skin.skinId]
+      if (chromas) {
+        const chroma = chromas.find((c) => c.id.toString() === skin.chromaId)
+        if (chroma) {
+          return chroma.name
+        }
+      }
+      // Fallback to skin name + chroma ID
+      return `${skin.skinName} (Chroma ${skin.chromaId})`
+    }
+    return skin.skinName
   }
 
   const isSkinDownloaded = (skin: SelectedSkin) => {
@@ -386,7 +418,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                           <div className="relative aspect-[0.67] overflow-hidden bg-charcoal-100 dark:bg-charcoal-800 rounded border border-charcoal-200 dark:border-charcoal-700">
                             <img
                               src={getSkinImageUrl(skin)}
-                              alt={skin.skinName}
+                              alt={getSkinDisplayName(skin)}
                               className="w-full h-full object-cover"
                             />
                             {!isDownloaded && (
@@ -419,9 +451,11 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                             </button>
                           </div>
                           <div className="mt-1">
-                            <p className="text-xs leading-tight font-medium text-charcoal-900 dark:text-charcoal-100 truncate">
-                              {skin.skinName}
-                              {skin.chromaId && ' (C)'}
+                            <p
+                              className="text-xs leading-tight font-medium text-charcoal-900 dark:text-charcoal-100 truncate"
+                              title={getSkinDisplayName(skin)}
+                            >
+                              {getSkinDisplayName(skin)}
                             </p>
                           </div>
                         </div>
@@ -493,7 +527,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                               <div className="relative aspect-[0.67] overflow-hidden bg-charcoal-100 dark:bg-charcoal-800 rounded border border-charcoal-200 dark:border-charcoal-700">
                                 <img
                                   src={getSkinImageUrl(skin)}
-                                  alt={skin.skinName}
+                                  alt={getSkinDisplayName(skin)}
                                   className="w-full h-full object-cover"
                                 />
                                 {isSelected && (
@@ -530,9 +564,11 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                                 )}
                               </div>
                               <div className="mt-1">
-                                <p className="text-xs leading-tight font-medium text-charcoal-900 dark:text-charcoal-100 truncate">
-                                  {skin.skinName}
-                                  {skin.chromaId && ' (C)'}
+                                <p
+                                  className="text-xs leading-tight font-medium text-charcoal-900 dark:text-charcoal-100 truncate"
+                                  title={getSkinDisplayName(skin)}
+                                >
+                                  {getSkinDisplayName(skin)}
                                 </p>
                               </div>
                             </div>

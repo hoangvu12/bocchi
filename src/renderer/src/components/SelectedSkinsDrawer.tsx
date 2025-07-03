@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
 import { selectedSkinsAtom, selectedSkinsDrawerExpandedAtom } from '../store/atoms'
 import type { SelectedSkin } from '../store/atoms'
+import { useChromaData } from '../hooks/useChromaData'
 
 interface SelectedSkinsDrawerProps {
   onApplySkins: () => void
@@ -34,6 +35,13 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   const [patcherStatus, setPatcherStatus] = useState<string>('')
   const [patcherMessages, setPatcherMessages] = useState<string[]>([])
   const [customImages, setCustomImages] = useState<Record<string, string>>({})
+  const { chromaData, prefetchChromas } = useChromaData()
+
+  // Fetch chroma data for selected skins
+  useEffect(() => {
+    const uniqueSkinIds = [...new Set(selectedSkins.map((s) => s.skinId))]
+    prefetchChromas(uniqueSkinIds)
+  }, [selectedSkins, prefetchChromas])
 
   useEffect(() => {
     // Listen for patcher status updates
@@ -118,6 +126,22 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
       return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzA4IiBoZWlnaHQ9IjU2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMzA4IiBoZWlnaHQ9IjU2MCIgZmlsbD0iIzM3NDE1MSIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IiNhMGE0YWIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkN1c3RvbTwvdGV4dD4KPC9zdmc+'
     }
     return `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${skin.championKey}_${skin.skinNum}.jpg`
+  }
+
+  const getSkinDisplayName = (skin: SelectedSkin) => {
+    if (skin.chromaId && chromaData) {
+      // Try to find the chroma name
+      const chromas = chromaData[skin.skinId]
+      if (chromas) {
+        const chroma = chromas.find((c) => c.id.toString() === skin.chromaId)
+        if (chroma) {
+          return chroma.name
+        }
+      }
+      // Fallback to skin name + chroma ID
+      return `${skin.skinName} (Chroma ${skin.chromaId})`
+    }
+    return skin.skinName
   }
 
   const isSkinDownloaded = (skin: SelectedSkin) => {
@@ -250,6 +274,12 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3">
             {selectedSkins.map((skin) => {
               const isDownloaded = isSkinDownloaded(skin)
+              const skinChromas = chromaData[skin.skinId]
+              const selectedChroma =
+                skin.chromaId && skinChromas
+                  ? skinChromas.find((c) => c.id.toString() === skin.chromaId)
+                  : null
+
               return (
                 <div
                   key={`${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}`}
@@ -257,8 +287,8 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                 >
                   <div className="relative aspect-[0.67] overflow-hidden bg-charcoal-100 dark:bg-charcoal-800 rounded border border-charcoal-200 dark:border-charcoal-700">
                     <img
-                      src={getSkinImageUrl(skin)}
-                      alt={skin.skinName}
+                      src={selectedChroma ? selectedChroma.chromaPath : getSkinImageUrl(skin)}
+                      alt={getSkinDisplayName(skin)}
                       className="w-full h-full object-cover"
                     />
                     {!isDownloaded && (
@@ -291,9 +321,11 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                     </button>
                   </div>
                   <div className="mt-1">
-                    <p className="text-xs leading-tight font-medium text-charcoal-900 dark:text-charcoal-100 truncate">
-                      {skin.skinName}
-                      {skin.chromaId && ' (C)'}
+                    <p
+                      className="text-xs leading-tight font-medium text-charcoal-900 dark:text-charcoal-100 truncate"
+                      title={getSkinDisplayName(skin)}
+                    >
+                      {getSkinDisplayName(skin)}
                     </p>
                   </div>
                 </div>

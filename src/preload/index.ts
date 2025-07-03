@@ -33,6 +33,7 @@ const api = {
   loadChampionData: (language?: string) => ipcRenderer.invoke('load-champion-data', language),
   checkChampionUpdates: (language?: string) =>
     ipcRenderer.invoke('check-champion-updates', language),
+  getChromasForSkin: (skinId: string) => ipcRenderer.invoke('get-chromas-for-skin', skinId),
 
   // Favorites
   addFavorite: (championKey: string, skinId: string, skinName: string) =>

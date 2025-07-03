@@ -91,3 +91,15 @@ export const p2pSettingsAtom = atomWithStorage<P2PSettings>('p2p-settings', {
 export const p2pConnectionStatusAtom = atom<'disconnected' | 'connecting' | 'connected'>(
   'disconnected'
 )
+
+// Chroma data types
+export interface Chroma {
+  id: number
+  name: string
+  chromaPath: string
+  colors: string[]
+}
+
+// Global chroma data cache
+export const chromaDataAtom = atom<Record<string, Chroma[]>>({})
+export const chromaDataLoadingAtom = atom<Set<string>>(new Set<string>())
