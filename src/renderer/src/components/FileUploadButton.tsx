@@ -21,20 +21,43 @@ export const FileUploadButton: React.FC<FileUploadButtonProps> = ({
   const [selectedImage, setSelectedImage] = useState<string>('')
   const [error, setError] = useState<string>('')
 
-  const handleBrowseFile = async () => {
-    const result = await window.api.browseSkinFile()
-    if (result.success && result.filePath) {
-      setSelectedFile(result.filePath)
+  // Batch import states
+  const [showBatchDialog, setShowBatchDialog] = useState(false)
+  const [batchProgress, setBatchProgress] = useState<{
+    current: number
+    total: number
+    currentFile: string
+    results: Array<{ filePath: string; success: boolean; error?: string }>
+  }>({ current: 0, total: 0, currentFile: '', results: [] })
 
-      // Try to extract champion name from file path
-      const fileName = result.filePath.split(/[\\/]/).pop() || ''
-      const match = fileName.match(/^([A-Za-z]+)[-_\s]/i)
-      if (match && champions.find((c) => c.key === match[1])) {
-        setSelectedChampion(match[1])
+  const handleBrowseMultipleFiles = async () => {
+    const result = await window.api.browseSkinFiles()
+    if (result.success && result.filePaths && result.filePaths.length > 0) {
+      if (result.filePaths.length === 1) {
+        // Single file, show normal dialog
+        setSelectedFile(result.filePaths[0])
+
+        // Try to extract champion name from file path
+        const fileName = result.filePaths[0].split(/[\\/]/).pop() || ''
+        const match = fileName.match(/^([A-Za-z]+)[-_\s]/i)
+        if (match && champions.find((c) => c.key === match[1])) {
+          setSelectedChampion(match[1])
+        }
+
+        setError('')
+        setShowDialog(true)
+      } else {
+        // Multiple files, show batch dialog
+        setBatchProgress({
+          current: 0,
+          total: result.filePaths.length,
+          currentFile: '',
+          results: []
+        })
+        setShowBatchDialog(true)
+        // Start batch import immediately
+        handleBatchImport(result.filePaths)
       }
-
-      setError('')
-      setShowDialog(true)
     }
   }
 
@@ -81,14 +104,84 @@ export const FileUploadButton: React.FC<FileUploadButtonProps> = ({
     }
   }
 
+  const handleBatchImport = async (filePaths: string[]) => {
+    setIsImporting(true)
+
+    const results: Array<{ filePath: string; success: boolean; error?: string }> = []
+
+    for (let i = 0; i < filePaths.length; i++) {
+      const filePath = filePaths[i]
+      const fileName = filePath.split(/[\\/]/).pop() || ''
+
+      setBatchProgress((prev) => ({
+        ...prev,
+        current: i + 1,
+        currentFile: fileName
+      }))
+
+      try {
+        // Validate first
+        const validation = await window.api.validateSkinFile(filePath)
+        if (!validation.valid) {
+          results.push({
+            filePath,
+            success: false,
+            error: validation.error || 'Invalid file format'
+          })
+          continue
+        }
+
+        // Import with default options (auto-detect)
+        const result = await window.api.importSkinFile(filePath, {})
+
+        results.push({
+          filePath,
+          success: result.success,
+          error: result.error
+        })
+      } catch (error) {
+        results.push({
+          filePath,
+          success: false,
+          error: error instanceof Error ? error.message : 'Unknown error'
+        })
+      }
+    }
+
+    setBatchProgress((prev) => ({
+      ...prev,
+      results
+    }))
+
+    setIsImporting(false)
+
+    // Refresh skin list if any imports succeeded
+    if (results.some((r) => r.success)) {
+      onSkinImported()
+    }
+  }
+
   const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
 
     const files = Array.from(e.dataTransfer.files)
     if (files.length > 0) {
-      setSelectedFile(files[0].path)
-      setShowDialog(true)
+      if (files.length === 1) {
+        setSelectedFile(files[0].path)
+        setShowDialog(true)
+      } else {
+        // Multiple files dropped
+        const filePaths = files.map((f) => f.path)
+        setBatchProgress({
+          current: 0,
+          total: filePaths.length,
+          currentFile: '',
+          results: []
+        })
+        setShowBatchDialog(true)
+        handleBatchImport(filePaths)
+      }
     }
   }
 
@@ -112,7 +205,7 @@ export const FileUploadButton: React.FC<FileUploadButtonProps> = ({
     <>
       <div onDrop={handleDrop} onDragOver={handleDragOver} className="inline-block">
         <button
-          onClick={handleBrowseFile}
+          onClick={handleBrowseMultipleFiles}
           className="px-4 py-2.5 text-sm bg-white dark:bg-charcoal-800 hover:bg-cream-100 dark:hover:bg-charcoal-700 text-charcoal-800 dark:text-charcoal-200 font-medium rounded-lg transition-all duration-200 border border-charcoal-200 dark:border-charcoal-700 hover:border-charcoal-300 dark:hover:border-charcoal-600 shadow-sm hover:shadow-md dark:shadow-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           disabled={isImporting}
         >
@@ -255,6 +348,101 @@ export const FileUploadButton: React.FC<FileUploadButtonProps> = ({
                   t('fileUpload.import')
                 )}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showBatchDialog && (
+        <div className="fixed inset-0 bg-charcoal-950 bg-opacity-50 dark:bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-white dark:bg-charcoal-800 rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl dark:shadow-dark-xl animate-slide-down">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-charcoal-900 dark:text-cream-50">
+                {t('fileUpload.batchImportTitle')}
+              </h3>
+              <button
+                onClick={() => {
+                  if (!isImporting) {
+                    setShowBatchDialog(false)
+                    setBatchProgress({ current: 0, total: 0, currentFile: '', results: [] })
+                  }
+                }}
+                disabled={isImporting}
+                className="p-1 hover:bg-charcoal-100 dark:hover:bg-charcoal-700 rounded-lg transition-colors disabled:opacity-50"
+              >
+                <X className="w-5 h-5 text-charcoal-600 dark:text-charcoal-400" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {isImporting ? (
+                <>
+                  <div className="text-center">
+                    <Loader2 className="h-8 w-8 animate-spin mx-auto mb-3 text-terracotta-500" />
+                    <p className="text-sm text-charcoal-600 dark:text-charcoal-300">
+                      {t('fileUpload.importingProgress', {
+                        current: batchProgress.current,
+                        total: batchProgress.total
+                      })}
+                    </p>
+                    <p className="text-xs text-charcoal-500 dark:text-charcoal-400 mt-1 truncate">
+                      {batchProgress.currentFile}
+                    </p>
+                  </div>
+
+                  <div className="w-full bg-charcoal-200 dark:bg-charcoal-700 rounded-full h-2">
+                    <div
+                      className="bg-terracotta-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${(batchProgress.current / batchProgress.total) * 100}%` }}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-center mb-4">
+                    <p className="text-sm text-charcoal-600 dark:text-charcoal-300">
+                      {t('fileUpload.batchComplete')}
+                    </p>
+                    <p className="text-lg font-semibold text-charcoal-900 dark:text-cream-50 mt-2">
+                      {batchProgress.results.filter((r) => r.success).length}{' '}
+                      {t('fileUpload.succeeded')},{' '}
+                      {batchProgress.results.filter((r) => !r.success).length}{' '}
+                      {t('fileUpload.failed')}
+                    </p>
+                  </div>
+
+                  {batchProgress.results.filter((r) => !r.success).length > 0 && (
+                    <div className="max-h-40 overflow-y-auto space-y-2">
+                      <p className="text-xs font-medium text-charcoal-700 dark:text-charcoal-300 mb-2">
+                        {t('fileUpload.failedFiles')}
+                      </p>
+                      {batchProgress.results
+                        .filter((r) => !r.success)
+                        .map((result, idx) => (
+                          <div
+                            key={idx}
+                            className="text-xs bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-2 py-1 rounded"
+                          >
+                            <p className="font-medium truncate">
+                              {result.filePath.split(/[\\/]/).pop()}
+                            </p>
+                            <p className="text-red-500 dark:text-red-500">{result.error}</p>
+                          </div>
+                        ))}
+                    </div>
+                  )}
+
+                  <button
+                    onClick={() => {
+                      setShowBatchDialog(false)
+                      setBatchProgress({ current: 0, total: 0, currentFile: '', results: [] })
+                    }}
+                    className="w-full px-4 py-2 text-sm bg-terracotta-500 hover:bg-terracotta-600 text-white font-medium rounded-lg transition-all duration-200"
+                  >
+                    {t('fileUpload.close')}
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>

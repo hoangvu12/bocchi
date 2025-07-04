@@ -86,7 +86,14 @@
     "importFailed": "Failed to import skin",
     "previewImage": "Preview Image",
     "browseImage": "Browse",
-    "noImageSelected": "No image selected"
+    "noImageSelected": "No image selected",
+    "batchImportTitle": "Importing Multiple Files",
+    "importingProgress": "Importing {{current}} of {{total}} files...",
+    "batchComplete": "Import Complete!",
+    "succeeded": "succeeded",
+    "failed": "failed",
+    "failedFiles": "Failed files:",
+    "close": "Close"
   },
   "cancel": "Cancel",
   "success": "Success",

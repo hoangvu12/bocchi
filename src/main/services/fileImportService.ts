@@ -10,6 +10,19 @@ export interface ImportResult {
   error?: string
 }
 
+export interface BatchImportResult {
+  success: boolean
+  totalFiles: number
+  successCount: number
+  failedCount: number
+  results: Array<{
+    filePath: string
+    success: boolean
+    skinInfo?: SkinInfo
+    error?: string
+  }>
+}
+
 export interface FileImportOptions {
   championName?: string
   skinName?: string
@@ -56,6 +69,59 @@ export class FileImportService {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown import error'
       }
+    }
+  }
+
+  async importFiles(filePaths: string[]): Promise<BatchImportResult> {
+    const results: BatchImportResult['results'] = []
+    let successCount = 0
+    let failedCount = 0
+
+    for (const filePath of filePaths) {
+      try {
+        // Validate file first
+        const validation = await this.validateFile(filePath)
+        if (!validation.valid) {
+          results.push({
+            filePath,
+            success: false,
+            error: validation.error || 'Invalid file format'
+          })
+          failedCount++
+          continue
+        }
+
+        // Import with auto-detected options
+        const result = await this.importFile(filePath, {})
+
+        results.push({
+          filePath,
+          success: result.success,
+          skinInfo: result.skinInfo,
+          error: result.error
+        })
+
+        if (result.success) {
+          successCount++
+        } else {
+          failedCount++
+        }
+      } catch (error) {
+        results.push({
+          filePath,
+          success: false,
+          error: error instanceof Error ? error.message : 'Unknown error'
+        })
+        failedCount++
+      }
+    }
+
+    return {
+      success: failedCount === 0,
+      totalFiles: filePaths.length,
+      successCount,
+      failedCount,
+      results
     }
   }
 

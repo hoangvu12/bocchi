@@ -16,8 +16,21 @@ export interface IApi {
     filePath: string,
     options?: { championName?: string; skinName?: string; imagePath?: string }
   ) => Promise<{ success: boolean; skinInfo?: SkinInfo; error?: string }>
+  importSkinFilesBatch: (filePaths: string[]) => Promise<{
+    success: boolean
+    totalFiles: number
+    successCount: number
+    failedCount: number
+    results: Array<{
+      filePath: string
+      success: boolean
+      skinInfo?: SkinInfo
+      error?: string
+    }>
+  }>
   validateSkinFile: (filePath: string) => Promise<{ valid: boolean; error?: string }>
   browseSkinFile: () => Promise<{ success: boolean; filePath?: string }>
+  browseSkinFiles: () => Promise<{ success: boolean; filePaths?: string[] }>
   browseImageFile: () => Promise<{ success: boolean; filePath?: string }>
 
   runPatcher: (

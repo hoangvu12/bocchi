@@ -68,5 +68,34 @@
     "downloadFailed": "Tải xuống thất bại",
     "connectionError": "Lỗi kết nối",
     "pathNotSet": "Vui lòng thiết lập đường dẫn game trước"
-  }
+  },
+  "fileUpload": {
+    "uploadButton": "Tải Lên Mod Tùy Chỉnh",
+    "importTitle": "Nhập Mod Tùy Chỉnh",
+    "importDescription": "Tùy chọn chọn tướng và đặt tên tùy chỉnh cho mod của bạn.",
+    "selectedFile": "Tệp Đã Chọn",
+    "selectChampion": "Chọn Tướng",
+    "championPlaceholder": "Không có tướng cụ thể",
+    "customName": "Tên Tùy Chỉnh",
+    "customNamePlaceholder": "Nhập tên trang phục...",
+    "importing": "Đang nhập...",
+    "import": "Nhập",
+    "noFileSelected": "Chưa chọn tệp",
+    "invalidFile": "Định dạng tệp không hợp lệ",
+    "importSuccess": "Nhập trang phục thành công!",
+    "importFailed": "Nhập trang phục thất bại",
+    "previewImage": "Ảnh Xem Trước",
+    "browseImage": "Duyệt",
+    "noImageSelected": "Chưa chọn ảnh",
+    "batchImportTitle": "Đang Nhập Nhiều Tệp",
+    "importingProgress": "Đang nhập {{current}} trong {{total}} tệp...",
+    "batchComplete": "Hoàn Thành Nhập!",
+    "succeeded": "thành công",
+    "failed": "thất bại",
+    "failedFiles": "Các tệp thất bại:",
+    "close": "Đóng"
+  },
+  "cancel": "Hủy",
+  "success": "Thành công",
+  "error": "Lỗi"
 }

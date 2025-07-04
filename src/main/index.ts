@@ -197,6 +197,15 @@ function setupIpcHandlers(): void {
     }
   })
 
+  ipcMain.handle('import-skin-files-batch', async (_, filePaths: string[]) => {
+    try {
+      const result = await fileImportService.importFiles(filePaths)
+      return result
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
   ipcMain.handle('validate-skin-file', async (_, filePath: string) => {
     try {
       const result = await fileImportService.validateFile(filePath)
@@ -219,6 +228,23 @@ function setupIpcHandlers(): void {
 
     if (!result.canceled && result.filePaths.length > 0) {
       return { success: true, filePath: result.filePaths[0] }
+    }
+    return { success: false }
+  })
+
+  ipcMain.handle('browse-skin-files', async () => {
+    const result = await dialog.showOpenDialog({
+      properties: ['openFile', 'multiSelections'],
+      title: 'Select skin files',
+      buttonLabel: 'Select',
+      filters: [
+        { name: 'Skin Files', extensions: ['wad', 'zip', 'fantome'] },
+        { name: 'All Files', extensions: ['*'] }
+      ]
+    })
+
+    if (!result.canceled && result.filePaths.length > 0) {
+      return { success: true, filePaths: result.filePaths }
     }
     return { success: false }
   })

@@ -18,8 +18,11 @@ const api = {
     filePath: string,
     options?: { championName?: string; skinName?: string; imagePath?: string }
   ) => ipcRenderer.invoke('import-skin-file', filePath, options),
+  importSkinFilesBatch: (filePaths: string[]) =>
+    ipcRenderer.invoke('import-skin-files-batch', filePaths),
   validateSkinFile: (filePath: string) => ipcRenderer.invoke('validate-skin-file', filePath),
   browseSkinFile: () => ipcRenderer.invoke('browse-skin-file'),
+  browseSkinFiles: () => ipcRenderer.invoke('browse-skin-files'),
   browseImageFile: () => ipcRenderer.invoke('browse-image-file'),
 
   // Patcher controls
