@@ -365,12 +365,12 @@ function AppContent(): React.JSX.Element {
 
   const downloadTools = async () => {
     setDownloadingTools(true)
-    setStatusMessage('Downloading cslol-tools')
+    setStatusMessage(t('status.downloadingTools'))
 
     const result = await window.api.downloadTools()
     if (result.success) {
       setToolsExist(true)
-      setStatusMessage('Tools downloaded successfully!')
+      setStatusMessage(t('status.toolsDownloaded'))
     } else {
       setStatusMessage(`Failed to download tools: ${result.error}`)
     }
@@ -443,13 +443,13 @@ function AppContent(): React.JSX.Element {
     const result = await window.api.browseGameFolder()
     if (result.success && result.gamePath) {
       setGamePath(result.gamePath)
-      setStatusMessage('Game path set successfully!')
+      setStatusMessage(t('status.gamePathSet'))
     }
   }
 
   const handleSkinClick = (champion: Champion, skin: Skin, chromaId?: string) => {
     if (!gamePath) {
-      setStatusMessage('Please set game path first')
+      setStatusMessage(t('status.pleaseSetGamePath'))
       return
     }
 
@@ -504,9 +504,9 @@ function AppContent(): React.JSX.Element {
 
     if (result.success) {
       await loadDownloadedSkins()
-      setStatusMessage(`Deleted custom mod: ${cleanedName}`)
+      setStatusMessage(t('status.deletedCustomMod', { name: cleanedName }))
     } else {
-      setStatusMessage(`Failed to delete mod: ${result.error}`)
+      setStatusMessage(t('status.failedToDeleteMod', { error: result.error }))
     }
   }
 
@@ -521,9 +521,9 @@ function AppContent(): React.JSX.Element {
     if (result.success) {
       await loadDownloadedSkins()
       const cleanedName = skinName.replace(/\[User\]\s*/, '').replace(/\.(wad|zip|fantome)$/, '')
-      setStatusMessage(`Deleted skin: ${cleanedName}`)
+      setStatusMessage(t('status.deletedSkin', { name: cleanedName }))
     } else {
-      setStatusMessage(`Failed to delete skin: ${result.error}`)
+      setStatusMessage(t('status.failedToDeleteSkin', { error: result.error }))
     }
   }
 
@@ -543,7 +543,7 @@ function AppContent(): React.JSX.Element {
     try {
       // Stop patcher if running
       if (isPatcherRunning) {
-        setStatusMessage('Stopping current patcher')
+        setStatusMessage(t('status.stoppingCurrentPatcher'))
         await window.api.stopPatcher()
         await new Promise((resolve) => setTimeout(resolve, 500)) // Small delay
       }
@@ -654,15 +654,17 @@ function AppContent(): React.JSX.Element {
 
   const stopPatcher = async () => {
     setIsStoppingPatcher(true)
-    setStatusMessage('Stopping patcher')
+    setStatusMessage(t('status.stopping'))
 
     try {
       const result = await window.api.stopPatcher()
       if (result.success) {
-        setStatusMessage('Patcher stopped')
+        setStatusMessage(t('status.stopped'))
         setIsPatcherRunning(false)
       } else {
-        setStatusMessage(`Failed to stop patcher: ${result.error || 'Unknown error'}`)
+        setStatusMessage(
+          t('status.failedToStopPatcher', { error: result.error || 'Unknown error' })
+        )
       }
     } catch (error) {
       setStatusMessage(
@@ -1100,7 +1102,7 @@ function AppContent(): React.JSX.Element {
                   <button
                     onClick={() => setShowDownloadedSkinsDialog(true)}
                     className="px-4 py-2.5 text-sm bg-white dark:bg-charcoal-800 hover:bg-cream-100 dark:hover:bg-charcoal-700 text-charcoal-800 dark:text-charcoal-200 font-medium rounded-lg transition-all duration-200 border border-charcoal-200 dark:border-charcoal-700 hover:border-charcoal-300 dark:hover:border-charcoal-600 shadow-sm hover:shadow-md dark:shadow-none flex items-center gap-2"
-                    title="Manage downloaded skins"
+                    title={t('skins.manageDownloaded')}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -1110,7 +1112,7 @@ function AppContent(): React.JSX.Element {
                         d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
                       />
                     </svg>
-                    Manage
+                    {t('skins.manage')}
                   </button>
                   <GridViewToggle viewMode={viewMode} onViewModeChange={setViewMode} />
                 </div>

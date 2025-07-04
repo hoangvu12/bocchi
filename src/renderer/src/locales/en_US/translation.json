@@ -67,7 +67,17 @@
     "stopped": "Patcher stopped",
     "error": "Error: {{message}}",
     "fetchingData": "Fetching champion data...",
-    "dataFetched": "Successfully fetched data for {{count}} champions!"
+    "dataFetched": "Successfully fetched data for {{count}} champions!",
+    "gamePathSet": "Game path set successfully!",
+    "pleaseSetGamePath": "Please set game path first",
+    "downloadingTools": "Downloading cslol-tools",
+    "toolsDownloaded": "Tools downloaded successfully!",
+    "stoppingCurrentPatcher": "Stopping current patcher",
+    "failedToStopPatcher": "Failed to stop patcher: {{error}}",
+    "deletedCustomMod": "Deleted custom mod: {{name}}",
+    "deletedSkin": "Deleted skin: {{name}}",
+    "failedToDeleteMod": "Failed to delete mod: {{error}}",
+    "failedToDeleteSkin": "Failed to delete skin: {{error}}"
   },
   "tools": {
     "required": "CS:LOL Tools Required",
@@ -144,7 +154,11 @@
     "selectChroma": "Select Chroma for {{skinName}}",
     "chooseChroma": "Choose from {{count}} available {{count, plural, =1 {chroma} other {chromas}}}",
     "mySkins": "My Skins",
-    "roomSkins": "Room Skins"
+    "roomSkins": "Room Skins",
+    "manage": "Manage",
+    "manageDownloaded": "Manage downloaded skins",
+    "downloadedCount": "Downloaded Skins ({{count}})",
+    "allSkins": "All Skins"
   },
   "filters": {
     "title": "Filters & Sort",

@@ -67,7 +67,17 @@
     "stopped": "Đã dừng patcher",
     "error": "Lỗi: {{message}}",
     "fetchingData": "Đang tải dữ liệu tướng...",
-    "dataFetched": "Đã tải thành công dữ liệu cho {{count}} tướng!"
+    "dataFetched": "Đã tải thành công dữ liệu cho {{count}} tướng!",
+    "gamePathSet": "Đã thiết lập đường dẫn game thành công!",
+    "pleaseSetGamePath": "Vui lòng thiết lập đường dẫn game trước",
+    "downloadingTools": "Đang tải cslol-tools",
+    "toolsDownloaded": "Đã tải công cụ thành công!",
+    "stoppingCurrentPatcher": "Đang dừng patcher hiện tại",
+    "failedToStopPatcher": "Không thể dừng patcher: {{error}}",
+    "deletedCustomMod": "Đã xóa mod tùy chỉnh: {{name}}",
+    "deletedSkin": "Đã xóa trang phục: {{name}}",
+    "failedToDeleteMod": "Không thể xóa mod: {{error}}",
+    "failedToDeleteSkin": "Không thể xóa trang phục: {{error}}"
   },
   "tools": {
     "required": "Cần Công Cụ CS:LOL",
@@ -144,7 +154,11 @@
     "selectChroma": "Chọn Chroma cho {{skinName}}",
     "chooseChroma": "Chọn từ {{count}} chroma có sẵn",
     "mySkins": "Trang phục của tôi",
-    "roomSkins": "Trang phục trong phòng"
+    "roomSkins": "Trang phục trong phòng",
+    "manage": "Quản lý",
+    "manageDownloaded": "Quản lý trang phục đã tải",
+    "downloadedCount": "Trang phục đã tải ({{count}})",
+    "allSkins": "Tất cả trang phục"
   },
   "filters": {
     "title": "Bộ lọc & Sắp xếp",

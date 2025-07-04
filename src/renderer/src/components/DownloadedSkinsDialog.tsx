@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Badge } from './ui/badge'
@@ -25,6 +26,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
   onDeleteCustomSkin,
   onRefresh
 }) => {
+  const { t } = useTranslation()
   const [searchQuery, setSearchQuery] = useState('')
   const [deletingSkins, setDeletingSkins] = useState<Set<string>>(new Set())
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'repo' | 'custom'>('all')
@@ -109,7 +111,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[800px] max-h-[80vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle>Downloaded Skins ({totalSkins})</DialogTitle>
+          <DialogTitle>{t('skins.downloadedCount', { count: totalSkins })}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -122,7 +124,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                 selectedCategory === 'all' ? 'bg-terracotta-500 hover:bg-terracotta-600' : ''
               }
             >
-              All Skins
+              {t('skins.allSkins')}
             </Button>
             <Button
               variant={selectedCategory === 'repo' ? 'default' : 'secondary'}
@@ -131,7 +133,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                 selectedCategory === 'repo' ? 'bg-terracotta-500 hover:bg-terracotta-600' : ''
               }
             >
-              Repository Skins
+              {t('skins.repository')}
             </Button>
             <Button
               variant={selectedCategory === 'custom' ? 'default' : 'secondary'}
@@ -140,7 +142,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                 selectedCategory === 'custom' ? 'bg-terracotta-500 hover:bg-terracotta-600' : ''
               }
             >
-              Custom Imports
+              {t('skins.customImports')}
             </Button>
           </div>
 
@@ -149,7 +151,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by champion or skin name..."
+            placeholder={t('skins.searchPlaceholder')}
           />
         </div>
 
@@ -157,7 +159,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
         <div className="flex-1 overflow-y-auto p-6">
           {Object.keys(groupedSkins).length === 0 ? (
             <div className="text-center py-8 text-charcoal-500 dark:text-charcoal-400">
-              No skins found
+              {t('skins.noSkinsFound')}
             </div>
           ) : (
             <div className="space-y-6">
@@ -208,7 +210,9 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                                     variant="secondary"
                                     className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/40"
                                   >
-                                    {championKey === 'Custom' ? 'Custom' : 'User Import'}
+                                    {championKey === 'Custom'
+                                      ? t('skins.custom')
+                                      : t('skins.userImport')}
                                   </Badge>
                                 )}
                               </div>
@@ -228,7 +232,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                                 {isDeleting ? (
                                   <>
                                     <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                                    Deleting...
+                                    {t('skins.deleting')}
                                   </>
                                 ) : (
                                   <>
@@ -245,7 +249,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                                       />
                                     </svg>
-                                    Delete
+                                    {t('actions.delete')}
                                   </>
                                 )}
                               </Button>
@@ -262,10 +266,10 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
 
         <DialogFooter className="justify-between">
           <div className="text-sm text-charcoal-600 dark:text-charcoal-400">
-            Total: {totalSkins} skins
+            {t('skins.total', { count: totalSkins })}
           </div>
           <Button variant="secondary" onClick={onClose}>
-            Close
+            {t('actions.close')}
           </Button>
         </DialogFooter>
       </DialogContent>
