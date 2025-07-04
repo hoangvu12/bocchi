@@ -2,6 +2,7 @@ import { useAtom } from 'jotai'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { Upload } from 'lucide-react'
 import { FilterPanel } from './components/FilterPanel'
 import { GridViewToggle } from './components/GridViewToggle'
 import { TitleBar } from './components/TitleBar'
@@ -95,6 +96,25 @@ function AppContent(): React.JSX.Element {
   const [appVersion, setAppVersion] = useState<string>('')
   const [showChampionDataUpdate, setShowChampionDataUpdate] = useState<boolean>(false)
   const [isUpdatingChampionData, setIsUpdatingChampionData] = useState<boolean>(false)
+
+  // Drag and drop states
+  const [isDragging, setIsDragging] = useState(false)
+  const dragCounter = useRef(0)
+  const fileUploadRef = useRef<any>(null)
+
+  // Add dragover listener to document on mount
+  useEffect(() => {
+    const handleDocumentDragOver = (e: DragEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
+    document.addEventListener('dragover', handleDocumentDragOver)
+
+    return () => {
+      document.removeEventListener('dragover', handleDocumentDragOver)
+    }
+  }, [])
 
   // Jotai atoms for persisted state
   const [championSearchQuery, setChampionSearchQuery] = useAtom(championSearchQueryAtom)
@@ -778,6 +798,82 @@ function AppContent(): React.JSX.Element {
     return { total, downloaded }
   }
 
+  // Global drag and drop handlers
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    dragCounter.current++
+    console.log('Drag enter, counter:', dragCounter.current)
+    if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+      setIsDragging(true)
+    }
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    dragCounter.current--
+    if (dragCounter.current === 0) {
+      setIsDragging(false)
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+    dragCounter.current = 0
+
+    console.log('Drop event triggered')
+    console.log('DataTransfer files:', e.dataTransfer.files)
+    console.log('Number of files:', e.dataTransfer.files.length)
+
+    const files = Array.from(e.dataTransfer.files)
+    console.log('Files array:', files)
+
+    const skinFiles = files.filter((file) => {
+      const ext = file.name.toLowerCase()
+      const isSkinFile = ext.endsWith('.wad') || ext.endsWith('.zip') || ext.endsWith('.fantome')
+      console.log(`File ${file.name} is skin file:`, isSkinFile)
+      return isSkinFile
+    })
+
+    console.log('Skin files found:', skinFiles.length)
+    console.log('fileUploadRef.current:', fileUploadRef.current)
+
+    if (skinFiles.length > 0 && fileUploadRef.current) {
+      // Use the webUtils.getPathForFile() exposed through preload
+      const filePaths: string[] = []
+
+      for (const file of skinFiles) {
+        try {
+          const filePath = window.api.getPathForFile(file)
+          console.log('File path from webUtils:', filePath)
+          if (filePath) {
+            filePaths.push(filePath)
+          }
+        } catch (err) {
+          console.error('Error getting file path:', err)
+        }
+      }
+
+      console.log('File paths extracted:', filePaths)
+
+      if (filePaths.length > 0) {
+        fileUploadRef.current.handleDroppedFiles(filePaths)
+      } else {
+        // If we can't get paths, show an error
+        console.error('Could not extract file paths from dropped files')
+        alert('Unable to get file paths. Please use the browse button instead.')
+      }
+    }
+  }
+
   return (
     <>
       <TitleBar appVersion={appVersion} />
@@ -789,7 +885,13 @@ function AppContent(): React.JSX.Element {
         currentVersion={championData?.version}
         isUpdating={isUpdatingChampionData}
       />
-      <div className="flex flex-col h-screen pt-10 bg-cream-300 dark:bg-charcoal-950 text-charcoal-950 dark:text-cream-50 overflow-hidden transition-colors duration-200">
+      <div
+        className="flex flex-col h-screen pt-10 bg-cream-300 dark:bg-charcoal-950 text-charcoal-950 dark:text-cream-50 overflow-hidden transition-colors duration-200"
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
         {toolsExist === false && (
           <div className="fixed inset-0 bg-charcoal-950 bg-opacity-50 dark:bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
             <div className="bg-white dark:bg-charcoal-800 rounded-2xl p-8 max-w-md w-full mx-4 shadow-xl dark:shadow-dark-xl animate-slide-down">
@@ -929,6 +1031,7 @@ function AppContent(): React.JSX.Element {
                 />
                 <div className="flex items-center gap-2">
                   <FileUploadButton
+                    ref={fileUploadRef}
                     champions={championData.champions}
                     onSkinImported={loadDownloadedSkins}
                   />
@@ -1058,6 +1161,21 @@ function AppContent(): React.JSX.Element {
           statusMessage={statusMessage}
           errorMessage={errorMessage}
         />
+
+        {/* Drop overlay */}
+        {isDragging && (
+          <div className="fixed inset-0 bg-charcoal-950 bg-opacity-80 flex items-center justify-center z-50 pointer-events-none">
+            <div className="bg-white dark:bg-charcoal-800 rounded-2xl p-12 shadow-2xl flex flex-col items-center gap-4">
+              <Upload className="w-16 h-16 text-terracotta-500" />
+              <p className="text-2xl font-bold text-charcoal-900 dark:text-cream-50">
+                Drop skin files here
+              </p>
+              <p className="text-sm text-charcoal-600 dark:text-charcoal-400">
+                Supports .wad, .zip, and .fantome files
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       {editingCustomSkin && (

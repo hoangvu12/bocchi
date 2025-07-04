@@ -33,6 +33,9 @@ export interface IApi {
   browseSkinFiles: () => Promise<{ success: boolean; filePaths?: string[] }>
   browseImageFile: () => Promise<{ success: boolean; filePath?: string }>
 
+  // File path helper
+  getPathForFile: (file: File) => string
+
   runPatcher: (
     gamePath: string,
     selectedSkins: string[]

@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer, webUtils } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
@@ -24,6 +24,9 @@ const api = {
   browseSkinFile: () => ipcRenderer.invoke('browse-skin-file'),
   browseSkinFiles: () => ipcRenderer.invoke('browse-skin-files'),
   browseImageFile: () => ipcRenderer.invoke('browse-image-file'),
+
+  // File path helper
+  getPathForFile: (file: File) => webUtils.getPathForFile(file),
 
   // Patcher controls
   runPatcher: (gamePath: string, selectedSkins: string[]) =>
