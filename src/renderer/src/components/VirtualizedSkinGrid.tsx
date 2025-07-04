@@ -6,6 +6,7 @@ import { Button } from './ui/button'
 import { useChromaData } from '../hooks/useChromaData'
 import { ChromaSelectionDialog } from './ChromaSelectionDialog'
 import { isOldFormatCustomId } from '../utils/customModId'
+import { ChromaColorPie } from './ChromaColorPie'
 
 interface VirtualizedSkinGridProps {
   skins: Array<{ champion: Champion; skin: Skin }>
@@ -213,6 +214,8 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
         height: style.height - 24 // Subtract gap
       }
 
+      const chromas = skin.chromas ? getChromasForSkin(skin.id) : []
+
       if (viewMode === 'list') {
         return (
           <div style={adjustedStyle}>
@@ -259,32 +262,22 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                     </svg>
                   )}
                 </div>
-                {skin.chromas && (
+                {skin.chromas && chromas.length > 0 && (
                   <Button
                     variant="ghost"
-                    size="sm"
-                    className="h-8 px-2 bg-terracotta-50 dark:bg-terracotta-900/20 hover:bg-terracotta-100 dark:hover:bg-terracotta-900/30"
+                    size="icon"
+                    className="w-8 h-8 p-1 bg-white dark:bg-charcoal-700 hover:bg-charcoal-100 dark:hover:bg-charcoal-600 border border-charcoal-200 dark:border-charcoal-600"
                     onClick={(e) => {
                       e.stopPropagation()
                       setChromaDialogState({ open: true, champion, skin })
                     }}
+                    title={`${chromas.length} chromas available`}
                   >
-                    <svg
-                      className="w-4 h-4 text-terracotta-600 mr-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
-                      />
-                    </svg>
-                    <span className="text-xs text-terracotta-600">
-                      {getChromasForSkin(skin.id).length}
-                    </span>
+                    <ChromaColorPie
+                      colors={chromas.map((c) => c.colors[0])}
+                      size={24}
+                      className=""
+                    />
                   </Button>
                 )}
                 {isDownloaded && (
@@ -379,8 +372,6 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       }
 
       // Card views
-      const chromas = skin.chromas ? getChromasForSkin(skin.id) : []
-
       return (
         <div style={adjustedStyle}>
           <div
@@ -452,25 +443,16 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
               </Button>
               {/* Floating chroma button for grid mode */}
               {skin.chromas && chromas.length > 0 && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute bottom-2 left-12 w-8 h-8 rounded-full bg-terracotta-600/20 backdrop-blur-sm text-terracotta-400 hover:bg-terracotta-600/30 hover:text-terracotta-300 transition-all"
+                <div
+                  className="absolute bottom-2 left-12 w-8 h-8 rounded-full bg-white dark:bg-charcoal-800 backdrop-blur-sm hover:bg-charcoal-50 dark:hover:bg-charcoal-700 transition-all cursor-pointer shadow-lg flex items-center justify-center ring-2 ring-white dark:ring-charcoal-700"
                   onClick={(e) => {
                     e.stopPropagation()
                     setChromaDialogState({ open: true, champion, skin })
                   }}
                   title={`${chromas.length} chromas available`}
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
-                    />
-                  </svg>
-                </Button>
+                  <ChromaColorPie colors={chromas.map((c) => c.colors[0])} size={28} className="" />
+                </div>
               )}
               {/* Edit and Delete buttons for custom mods */}
               {(champion.key === 'Custom' || skin.id.startsWith('custom_')) &&

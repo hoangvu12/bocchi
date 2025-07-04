@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
+import { useTranslation } from 'react-i18next'
 import { selectedSkinsAtom, selectedSkinsDrawerExpandedAtom } from '../store/atoms'
 import type { SelectedSkin } from '../store/atoms'
 import { useChromaData } from '../hooks/useChromaData'
@@ -30,6 +31,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   statusMessage,
   errorMessage
 }) => {
+  const { t } = useTranslation()
   const [selectedSkins, setSelectedSkins] = useAtom(selectedSkinsAtom)
   const [isExpanded, setIsExpanded] = useAtom(selectedSkinsDrawerExpandedAtom)
   const [patcherStatus, setPatcherStatus] = useState<string>('')
@@ -229,11 +231,11 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             ) : (
               <>
                 <span className="font-medium text-charcoal-900 dark:text-charcoal-100">
-                  {selectedSkins.length} {selectedSkins.length === 1 ? 'skin' : 'skins'} selected
+                  {t('skins.selected', { count: selectedSkins.length })}
                 </span>
                 {needsDownload && (
                   <span className="text-sm text-charcoal-600 dark:text-charcoal-400">
-                    ({selectedSkins.length - downloadedCount} to download)
+                    {t('skins.toDownload', { count: selectedSkins.length - downloadedCount })}
                   </span>
                 )}
               </>
@@ -246,7 +248,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             onClick={clearAll}
             disabled={loading}
           >
-            Clear All
+            {t('actions.clearAll')}
           </button>
           <button
             className={`px-6 py-2 font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
@@ -259,11 +261,11 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
           >
             {loading
               ? isPatcherRunning
-                ? 'Stopping...'
-                : 'Applying...'
+                ? t('patcher.stopping')
+                : t('patcher.applying')
               : isPatcherRunning
-                ? 'Stop Patcher'
-                : `Apply ${selectedSkins.length} ${selectedSkins.length === 1 ? 'Skin' : 'Skins'}`}
+                ? t('patcher.stopPatcher')
+                : t('patcher.apply', { count: selectedSkins.length })}
           </button>
         </div>
       </div>
@@ -294,9 +296,9 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                     {!isDownloaded && (
                       <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                         <div className="text-[10px] text-white bg-black/75 px-1.5 py-0.5 rounded text-center">
-                          Not
+                          {t('skins.notDownloaded').split(' ')[0]}
                           <br />
-                          Downloaded
+                          {t('skins.notDownloaded').split(' ')[1]}
                         </div>
                       </div>
                     )}
@@ -337,7 +339,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
           {patcherMessages.length > 0 && (
             <div className="mt-4 p-3 bg-charcoal-100 dark:bg-charcoal-800 rounded-lg">
               <h4 className="text-xs font-medium text-charcoal-700 dark:text-charcoal-300 mb-2">
-                Patcher Messages:
+                {t('patcher.messages')}
               </h4>
               <div className="space-y-1">
                 {patcherMessages.map((message, index) => (

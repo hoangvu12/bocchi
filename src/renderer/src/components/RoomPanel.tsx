@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useAtom } from 'jotai'
+import { useTranslation } from 'react-i18next'
 import {
   p2pRoomAtom,
   p2pSettingsAtom,
@@ -14,6 +15,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Separator } from './ui/separator'
 
 export const RoomPanel: React.FC = () => {
+  const { t } = useTranslation()
   const [p2pRoom] = useAtom(p2pRoomAtom)
   const [p2pSettings, setP2pSettings] = useAtom(p2pSettingsAtom)
   const [connectionStatus] = useAtom(p2pConnectionStatusAtom)
@@ -85,54 +87,52 @@ export const RoomPanel: React.FC = () => {
           onClick={() => setShowModal(true)}
           className="bg-terracotta-500 hover:bg-terracotta-600"
         >
-          Join/Create Room
+          {t('room.joinCreate')}
         </Button>
 
         <Dialog open={showModal} onOpenChange={setShowModal}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>P2P Room</DialogTitle>
-              <DialogDescription>
-                Create a new room or join an existing one to share skins with others.
-              </DialogDescription>
+              <DialogTitle>{t('room.p2pRoom')}</DialogTitle>
+              <DialogDescription>{t('room.description')}</DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4">
               <div>
-                <Label htmlFor="display-name">Display Name</Label>
+                <Label htmlFor="display-name">{t('room.displayName')}</Label>
                 <Input
                   id="display-name"
                   type="text"
                   value={displayNameInput}
                   onChange={(e) => setDisplayNameInput(e.target.value)}
-                  placeholder="Enter your name"
+                  placeholder={t('room.displayNamePlaceholder')}
                 />
               </div>
 
               <Separator />
               <div>
                 <h3 className="font-medium mb-3 text-charcoal-900 dark:text-charcoal-100">
-                  Create a New Room
+                  {t('room.createNew')}
                 </h3>
                 <Button
                   onClick={handleCreateRoom}
                   disabled={loading || !displayNameInput.trim()}
                   className="w-full bg-terracotta-500 hover:bg-terracotta-600"
                 >
-                  {loading ? 'Creating...' : 'Create Room'}
+                  {loading ? t('room.creating') : t('room.createRoom')}
                 </Button>
               </div>
 
               <Separator />
               <div>
                 <h3 className="font-medium mb-3 text-charcoal-900 dark:text-charcoal-100">
-                  Join Existing Room
+                  {t('room.joinExisting')}
                 </h3>
                 <Input
                   type="text"
                   value={roomIdInput}
                   onChange={(e) => setRoomIdInput(e.target.value.toUpperCase())}
-                  placeholder="Enter room ID (e.g., ABC123)"
+                  placeholder={t('room.roomIdPlaceholder')}
                   maxLength={6}
                   className="mb-2"
                 />
@@ -141,7 +141,7 @@ export const RoomPanel: React.FC = () => {
                   disabled={loading || !displayNameInput.trim() || !roomIdInput.trim()}
                   className="w-full bg-terracotta-500 hover:bg-terracotta-600"
                 >
-                  {loading ? 'Joining...' : 'Join Room'}
+                  {loading ? t('room.joining') : t('room.joinRoom')}
                 </Button>
               </div>
 
@@ -162,14 +162,14 @@ export const RoomPanel: React.FC = () => {
           }`}
         />
         <span className="text-sm font-medium text-charcoal-700 dark:text-charcoal-300">
-          Room: {p2pRoom.id}
+          {t('room.roomId', { id: p2pRoom.id })}
         </span>
         <Button
           variant="ghost"
           size="icon"
           onClick={copyRoomId}
           className="h-8 w-8"
-          title="Copy room ID"
+          title={t('room.copyRoomId')}
         >
           <svg
             className="w-4 h-4 text-charcoal-600 dark:text-charcoal-400"
@@ -187,7 +187,7 @@ export const RoomPanel: React.FC = () => {
         </Button>
       </div>
       <span className="text-sm text-charcoal-600 dark:text-charcoal-400">
-        ({totalMembers} {totalMembers === 1 ? 'member' : 'members'})
+        ({t('room.members', { count: totalMembers })})
       </span>
       <Button
         variant="ghost"
@@ -195,7 +195,7 @@ export const RoomPanel: React.FC = () => {
         onClick={handleLeaveRoom}
         className="ml-auto text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
       >
-        Leave
+        {t('actions.leave')}
       </Button>
     </div>
   )

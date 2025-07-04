@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAtom } from 'jotai'
+import { useTranslation } from 'react-i18next'
 import { filterPanelExpandedAtom } from '../store/atoms'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
@@ -33,6 +34,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   totalCount,
   onClearFilters
 }) => {
+  const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useAtom(filterPanelExpandedAtom)
 
   const updateFilter = <K extends keyof FilterOptions>(key: K, value: FilterOptions[K]) => {
@@ -74,20 +76,20 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                 d="M19 9l-7 7-7-7"
               />
             </svg>
-            <span>Filters & Sort</span>
+            <span>{t('filters.title')}</span>
             {hasActiveFilters && (
               <Badge
                 variant="default"
                 className="bg-terracotta-500 hover:bg-terracotta-600 text-white"
               >
-                Active
+                {t('filters.active')}
               </Badge>
             )}
           </Button>
 
           <div className="flex items-center gap-4 text-sm text-charcoal-600 dark:text-charcoal-400">
             <span>
-              {downloadedCount} / {totalCount} downloaded
+              {downloadedCount} / {totalCount} {t('skin.downloaded').toLowerCase()}
             </span>
             {hasActiveFilters && (
               <Button
@@ -95,7 +97,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                 onClick={onClearFilters}
                 className="text-terracotta-600 dark:text-terracotta-400 hover:text-terracotta-700 dark:hover:text-terracotta-300 font-medium h-auto p-0"
               >
-                Clear Filters
+                {t('actions.clearFilters')}
               </Button>
             )}
           </div>
@@ -106,7 +108,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             {/* Download Status */}
             <div>
               <h3 className="text-xs font-semibold text-charcoal-700 dark:text-charcoal-300 uppercase tracking-wider mb-3">
-                Download Status
+                {t('filters.downloadStatus')}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {(['all', 'downloaded', 'not-downloaded'] as DownloadFilter[]).map((status) => (
@@ -122,10 +124,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                     }
                   >
                     {status === 'all'
-                      ? 'All'
+                      ? t('filters.all')
                       : status === 'downloaded'
-                        ? 'Downloaded'
-                        : 'Not Downloaded'}
+                        ? t('filters.downloaded')
+                        : t('filters.notDownloaded')}
                   </Button>
                 ))}
               </div>
@@ -134,7 +136,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             {/* Chroma Status */}
             <div>
               <h3 className="text-xs font-semibold text-charcoal-700 dark:text-charcoal-300 uppercase tracking-wider mb-3">
-                Chromas
+                {t('filters.chromas')}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {(['all', 'has-chromas', 'no-chromas'] as ChromaFilter[]).map((status) => (
@@ -150,10 +152,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                     }
                   >
                     {status === 'all'
-                      ? 'All'
+                      ? t('filters.all')
                       : status === 'has-chromas'
-                        ? 'Has Chromas'
-                        : 'No Chromas'}
+                        ? t('filters.hasChromas')
+                        : t('filters.noChromas')}
                   </Button>
                 ))}
               </div>
@@ -162,7 +164,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             {/* Champion Tags */}
             <div>
               <h3 className="text-xs font-semibold text-charcoal-700 dark:text-charcoal-300 uppercase tracking-wider mb-3">
-                Champion Type
+                {t('filters.championType')}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {availableTags.map((tag) => (
@@ -186,7 +188,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             {/* Sort Options */}
             <div>
               <h3 className="text-xs font-semibold text-charcoal-700 dark:text-charcoal-300 uppercase tracking-wider mb-3">
-                Sort By
+                {t('filters.sortBy')}
               </h3>
               <div className="flex flex-wrap gap-2">
                 <Select
@@ -201,31 +203,31 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                       value="name-asc"
                       className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
                     >
-                      Name (A-Z)
+                      {t('filters.nameAsc')}
                     </SelectItem>
                     <SelectItem
                       value="name-desc"
                       className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
                     >
-                      Name (Z-A)
+                      {t('filters.nameDesc')}
                     </SelectItem>
                     <SelectItem
                       value="skin-asc"
                       className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
                     >
-                      Skin # (Low to High)
+                      {t('filters.skinNumAsc')}
                     </SelectItem>
                     <SelectItem
                       value="skin-desc"
                       className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
                     >
-                      Skin # (High to Low)
+                      {t('filters.skinNumDesc')}
                     </SelectItem>
                     <SelectItem
                       value="champion"
                       className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
                     >
-                      Champion Name
+                      {t('filters.championName')}
                     </SelectItem>
                   </SelectContent>
                 </Select>

@@ -13,9 +13,24 @@
     "close": "Close",
     "minimize": "Minimize",
     "maximize": "Maximize",
+    "restore": "Restore",
     "search": "Search",
     "filter": "Filter",
-    "sort": "Sort"
+    "sort": "Sort",
+    "clearAll": "Clear All",
+    "clearFilters": "Clear Filters",
+    "save": "Save",
+    "saveChanges": "Save Changes",
+    "delete": "Delete",
+    "decline": "Decline",
+    "accept": "Accept",
+    "join": "Join",
+    "leave": "Leave",
+    "create": "Create",
+    "copy": "Copy",
+    "later": "Later",
+    "skipForNow": "Skip for now",
+    "downloadAndInstall": "Download and Install"
   },
   "nav": {
     "favorites": "Favorites",
@@ -27,7 +42,9 @@
     "noData": "No champion data found",
     "downloadData": "Download Champion Data",
     "updateData": "Update Data",
-    "version": "Version"
+    "version": "Version",
+    "allChampions": "All Champions",
+    "customMods": "Custom Mods"
   },
   "skin": {
     "searchPlaceholder": "Search skins across all champions...",
@@ -36,7 +53,8 @@
     "downloaded": "Downloaded",
     "favorite": "Add to favorites",
     "unfavorite": "Remove from favorites",
-    "clickToApply": "Click on any skin to apply it instantly"
+    "clickToApply": "Click on any skin to apply it instantly",
+    "showing": "Showing {{count}} {{count, plural, =1 {skin} other {skins}}}"
   },
   "status": {
     "detectingGame": "Detecting game path...",
@@ -97,5 +115,106 @@
   },
   "cancel": "Cancel",
   "success": "Success",
-  "error": "Error"
+  "error": "Error",
+  "update": {
+    "available": "Update Available",
+    "description": "A new version of Bocchi is available for download.",
+    "whatsNew": "What's New",
+    "downloading": "Downloading...",
+    "updateNow": "Update Now",
+    "championDataAvailable": "Champion Data Update Available",
+    "championDataDescription": "A new version of champion data is available. This update includes the latest champions, skins, and other game content.",
+    "currentVersion": "Current version: ",
+    "updating": "Updating..."
+  },
+  "skins": {
+    "selected": "{{count}} {{count, plural, =1 {skin} other {skins}}} selected",
+    "toDownload": "({{count}} to download)",
+    "downloaded": "Downloaded Skins",
+    "notDownloaded": "Not Downloaded",
+    "repository": "Repository Skins",
+    "customImports": "Custom Imports",
+    "total": "Total: {{count}} skins",
+    "searchPlaceholder": "Search by champion or skin name...",
+    "noSkinsFound": "No skins found",
+    "userImport": "User Import",
+    "custom": "Custom",
+    "deleting": "Deleting...",
+    "chromas": "{{count}} {{count, plural, =1 {chroma} other {chromas}}} available",
+    "selectChroma": "Select Chroma for {{skinName}}",
+    "chooseChroma": "Choose from {{count}} available {{count, plural, =1 {chroma} other {chromas}}}",
+    "mySkins": "My Skins",
+    "roomSkins": "Room Skins"
+  },
+  "filters": {
+    "title": "Filters & Sort",
+    "active": "Active",
+    "downloadStatus": "Download Status",
+    "all": "All",
+    "downloaded": "Downloaded",
+    "notDownloaded": "Not Downloaded",
+    "chromas": "Chromas",
+    "hasChromas": "Has Chromas",
+    "noChromas": "No Chromas",
+    "championType": "Champion Type",
+    "sortBy": "Sort By",
+    "nameAsc": "Name (A-Z)",
+    "nameDesc": "Name (Z-A)",
+    "skinNumAsc": "Skin # (Low to High)",
+    "skinNumDesc": "Skin # (High to Low)",
+    "championName": "Champion Name"
+  },
+  "patcher": {
+    "applying": "Applying...",
+    "stopping": "Stopping...",
+    "stopPatcher": "Stop Patcher",
+    "apply": "Apply {{count}} {{count, plural, =1 {Skin} other {Skins}}}",
+    "messages": "Patcher Messages:"
+  },
+  "room": {
+    "joinCreate": "Join/Create Room",
+    "p2pRoom": "P2P Room",
+    "description": "Create a new room or join an existing one to share skins with others.",
+    "displayName": "Display Name",
+    "displayNamePlaceholder": "Enter your name",
+    "createNew": "Create a New Room",
+    "creating": "Creating...",
+    "createRoom": "Create Room",
+    "joinExisting": "Join Existing Room",
+    "roomIdPlaceholder": "Enter room ID (e.g., ABC123)",
+    "joining": "Joining...",
+    "joinRoom": "Join Room",
+    "roomId": "Room: {{id}}",
+    "copyRoomId": "Copy room ID",
+    "members": "{{count}} {{count, plural, =1 {member} other {members}}}"
+  },
+  "fileTransfer": {
+    "incoming": "Incoming File Transfer",
+    "description": "A peer wants to share a custom mod with you",
+    "file": "File:",
+    "size": "Size:",
+    "champion": "Champion:",
+    "skin": "Skin:",
+    "transferring": "Transferring file...",
+    "completed": "Transfer completed!"
+  },
+  "customMod": {
+    "edit": "Edit Custom Mod",
+    "modName": "Mod Name",
+    "modNamePlaceholder": "Enter mod name",
+    "previewImage": "Preview Image (Optional)",
+    "selectImage": "Select Image",
+    "newImageSelected": "New image selected"
+  },
+  "social": {
+    "joinDiscord": "Join Discord",
+    "viewGithub": "View on GitHub"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "downloadFailed": "Failed to download",
+    "connectionError": "Connection error",
+    "pathNotSet": "Please set game path first",
+    "operationTimeout": "Operation timed out. Please try again."
+  }
 }

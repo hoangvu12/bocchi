@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Champion, Skin } from '../App'
 import { type Chroma, type SelectedSkin } from '../store/atoms'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
@@ -24,6 +25,7 @@ export const ChromaSelectionDialog: React.FC<ChromaSelectionDialogProps> = ({
   downloadedSkins,
   onChromaSelect
 }) => {
+  const { t } = useTranslation()
   const isChromaSelected = (chromaId: number) => {
     return selectedSkins.some(
       (s) =>
@@ -43,9 +45,9 @@ export const ChromaSelectionDialog: React.FC<ChromaSelectionDialogProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle>Select Chroma for {skin.name}</DialogTitle>
+          <DialogTitle>{t('skins.selectChroma', { skinName: skin.name })}</DialogTitle>
           <DialogDescription>
-            Choose from {chromas.length} available chroma{chromas.length !== 1 ? 's' : ''}
+            {t('skins.chooseChroma', { count: chromas.length })}
           </DialogDescription>
         </DialogHeader>
 

@@ -274,7 +274,7 @@ function AppContent(): React.JSX.Element {
         setIsApplyingSkins(false)
         setIsDeletingSkin(false)
         setIsStoppingPatcher(false)
-        setStatusMessage('Operation timed out. Please try again.')
+        setStatusMessage(t('errors.operationTimeout'))
       }, 30000) // 30 second timeout
 
       return () => {
@@ -285,7 +285,7 @@ function AppContent(): React.JSX.Element {
     return () => {
       console.log('[Loading Timeout] Clearing timeout')
     }
-  }, [loading])
+  }, [loading, t])
 
   // Migrate old custom mod IDs to new stable format
   useEffect(() => {
@@ -1031,15 +1031,6 @@ function AppContent(): React.JSX.Element {
                 {t('champion.downloadData')}
               </button>
             )}
-            {championData && (
-              <button
-                className="px-4 py-2.5 text-sm bg-white dark:bg-charcoal-800 hover:bg-cream-100 dark:hover:bg-charcoal-700 text-charcoal-800 dark:text-charcoal-200 font-medium rounded-lg transition-all duration-200 border border-charcoal-200 dark:border-charcoal-700 hover:border-charcoal-300 dark:hover:border-charcoal-600 shadow-sm hover:shadow-md dark:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
-                onClick={fetchChampionData}
-                disabled={loading}
-              >
-                {t('champion.updateData')}
-              </button>
-            )}
             <RoomPanel />
           </div>
         </div>
@@ -1050,7 +1041,7 @@ function AppContent(): React.JSX.Element {
               <div className="p-6">
                 <input
                   type="text"
-                  placeholder="Search champions"
+                  placeholder={t('champion.searchPlaceholder')}
                   value={championSearchQuery}
                   onChange={(e) => setChampionSearchQuery(e.target.value)}
                   className="w-full px-4 py-2.5 text-sm bg-cream-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 rounded-lg text-charcoal-700 dark:text-charcoal-200 placeholder-charcoal-400 dark:placeholder-charcoal-500 focus:outline-none focus:ring-2 focus:ring-terracotta-500 focus:border-transparent transition-all duration-200"
@@ -1089,7 +1080,7 @@ function AppContent(): React.JSX.Element {
               <div className="px-8 pt-6 pb-4 flex items-center justify-between gap-4">
                 <input
                   type="text"
-                  placeholder="Search skins across all champions..."
+                  placeholder={t('skin.searchPlaceholder')}
                   value={skinSearchQuery}
                   onChange={(e) => setSkinSearchQuery(e.target.value)}
                   className="flex-1 px-5 py-3 bg-white dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 rounded-xl text-charcoal-700 dark:text-charcoal-200 placeholder-charcoal-400 dark:placeholder-charcoal-500 focus:outline-none focus:ring-2 focus:ring-terracotta-500 focus:border-transparent transition-all duration-200 shadow-soft dark:shadow-none"
@@ -1126,8 +1117,7 @@ function AppContent(): React.JSX.Element {
                   {getDisplaySkins().length > 0 ? (
                     <>
                       <div className="px-8 pb-4 text-sm text-charcoal-600 dark:text-charcoal-400">
-                        Showing {getDisplaySkins().length} skin
-                        {getDisplaySkins().length !== 1 ? 's' : ''}
+                        {t('skin.showing', { count: getDisplaySkins().length })}
                       </div>
                       <div className="flex-1 relative" style={{ minHeight: 0 }}>
                         <AutoSizer>

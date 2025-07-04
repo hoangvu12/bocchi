@@ -13,9 +13,24 @@
     "close": "Đóng",
     "minimize": "Thu nhỏ",
     "maximize": "Phóng to",
+    "restore": "Khôi phục",
     "search": "Tìm kiếm",
     "filter": "Lọc",
-    "sort": "Sắp xếp"
+    "sort": "Sắp xếp",
+    "clearAll": "Xóa tất cả",
+    "clearFilters": "Xóa bộ lọc",
+    "save": "Lưu",
+    "saveChanges": "Lưu thay đổi",
+    "delete": "Xóa",
+    "decline": "Từ chối",
+    "accept": "Chấp nhận",
+    "join": "Tham gia",
+    "leave": "Rời khỏi",
+    "create": "Tạo",
+    "copy": "Sao chép",
+    "later": "Để sau",
+    "skipForNow": "Bỏ qua lúc này",
+    "downloadAndInstall": "Tải xuống và cài đặt"
   },
   "nav": {
     "favorites": "Yêu thích",
@@ -27,7 +42,9 @@
     "noData": "Không tìm thấy dữ liệu tướng",
     "downloadData": "Tải Dữ Liệu Tướng",
     "updateData": "Cập Nhật Dữ Liệu",
-    "version": "Phiên bản"
+    "version": "Phiên bản",
+    "allChampions": "Tất cả tướng",
+    "customMods": "Mod tùy chỉnh"
   },
   "skin": {
     "searchPlaceholder": "Tìm kiếm trang phục trong tất cả tướng...",
@@ -36,7 +53,8 @@
     "downloaded": "Đã tải xuống",
     "favorite": "Thêm vào yêu thích",
     "unfavorite": "Xóa khỏi yêu thích",
-    "clickToApply": "Nhấp vào trang phục để áp dụng ngay"
+    "clickToApply": "Nhấp vào trang phục để áp dụng ngay",
+    "showing": "Đang hiển thị {{count}} trang phục"
   },
   "status": {
     "detectingGame": "Đang tìm đường dẫn game...",
@@ -97,5 +115,106 @@
   },
   "cancel": "Hủy",
   "success": "Thành công",
-  "error": "Lỗi"
+  "error": "Lỗi",
+  "update": {
+    "available": "Có bản cập nhật",
+    "description": "Đã có phiên bản mới của Bocchi để tải xuống.",
+    "whatsNew": "Có gì mới",
+    "downloading": "Đang tải xuống...",
+    "updateNow": "Cập nhật ngay",
+    "championDataAvailable": "Có bản cập nhật dữ liệu tướng",
+    "championDataDescription": "Đã có phiên bản mới của dữ liệu tướng. Bản cập nhật này bao gồm các tướng, trang phục và nội dung game mới nhất.",
+    "currentVersion": "Phiên bản hiện tại: ",
+    "updating": "Đang cập nhật..."
+  },
+  "skins": {
+    "selected": "{{count}} trang phục đã chọn",
+    "toDownload": "({{count}} cần tải xuống)",
+    "downloaded": "Trang phục đã tải",
+    "notDownloaded": "Chưa tải xuống",
+    "repository": "Trang phục kho lưu trữ",
+    "customImports": "Nhập tùy chỉnh",
+    "total": "Tổng cộng: {{count}} trang phục",
+    "searchPlaceholder": "Tìm kiếm theo tên tướng hoặc trang phục...",
+    "noSkinsFound": "Không tìm thấy trang phục",
+    "userImport": "Nhập từ người dùng",
+    "custom": "Tùy chỉnh",
+    "deleting": "Đang xóa...",
+    "chromas": "{{count}} chroma có sẵn",
+    "selectChroma": "Chọn Chroma cho {{skinName}}",
+    "chooseChroma": "Chọn từ {{count}} chroma có sẵn",
+    "mySkins": "Trang phục của tôi",
+    "roomSkins": "Trang phục trong phòng"
+  },
+  "filters": {
+    "title": "Bộ lọc & Sắp xếp",
+    "active": "Đang áp dụng",
+    "downloadStatus": "Trạng thái tải xuống",
+    "all": "Tất cả",
+    "downloaded": "Đã tải xuống",
+    "notDownloaded": "Chưa tải xuống",
+    "chromas": "Chromas",
+    "hasChromas": "Có Chromas",
+    "noChromas": "Không có Chromas",
+    "championType": "Loại tướng",
+    "sortBy": "Sắp xếp theo",
+    "nameAsc": "Tên (A-Z)",
+    "nameDesc": "Tên (Z-A)",
+    "skinNumAsc": "Số trang phục (Thấp đến Cao)",
+    "skinNumDesc": "Số trang phục (Cao đến Thấp)",
+    "championName": "Tên tướng"
+  },
+  "patcher": {
+    "applying": "Đang áp dụng...",
+    "stopping": "Đang dừng...",
+    "stopPatcher": "Dừng Patcher",
+    "apply": "Áp dụng {{count}} trang phục",
+    "messages": "Thông báo từ Patcher:"
+  },
+  "room": {
+    "joinCreate": "Tham gia/Tạo phòng",
+    "p2pRoom": "Phòng P2P",
+    "description": "Tạo phòng mới hoặc tham gia phòng có sẵn để chia sẻ trang phục với người khác.",
+    "displayName": "Tên hiển thị",
+    "displayNamePlaceholder": "Nhập tên của bạn",
+    "createNew": "Tạo phòng mới",
+    "creating": "Đang tạo...",
+    "createRoom": "Tạo phòng",
+    "joinExisting": "Tham gia phòng có sẵn",
+    "roomIdPlaceholder": "Nhập mã phòng (ví dụ: ABC123)",
+    "joining": "Đang tham gia...",
+    "joinRoom": "Tham gia phòng",
+    "roomId": "Phòng: {{id}}",
+    "copyRoomId": "Sao chép mã phòng",
+    "members": "{{count}} thành viên"
+  },
+  "fileTransfer": {
+    "incoming": "Chuyển tệp đến",
+    "description": "Một người dùng muốn chia sẻ mod tùy chỉnh với bạn",
+    "file": "Tệp:",
+    "size": "Kích thước:",
+    "champion": "Tướng:",
+    "skin": "Trang phục:",
+    "transferring": "Đang chuyển tệp...",
+    "completed": "Chuyển tệp hoàn tất!"
+  },
+  "customMod": {
+    "edit": "Chỉnh sửa Mod tùy chỉnh",
+    "modName": "Tên Mod",
+    "modNamePlaceholder": "Nhập tên mod",
+    "previewImage": "Ảnh xem trước (Tùy chọn)",
+    "selectImage": "Chọn ảnh",
+    "newImageSelected": "Đã chọn ảnh mới"
+  },
+  "social": {
+    "joinDiscord": "Tham gia Discord",
+    "viewGithub": "Xem trên GitHub"
+  },
+  "errors": {
+    "generic": "Đã xảy ra lỗi",
+    "downloadFailed": "Tải xuống thất bại",
+    "connectionError": "Lỗi kết nối",
+    "pathNotSet": "Vui lòng thiết lập đường dẫn game trước",
+    "operationTimeout": "Thao tác hết thời gian chờ. Vui lòng thử lại."
+  }
 }

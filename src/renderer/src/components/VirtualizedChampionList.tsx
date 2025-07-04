@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { VariableSizeList as List } from 'react-window'
 import type { Champion } from '../App'
 
@@ -19,6 +20,7 @@ const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> =
   height,
   width
 }) => {
+  const { t } = useTranslation()
   // Group champions by first letter
   const groupedChampions = React.useMemo(() => {
     const items: Array<{ type: 'all' | 'custom' | 'divider' | 'letter' | 'champion'; data?: any }> =
@@ -79,7 +81,7 @@ const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> =
                 <div className="w-10 h-10 rounded-lg bg-charcoal-200 dark:bg-charcoal-700 flex items-center justify-center">
                   <span className="text-lg font-bold">A</span>
                 </div>
-                <span className="text-sm font-medium">All Champions</span>
+                <span className="text-sm font-medium">{t('champion.allChampions')}</span>
               </div>
             </div>
           )
@@ -99,7 +101,7 @@ const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> =
                 <div className="w-10 h-10 rounded-lg bg-charcoal-200 dark:bg-charcoal-700 flex items-center justify-center">
                   <span className="text-lg font-bold">C</span>
                 </div>
-                <span className="text-sm font-medium">Custom Mods</span>
+                <span className="text-sm font-medium">{t('champion.customMods')}</span>
               </div>
             </div>
           )
@@ -149,7 +151,7 @@ const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> =
           return null
       }
     },
-    [groupedChampions, selectedChampion, selectedChampionKey, onChampionSelect]
+    [groupedChampions, selectedChampion, selectedChampionKey, t, onChampionSelect]
   )
 
   // Calculate total height based on dynamic item heights

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { DarkModeToggle } from './DarkModeToggle'
 import { Button } from './ui/button'
@@ -9,6 +10,7 @@ interface TitleBarProps {
 }
 
 export function TitleBar({ appVersion }: TitleBarProps) {
+  const { t } = useTranslation()
   const [isMaximized, setIsMaximized] = useState(false)
 
   useEffect(() => {
@@ -72,8 +74,8 @@ export function TitleBar({ appVersion }: TitleBarProps) {
             size="icon"
             className="w-8 h-8 rounded"
             onClick={() => handleOpenExternal('https://discord.gg/frXDBTe4FW')}
-            aria-label="Join Discord"
-            title="Join Discord"
+            aria-label={t('social.joinDiscord')}
+            title={t('social.joinDiscord')}
           >
             <svg
               className="w-4 h-4 text-charcoal-600 dark:text-charcoal-400 group-hover:text-[#5865F2] dark:group-hover:text-[#5865F2] transition-colors"
@@ -88,8 +90,8 @@ export function TitleBar({ appVersion }: TitleBarProps) {
             size="icon"
             className="w-8 h-8 rounded"
             onClick={() => handleOpenExternal('https://github.com/hoangvu12/bocchi')}
-            aria-label="View on GitHub"
-            title="View on GitHub"
+            aria-label={t('social.viewGithub')}
+            title={t('social.viewGithub')}
           >
             <svg
               className="w-4 h-4 text-charcoal-600 dark:text-charcoal-400 group-hover:text-charcoal-900 dark:group-hover:text-white transition-colors"
@@ -107,7 +109,7 @@ export function TitleBar({ appVersion }: TitleBarProps) {
           size="icon"
           className="w-11 h-10 rounded-none"
           onClick={handleMinimize}
-          aria-label="Minimize"
+          aria-label={t('actions.minimize')}
         >
           <div className="w-3 h-[1.5px] bg-charcoal-400 dark:bg-charcoal-500 group-hover:bg-charcoal-600 dark:group-hover:bg-charcoal-300 transition-colors"></div>
         </Button>
@@ -116,7 +118,7 @@ export function TitleBar({ appVersion }: TitleBarProps) {
           size="icon"
           className="w-11 h-10 rounded-none"
           onClick={handleMaximize}
-          aria-label={isMaximized ? 'Restore' : 'Maximize'}
+          aria-label={isMaximized ? t('actions.restore') : t('actions.maximize')}
         >
           <div
             className={`${isMaximized ? 'w-2.5 h-2.5 border-[1.5px] border-charcoal-400 dark:border-charcoal-500 group-hover:border-charcoal-600 dark:group-hover:border-charcoal-300' : 'w-3 h-3 border-[1.5px] border-charcoal-400 dark:border-charcoal-500 group-hover:border-charcoal-600 dark:group-hover:border-charcoal-300'} transition-colors rounded-[1px]`}
@@ -127,7 +129,7 @@ export function TitleBar({ appVersion }: TitleBarProps) {
           size="icon"
           className="w-11 h-10 rounded-none hover:bg-red-50 dark:hover:bg-red-900/20"
           onClick={handleClose}
-          aria-label="Close"
+          aria-label={t('actions.close')}
         >
           <svg
             className="w-3.5 h-3.5 text-charcoal-400 dark:text-charcoal-500 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors"
