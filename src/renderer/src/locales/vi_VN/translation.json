@@ -215,6 +215,7 @@
     "downloadFailed": "Tải xuống thất bại",
     "connectionError": "Lỗi kết nối",
     "pathNotSet": "Vui lòng thiết lập đường dẫn game trước",
-    "operationTimeout": "Thao tác hết thời gian chờ. Vui lòng thử lại."
+    "operationTimeout": "Thao tác hết thời gian chờ. Vui lòng thử lại.",
+    "skinNotAvailable": "Trang phục không có trong kho lưu trữ lol-skins hoặc ánh xạ bị sai"
   }
 }

@@ -632,7 +632,13 @@ function AppContent(): React.JSX.Element {
         throw new Error(patcherResult.message || 'Failed to apply skins')
       }
     } catch (error) {
-      const errorMsg = `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
+      let errorMsg = error instanceof Error ? error.message : 'Unknown error'
+
+      // Check if the error message is a translation key
+      if (errorMsg.startsWith('errors.')) {
+        errorMsg = t(errorMsg)
+      }
+
       setErrorMessage(errorMsg)
       setStatusMessage(errorMsg)
       // Clear error after 10 seconds

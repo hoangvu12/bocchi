@@ -65,6 +65,12 @@ export class SkinDownloader {
       return skinInfo
     } catch (error) {
       console.error(`Failed to download skin: ${error}`)
+
+      // Check if it's a 404 error
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        throw new Error('errors.skinNotAvailable')
+      }
+
       throw new Error(
         `Failed to download skin: ${error instanceof Error ? error.message : 'Unknown error'}`
       )

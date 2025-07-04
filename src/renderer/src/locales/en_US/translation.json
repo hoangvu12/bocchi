@@ -215,6 +215,7 @@
     "downloadFailed": "Failed to download",
     "connectionError": "Connection error",
     "pathNotSet": "Please set game path first",
-    "operationTimeout": "Operation timed out. Please try again."
+    "operationTimeout": "Operation timed out. Please try again.",
+    "skinNotAvailable": "The skin is either not available in lol-skins repository or the mapping is wrong"
   }
 }
