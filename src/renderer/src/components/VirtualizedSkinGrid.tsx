@@ -5,6 +5,7 @@ import type { SelectedSkin } from '../store/atoms'
 import { Button } from './ui/button'
 import { useChromaData } from '../hooks/useChromaData'
 import { ChromaSelectionDialog } from './ChromaSelectionDialog'
+import { isOldFormatCustomId } from '../utils/customModId'
 
 interface VirtualizedSkinGridProps {
   skins: Array<{ champion: Champion; skin: Skin }>
@@ -182,9 +183,26 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       const isDownloaded = !!downloadedSkin
       const isUserSkin = downloadedSkin?.skinName?.includes('[User]')
       const isFavorite = favorites.has(`${champion.key}_${skin.id}`)
-      const isSelected = selectedSkins.some(
-        (s) => s.championKey === champion.key && s.skinId === skin.id && !s.chromaId
-      )
+      const isSelected = selectedSkins.some((s) => {
+        // Direct match
+        if (s.championKey === champion.key && s.skinId === skin.id && !s.chromaId) {
+          return true
+        }
+
+        // Backward compatibility: check if old format ID matches current skin
+        if (
+          skin.id.startsWith('custom_') &&
+          s.skinId.startsWith('custom_') &&
+          isOldFormatCustomId(s.skinId) &&
+          s.championKey === champion.key &&
+          s.skinName === skin.name &&
+          !s.chromaId
+        ) {
+          return true
+        }
+
+        return false
+      })
 
       // Adjust style to account for gap
       const adjustedStyle = {

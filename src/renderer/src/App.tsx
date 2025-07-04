@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { Upload } from 'lucide-react'
 import { FilterPanel } from './components/FilterPanel'
+import { generateCustomModId, isOldFormatCustomId } from './utils/customModId'
 import { GridViewToggle } from './components/GridViewToggle'
 import { TitleBar } from './components/TitleBar'
 import { UpdateDialog } from './components/UpdateDialog'
@@ -286,6 +287,49 @@ function AppContent(): React.JSX.Element {
     }
   }, [loading])
 
+  // Migrate old custom mod IDs to new stable format
+  useEffect(() => {
+    if (downloadedSkins.length > 0 && selectedSkins.length > 0) {
+      const needsMigration = selectedSkins.some(
+        (skin) => skin.skinId.startsWith('custom_') && isOldFormatCustomId(skin.skinId)
+      )
+
+      if (needsMigration) {
+        const migratedSkins = selectedSkins.map((skin) => {
+          // Check if it's an old format custom skin ID
+          if (skin.skinId.startsWith('custom_') && isOldFormatCustomId(skin.skinId)) {
+            // Find the matching custom mod by name
+            const customMod = downloadedSkins.find(
+              (ds) =>
+                ds.skinName.includes('[User]') &&
+                ds.skinName.includes(skin.skinName) &&
+                (skin.championKey === 'Custom' || ds.championName === skin.championKey)
+            )
+
+            if (customMod) {
+              // Generate new stable ID
+              const cleanSkinName = customMod.skinName
+                .replace('[User] ', '')
+                .replace(/\.(wad|zip|fantome)$/, '')
+              const newId =
+                skin.championKey === 'Custom'
+                  ? `custom_${generateCustomModId('Custom', cleanSkinName, customMod.localPath)}`
+                  : `custom_${skin.championKey}_${generateCustomModId(skin.championKey, cleanSkinName, customMod.localPath)}`
+
+              return { ...skin, skinId: newId }
+            }
+          }
+          return skin
+        })
+
+        // Only update if there were actual changes
+        if (JSON.stringify(migratedSkins) !== JSON.stringify(selectedSkins)) {
+          setSelectedSkins(migratedSkins)
+        }
+      }
+    }
+  }, [downloadedSkins, selectedSkins, setSelectedSkins])
+
   const checkPatcherStatus = async () => {
     const isRunning = await window.api.isPatcherRunning()
     setIsPatcherRunning(isRunning)
@@ -409,12 +453,31 @@ function AppContent(): React.JSX.Element {
       return
     }
 
-    const existingIndex = selectedSkins.findIndex(
-      (s) =>
+    // Check for existing selection (including old format for backward compatibility)
+    const existingIndex = selectedSkins.findIndex((s) => {
+      // Direct match
+      if (
         s.championKey === champion.key &&
         s.skinId === skin.id &&
         s.chromaId === (chromaId || undefined)
-    )
+      ) {
+        return true
+      }
+
+      // Backward compatibility: match old format custom IDs by name
+      if (
+        skin.id.startsWith('custom_') &&
+        s.skinId.startsWith('custom_') &&
+        isOldFormatCustomId(s.skinId) &&
+        s.championKey === champion.key &&
+        s.skinName === skin.name &&
+        s.chromaId === (chromaId || undefined)
+      ) {
+        return true
+      }
+
+      return false
+    })
 
     if (existingIndex >= 0) {
       // Remove from selection
@@ -704,10 +767,11 @@ function AppContent(): React.JSX.Element {
         (ds) => ds.skinName.startsWith('[User]') && ds.championName === selectedChampion.key
       )
       customSkinsForChampion.forEach((mod, index) => {
+        const skinName = mod.skinName.replace('[User] ', '').replace(/\.(wad|zip|fantome)$/, '')
         const customSkin: Skin = {
-          id: `custom_${selectedChampion.key}_${index}`,
+          id: `custom_${selectedChampion.key}_${generateCustomModId(selectedChampion.key, skinName, mod.localPath)}`,
           num: 9000 + index, // High number to appear at the end
-          name: mod.skinName.replace('[User] ', '').replace(/\.(wad|zip|fantome)$/, ''),
+          name: skinName,
           chromas: false
         }
         if (!showFavoritesOnly || favorites.has(`${selectedChampion.key}_${customSkin.id}`)) {
@@ -740,10 +804,11 @@ function AppContent(): React.JSX.Element {
           skins: [],
           tags: []
         }
+        const skinName = mod.skinName.replace('[User] ', '').replace(/\.(wad|zip|fantome)$/, '')
         const customSkin: Skin = {
-          id: `custom_${index}`,
+          id: `custom_${generateCustomModId('Custom', skinName, mod.localPath)}`,
           num: index + 1,
-          name: mod.skinName.replace('[User] ', '').replace(/\.(wad|zip|fantome)$/, ''),
+          name: skinName,
           chromas: false
         }
         allSkins.push({ champion: customChampion, skin: customSkin })
