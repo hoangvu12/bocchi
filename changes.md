@@ -1,11 +1,11 @@
 ### Features
 
-- Added Spanish (Argentina) translation
-- Fully translate hardcoded English
-- Drag and drop custom mods
-- Multple custom mods import
+- Added Japanese
+- Added Korean
+- Added Chinese
+- Added Russian
 
 ### Fixes
 
-- Missing chromas
-- Custom mods don't have IDs causing UI bugs
+- Some translations not showing correctly
+- If chroma and the base skin are selected, ignore the base skin.
