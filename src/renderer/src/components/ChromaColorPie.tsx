@@ -19,7 +19,29 @@ export const ChromaColorPie: React.FC<ChromaColorPieProps> = ({
   const center = radius
   const strokeWidth = 0
 
-  // Create pie segments
+  // Special case for single color - draw a circle
+  if (colors.length === 1) {
+    return (
+      <svg
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        className={className}
+        style={{ borderRadius: '50%' }}
+      >
+        <circle
+          cx={center}
+          cy={center}
+          r={radius}
+          fill={colors[0]}
+          stroke={strokeWidth > 0 ? '#000' : 'none'}
+          strokeWidth={strokeWidth}
+        />
+      </svg>
+    )
+  }
+
+  // Create pie segments for multiple colors
   const segments = colors.map((color, index) => {
     const startAngle = (index * 360) / colors.length
     const endAngle = ((index + 1) * 360) / colors.length
