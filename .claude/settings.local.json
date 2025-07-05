@@ -1,6 +1,11 @@
 {
   "permissions": {
-    "allow": ["Bash(cp:*)", "Bash(rg:*)", "Bash(grep:*)"],
+    "allow": [
+      "Bash(cp:*)",
+      "Bash(rg:*)",
+      "Bash(grep:*)",
+      "Bash(mkdir:*)"
+    ],
     "deny": []
   }
 }

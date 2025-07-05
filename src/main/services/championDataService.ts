@@ -48,7 +48,7 @@ interface SkinMappingsData {
 
 export class ChampionDataService {
   private apiVersion: string = ''
-  private supportedLanguages = ['en_US', 'vi_VN']
+  private supportedLanguages = ['en_US', 'vi_VN', 'es_AR', 'ja_JP', 'ko_KR', 'zh_CN', 'ru_RU']
   private githubDataUrl =
     'https://raw.githubusercontent.com/hoangvu12/bocchi/refs/heads/champion-data/data'
   private cachedData: Map<string, { version: string; champions: Champion[] }> = new Map()
