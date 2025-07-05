@@ -62,8 +62,8 @@ export const ChromaSelectionDialog: React.FC<ChromaSelectionDialogProps> = ({
                   key={chroma.id}
                   className={`relative flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all overflow-hidden ${
                     isSelected
-                      ? 'bg-terracotta-50 dark:bg-terracotta-900/20 border-2 border-terracotta-500'
-                      : 'bg-white dark:bg-charcoal-800 border-2 border-charcoal-200 dark:border-charcoal-700 hover:border-terracotta-400 hover:bg-charcoal-50 dark:hover:bg-charcoal-700'
+                      ? 'bg-primary-50 dark:bg-primary-900/20 border-2 border-primary-500'
+                      : 'bg-surface border-2 border-border hover:border-primary-400 hover:bg-secondary-100 dark:hover:bg-secondary-800'
                   }`}
                   onClick={() => {
                     onChromaSelect(champion, skin, chroma.id.toString())
@@ -84,16 +84,12 @@ export const ChromaSelectionDialog: React.FC<ChromaSelectionDialogProps> = ({
                     loading="lazy"
                   />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-charcoal-900 dark:text-charcoal-100">
-                      {chroma.name}
-                    </p>
-                    <p className="text-xs text-charcoal-500 dark:text-charcoal-400 mt-1">
-                      ID: {chroma.id}
-                    </p>
+                    <p className="text-sm font-medium text-text-primary">{chroma.name}</p>
+                    <p className="text-xs text-text-muted mt-1">ID: {chroma.id}</p>
                   </div>
                   {isSelected && (
                     <svg
-                      className="w-5 h-5 text-terracotta-600"
+                      className="w-5 h-5 text-primary-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

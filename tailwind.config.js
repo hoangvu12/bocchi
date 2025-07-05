@@ -5,6 +5,49 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Theme-aware colors using CSS variables
+        primary: {
+          50: 'var(--color-primary-50)',
+          100: 'var(--color-primary-100)',
+          200: 'var(--color-primary-200)',
+          300: 'var(--color-primary-300)',
+          400: 'var(--color-primary-400)',
+          500: 'var(--color-primary-500)',
+          600: 'var(--color-primary-600)',
+          700: 'var(--color-primary-700)',
+          800: 'var(--color-primary-800)',
+          900: 'var(--color-primary-900)',
+          950: 'var(--color-primary-950)'
+        },
+        secondary: {
+          50: 'var(--color-secondary-50)',
+          100: 'var(--color-secondary-100)',
+          200: 'var(--color-secondary-200)',
+          300: 'var(--color-secondary-300)',
+          400: 'var(--color-secondary-400)',
+          500: 'var(--color-secondary-500)',
+          600: 'var(--color-secondary-600)',
+          700: 'var(--color-secondary-700)',
+          800: 'var(--color-secondary-800)',
+          900: 'var(--color-secondary-900)',
+          950: 'var(--color-secondary-950)'
+        },
+        background: 'var(--color-background)',
+        surface: 'var(--color-surface)',
+        elevated: 'var(--color-elevated)',
+        'text-primary': 'var(--color-text-primary)',
+        'text-secondary': 'var(--color-text-secondary)',
+        'text-muted': 'var(--color-text-muted)',
+        'text-inverse': 'var(--color-text-inverse)',
+        border: 'var(--color-border)',
+        'border-strong': 'var(--color-border-strong)',
+        'border-subtle': 'var(--color-border-subtle)',
+        success: 'var(--color-success)',
+        warning: 'var(--color-warning)',
+        error: 'var(--color-error)',
+        info: 'var(--color-info)',
+
+        // Legacy colors for backward compatibility (will be removed later)
         cream: {
           50: '#fefefe',
           100: '#fcfbfa',
@@ -43,32 +86,6 @@ module.exports = {
           800: '#3d3d3d',
           900: '#2d2d2d',
           950: '#1a1a1a'
-        },
-        background: {
-          light: '#f5f2ed',
-          dark: '#1a1a1a'
-        },
-        surface: {
-          light: '#ffffff',
-          dark: '#2d2d2d'
-        },
-        text: {
-          primary: {
-            light: '#0a0a0a',
-            dark: '#ffffff'
-          },
-          secondary: {
-            light: '#2d2d2d',
-            dark: '#b0b0b0'
-          },
-          muted: {
-            light: '#4a4a4a',
-            dark: '#888888'
-          }
-        },
-        border: {
-          light: '#e7e7e7',
-          dark: '#3d3d3d'
         }
       },
       fontFamily: {

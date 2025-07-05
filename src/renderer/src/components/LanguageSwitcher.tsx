@@ -38,17 +38,14 @@ export const LanguageSwitcher: React.FC = () => {
           </svg>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="w-48 bg-white dark:bg-charcoal-800 border-charcoal-200 dark:border-charcoal-700"
-      >
+      <DropdownMenuContent align="end" className="w-48 bg-surface border-border">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             className={`flex items-center gap-3 cursor-pointer ${
               lang.code === currentLanguage
-                ? 'bg-terracotta-500 text-white font-medium focus:bg-terracotta-600 focus:text-white'
-                : 'text-charcoal-700 dark:text-charcoal-200 hover:bg-cream-100 dark:hover:bg-charcoal-700'
+                ? 'bg-primary-500 text-white font-medium focus:bg-primary-600 focus:text-white'
+                : 'text-text-primary hover:bg-secondary-100 dark:hover:bg-secondary-800'
             }`}
             onClick={() => handleLanguageChange(lang.code)}
           >

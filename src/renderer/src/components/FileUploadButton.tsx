@@ -283,7 +283,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
         <div onDrop={handleDrop} onDragOver={handleDragOver} className="inline-block">
           <button
             onClick={handleBrowseMultipleFiles}
-            className="px-4 py-2.5 text-sm bg-white dark:bg-charcoal-800 hover:bg-cream-100 dark:hover:bg-charcoal-700 text-charcoal-800 dark:text-charcoal-200 font-medium rounded-lg transition-all duration-200 border border-charcoal-200 dark:border-charcoal-700 hover:border-charcoal-300 dark:hover:border-charcoal-600 shadow-sm hover:shadow-md dark:shadow-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-4 py-2.5 text-sm bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary font-medium rounded-lg transition-all duration-200 border border-border hover:border-border-strong shadow-sm hover:shadow-md dark:shadow-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             disabled={isImporting}
           >
             {isImporting ? (
@@ -296,55 +296,53 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
         </div>
 
         {showDialog && (
-          <div className="fixed inset-0 bg-charcoal-950 bg-opacity-50 dark:bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
-            <div className="bg-white dark:bg-charcoal-800 rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl dark:shadow-dark-xl animate-slide-down">
+          <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+            <div className="bg-surface rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl dark:shadow-dark-xl animate-slide-down">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-charcoal-900 dark:text-cream-50">
+                <h3 className="text-xl font-bold text-text-primary">
                   {t('fileUpload.importTitle')}
                 </h3>
                 <button
                   onClick={closeDialog}
                   disabled={isImporting}
-                  className="p-1 hover:bg-charcoal-100 dark:hover:bg-charcoal-700 rounded-lg transition-colors disabled:opacity-50"
+                  className="p-1 hover:bg-secondary-100 dark:hover:bg-secondary-800 rounded-lg transition-colors disabled:opacity-50"
                 >
-                  <X className="w-5 h-5 text-charcoal-600 dark:text-charcoal-400" />
+                  <X className="w-5 h-5 text-text-secondary" />
                 </button>
               </div>
 
-              <p className="text-charcoal-600 dark:text-charcoal-300 mb-6 text-sm">
+              <p className="text-text-secondary mb-6 text-sm">
                 {t('fileUpload.importDescription')}
               </p>
 
               {error && (
-                <div className="mb-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-3 py-2 rounded-md text-sm">
+                <div className="mb-4 bg-state-error/10 border border-state-error/30 text-state-error px-3 py-2 rounded-md text-sm">
                   {error}
                 </div>
               )}
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-charcoal-700 dark:text-charcoal-200 mb-1">
+                  <label className="block text-sm font-medium text-text-primary mb-1">
                     {t('fileUpload.selectedFile')}
                   </label>
                   <input
                     type="text"
                     value={selectedFile.split(/[\\/]/).pop() || ''}
                     disabled
-                    className="w-full px-3 py-2 text-sm bg-cream-50 dark:bg-charcoal-900 border border-charcoal-200 dark:border-charcoal-700 rounded-lg text-charcoal-700 dark:text-charcoal-200"
+                    className="w-full px-3 py-2 text-sm bg-secondary-100 dark:bg-secondary-900 border border-border rounded-lg text-text-primary"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-charcoal-700 dark:text-charcoal-200 mb-1">
+                  <label className="block text-sm font-medium text-text-primary mb-1">
                     {t('fileUpload.selectChampion')}{' '}
-                    <span className="text-charcoal-500 dark:text-charcoal-400 font-normal">
-                      (Optional)
-                    </span>
+                    <span className="text-text-muted font-normal">(Optional)</span>
                   </label>
                   <select
                     value={selectedChampion}
                     onChange={(e) => setSelectedChampion(e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-cream-50 dark:bg-charcoal-900 border border-charcoal-200 dark:border-charcoal-700 rounded-lg text-charcoal-700 dark:text-charcoal-200 focus:outline-none focus:ring-2 focus:ring-terracotta-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-sm bg-secondary-100 dark:bg-secondary-900 border border-border rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   >
                     <option value="">{t('fileUpload.championPlaceholder')}</option>
                     {champions.map((champion) => (
@@ -356,27 +354,23 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-charcoal-700 dark:text-charcoal-200 mb-1">
+                  <label className="block text-sm font-medium text-text-primary mb-1">
                     {t('fileUpload.customName')}{' '}
-                    <span className="text-charcoal-500 dark:text-charcoal-400 font-normal">
-                      (Optional)
-                    </span>
+                    <span className="text-text-muted font-normal">(Optional)</span>
                   </label>
                   <input
                     type="text"
                     value={customName}
                     onChange={(e) => setCustomName(e.target.value)}
                     placeholder={t('fileUpload.customNamePlaceholder')}
-                    className="w-full px-3 py-2 text-sm bg-cream-50 dark:bg-charcoal-900 border border-charcoal-200 dark:border-charcoal-700 rounded-lg text-charcoal-700 dark:text-charcoal-200 placeholder-charcoal-400 dark:placeholder-charcoal-500 focus:outline-none focus:ring-2 focus:ring-terracotta-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-sm bg-secondary-100 dark:bg-secondary-900 border border-border rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-charcoal-700 dark:text-charcoal-200 mb-1">
+                  <label className="block text-sm font-medium text-text-primary mb-1">
                     {t('fileUpload.previewImage')}{' '}
-                    <span className="text-charcoal-500 dark:text-charcoal-400 font-normal">
-                      (Optional)
-                    </span>
+                    <span className="text-text-muted font-normal">(Optional)</span>
                   </label>
                   <div className="flex gap-2">
                     <input
@@ -384,7 +378,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                       value={selectedImage.split(/[\\/]/).pop() || ''}
                       disabled
                       placeholder={t('fileUpload.noImageSelected')}
-                      className="flex-1 px-3 py-2 text-sm bg-cream-50 dark:bg-charcoal-900 border border-charcoal-200 dark:border-charcoal-700 rounded-lg text-charcoal-700 dark:text-charcoal-200 placeholder-charcoal-400 dark:placeholder-charcoal-500"
+                      className="flex-1 px-3 py-2 text-sm bg-secondary-100 dark:bg-secondary-900 border border-border rounded-lg text-text-primary placeholder-text-muted"
                     />
                     <button
                       type="button"
@@ -394,7 +388,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                           setSelectedImage(result.filePath)
                         }
                       }}
-                      className="px-4 py-2 text-sm bg-white dark:bg-charcoal-700 hover:bg-cream-100 dark:hover:bg-charcoal-600 text-charcoal-800 dark:text-charcoal-200 font-medium rounded-lg transition-all duration-200 border border-charcoal-200 dark:border-charcoal-600 flex items-center gap-2"
+                      className="px-4 py-2 text-sm bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary font-medium rounded-lg transition-all duration-200 border border-border flex items-center gap-2"
                     >
                       <Image className="h-4 w-4" />
                       {t('fileUpload.browseImage')}
@@ -407,14 +401,14 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                 <button
                   onClick={closeDialog}
                   disabled={isImporting}
-                  className="px-4 py-2 text-sm bg-white dark:bg-charcoal-700 hover:bg-cream-100 dark:hover:bg-charcoal-600 text-charcoal-800 dark:text-charcoal-200 font-medium rounded-lg transition-all duration-200 border border-charcoal-200 dark:border-charcoal-600 disabled:opacity-50"
+                  className="px-4 py-2 text-sm bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary font-medium rounded-lg transition-all duration-200 border border-border disabled:opacity-50"
                 >
                   {t('cancel')}
                 </button>
                 <button
                   onClick={handleImport}
                   disabled={isImporting || !selectedFile}
-                  className="px-4 py-2 text-sm bg-terracotta-500 hover:bg-terracotta-600 text-white font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-4 py-2 text-sm bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {isImporting ? (
                     <>
@@ -431,10 +425,10 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
         )}
 
         {showBatchDialog && (
-          <div className="fixed inset-0 bg-charcoal-950 bg-opacity-50 dark:bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
-            <div className="bg-white dark:bg-charcoal-800 rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl dark:shadow-dark-xl animate-slide-down">
+          <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+            <div className="bg-surface rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl dark:shadow-dark-xl animate-slide-down">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-charcoal-900 dark:text-cream-50">
+                <h3 className="text-xl font-bold text-text-primary">
                   {t('fileUpload.batchImportTitle')}
                 </h3>
                 <button
@@ -445,9 +439,9 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                     }
                   }}
                   disabled={isImporting}
-                  className="p-1 hover:bg-charcoal-100 dark:hover:bg-charcoal-700 rounded-lg transition-colors disabled:opacity-50"
+                  className="p-1 hover:bg-secondary-100 dark:hover:bg-secondary-800 rounded-lg transition-colors disabled:opacity-50"
                 >
-                  <X className="w-5 h-5 text-charcoal-600 dark:text-charcoal-400" />
+                  <X className="w-5 h-5 text-text-secondary" />
                 </button>
               </div>
 
@@ -455,21 +449,21 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                 {isImporting ? (
                   <>
                     <div className="text-center">
-                      <Loader2 className="h-8 w-8 animate-spin mx-auto mb-3 text-terracotta-500" />
-                      <p className="text-sm text-charcoal-600 dark:text-charcoal-300">
+                      <Loader2 className="h-8 w-8 animate-spin mx-auto mb-3 text-primary-500" />
+                      <p className="text-sm text-text-secondary">
                         {t('fileUpload.importingProgress', {
                           current: batchProgress.current,
                           total: batchProgress.total
                         })}
                       </p>
-                      <p className="text-xs text-charcoal-500 dark:text-charcoal-400 mt-1 truncate">
+                      <p className="text-xs text-text-muted mt-1 truncate">
                         {batchProgress.currentFile}
                       </p>
                     </div>
 
-                    <div className="w-full bg-charcoal-200 dark:bg-charcoal-700 rounded-full h-2">
+                    <div className="w-full bg-secondary-200 dark:bg-secondary-700 rounded-full h-2">
                       <div
-                        className="bg-terracotta-500 h-2 rounded-full transition-all duration-300"
+                        className="bg-primary-500 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${(batchProgress.current / batchProgress.total) * 100}%` }}
                       />
                     </div>
@@ -477,10 +471,8 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                 ) : (
                   <>
                     <div className="text-center mb-4">
-                      <p className="text-sm text-charcoal-600 dark:text-charcoal-300">
-                        {t('fileUpload.batchComplete')}
-                      </p>
-                      <p className="text-lg font-semibold text-charcoal-900 dark:text-cream-50 mt-2">
+                      <p className="text-sm text-text-secondary">{t('fileUpload.batchComplete')}</p>
+                      <p className="text-lg font-semibold text-text-primary mt-2">
                         {batchProgress.results.filter((r) => r.success).length}{' '}
                         {t('fileUpload.succeeded')},{' '}
                         {batchProgress.results.filter((r) => !r.success).length}{' '}
@@ -490,7 +482,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
 
                     {batchProgress.results.filter((r) => !r.success).length > 0 && (
                       <div className="max-h-40 overflow-y-auto space-y-2">
-                        <p className="text-xs font-medium text-charcoal-700 dark:text-charcoal-300 mb-2">
+                        <p className="text-xs font-medium text-text-primary mb-2">
                           {t('fileUpload.failedFiles')}
                         </p>
                         {batchProgress.results
@@ -498,12 +490,12 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                           .map((result, idx) => (
                             <div
                               key={idx}
-                              className="text-xs bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-2 py-1 rounded"
+                              className="text-xs bg-state-error/10 border border-state-error/30 text-state-error px-2 py-1 rounded"
                             >
                               <p className="font-medium truncate">
                                 {result.filePath.split(/[\\/]/).pop()}
                               </p>
-                              <p className="text-red-500 dark:text-red-500">{result.error}</p>
+                              <p className="text-state-error">{result.error}</p>
                             </div>
                           ))}
                       </div>
@@ -514,7 +506,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                         setShowBatchDialog(false)
                         setBatchProgress({ current: 0, total: 0, currentFile: '', results: [] })
                       }}
-                      className="w-full px-4 py-2 text-sm bg-terracotta-500 hover:bg-terracotta-600 text-white font-medium rounded-lg transition-all duration-200"
+                      className="w-full px-4 py-2 text-sm bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-all duration-200"
                     >
                       {t('fileUpload.close')}
                     </button>

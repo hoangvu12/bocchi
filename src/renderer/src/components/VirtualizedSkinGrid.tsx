@@ -220,11 +220,11 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
         return (
           <div style={adjustedStyle}>
             <div
-              className={`flex items-center gap-4 p-3 bg-white dark:bg-charcoal-800 rounded-lg transition-all duration-200 cursor-pointer border-2
+              className={`flex items-center gap-4 p-3 bg-surface rounded-lg transition-all duration-200 cursor-pointer border-2
                 ${
                   isSelected
-                    ? 'border-terracotta-500 bg-terracotta-50 dark:bg-terracotta-950/20'
-                    : 'border-charcoal-200 dark:border-charcoal-700 hover:border-charcoal-300 dark:hover:border-charcoal-600 hover:shadow-md dark:hover:shadow-dark-soft'
+                    ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/20'
+                    : 'border-border hover:border-border-strong hover:shadow-md dark:hover:shadow-dark-soft'
                 }`}
               onClick={() => !loading && onSkinClick(champion, skin)}
             >
@@ -235,15 +235,13 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                 loading="lazy"
               />
               <div className="flex-1">
-                <p className="font-medium text-charcoal-900 dark:text-charcoal-100">{skin.name}</p>
-                <p className="text-sm text-charcoal-600 dark:text-charcoal-400">{champion.name}</p>
+                <p className="font-medium text-text-primary">{skin.name}</p>
+                <p className="text-sm text-text-secondary">{champion.name}</p>
               </div>
               <div className="flex items-center gap-2">
                 <div
                   className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
-                    isSelected
-                      ? 'bg-terracotta-500 border-terracotta-500'
-                      : 'bg-white dark:bg-charcoal-700 border-charcoal-300 dark:border-charcoal-600'
+                    isSelected ? 'bg-primary-500 border-primary-500' : 'bg-surface border-border'
                   }`}
                 >
                   {isSelected && (
@@ -266,7 +264,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="w-8 h-8 p-1 bg-white dark:bg-charcoal-700 hover:bg-charcoal-100 dark:hover:bg-charcoal-600 border border-charcoal-200 dark:border-charcoal-600"
+                    className="w-8 h-8 p-1 bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 border border-border"
                     onClick={(e) => {
                       e.stopPropagation()
                       setChromaDialogState({ open: true, champion, skin })
@@ -375,16 +373,16 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       return (
         <div style={adjustedStyle}>
           <div
-            className={`group relative bg-cream-50 dark:bg-charcoal-800 rounded-xl overflow-hidden transform transition-all duration-300 ease-out border-2
+            className={`group relative bg-surface rounded-xl overflow-hidden transform transition-all duration-300 ease-out border-2
               ${
                 isSelected
-                  ? 'border-terracotta-500 shadow-xl dark:shadow-dark-large scale-[1.02]'
-                  : 'border-charcoal-200 dark:border-charcoal-700 hover:shadow-xl dark:hover:shadow-dark-large shadow-md dark:shadow-dark-soft hover:-translate-y-1 hover:scale-[1.02] hover:border-charcoal-300 dark:hover:border-charcoal-600'
+                  ? 'border-primary-500 shadow-xl dark:shadow-dark-large scale-[1.02]'
+                  : 'border-border hover:shadow-xl dark:hover:shadow-dark-large shadow-md dark:shadow-dark-soft hover:-translate-y-1 hover:scale-[1.02] hover:border-border-strong'
               } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
             `}
           >
             <div
-              className="relative aspect-[0.67] overflow-hidden bg-charcoal-100 dark:bg-charcoal-900"
+              className="relative aspect-[0.67] overflow-hidden bg-secondary-100 dark:bg-secondary-900"
               onClick={() => !loading && onSkinClick(champion, skin)}
             >
               <img
@@ -398,7 +396,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                 {champion.name}
               </div>
               {isSelected && (
-                <div className="absolute top-2 right-2 w-8 h-8 bg-terracotta-500 rounded-full flex items-center justify-center shadow-lg transform transition-all duration-300 group-hover:scale-110">
+                <div className="absolute top-2 right-2 w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center shadow-lg transform transition-all duration-300 group-hover:scale-110">
                   <svg
                     className="w-5 h-5 text-white"
                     fill="none"

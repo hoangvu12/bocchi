@@ -3,22 +3,21 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta-500 focus-visible:ring-offset-2 focus-visible:ring-offset-cream-200 dark:focus-visible:ring-offset-charcoal-950 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
         default:
-          'bg-terracotta-500 text-white shadow-soft hover:bg-terracotta-600 hover:shadow-medium active:scale-[0.98] dark:shadow-dark-soft dark:hover:shadow-dark-medium',
+          'bg-primary-500 text-white shadow-soft hover:bg-primary-600 hover:shadow-medium active:scale-[0.98] dark:shadow-dark-soft dark:hover:shadow-dark-medium',
         destructive:
           'bg-red-600 text-white shadow-soft hover:bg-red-700 hover:shadow-medium active:scale-[0.98]',
         outline:
-          'border border-charcoal-200 dark:border-charcoal-700 bg-transparent hover:bg-charcoal-50 dark:hover:bg-charcoal-900 text-charcoal-700 dark:text-charcoal-300',
+          'border border-border bg-transparent hover:bg-secondary-50 dark:hover:bg-secondary-900 text-text-primary',
         secondary:
-          'bg-white dark:bg-charcoal-800 text-charcoal-700 dark:text-charcoal-200 shadow-soft hover:shadow-medium dark:shadow-dark-soft dark:hover:shadow-dark-medium active:scale-[0.98]',
-        ghost:
-          'text-charcoal-700 dark:text-charcoal-300 hover:bg-charcoal-100 dark:hover:bg-charcoal-800',
-        link: 'text-terracotta-500 dark:text-terracotta-400 underline-offset-4 hover:underline',
-        warm: 'bg-cream-300 dark:bg-cream-900 text-charcoal-900 dark:text-cream-100 hover:bg-cream-400 dark:hover:bg-cream-800 active:scale-[0.98]'
+          'bg-surface text-text-primary shadow-soft hover:shadow-medium dark:shadow-dark-soft dark:hover:shadow-dark-medium active:scale-[0.98]',
+        ghost: 'text-text-primary hover:bg-secondary-100 dark:hover:bg-secondary-800',
+        link: 'text-primary-500 dark:text-primary-400 underline-offset-4 hover:underline',
+        warm: 'bg-secondary-300 dark:bg-secondary-700 text-text-primary hover:bg-secondary-400 dark:hover:bg-secondary-600 active:scale-[0.98]'
       },
       size: {
         default: 'h-10 px-5 py-2 text-sm',

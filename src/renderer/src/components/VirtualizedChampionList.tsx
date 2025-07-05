@@ -73,12 +73,12 @@ const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> =
                 className={`flex items-center gap-3 px-6 py-3 cursor-pointer transition-all duration-200 mx-3 my-1 rounded-lg border-2
                 ${
                   selectedChampion === null && selectedChampionKey === 'all'
-                    ? 'bg-terracotta-500 text-white shadow-md dark:shadow-dark-soft border-terracotta-600 scale-[1.02]'
-                    : 'hover:bg-cream-100 dark:hover:bg-charcoal-800 text-charcoal-800 dark:text-charcoal-200 border-transparent hover:border-charcoal-200 dark:hover:border-charcoal-700'
+                    ? 'bg-primary-500 text-white shadow-md dark:shadow-dark-soft border-primary-600 scale-[1.02]'
+                    : 'hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary border-transparent hover:border-border'
                 }`}
                 onClick={() => onChampionSelect(null, 'all')}
               >
-                <div className="w-10 h-10 rounded-lg bg-charcoal-200 dark:bg-charcoal-700 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-secondary-200 dark:bg-secondary-700 flex items-center justify-center">
                   <span className="text-lg font-bold">A</span>
                 </div>
                 <span className="text-sm font-medium">{t('champion.allChampions')}</span>
@@ -93,12 +93,12 @@ const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> =
                 className={`flex items-center gap-3 px-6 py-3 cursor-pointer transition-all duration-200 mx-3 my-1 rounded-lg border-2
                 ${
                   selectedChampion === null && selectedChampionKey === 'custom'
-                    ? 'bg-terracotta-500 text-white shadow-md dark:shadow-dark-soft border-terracotta-600 scale-[1.02]'
-                    : 'hover:bg-cream-100 dark:hover:bg-charcoal-800 text-charcoal-800 dark:text-charcoal-200 border-transparent hover:border-charcoal-200 dark:hover:border-charcoal-700'
+                    ? 'bg-primary-500 text-white shadow-md dark:shadow-dark-soft border-primary-600 scale-[1.02]'
+                    : 'hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary border-transparent hover:border-border'
                 }`}
                 onClick={() => onChampionSelect(null, 'custom')}
               >
-                <div className="w-10 h-10 rounded-lg bg-charcoal-200 dark:bg-charcoal-700 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-secondary-200 dark:bg-secondary-700 flex items-center justify-center">
                   <span className="text-lg font-bold">C</span>
                 </div>
                 <span className="text-sm font-medium">{t('champion.customMods')}</span>
@@ -109,14 +109,14 @@ const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> =
         case 'divider':
           return (
             <div style={style}>
-              <div className="mx-6 my-2 border-b border-charcoal-200 dark:border-charcoal-700"></div>
+              <div className="mx-6 my-2 border-b border-border"></div>
             </div>
           )
 
         case 'letter':
           return (
             <div style={style}>
-              <div className="px-6 py-3 text-xs font-bold text-charcoal-700 dark:text-charcoal-400 uppercase tracking-wider">
+              <div className="px-6 py-3 text-xs font-bold text-text-secondary uppercase tracking-wider">
                 {item.data}
               </div>
             </div>
@@ -130,8 +130,8 @@ const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> =
                 className={`flex items-center gap-3 px-6 py-3 cursor-pointer transition-all duration-200 mx-3 my-1 rounded-lg border-2
                 ${
                   selectedChampion?.key === champion.key
-                    ? 'bg-terracotta-500 text-white shadow-md dark:shadow-dark-soft border-terracotta-600 scale-[1.02]'
-                    : 'hover:bg-cream-100 dark:hover:bg-charcoal-800 text-charcoal-800 dark:text-charcoal-200 border-transparent hover:border-charcoal-200 dark:hover:border-charcoal-700'
+                    ? 'bg-primary-500 text-white shadow-md dark:shadow-dark-soft border-primary-600 scale-[1.02]'
+                    : 'hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary border-transparent hover:border-border'
                 }`}
                 onClick={() => onChampionSelect(champion, champion.key)}
               >

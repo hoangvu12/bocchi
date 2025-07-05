@@ -277,17 +277,17 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
     : []
 
   return (
-    <div className="bg-white dark:bg-charcoal-900 border-t-2 border-charcoal-200 dark:border-charcoal-800 transition-all duration-300">
+    <div className="bg-surface border-t-2 border-border transition-all duration-300">
       {/* Collapsed View */}
       <div
-        className={`px-8 py-4 flex items-center justify-between cursor-pointer transition-all duration-200 hover:bg-cream-50 dark:hover:bg-charcoal-800 ${
-          isExpanded ? 'border-b border-charcoal-200 dark:border-charcoal-800' : ''
+        className={`px-8 py-4 flex items-center justify-between cursor-pointer transition-all duration-200 hover:bg-secondary-100 dark:hover:bg-secondary-800 ${
+          isExpanded ? 'border-b border-border' : ''
         }`}
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-4">
           <svg
-            className={`w-4 h-4 transition-transform text-charcoal-600 dark:text-charcoal-400 ${
+            className={`w-4 h-4 transition-transform text-text-secondary ${
               isExpanded ? 'rotate-180' : ''
             }`}
             fill="none"
@@ -298,36 +298,34 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
           </svg>
           <div className="flex items-center gap-3">
             {errorMessage ? (
-              <span className="text-sm text-red-600 dark:text-red-400 font-medium">
-                {errorMessage}
-              </span>
+              <span className="text-sm text-state-error font-medium">{errorMessage}</span>
             ) : (loading || patcherStatus) && (statusMessage || patcherStatus) ? (
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1.5">
                   <div
-                    className="w-2 h-2 bg-terracotta-500 rounded-full animate-bounce"
+                    className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
                     style={{ animationDelay: '0ms' }}
                   ></div>
                   <div
-                    className="w-2 h-2 bg-terracotta-500 rounded-full animate-bounce"
+                    className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
                     style={{ animationDelay: '150ms' }}
                   ></div>
                   <div
-                    className="w-2 h-2 bg-terracotta-500 rounded-full animate-bounce"
+                    className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
                     style={{ animationDelay: '300ms' }}
                   ></div>
                 </div>
-                <span className="text-sm text-charcoal-700 dark:text-charcoal-300">
+                <span className="text-sm text-text-secondary">
                   {patcherStatus || statusMessage}
                 </span>
               </div>
             ) : (
               <>
-                <span className="font-medium text-charcoal-900 dark:text-charcoal-100">
+                <span className="font-medium text-text-primary">
                   {t('skins.selected', { count: selectedSkins.length })}
                 </span>
                 {needsDownload && (
-                  <span className="text-sm text-charcoal-600 dark:text-charcoal-400">
+                  <span className="text-sm text-text-muted">
                     {t('skins.toDownload', { count: selectedSkins.length - downloadedCount })}
                   </span>
                 )}
@@ -336,7 +334,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             {p2pRoom && (
               <Badge
                 variant="secondary"
-                className="bg-terracotta-100 dark:bg-terracotta-900/30 text-terracotta-700 dark:text-terracotta-400 hover:bg-terracotta-200 dark:hover:bg-terracotta-900/40"
+                className="bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 hover:bg-primary-200 dark:hover:bg-primary-900/40"
               >
                 {t('room.roomId', { id: p2pRoom.id })}
               </Badge>
@@ -345,7 +343,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
         </div>
         <div className="flex items-center gap-3" onClick={(e) => e.stopPropagation()}>
           <button
-            className="px-4 py-2 text-sm text-charcoal-600 dark:text-charcoal-400 hover:text-charcoal-800 dark:hover:text-charcoal-200 font-medium transition-colors"
+            className="px-4 py-2 text-sm text-text-secondary hover:text-text-primary font-medium transition-colors"
             onClick={clearAll}
             disabled={loading}
           >
@@ -355,7 +353,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             className={`px-6 py-2 font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
               isPatcherRunning
                 ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-terracotta-500 hover:bg-terracotta-600 text-white'
+                : 'bg-primary-500 hover:bg-primary-600 text-white'
             }`}
             onClick={isPatcherRunning ? onStopPatcher : handleApplySkins}
             disabled={loading}
@@ -376,12 +374,12 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
         <div className="animate-slide-up">
           {/* Tabs */}
           {p2pRoom && (
-            <div className="flex border-b border-charcoal-200 dark:border-charcoal-800">
+            <div className="flex border-b border-border">
               <button
                 className={`px-6 py-3 font-medium text-sm transition-colors ${
                   activeTab === 'my-skins'
-                    ? 'text-terracotta-600 dark:text-terracotta-400 border-b-2 border-terracotta-500'
-                    : 'text-charcoal-600 dark:text-charcoal-400 hover:text-charcoal-900 dark:hover:text-charcoal-100'
+                    ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-500'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
                 onClick={() => setActiveTab('my-skins')}
               >
@@ -390,8 +388,8 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
               <button
                 className={`px-6 py-3 font-medium text-sm transition-colors ${
                   activeTab === 'room-skins'
-                    ? 'text-terracotta-600 dark:text-terracotta-400 border-b-2 border-terracotta-500'
-                    : 'text-charcoal-600 dark:text-charcoal-400 hover:text-charcoal-900 dark:hover:text-charcoal-100'
+                    ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-500'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
                 onClick={() => setActiveTab('room-skins')}
               >
@@ -405,7 +403,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             {activeTab === 'my-skins' && (
               <>
                 {selectedSkins.length === 0 ? (
-                  <div className="text-center py-8 text-charcoal-500 dark:text-charcoal-400">
+                  <div className="text-center py-8 text-text-muted">
                     No skins selected yet. Click on skins above to add them to your selection.
                   </div>
                 ) : (
@@ -417,7 +415,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                           key={`${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}`}
                           className="relative group"
                         >
-                          <div className="relative aspect-[0.67] overflow-hidden bg-charcoal-100 dark:bg-charcoal-800 rounded border border-charcoal-200 dark:border-charcoal-700">
+                          <div className="relative aspect-[0.67] overflow-hidden bg-secondary-100 dark:bg-secondary-800 rounded border border-border">
                             <img
                               src={getSkinImageUrl(skin)}
                               alt={getSkinDisplayName(skin)}
@@ -454,7 +452,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                           </div>
                           <div className="mt-1">
                             <p
-                              className="text-xs leading-tight font-medium text-charcoal-900 dark:text-charcoal-100 truncate"
+                              className="text-xs leading-tight font-medium text-text-primary truncate"
                               title={getSkinDisplayName(skin)}
                             >
                               {getSkinDisplayName(skin)}
@@ -468,8 +466,8 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
 
                 {/* Patcher Messages */}
                 {patcherMessages.length > 0 && (
-                  <div className="mt-4 p-3 bg-charcoal-100 dark:bg-charcoal-800 rounded-lg">
-                    <h4 className="text-xs font-medium text-charcoal-700 dark:text-charcoal-300 mb-2">
+                  <div className="mt-4 p-3 bg-secondary-100 dark:bg-secondary-800 rounded-lg">
+                    <h4 className="text-xs font-medium text-text-secondary mb-2">
                       {t('patcher.messages')}
                     </h4>
                     <div className="space-y-1">
@@ -479,7 +477,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                           className={`text-[10px] leading-tight ${
                             message.startsWith('Error:')
                               ? 'text-red-600 dark:text-red-400'
-                              : 'text-charcoal-600 dark:text-charcoal-400'
+                              : 'text-text-secondary'
                           }`}
                         >
                           {message}
@@ -500,14 +498,14 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                   return (
                     <div key={member.id} className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <h3 className="font-medium text-sm text-charcoal-900 dark:text-charcoal-100">
+                        <h3 className="font-medium text-sm text-text-primary">
                           {member.isHost ? '👑 ' : ''}
                           {member.name}&apos;s Skins ({member.activeSkins.length})
                         </h3>
                         {member.activeSkins.length > 0 && (
                           <button
                             onClick={() => applyAllPeerSkins(member)}
-                            className="px-3 py-1 text-xs bg-terracotta-500 hover:bg-terracotta-600 text-white rounded transition-colors"
+                            className="px-3 py-1 text-xs bg-primary-500 hover:bg-primary-600 text-white rounded transition-colors"
                           >
                             Add to my skins
                           </button>
@@ -526,7 +524,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                               key={`${member.id}_${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}`}
                               className="relative group"
                             >
-                              <div className="relative aspect-[0.67] overflow-hidden bg-charcoal-100 dark:bg-charcoal-800 rounded border border-charcoal-200 dark:border-charcoal-700">
+                              <div className="relative aspect-[0.67] overflow-hidden bg-secondary-100 dark:bg-secondary-800 rounded border border-border">
                                 <img
                                   src={getSkinImageUrl(skin)}
                                   alt={getSkinDisplayName(skin)}
@@ -558,7 +556,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                                   >
                                     <Badge
                                       variant="default"
-                                      className="bg-terracotta-500 hover:bg-terracotta-600 text-white"
+                                      className="bg-primary-500 hover:bg-primary-600 text-white"
                                     >
                                       Apply
                                     </Badge>
@@ -567,7 +565,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                               </div>
                               <div className="mt-1">
                                 <p
-                                  className="text-xs leading-tight font-medium text-charcoal-900 dark:text-charcoal-100 truncate"
+                                  className="text-xs leading-tight font-medium text-text-primary truncate"
                                   title={getSkinDisplayName(skin)}
                                 >
                                   {getSkinDisplayName(skin)}
@@ -582,7 +580,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                 })}
 
                 {allMembers.every((m) => m.activeSkins.length === 0) && (
-                  <div className="text-center py-8 text-charcoal-500 dark:text-charcoal-400">
+                  <div className="text-center py-8 text-text-muted">
                     No one in the room has selected any skins yet
                   </div>
                 )}

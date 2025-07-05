@@ -15,30 +15,11 @@
       rel="stylesheet"
     />
     <script>
-      // Prevent theme flicker by applying dark mode class before render
-      ;(function () {
-        try {
-          const darkMode = localStorage.getItem('darkMode')
-          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-
-          if (darkMode === 'true' || (!darkMode && prefersDark)) {
-            document.documentElement.classList.add('dark')
-          }
-        } catch (e) {
-          // Fail silently
-        }
-      })()
+      // Theme will be applied by main.tsx before React renders
+      // This prevents theme flicker
     </script>
     <style>
       /* Prevent flash of unstyled content */
-      html {
-        background-color: #f8f6f3; /* cream-200 */
-        color: #0a0a0a; /* charcoal-950 */
-      }
-      html.dark {
-        background-color: #1a1a1a; /* charcoal-950 */
-        color: #fefefe; /* cream-50 */
-      }
       body {
         margin: 0;
         opacity: 0;

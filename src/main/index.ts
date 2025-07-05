@@ -618,13 +618,14 @@ function setupIpcHandlers(): void {
       const fileBuffer = await fs.promises.readFile(filePath)
       const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex')
 
-      const mimeType = filePath.endsWith('.wad.client') || filePath.endsWith('.wad')
-        ? 'application/x-wad'
-        : filePath.endsWith('.zip')
-          ? 'application/zip'
-          : filePath.endsWith('.fantome')
-            ? 'application/x-fantome'
-            : 'application/octet-stream'
+      const mimeType =
+        filePath.endsWith('.wad.client') || filePath.endsWith('.wad')
+          ? 'application/x-wad'
+          : filePath.endsWith('.zip')
+            ? 'application/zip'
+            : filePath.endsWith('.fantome')
+              ? 'application/x-fantome'
+              : 'application/octet-stream'
 
       return {
         success: true,

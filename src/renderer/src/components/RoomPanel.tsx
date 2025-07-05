@@ -83,10 +83,7 @@ export const RoomPanel: React.FC = () => {
   if (!p2pRoom) {
     return (
       <>
-        <Button
-          onClick={() => setShowModal(true)}
-          className="bg-terracotta-500 hover:bg-terracotta-600"
-        >
+        <Button onClick={() => setShowModal(true)} className="bg-primary-500 hover:bg-primary-600">
           {t('room.joinCreate')}
         </Button>
 
@@ -111,13 +108,11 @@ export const RoomPanel: React.FC = () => {
 
               <Separator />
               <div>
-                <h3 className="font-medium mb-3 text-charcoal-900 dark:text-charcoal-100">
-                  {t('room.createNew')}
-                </h3>
+                <h3 className="font-medium mb-3 text-text-primary">{t('room.createNew')}</h3>
                 <Button
                   onClick={handleCreateRoom}
                   disabled={loading || !displayNameInput.trim()}
-                  className="w-full bg-terracotta-500 hover:bg-terracotta-600"
+                  className="w-full bg-primary-500 hover:bg-primary-600"
                 >
                   {loading ? t('room.creating') : t('room.createRoom')}
                 </Button>
@@ -125,9 +120,7 @@ export const RoomPanel: React.FC = () => {
 
               <Separator />
               <div>
-                <h3 className="font-medium mb-3 text-charcoal-900 dark:text-charcoal-100">
-                  {t('room.joinExisting')}
-                </h3>
+                <h3 className="font-medium mb-3 text-text-primary">{t('room.joinExisting')}</h3>
                 <Input
                   type="text"
                   value={roomIdInput}
@@ -139,13 +132,13 @@ export const RoomPanel: React.FC = () => {
                 <Button
                   onClick={handleJoinRoom}
                   disabled={loading || !displayNameInput.trim() || !roomIdInput.trim()}
-                  className="w-full bg-terracotta-500 hover:bg-terracotta-600"
+                  className="w-full bg-primary-500 hover:bg-primary-600"
                 >
                   {loading ? t('room.joining') : t('room.joinRoom')}
                 </Button>
               </div>
 
-              {error && <div className="text-red-600 dark:text-red-400 text-sm">{error}</div>}
+              {error && <div className="text-state-error text-sm">{error}</div>}
             </div>
           </DialogContent>
         </Dialog>
@@ -154,14 +147,14 @@ export const RoomPanel: React.FC = () => {
   }
 
   return (
-    <div className="flex items-center gap-3 px-4 py-2 bg-cream-50 dark:bg-charcoal-800 rounded-lg">
+    <div className="flex items-center gap-3 px-4 py-2 bg-secondary-100 dark:bg-secondary-800 rounded-lg">
       <div className="flex items-center gap-2">
         <div
           className={`w-2 h-2 rounded-full ${
             connectionStatus === 'connected' ? 'bg-green-500' : 'bg-yellow-500'
           }`}
         />
-        <span className="text-sm font-medium text-charcoal-700 dark:text-charcoal-300">
+        <span className="text-sm font-medium text-text-secondary">
           {t('room.roomId', { id: p2pRoom.id })}
         </span>
         <Button
@@ -172,7 +165,7 @@ export const RoomPanel: React.FC = () => {
           title={t('room.copyRoomId')}
         >
           <svg
-            className="w-4 h-4 text-charcoal-600 dark:text-charcoal-400"
+            className="w-4 h-4 text-text-muted"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -186,14 +179,14 @@ export const RoomPanel: React.FC = () => {
           </svg>
         </Button>
       </div>
-      <span className="text-sm text-charcoal-600 dark:text-charcoal-400">
+      <span className="text-sm text-text-muted">
         ({t('room.members', { count: totalMembers })})
       </span>
       <Button
         variant="ghost"
         size="sm"
         onClick={handleLeaveRoom}
-        className="ml-auto text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+        className="ml-auto text-state-error hover:text-state-error hover:bg-state-error/10"
       >
         {t('actions.leave')}
       </Button>

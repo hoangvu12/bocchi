@@ -68,7 +68,7 @@ export const GridViewToggle: React.FC<GridViewToggleProps> = ({ viewMode, onView
   ]
 
   return (
-    <div className="flex items-center gap-1 p-1 bg-cream-100 dark:bg-charcoal-800 rounded-lg">
+    <div className="flex items-center gap-1 p-1 bg-surface rounded-lg border border-border">
       {viewModes.map(({ mode, icon, label }) => (
         <Button
           key={mode}
@@ -77,8 +77,8 @@ export const GridViewToggle: React.FC<GridViewToggleProps> = ({ viewMode, onView
           onClick={() => onViewModeChange(mode)}
           className={`p-2 rounded-md ${
             viewMode === mode
-              ? 'bg-white dark:bg-charcoal-700 text-terracotta-600 dark:text-terracotta-400 shadow-sm'
-              : 'text-charcoal-600 dark:text-charcoal-400'
+              ? 'bg-surface text-primary-600 dark:text-primary-400 shadow-sm'
+              : 'text-text-secondary'
           }`}
           title={label}
         >

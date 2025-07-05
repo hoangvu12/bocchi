@@ -81,16 +81,14 @@ export const ChromaDropdown: React.FC<ChromaDropdownProps> = ({
       </Button>
 
       {isOpen && (
-        <div className="absolute top-full mt-2 right-0 w-96 bg-white dark:bg-charcoal-800 rounded-xl shadow-2xl dark:shadow-dark-2xl border border-charcoal-200 dark:border-charcoal-700 z-50 overflow-hidden">
-          <div className="p-4 border-b border-charcoal-200 dark:border-charcoal-700">
-            <h4 className="text-base font-semibold text-charcoal-900 dark:text-charcoal-100">
-              Select Chromas
-            </h4>
-            <p className="text-sm text-charcoal-600 dark:text-charcoal-400 mt-1">
+        <div className="absolute top-full mt-2 right-0 w-96 bg-surface rounded-xl shadow-2xl dark:shadow-dark-2xl border border-border z-50 overflow-hidden">
+          <div className="p-4 border-b border-border">
+            <h4 className="text-base font-semibold text-text-primary">Select Chromas</h4>
+            <p className="text-sm text-text-secondary mt-1">
               {chromas.length} chroma{chromas.length !== 1 ? 's' : ''} available
             </p>
           </div>
-          <div className="max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-charcoal-300 dark:scrollbar-thumb-charcoal-700">
+          <div className="max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-border dark:scrollbar-thumb-border">
             {chromas.map((chroma) => {
               const isSelected = isChromaSelected(chroma.id)
               const downloaded = isDownloaded(chroma.id.toString())
@@ -98,7 +96,7 @@ export const ChromaDropdown: React.FC<ChromaDropdownProps> = ({
               return (
                 <div
                   key={chroma.id}
-                  className={`flex items-center gap-4 p-4 hover:bg-cream-100 dark:hover:bg-charcoal-700 cursor-pointer transition-all duration-200 ${
+                  className={`flex items-center gap-4 p-4 hover:bg-secondary-100 dark:hover:bg-secondary-800 cursor-pointer transition-all duration-200 ${
                     isSelected ? 'bg-purple-50 dark:bg-purple-900/20' : ''
                   }`}
                   onClick={(e) => {
@@ -150,12 +148,8 @@ export const ChromaDropdown: React.FC<ChromaDropdownProps> = ({
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-charcoal-900 dark:text-charcoal-100">
-                      {chroma.name}
-                    </p>
-                    <p className="text-xs text-charcoal-500 dark:text-charcoal-400 mt-0.5">
-                      ID: {chroma.id}
-                    </p>
+                    <p className="text-sm font-semibold text-text-primary">{chroma.name}</p>
+                    <p className="text-xs text-text-muted mt-0.5">ID: {chroma.id}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     {downloaded && (
@@ -180,7 +174,7 @@ export const ChromaDropdown: React.FC<ChromaDropdownProps> = ({
                     )}
                     {!isSelected && (
                       <button
-                        className="w-7 h-7 rounded-full border-2 border-charcoal-300 dark:border-charcoal-600 hover:border-purple-500 dark:hover:border-purple-400 transition-colors"
+                        className="w-7 h-7 rounded-full border-2 border-border hover:border-purple-500 dark:hover:border-purple-400 transition-colors"
                         onClick={(e) => {
                           e.stopPropagation()
                           onChromaSelect(champion, skin, chroma.id.toString())
@@ -192,9 +186,9 @@ export const ChromaDropdown: React.FC<ChromaDropdownProps> = ({
               )
             })}
           </div>
-          <div className="p-3 border-t border-charcoal-200 dark:border-charcoal-700">
+          <div className="p-3 border-t border-border">
             <button
-              className="w-full py-2 text-sm font-medium text-charcoal-600 dark:text-charcoal-400 hover:text-charcoal-800 dark:hover:text-charcoal-200 transition-colors rounded-lg hover:bg-charcoal-100 dark:hover:bg-charcoal-700"
+              className="w-full py-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-800"
               onClick={(e) => {
                 e.stopPropagation()
                 setIsOpen(false)

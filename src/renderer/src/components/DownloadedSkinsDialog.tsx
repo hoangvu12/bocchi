@@ -120,27 +120,21 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
             <Button
               variant={selectedCategory === 'all' ? 'default' : 'secondary'}
               onClick={() => setSelectedCategory('all')}
-              className={
-                selectedCategory === 'all' ? 'bg-terracotta-500 hover:bg-terracotta-600' : ''
-              }
+              className={selectedCategory === 'all' ? 'bg-primary-500 hover:bg-primary-600' : ''}
             >
               {t('skins.allSkins')}
             </Button>
             <Button
               variant={selectedCategory === 'repo' ? 'default' : 'secondary'}
               onClick={() => setSelectedCategory('repo')}
-              className={
-                selectedCategory === 'repo' ? 'bg-terracotta-500 hover:bg-terracotta-600' : ''
-              }
+              className={selectedCategory === 'repo' ? 'bg-primary-500 hover:bg-primary-600' : ''}
             >
               {t('skins.repository')}
             </Button>
             <Button
               variant={selectedCategory === 'custom' ? 'default' : 'secondary'}
               onClick={() => setSelectedCategory('custom')}
-              className={
-                selectedCategory === 'custom' ? 'bg-terracotta-500 hover:bg-terracotta-600' : ''
-              }
+              className={selectedCategory === 'custom' ? 'bg-primary-500 hover:bg-primary-600' : ''}
             >
               {t('skins.customImports')}
             </Button>
@@ -158,9 +152,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
           {Object.keys(groupedSkins).length === 0 ? (
-            <div className="text-center py-8 text-charcoal-500 dark:text-charcoal-400">
-              {t('skins.noSkinsFound')}
-            </div>
+            <div className="text-center py-8 text-text-muted">{t('skins.noSkinsFound')}</div>
           ) : (
             <div className="space-y-6">
               {Object.entries(groupedSkins)
@@ -181,14 +173,14 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                   return (
                     <div
                       key={championKey}
-                      className="border border-charcoal-200 dark:border-charcoal-700 rounded-lg overflow-hidden"
+                      className="border border-border rounded-lg overflow-hidden"
                     >
-                      <div className="bg-charcoal-50 dark:bg-charcoal-900 px-4 py-2">
-                        <h3 className="font-semibold text-charcoal-900 dark:text-charcoal-100">
+                      <div className="bg-secondary-100 dark:bg-secondary-900 px-4 py-2">
+                        <h3 className="font-semibold text-text-primary">
                           {championName} ({skins.length})
                         </h3>
                       </div>
-                      <div className="divide-y divide-charcoal-200 dark:divide-charcoal-700">
+                      <div className="divide-y divide-border">
                         {skins.map((skin) => {
                           const key = `${championKey}_${skin.skinName}`
                           const isDeleting = deletingSkins.has(key)
@@ -199,16 +191,14 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                           return (
                             <div
                               key={skin.skinName}
-                              className="px-4 py-3 flex items-center justify-between hover:bg-charcoal-50 dark:hover:bg-charcoal-700/50 transition-colors"
+                              className="px-4 py-3 flex items-center justify-between hover:bg-secondary-100 dark:hover:bg-secondary-800/50 transition-colors"
                             >
                               <div className="flex items-center gap-2">
-                                <span className="text-sm text-charcoal-700 dark:text-charcoal-300">
-                                  {displayName}
-                                </span>
+                                <span className="text-sm text-text-secondary">{displayName}</span>
                                 {skin.isCustom && (
                                   <Badge
                                     variant="secondary"
-                                    className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/40"
+                                    className="bg-state-info/20 text-state-info hover:bg-state-info/30"
                                   >
                                     {championKey === 'Custom'
                                       ? t('skins.custom')
@@ -265,9 +255,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
         </div>
 
         <DialogFooter className="justify-between">
-          <div className="text-sm text-charcoal-600 dark:text-charcoal-400">
-            {t('skins.total', { count: totalSkins })}
-          </div>
+          <div className="text-sm text-text-muted">{t('skins.total', { count: totalSkins })}</div>
           <Button variant="secondary" onClick={onClose}>
             {t('actions.close')}
           </Button>

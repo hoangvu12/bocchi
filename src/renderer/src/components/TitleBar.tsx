@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LanguageSwitcher } from './LanguageSwitcher'
-import { DarkModeToggle } from './DarkModeToggle'
+import { ThemePicker } from './ThemePicker'
 import { Button } from './ui/button'
 import logoImg from '../assets/images/logo-small.png'
 
@@ -43,7 +43,7 @@ export function TitleBar({ appVersion }: TitleBarProps) {
   }
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-10 bg-white dark:bg-charcoal-900 border-b-2 border-charcoal-200 dark:border-charcoal-800 flex items-center justify-between select-none z-50 shadow-md dark:shadow-none">
+    <div className="fixed top-0 left-0 right-0 h-10 bg-surface border-b-2 border-border flex items-center justify-between select-none z-50 shadow-md dark:shadow-none">
       <div
         className="flex-1 h-full flex items-center px-6"
         style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
@@ -51,12 +51,8 @@ export function TitleBar({ appVersion }: TitleBarProps) {
         <div className="flex items-center gap-2">
           <img src={logoImg} alt="Bocchi" className="w-5 h-5 object-contain" />
           <div className="flex items-baseline gap-2">
-            <div className="text-sm font-bold text-charcoal-900 dark:text-charcoal-100 tracking-wide">
-              Bocchi
-            </div>
-            {appVersion && (
-              <div className="text-xs text-charcoal-500 dark:text-charcoal-500">v{appVersion}</div>
-            )}
+            <div className="text-sm font-bold text-text-primary tracking-wide">Bocchi</div>
+            {appVersion && <div className="text-xs text-text-muted">v{appVersion}</div>}
           </div>
         </div>
       </div>
@@ -64,7 +60,7 @@ export function TitleBar({ appVersion }: TitleBarProps) {
         className="flex items-center gap-2 px-2"
         style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
       >
-        <DarkModeToggle />
+        <ThemePicker />
         <LanguageSwitcher />
 
         {/* Social Links */}
@@ -78,7 +74,7 @@ export function TitleBar({ appVersion }: TitleBarProps) {
             title={t('social.joinDiscord')}
           >
             <svg
-              className="w-4 h-4 text-charcoal-600 dark:text-charcoal-400 group-hover:text-[#5865F2] dark:group-hover:text-[#5865F2] transition-colors"
+              className="w-4 h-4 text-text-secondary group-hover:text-[#5865F2] dark:group-hover:text-[#5865F2] transition-colors"
               viewBox="0 0 24 24"
               fill="currentColor"
             >
@@ -94,7 +90,7 @@ export function TitleBar({ appVersion }: TitleBarProps) {
             title={t('social.viewGithub')}
           >
             <svg
-              className="w-4 h-4 text-charcoal-600 dark:text-charcoal-400 group-hover:text-charcoal-900 dark:group-hover:text-white transition-colors"
+              className="w-4 h-4 text-text-secondary group-hover:text-text-primary transition-colors"
               viewBox="0 0 24 24"
               fill="currentColor"
             >
@@ -111,7 +107,7 @@ export function TitleBar({ appVersion }: TitleBarProps) {
           onClick={handleMinimize}
           aria-label={t('actions.minimize')}
         >
-          <div className="w-3 h-[1.5px] bg-charcoal-400 dark:bg-charcoal-500 group-hover:bg-charcoal-600 dark:group-hover:bg-charcoal-300 transition-colors"></div>
+          <div className="w-3 h-[1.5px] bg-text-secondary group-hover:bg-text-primary transition-colors"></div>
         </Button>
         <Button
           variant="ghost"
@@ -121,7 +117,7 @@ export function TitleBar({ appVersion }: TitleBarProps) {
           aria-label={isMaximized ? t('actions.restore') : t('actions.maximize')}
         >
           <div
-            className={`${isMaximized ? 'w-2.5 h-2.5 border-[1.5px] border-charcoal-400 dark:border-charcoal-500 group-hover:border-charcoal-600 dark:group-hover:border-charcoal-300' : 'w-3 h-3 border-[1.5px] border-charcoal-400 dark:border-charcoal-500 group-hover:border-charcoal-600 dark:group-hover:border-charcoal-300'} transition-colors rounded-[1px]`}
+            className={`${isMaximized ? 'w-2.5 h-2.5 border-[1.5px] border-text-secondary group-hover:border-text-primary' : 'w-3 h-3 border-[1.5px] border-text-secondary group-hover:border-text-primary'} transition-colors rounded-[1px]`}
           ></div>
         </Button>
         <Button
@@ -132,7 +128,7 @@ export function TitleBar({ appVersion }: TitleBarProps) {
           aria-label={t('actions.close')}
         >
           <svg
-            className="w-3.5 h-3.5 text-charcoal-400 dark:text-charcoal-500 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors"
+            className="w-3.5 h-3.5 text-text-secondary group-hover:text-state-error transition-colors"
             viewBox="0 0 12 12"
           >
             <path d="M1 1L11 11M1 11L11 1" stroke="currentColor" strokeWidth="1.5" fill="none" />

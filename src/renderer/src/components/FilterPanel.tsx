@@ -55,13 +55,13 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     filters.sortBy !== 'name-asc'
 
   return (
-    <div className="bg-white dark:bg-charcoal-900 border-b-2 border-charcoal-200 dark:border-charcoal-800 transition-all duration-300">
+    <div className="bg-surface border-b-2 border-border transition-all duration-300">
       <div className="px-8 py-4">
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-2 text-sm font-medium"
+            className="flex items-center gap-2 text-sm font-medium bg-surface border border-border rounded-lg px-4 py-2.5 hover:bg-secondary-100 dark:hover:bg-secondary-800"
           >
             <svg
               className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
@@ -78,16 +78,13 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             </svg>
             <span>{t('filters.title')}</span>
             {hasActiveFilters && (
-              <Badge
-                variant="default"
-                className="bg-terracotta-500 hover:bg-terracotta-600 text-white"
-              >
+              <Badge variant="default" className="bg-primary-500 hover:bg-primary-600 text-white">
                 {t('filters.active')}
               </Badge>
             )}
           </Button>
 
-          <div className="flex items-center gap-4 text-sm text-charcoal-600 dark:text-charcoal-400">
+          <div className="flex items-center gap-4 text-sm text-text-secondary">
             <span>
               {downloadedCount} / {totalCount} {t('skin.downloaded').toLowerCase()}
             </span>
@@ -95,7 +92,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               <Button
                 variant="link"
                 onClick={onClearFilters}
-                className="text-terracotta-600 dark:text-terracotta-400 hover:text-terracotta-700 dark:hover:text-terracotta-300 font-medium h-auto p-0"
+                className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium h-auto p-0"
               >
                 {t('actions.clearFilters')}
               </Button>
@@ -107,7 +104,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           <div className="mt-6 space-y-6 animate-slide-down">
             {/* Download Status */}
             <div>
-              <h3 className="text-xs font-semibold text-charcoal-700 dark:text-charcoal-300 uppercase tracking-wider mb-3">
+              <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
                 {t('filters.downloadStatus')}
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -118,9 +115,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                     size="sm"
                     onClick={() => updateFilter('downloadStatus', status)}
                     className={
-                      filters.downloadStatus === status
-                        ? 'bg-terracotta-500 hover:bg-terracotta-600'
-                        : ''
+                      filters.downloadStatus === status ? 'bg-primary-500 hover:bg-primary-600' : ''
                     }
                   >
                     {status === 'all'
@@ -135,7 +130,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
             {/* Chroma Status */}
             <div>
-              <h3 className="text-xs font-semibold text-charcoal-700 dark:text-charcoal-300 uppercase tracking-wider mb-3">
+              <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
                 {t('filters.chromas')}
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -146,9 +141,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                     size="sm"
                     onClick={() => updateFilter('chromaStatus', status)}
                     className={
-                      filters.chromaStatus === status
-                        ? 'bg-terracotta-500 hover:bg-terracotta-600'
-                        : ''
+                      filters.chromaStatus === status ? 'bg-primary-500 hover:bg-primary-600' : ''
                     }
                   >
                     {status === 'all'
@@ -163,7 +156,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
             {/* Champion Tags */}
             <div>
-              <h3 className="text-xs font-semibold text-charcoal-700 dark:text-charcoal-300 uppercase tracking-wider mb-3">
+              <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
                 {t('filters.championType')}
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -175,7 +168,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                     onClick={() => toggleTag(tag)}
                     className={
                       filters.championTags.includes(tag)
-                        ? 'bg-terracotta-500 hover:bg-terracotta-600'
+                        ? 'bg-primary-500 hover:bg-primary-600'
                         : ''
                     }
                   >
@@ -187,7 +180,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
             {/* Sort Options */}
             <div>
-              <h3 className="text-xs font-semibold text-charcoal-700 dark:text-charcoal-300 uppercase tracking-wider mb-3">
+              <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
                 {t('filters.sortBy')}
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -195,37 +188,37 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                   value={filters.sortBy}
                   onValueChange={(value) => updateFilter('sortBy', value as SortOption)}
                 >
-                  <SelectTrigger className="w-[200px] bg-cream-100 dark:bg-charcoal-800 border-charcoal-200 dark:border-charcoal-700 text-charcoal-700 dark:text-charcoal-200">
+                  <SelectTrigger className="w-[200px] bg-surface border-border text-text-primary">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-white dark:bg-charcoal-800 border-charcoal-200 dark:border-charcoal-700">
+                  <SelectContent className="bg-surface border-border">
                     <SelectItem
                       value="name-asc"
-                      className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
+                      className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
                     >
                       {t('filters.nameAsc')}
                     </SelectItem>
                     <SelectItem
                       value="name-desc"
-                      className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
+                      className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
                     >
                       {t('filters.nameDesc')}
                     </SelectItem>
                     <SelectItem
                       value="skin-asc"
-                      className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
+                      className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
                     >
                       {t('filters.skinNumAsc')}
                     </SelectItem>
                     <SelectItem
                       value="skin-desc"
-                      className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
+                      className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
                     >
                       {t('filters.skinNumDesc')}
                     </SelectItem>
                     <SelectItem
                       value="champion"
-                      className="text-charcoal-700 dark:text-charcoal-200 focus:bg-cream-100 dark:focus:bg-charcoal-700"
+                      className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
                     >
                       {t('filters.championName')}
                     </SelectItem>

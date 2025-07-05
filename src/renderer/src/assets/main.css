@@ -3,12 +3,17 @@
 @tailwind utilities;
 
 @layer base {
+  /* Theme transition animation */
+  * {
+    @apply transition-colors duration-200;
+  }
+
   :root {
-    @apply bg-cream-200 text-charcoal-950;
+    @apply bg-background text-text-primary;
   }
 
   :root.dark {
-    @apply bg-charcoal-950 text-cream-50;
+    @apply bg-background text-text-primary;
   }
 
   body {

@@ -17,6 +17,7 @@ import { VirtualizedSkinGrid } from './components/VirtualizedSkinGrid'
 import { VirtualizedChampionList } from './components/VirtualizedChampionList'
 import { LocaleProvider } from './contexts/LocaleContextProvider'
 import { useLocale } from './contexts/useLocale'
+import { ThemeProvider } from './contexts/ThemeContext'
 import { FileUploadButton } from './components/FileUploadButton'
 import { EditCustomSkinDialog } from './components/EditCustomSkinDialog'
 import { DownloadedSkinsDialog } from './components/DownloadedSkinsDialog'
@@ -959,29 +960,25 @@ function AppContent(): React.JSX.Element {
         isUpdating={isUpdatingChampionData}
       />
       <div
-        className="flex flex-col h-screen pt-10 bg-cream-300 dark:bg-charcoal-950 text-charcoal-950 dark:text-cream-50 overflow-hidden transition-colors duration-200"
+        className="flex flex-col h-screen pt-10 bg-background text-text-primary overflow-hidden transition-colors duration-200"
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
         {toolsExist === false && (
-          <div className="fixed inset-0 bg-charcoal-950 bg-opacity-50 dark:bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
-            <div className="bg-white dark:bg-charcoal-800 rounded-2xl p-8 max-w-md w-full mx-4 shadow-xl dark:shadow-dark-xl animate-slide-down">
-              <h3 className="text-xl font-bold mb-3 text-charcoal-900 dark:text-cream-50">
-                {t('tools.required')}
-              </h3>
-              <p className="text-charcoal-600 dark:text-charcoal-300 mb-6 leading-relaxed">
-                {t('tools.description')}
-              </p>
+          <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+            <div className="bg-surface rounded-2xl p-8 max-w-md w-full mx-4 shadow-xl dark:shadow-dark-xl animate-slide-down">
+              <h3 className="text-xl font-bold mb-3 text-text-primary">{t('tools.required')}</h3>
+              <p className="text-text-secondary mb-6 leading-relaxed">{t('tools.description')}</p>
               {downloadingTools ? (
                 <div>
-                  <p className="text-sm text-charcoal-600 dark:text-charcoal-300 mb-3">
+                  <p className="text-sm text-text-secondary mb-3">
                     {t('tools.downloading', { progress: toolsDownloadProgress })}
                   </p>
-                  <div className="w-full bg-charcoal-100 dark:bg-charcoal-700 rounded-full h-3 overflow-hidden">
+                  <div className="w-full bg-secondary-100 dark:bg-secondary-700 rounded-full h-3 overflow-hidden">
                     <div
-                      className="bg-terracotta-500 h-full transition-all duration-300 relative overflow-hidden"
+                      className="bg-primary-500 h-full transition-all duration-300 relative overflow-hidden"
                       style={{ width: `${toolsDownloadProgress}%` }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-progress"></div>
@@ -990,7 +987,7 @@ function AppContent(): React.JSX.Element {
                 </div>
               ) : (
                 <button
-                  className="w-full px-6 py-3 bg-terracotta-500 hover:bg-terracotta-600 text-white font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium active:scale-[0.98]"
+                  className="w-full px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium active:scale-[0.98]"
                   onClick={downloadTools}
                 >
                   {t('tools.downloadTools')}
@@ -999,7 +996,7 @@ function AppContent(): React.JSX.Element {
             </div>
           </div>
         )}
-        <div className="flex items-center justify-between px-8 py-5 bg-white dark:bg-charcoal-900 border-b-2 border-charcoal-200 dark:border-charcoal-800 shadow-sm dark:shadow-none">
+        <div className="flex items-center justify-between px-8 py-5 bg-surface border-b-2 border-border shadow-sm dark:shadow-none">
           <div className="flex items-center gap-3 flex-1">
             <div className="flex items-center gap-2 flex-1 max-w-md">
               <input
@@ -1007,10 +1004,10 @@ function AppContent(): React.JSX.Element {
                 value={gamePath}
                 placeholder="Game path not set"
                 readOnly
-                className="flex-1 px-4 py-2.5 text-sm bg-cream-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 rounded-lg text-charcoal-700 dark:text-charcoal-200 placeholder-charcoal-400 dark:placeholder-charcoal-500 focus:outline-none focus:ring-2 focus:ring-terracotta-500 focus:border-transparent transition-all duration-200"
+                className="flex-1 px-4 py-2.5 text-sm bg-elevated border border-border rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
               />
               <button
-                className="px-4 py-2.5 text-sm bg-white dark:bg-charcoal-800 hover:bg-cream-100 dark:hover:bg-charcoal-700 text-charcoal-800 dark:text-charcoal-200 font-medium rounded-lg transition-all duration-200 border border-charcoal-200 dark:border-charcoal-700 hover:border-charcoal-300 dark:hover:border-charcoal-600 shadow-sm hover:shadow-md dark:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2.5 text-sm bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary font-medium rounded-lg transition-all duration-200 border border-border hover:border-border-strong shadow-sm hover:shadow-md dark:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={browseForGame}
                 disabled={loading}
               >
@@ -1021,8 +1018,8 @@ function AppContent(): React.JSX.Element {
               className={`px-4 py-2.5 text-sm rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-medium
                 ${
                   showFavoritesOnly
-                    ? 'bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/50 border-2 border-red-200 dark:border-red-800'
-                    : 'bg-white dark:bg-charcoal-800 text-charcoal-800 dark:text-charcoal-200 hover:bg-cream-100 dark:hover:bg-charcoal-700 border border-charcoal-200 dark:border-charcoal-700 shadow-sm hover:shadow-md dark:shadow-none'
+                    ? 'bg-error/10 text-error hover:bg-error/20 border-2 border-error/30'
+                    : 'bg-surface text-text-primary hover:bg-secondary-100 dark:hover:bg-secondary-800 border border-border shadow-sm hover:shadow-md dark:shadow-none'
                 }`}
               onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
               disabled={loading}
@@ -1032,7 +1029,7 @@ function AppContent(): React.JSX.Element {
             </button>
             {!championData && (
               <button
-                className="px-5 py-2.5 text-sm bg-terracotta-500 hover:bg-terracotta-600 text-white font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium dark:shadow-dark-soft disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
+                className="px-5 py-2.5 text-sm bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium dark:shadow-dark-soft disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
                 onClick={fetchChampionData}
                 disabled={loading}
               >
@@ -1045,14 +1042,14 @@ function AppContent(): React.JSX.Element {
 
         {championData ? (
           <div className="flex flex-1 overflow-hidden">
-            <div className="w-80 bg-cream-50 dark:bg-charcoal-900 border-r-2 border-charcoal-200 dark:border-charcoal-800 flex flex-col shadow-md dark:shadow-none">
+            <div className="w-80 bg-elevated border-r-2 border-border flex flex-col shadow-md dark:shadow-none">
               <div className="p-6">
                 <input
                   type="text"
                   placeholder={t('champion.searchPlaceholder')}
                   value={championSearchQuery}
                   onChange={(e) => setChampionSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2.5 text-sm bg-cream-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 rounded-lg text-charcoal-700 dark:text-charcoal-200 placeholder-charcoal-400 dark:placeholder-charcoal-500 focus:outline-none focus:ring-2 focus:ring-terracotta-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-2.5 text-sm bg-surface border border-border rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                 />
               </div>
               <div className="flex-1 overflow-hidden" style={{ minHeight: 0 }}>
@@ -1070,13 +1067,13 @@ function AppContent(): React.JSX.Element {
                 </AutoSizer>
               </div>
               {championData && (
-                <div className="px-6 py-4 text-xs text-charcoal-500 dark:text-charcoal-500 border-t-2 border-charcoal-200 dark:border-charcoal-800 bg-cream-100 dark:bg-charcoal-950">
+                <div className="px-6 py-4 text-xs text-text-muted border-t-2 border-border bg-surface">
                   <div>Champion data: v{championData.version}</div>
                 </div>
               )}
             </div>
 
-            <div className="flex-1 flex flex-col bg-cream-200 dark:bg-charcoal-950 overflow-hidden">
+            <div className="flex-1 flex flex-col bg-background overflow-hidden">
               <FilterPanel
                 filters={filters}
                 onFiltersChange={setFilters}
@@ -1091,7 +1088,7 @@ function AppContent(): React.JSX.Element {
                   placeholder={t('skin.searchPlaceholder')}
                   value={skinSearchQuery}
                   onChange={(e) => setSkinSearchQuery(e.target.value)}
-                  className="flex-1 px-5 py-3 bg-white dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 rounded-xl text-charcoal-700 dark:text-charcoal-200 placeholder-charcoal-400 dark:placeholder-charcoal-500 focus:outline-none focus:ring-2 focus:ring-terracotta-500 focus:border-transparent transition-all duration-200 shadow-soft dark:shadow-none"
+                  className="flex-1 px-5 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 shadow-soft dark:shadow-none"
                 />
                 <div className="flex items-center gap-2">
                   <FileUploadButton
@@ -1101,7 +1098,7 @@ function AppContent(): React.JSX.Element {
                   />
                   <button
                     onClick={() => setShowDownloadedSkinsDialog(true)}
-                    className="px-4 py-2.5 text-sm bg-white dark:bg-charcoal-800 hover:bg-cream-100 dark:hover:bg-charcoal-700 text-charcoal-800 dark:text-charcoal-200 font-medium rounded-lg transition-all duration-200 border border-charcoal-200 dark:border-charcoal-700 hover:border-charcoal-300 dark:hover:border-charcoal-600 shadow-sm hover:shadow-md dark:shadow-none flex items-center gap-2"
+                    className="px-4 py-2.5 text-sm bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary font-medium rounded-lg transition-all duration-200 border border-border hover:border-border-strong shadow-sm hover:shadow-md dark:shadow-none flex items-center gap-2"
                     title={t('skins.manageDownloaded')}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1124,7 +1121,7 @@ function AppContent(): React.JSX.Element {
                 <div className="flex-1 overflow-hidden flex flex-col">
                   {getDisplaySkins().length > 0 ? (
                     <>
-                      <div className="px-8 pb-4 text-sm text-charcoal-600 dark:text-charcoal-400">
+                      <div className="px-8 pb-4 text-sm text-text-secondary">
                         {t('skin.showing', { count: getDisplaySkins().length })}
                       </div>
                       <div className="flex-1 relative" style={{ minHeight: 0 }}>
@@ -1151,9 +1148,9 @@ function AppContent(): React.JSX.Element {
                   ) : (
                     <div className="flex-1 flex items-center justify-center">
                       <div className="text-center">
-                        <div className="w-16 h-16 bg-cream-300 dark:bg-charcoal-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div className="w-16 h-16 bg-secondary-200 dark:bg-secondary-800 rounded-full flex items-center justify-center mx-auto mb-4">
                           <svg
-                            className="w-8 h-8 text-charcoal-600 dark:text-charcoal-400"
+                            className="w-8 h-8 text-text-secondary"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -1166,12 +1163,10 @@ function AppContent(): React.JSX.Element {
                             />
                           </svg>
                         </div>
-                        <p className="text-charcoal-600 dark:text-charcoal-400 mb-2">
-                          No skins match your filters
-                        </p>
+                        <p className="text-text-secondary mb-2">No skins match your filters</p>
                         <button
                           onClick={clearFilters}
-                          className="text-sm text-terracotta-600 dark:text-terracotta-400 hover:text-terracotta-700 dark:hover:text-terracotta-300 font-medium"
+                          className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
                         >
                           Clear all filters
                         </button>
@@ -1200,11 +1195,9 @@ function AppContent(): React.JSX.Element {
                   />
                 </svg>
               </div>
-              <p className="text-lg text-charcoal-600 dark:text-charcoal-300 mb-6">
-                {t('champion.noData')}
-              </p>
+              <p className="text-lg text-text-secondary mb-6">{t('champion.noData')}</p>
               <button
-                className="px-6 py-3 bg-terracotta-500 hover:bg-terracotta-600 text-white font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
+                className="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
                 onClick={fetchChampionData}
                 disabled={loading}
               >
@@ -1227,15 +1220,11 @@ function AppContent(): React.JSX.Element {
 
         {/* Drop overlay */}
         {isDragging && (
-          <div className="fixed inset-0 bg-charcoal-950 bg-opacity-80 flex items-center justify-center z-50 pointer-events-none">
-            <div className="bg-white dark:bg-charcoal-800 rounded-2xl p-12 shadow-2xl flex flex-col items-center gap-4">
-              <Upload className="w-16 h-16 text-terracotta-500" />
-              <p className="text-2xl font-bold text-charcoal-900 dark:text-cream-50">
-                Drop skin files here
-              </p>
-              <p className="text-sm text-charcoal-600 dark:text-charcoal-400">
-                Supports .wad, .zip, and .fantome files
-              </p>
+          <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 pointer-events-none">
+            <div className="bg-surface rounded-2xl p-12 shadow-2xl flex flex-col items-center gap-4">
+              <Upload className="w-16 h-16 text-primary-500" />
+              <p className="text-2xl font-bold text-text-primary">Drop skin files here</p>
+              <p className="text-sm text-text-secondary">Supports .wad, .zip, and .fantome files</p>
             </div>
           </div>
         )}
@@ -1287,9 +1276,11 @@ function AppContent(): React.JSX.Element {
 function App(): React.JSX.Element {
   return (
     <LocaleProvider>
-      <P2PProvider>
-        <AppContent />
-      </P2PProvider>
+      <ThemeProvider>
+        <P2PProvider>
+          <AppContent />
+        </P2PProvider>
+      </ThemeProvider>
     </LocaleProvider>
   )
 }
