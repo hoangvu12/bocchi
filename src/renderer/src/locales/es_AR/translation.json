@@ -140,7 +140,8 @@
     "updating": "Actualizando..."
   },
   "skins": {
-    "selected": "{{count}} {{count, plural, =1 {skin} other {skins}}} seleccionados",
+    "selected_one": "{{count}} skin seleccionado",
+    "selected_other": "{{count}} skins seleccionados",
     "toDownload": "({{count}} para descargar)",
     "downloaded": "Skins descargados",
     "notDownloaded": "No descargado",
@@ -184,7 +185,8 @@
     "applying": "Aplicando...",
     "stopping": "Deteniendo...",
     "stopPatcher": "Detener patcher",
-    "apply": "Aplicar {{count}} {{count, plural, =1 {skin} other {skins}}}",
+    "apply_one": "Aplicar {{count}} skin",
+    "apply_other": "Aplicar {{count}} skins",
     "messages": "Mensajes del patcher:"
   },
   "room": {

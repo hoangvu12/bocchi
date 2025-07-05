@@ -269,9 +269,39 @@ function setupIpcHandlers(): void {
   // Patcher controls
   ipcMain.handle('run-patcher', async (_, gamePath: string, selectedSkins: string[]) => {
     try {
-      // 0. Validate for single skin per champion
+      // 0. Filter out base skins when their chromas are selected
+      const filteredSkins = selectedSkins.filter((skinKey) => {
+        const [champion, skinFile] = skinKey.split('/')
+
+        // Check if this is a base skin
+        const baseSkinName = skinFile.replace('.zip', '')
+
+        // Check if any chroma of this skin is also selected
+        const hasChromaSelected = selectedSkins.some((otherKey) => {
+          if (otherKey === skinKey) return false
+          const [otherChampion, otherFile] = otherKey.split('/')
+          if (champion !== otherChampion) return false
+
+          // Check if otherFile is a chroma of this base skin
+          // Chromas have format "SkinName ChromaId.zip" where ChromaId is numeric
+          const chromaPattern = new RegExp(
+            `^${baseSkinName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\d+\\.zip$`
+          )
+          return chromaPattern.test(otherFile)
+        })
+
+        // If this is a base skin and its chroma is selected, filter it out
+        if (hasChromaSelected && !skinFile.match(/ \d+\.zip$/)) {
+          console.log(`Filtering out base skin ${skinKey} because its chroma is selected`)
+          return false
+        }
+
+        return true
+      })
+
+      // Validate for single skin per champion (after filtering)
       const championCounts = new Map<string, number>()
-      for (const skinKey of selectedSkins) {
+      for (const skinKey of filteredSkins) {
         const champion = skinKey.split('/')[0]
         championCounts.set(champion, (championCounts.get(champion) || 0) + 1)
       }
@@ -287,7 +317,7 @@ function setupIpcHandlers(): void {
 
       // 1. Download skins that are not local and get all local paths
       const skinInfosToProcess = await Promise.all(
-        selectedSkins.map(async (skinKey) => {
+        filteredSkins.map(async (skinKey) => {
           const [champion, skinFile] = skinKey.split('/')
 
           // Handle user-imported skins
