@@ -133,6 +133,11 @@ export class FileImportService {
     }
 
     const ext = path.extname(filePath).toLowerCase()
+    const fileName = path.basename(filePath).toLowerCase()
+
+    // Check for .wad.client files
+    if (fileName.endsWith('.wad.client')) return 'wad'
+
     if (ext === '.wad') return 'wad'
     if (ext === '.zip') return 'zip'
     if (ext === '.fantome') return 'fantome'
@@ -143,7 +148,11 @@ export class FileImportService {
   private async importWadFile(wadPath: string, options: FileImportOptions): Promise<ImportResult> {
     // Use provided championName, even if empty string
     const championName = options.championName !== undefined ? options.championName : ''
-    const baseName = path.basename(wadPath, '.wad')
+    // Handle both .wad and .wad.client extensions
+    const fileName = path.basename(wadPath)
+    const baseName = fileName.endsWith('.wad.client')
+      ? fileName.slice(0, -11) // Remove .wad.client
+      : path.basename(wadPath, '.wad')
     // Remove trailing spaces from skin name
     const skinName = (options.skinName || baseName).trim()
 
@@ -305,7 +314,7 @@ export class FileImportService {
       if (fileType === 'unknown' || fileType === 'invalid') {
         return {
           valid: false,
-          error: 'Unsupported file type. Supported: .wad, .zip, .fantome'
+          error: 'Unsupported file type. Supported: .wad.client, .wad, .zip, .fantome'
         }
       }
 

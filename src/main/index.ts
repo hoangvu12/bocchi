@@ -221,7 +221,7 @@ function setupIpcHandlers(): void {
       title: 'Select skin file',
       buttonLabel: 'Select',
       filters: [
-        { name: 'Skin Files', extensions: ['wad', 'zip', 'fantome'] },
+        { name: 'Skin Files', extensions: ['wad.client', 'wad', 'zip', 'fantome'] },
         { name: 'All Files', extensions: ['*'] }
       ]
     })
@@ -238,7 +238,7 @@ function setupIpcHandlers(): void {
       title: 'Select skin files',
       buttonLabel: 'Select',
       filters: [
-        { name: 'Skin Files', extensions: ['wad', 'zip', 'fantome'] },
+        { name: 'Skin Files', extensions: ['wad.client', 'wad', 'zip', 'fantome'] },
         { name: 'All Files', extensions: ['*'] }
       ]
     })
@@ -323,11 +323,11 @@ function setupIpcHandlers(): void {
           // Handle user-imported skins
           if (skinFile.includes('[User]')) {
             const skinNameWithExt = skinFile.replace('[User] ', '')
-            const skinName = skinNameWithExt.replace(/\.(wad|zip|fantome)$/i, '')
+            const skinName = skinNameWithExt.replace(/\.(wad\.client|wad|zip|fantome)$/i, '')
 
             // First try to find the mod file in mod-files directory
             const modFilesDir = path.join(app.getPath('userData'), 'mod-files')
-            const possibleExtensions = ['.wad', '.zip', '.fantome']
+            const possibleExtensions = ['.wad.client', '.wad', '.zip', '.fantome']
             let modFilePath: string | null = null
 
             for (const ext of possibleExtensions) {
@@ -618,7 +618,7 @@ function setupIpcHandlers(): void {
       const fileBuffer = await fs.promises.readFile(filePath)
       const hash = crypto.createHash('sha256').update(fileBuffer).digest('hex')
 
-      const mimeType = filePath.endsWith('.wad')
+      const mimeType = filePath.endsWith('.wad.client') || filePath.endsWith('.wad')
         ? 'application/x-wad'
         : filePath.endsWith('.zip')
           ? 'application/zip'

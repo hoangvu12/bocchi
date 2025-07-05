@@ -212,7 +212,12 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
         // Filter for skin files
         const skinFiles = files.filter((file) => {
           const ext = file.name.toLowerCase()
-          return ext.endsWith('.wad') || ext.endsWith('.zip') || ext.endsWith('.fantome')
+          return (
+            ext.endsWith('.wad.client') ||
+            ext.endsWith('.wad') ||
+            ext.endsWith('.zip') ||
+            ext.endsWith('.fantome')
+          )
         })
 
         if (skinFiles.length > 0) {
