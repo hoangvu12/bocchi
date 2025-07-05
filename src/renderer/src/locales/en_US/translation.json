@@ -54,7 +54,8 @@
     "favorite": "Add to favorites",
     "unfavorite": "Remove from favorites",
     "clickToApply": "Click on any skin to apply it instantly",
-    "showing": "Showing {{count}} {{count, plural, =1 {skin} other {skins}}}"
+    "showing_one": "Showing {{count}} skin",
+    "showing_other": "Showing {{count}} skins"
   },
   "status": {
     "detectingGame": "Detecting game path...",
@@ -151,9 +152,11 @@
     "userImport": "User Import",
     "custom": "Custom",
     "deleting": "Deleting...",
-    "chromas": "{{count}} {{count, plural, =1 {chroma} other {chromas}}} available",
+    "chromas_one": "{{count}} chroma available",
+    "chromas_other": "{{count}} chromas available",
     "selectChroma": "Select Chroma for {{skinName}}",
-    "chooseChroma": "Choose from {{count}} available {{count, plural, =1 {chroma} other {chromas}}}",
+    "chooseChroma_one": "Choose from {{count}} available chroma",
+    "chooseChroma_other": "Choose from {{count}} available chromas",
     "mySkins": "My Skins",
     "roomSkins": "Room Skins",
     "manage": "Manage",
@@ -202,7 +205,8 @@
     "joinRoom": "Join Room",
     "roomId": "Room: {{id}}",
     "copyRoomId": "Copy room ID",
-    "members": "{{count}} {{count, plural, =1 {member} other {members}}}"
+    "members_one": "{{count}} member",
+    "members_other": "{{count}} members"
   },
   "fileTransfer": {
     "incoming": "Incoming File Transfer",

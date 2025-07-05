@@ -54,7 +54,8 @@
     "favorite": "Agregar a favoritos",
     "unfavorite": "Quitar de favoritos",
     "clickToApply": "Hacé clic en cualquier skin para aplicarlo al instante",
-    "showing": "Mostrando {{count}} {{count, plural, =1 {skin} other {skins}}}"
+    "showing_one": "Mostrando {{count}} skin",
+    "showing_other": "Mostrando {{count}} skins"
   },
   "status": {
     "detectingGame": "Detectando ruta del juego...",
@@ -153,9 +154,11 @@
     "userImport": "Importación de usuario",
     "custom": "Personalizado",
     "deleting": "Eliminando...",
-    "chromas": "{{count}} {{count, plural, =1 {croma} other {cromas}}} disponibles",
+    "chromas_one": "{{count}} croma disponible",
+    "chromas_other": "{{count}} cromas disponibles",
     "selectChroma": "Seleccionar croma para {{skinName}}",
-    "chooseChroma": "Elegí entre {{count}} {{count, plural, =1 {croma} other {cromas}}} disponibles",
+    "chooseChroma_one": "Elegí entre {{count}} croma disponible",
+    "chooseChroma_other": "Elegí entre {{count}} cromas disponibles",
     "mySkins": "Mis skins",
     "roomSkins": "Skins de la sala",
     "manage": "Administrar",
@@ -204,7 +207,8 @@
     "joinRoom": "Unirse a sala",
     "roomId": "Sala: {{id}}",
     "copyRoomId": "Copiar ID de sala",
-    "members": "{{count}} {{count, plural, =1 {miembro} other {miembros}}}"
+    "members_one": "{{count}} miembro",
+    "members_other": "{{count}} miembros"
   },
   "fileTransfer": {
     "incoming": "Transferencia de archivo entrante",
