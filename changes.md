@@ -1,11 +1,11 @@
 ### Features
 
-- Support custom mods in party (not stable need testing)
-- Added chromas (yay!)
+- Added Spanish (Argentina) translation
+- Fully translate hardcoded English
+- Drag and drop custom mods
+- Multple custom mods import
 
 ### Fixes
 
-- Some custom mods don't work when apply
-- Custom mods aren't deletable in Manage dialog
-- Custom mods don't show if champion is selected when import
-- Error messages disappear instantly.
+- Missing chromas
+- Custom mods don't have IDs causing UI bugs
