@@ -2,10 +2,12 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import enUS from '../locales/en_US/translation.json'
 import viVN from '../locales/vi_VN/translation.json'
+import esAR from '../locales/es_AR/translation.json'
 
 export const supportedLanguages = [
   { code: 'en_US', name: 'English', flag: '🇺🇸' },
-  { code: 'vi_VN', name: 'Tiếng Việt', flag: '🇻🇳' }
+  { code: 'vi_VN', name: 'Tiếng Việt', flag: '🇻🇳' },
+  { code: 'es_AR', name: 'Español (Argentina)', flag: '🇦🇷' }
 ] as const
 
 export type LanguageCode = (typeof supportedLanguages)[number]['code']
@@ -16,6 +18,9 @@ const resources = {
   },
   vi_VN: {
     translation: viVN
+  },
+  es_AR: {
+    translation: esAR
   }
 }
 
