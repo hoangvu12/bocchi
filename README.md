@@ -116,6 +116,14 @@ Use at your own risk. Skins are client-side only and do not provide any competit
 - Discord Server: [Join our community](https://discord.gg/frXDBTe4FW)
 - GitHub Repository: [Star on GitHub](https://github.com/hoangvu12/bocchi)
 
+## 💝 Support
+
+If you find Bocchi helpful and want to support its development:
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/hoangvu12)
+
+Your support helps keep the project alive and motivates continued development!
+
 ---
 
 <div align="center">

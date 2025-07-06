@@ -230,6 +230,7 @@
   },
   "social": {
     "joinDiscord": "加入 Discord",
-    "viewGithub": "在 GitHub 上查看"
+    "viewGithub": "在 GitHub 上查看",
+    "donate": "捐赠"
   }
 }

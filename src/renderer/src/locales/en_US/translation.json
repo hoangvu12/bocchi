@@ -228,7 +228,8 @@
   },
   "social": {
     "joinDiscord": "Join Discord",
-    "viewGithub": "View on GitHub"
+    "viewGithub": "View on GitHub",
+    "donate": "Donate"
   },
   "errors": {
     "generic": "An error occurred",

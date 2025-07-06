@@ -230,6 +230,7 @@
   },
   "social": {
     "joinDiscord": "Discordに参加",
-    "viewGithub": "GitHubで表示"
+    "viewGithub": "GitHubで表示",
+    "donate": "寄付"
   }
 }

@@ -222,7 +222,8 @@
   },
   "social": {
     "joinDiscord": "Tham gia Discord",
-    "viewGithub": "Xem trên GitHub"
+    "viewGithub": "Xem trên GitHub",
+    "donate": "Ủng hộ"
   },
   "errors": {
     "generic": "Đã xảy ra lỗi",

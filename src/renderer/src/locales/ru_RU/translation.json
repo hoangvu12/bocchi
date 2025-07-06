@@ -230,6 +230,7 @@
   },
   "social": {
     "joinDiscord": "Присоединиться к Discord",
-    "viewGithub": "Посмотреть на GitHub"
+    "viewGithub": "Посмотреть на GitHub",
+    "donate": "Поддержать"
   }
 }

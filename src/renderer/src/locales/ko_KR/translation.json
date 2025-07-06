@@ -230,6 +230,7 @@
   },
   "social": {
     "joinDiscord": "Discord 참가",
-    "viewGithub": "GitHub에서 보기"
+    "viewGithub": "GitHub에서 보기",
+    "donate": "후원"
   }
 }
