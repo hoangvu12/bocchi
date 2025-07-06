@@ -45,6 +45,7 @@ interface Champion {
   id: number
   key: string
   name: string
+  nameEn?: string
   title: string
   image: string
   tags: string[]
@@ -526,6 +527,10 @@ async function main() {
           champions.forEach((champion) => {
             const englishChampion = englishChampions.find((c) => c.key === champion.key)
             if (englishChampion) {
+              // Add English champion name
+              champion.nameEn = englishChampion.name
+
+              // Add English skin names
               champion.skins.forEach((skin, index) => {
                 const englishSkin = englishChampion.skins[index]
                 if (englishSkin) {

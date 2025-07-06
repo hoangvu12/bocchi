@@ -4,13 +4,14 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Badge } from './ui/badge'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
+import { getChampionDisplayName } from '../utils/championUtils'
 
 interface DownloadedSkinsDialogProps {
   isOpen: boolean
   onClose: () => void
   downloadedSkins: Array<{ championName: string; skinName: string; localPath?: string }>
   championData?: {
-    champions: Array<{ key: string; name: string }>
+    champions: Array<{ key: string; name: string; nameEn?: string; [key: string]: any }>
   }
   onDeleteSkin: (championName: string, skinName: string) => Promise<void>
   onDeleteCustomSkin?: (skinPath: string, skinName: string) => Promise<void>
@@ -50,8 +51,8 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
       if (selectedCategory === 'custom' && !isCustom) return
 
       // Filter by search query
-      const championDisplayName =
-        championData?.champions.find((c) => c.key === skin.championName)?.name || skin.championName
+      const champion = championData?.champions.find((c) => c.key === skin.championName)
+      const championDisplayName = champion ? getChampionDisplayName(champion) : skin.championName
       if (
         searchQuery &&
         !skin.skinName.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -162,13 +163,15 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                   if (b === 'Custom') return -1
 
                   // Sort by champion display name
-                  const nameA = championData?.champions.find((c) => c.key === a)?.name || a
-                  const nameB = championData?.champions.find((c) => c.key === b)?.name || b
+                  const championA = championData?.champions.find((c) => c.key === a)
+                  const championB = championData?.champions.find((c) => c.key === b)
+                  const nameA = championA ? getChampionDisplayName(championA) : a
+                  const nameB = championB ? getChampionDisplayName(championB) : b
                   return nameA.localeCompare(nameB)
                 })
                 .map(([championKey, skins]) => {
-                  const championName =
-                    championData?.champions.find((c) => c.key === championKey)?.name || championKey
+                  const champion = championData?.champions.find((c) => c.key === championKey)
+                  const championName = champion ? champion.name : championKey
 
                   return (
                     <div

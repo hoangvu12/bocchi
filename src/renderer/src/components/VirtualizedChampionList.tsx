@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { VariableSizeList as List } from 'react-window'
 import type { Champion } from '../App'
+import { getChampionDisplayName } from '../utils/championUtils'
 
 interface VirtualizedChampionListProps {
   champions: Champion[]
@@ -33,7 +34,8 @@ const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> =
 
     let lastLetter = ''
     champions.forEach((champion) => {
-      const firstLetter = champion.name[0].toUpperCase()
+      const displayName = getChampionDisplayName(champion)
+      const firstLetter = displayName[0].toUpperCase()
       if (firstLetter !== lastLetter) {
         items.push({ type: 'letter', data: firstLetter })
         lastLetter = firstLetter
@@ -137,7 +139,7 @@ const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> =
               >
                 <img
                   src={champion.image}
-                  alt={champion.name}
+                  alt={getChampionDisplayName(champion)}
                   className="w-10 h-10 rounded-lg"
                   loading="lazy"
                 />

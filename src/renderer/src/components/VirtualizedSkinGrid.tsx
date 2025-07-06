@@ -1,12 +1,12 @@
-import React, { useMemo, useRef, useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeGrid as Grid } from 'react-window'
 import type { Champion, Skin } from '../App'
-import type { SelectedSkin } from '../store/atoms'
-import { Button } from './ui/button'
 import { useChromaData } from '../hooks/useChromaData'
-import { ChromaSelectionDialog } from './ChromaSelectionDialog'
+import type { SelectedSkin } from '../store/atoms'
 import { isOldFormatCustomId } from '../utils/customModId'
 import { ChromaColorPie } from './ChromaColorPie'
+import { ChromaSelectionDialog } from './ChromaSelectionDialog'
+import { Button } from './ui/button'
 
 interface VirtualizedSkinGridProps {
   skins: Array<{ champion: Champion; skin: Skin }>

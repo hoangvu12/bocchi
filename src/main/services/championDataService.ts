@@ -4,6 +4,7 @@ interface Champion {
   id: number
   key: string
   name: string
+  nameEn?: string
   title: string
   image: string
   skins: Skin[]
@@ -141,16 +142,26 @@ export class ChampionDataService {
             const englishResponse = await axios.get(englishUrl)
             const englishData = englishResponse.data
 
-            // Create a map of English skin names
+            // Create maps for English champion and skin names
+            const englishChampionNames: Record<string, string> = {}
             const englishSkinNames: Record<string, string> = {}
+
             englishData.champions.forEach((champion: Champion) => {
+              englishChampionNames[champion.key] = champion.name
               champion.skins.forEach((skin: Skin) => {
                 englishSkinNames[skin.id] = skin.name
               })
             })
 
-            // Add English names to non-English skins
+            // Add English names to non-English champions and skins
             data.champions.forEach((champion: Champion) => {
+              // Add English champion name
+              const englishChampionName = englishChampionNames[champion.key]
+              if (englishChampionName) {
+                champion.nameEn = englishChampionName
+              }
+
+              // Add English skin names
               champion.skins.forEach((skin: Skin) => {
                 const englishName = englishSkinNames[skin.id]
                 if (englishName) {

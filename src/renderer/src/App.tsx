@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { Upload } from 'lucide-react'
 import { FilterPanel } from './components/FilterPanel'
+import { getChampionDisplayName } from './utils/championUtils'
 import { generateCustomModId, isOldFormatCustomId } from './utils/customModId'
 import { GridViewToggle } from './components/GridViewToggle'
 import { TitleBar } from './components/TitleBar'
@@ -37,6 +38,7 @@ export interface Champion {
   id: number
   key: string
   name: string
+  nameEn?: string
   title: string
   image: string
   skins: Skin[]
@@ -583,7 +585,8 @@ function AppContent(): React.JSX.Element {
           )
 
           if (!isChromaDownloaded) {
-            githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion.name}/chromas/${encodeURIComponent(downloadName)}/${encodeURIComponent(skinFileName)}`
+            const championNameForUrl = getChampionDisplayName(champion)
+            githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/chromas/${encodeURIComponent(downloadName)}/${encodeURIComponent(skinFileName)}`
 
             setStatusMessage(t('status.downloading', { name: `${skin.name} (Chroma)` }))
 
@@ -600,7 +603,8 @@ function AppContent(): React.JSX.Element {
           )
 
           if (!isSkinDownloaded) {
-            githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion.name}/${encodeURIComponent(skinFileName)}`
+            const championNameForUrl = getChampionDisplayName(champion)
+            githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(skinFileName)}`
 
             setStatusMessage(t('status.downloading', { name: skin.name }))
 
@@ -611,8 +615,9 @@ function AppContent(): React.JSX.Element {
           }
         }
 
-        // Add skin key for the patcher
-        skinKeys.push(`${champion.name}/${skinFileName}`)
+        // Add skin key for the patcher (must use English name)
+        const championNameForPatcher = getChampionDisplayName(champion)
+        skinKeys.push(`${championNameForPatcher}/${skinFileName}`)
       }
 
       // Reload downloaded skins list
@@ -678,9 +683,10 @@ function AppContent(): React.JSX.Element {
 
   // Filter champions based on search
   const filteredChampions =
-    championData?.champions.filter((champ) =>
-      champ.name.toLowerCase().includes(championSearchQuery.toLowerCase())
-    ) || []
+    championData?.champions.filter((champ) => {
+      const displayName = getChampionDisplayName(champ)
+      return displayName.toLowerCase().includes(championSearchQuery.toLowerCase())
+    }) || []
 
   const isSearchingGlobally = skinSearchQuery.trim().length > 0
 
@@ -733,10 +739,11 @@ function AppContent(): React.JSX.Element {
           return a.skin.num - b.skin.num
         case 'skin-desc':
           return b.skin.num - a.skin.num
-        case 'champion':
-          return (
-            a.champion.name.localeCompare(b.champion.name) || a.skin.name.localeCompare(b.skin.name)
-          )
+        case 'champion': {
+          const nameA = getChampionDisplayName(a.champion)
+          const nameB = getChampionDisplayName(b.champion)
+          return nameA.localeCompare(nameB) || a.skin.name.localeCompare(b.skin.name)
+        }
         default:
           return 0
       }
@@ -1268,7 +1275,7 @@ function AppContent(): React.JSX.Element {
         onRefresh={loadDownloadedSkins}
       />
 
-      <FileTransferDialog />
+      <FileTransferDialog championData={championData || undefined} />
     </>
   )
 }

@@ -2,6 +2,7 @@ import React, { useState, forwardRef, useImperativeHandle, useCallback } from 'r
 import { useTranslation } from 'react-i18next'
 import { Upload, Loader2, X, Image } from 'lucide-react'
 import type { Champion } from '../App'
+import { getChampionDisplayName } from '../utils/championUtils'
 
 interface FileUploadButtonProps {
   champions: Champion[]
@@ -347,7 +348,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                     <option value="">{t('fileUpload.championPlaceholder')}</option>
                     {champions.map((champion) => (
                       <option key={champion.key} value={champion.key}>
-                        {champion.name}
+                        {getChampionDisplayName(champion)}
                       </option>
                     ))}
                   </select>

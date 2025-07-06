@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from './ui/button'
 import { Progress } from './ui/progress'
 import { p2pFileTransferService } from '../services/p2pFileTransferService'
+import { getChampionDisplayName } from '../utils/championUtils'
 import type { SelectedSkin } from '../../../main/types'
 
 interface FileTransferRequest {
@@ -28,7 +29,13 @@ interface TransferProgress {
   totalBytes: number
 }
 
-export const FileTransferDialog: React.FC = () => {
+interface FileTransferDialogProps {
+  championData?: {
+    champions: Array<{ key: string; name: string; nameEn?: string; [key: string]: any }>
+  }
+}
+
+export const FileTransferDialog: React.FC<FileTransferDialogProps> = ({ championData }) => {
   const [pendingRequests, setPendingRequests] = useState<FileTransferRequest[]>([])
   const [activeTransfers, setActiveTransfers] = useState<Map<string, TransferProgress>>(new Map())
   const [completedTransfers, setCompletedTransfers] = useState<string[]>([])
@@ -124,7 +131,14 @@ export const FileTransferDialog: React.FC = () => {
                     Champion:
                   </span>
                   <span className="text-sm font-medium">
-                    {currentRequest.metadata.modInfo.championName}
+                    {(() => {
+                      const champion = championData?.champions.find(
+                        (c) => c.key === currentRequest.metadata.modInfo.championName
+                      )
+                      return champion
+                        ? getChampionDisplayName(champion)
+                        : currentRequest.metadata.modInfo.championName
+                    })()}
                   </span>
                 </div>
                 <div className="flex justify-between">
