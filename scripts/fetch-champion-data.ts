@@ -39,6 +39,13 @@ interface Skin {
   nameEn?: string
   lolSkinsName?: string
   chromas: boolean
+  chromaList?: Chroma[]
+  rarity: string
+  rarityGemPath: string | null
+  isLegacy: boolean
+  skinType: string
+  skinLines?: Array<{ id: number }>
+  description?: string
 }
 
 interface Champion {
@@ -61,7 +68,6 @@ interface ChampionData {
 interface ChromaData {
   version: string
   lastUpdated: string
-  // Map from skinId (e.g., "266002") to array of chromas
   chromaMap: Record<string, Chroma[]>
 }
 
@@ -70,6 +76,117 @@ interface ProgressTracker {
   completed: number
   startTime: number
   currentPhase: string
+}
+
+// CDragon response types
+interface CDragonSkin {
+  id: number
+  contentId: string
+  isBase: boolean
+  name: string
+  skinClassification: string
+  splashPath: string
+  uncenteredSplashPath: string
+  tilePath: string
+  loadScreenPath: string
+  skinType: string
+  rarity: string
+  isLegacy: boolean
+  splashVideoPath: any
+  previewVideoUrl: any
+  collectionSplashVideoPath: any
+  collectionCardHoverVideoPath: any
+  featuresText: any
+  chromaPath?: string
+  emblems: any
+  regionRarityId: number
+  rarityGemPath: any
+  skinLines?: Array<{ id: number }>
+  description?: string
+  chromas?: Array<{
+    id: number
+    name: string
+    contentId: string
+    skinClassification: string
+    chromaPath: string
+    tilePath: string
+    colors: string[]
+    descriptions: Array<{
+      region: string
+      description: string
+    }>
+    description: string
+    rarities: Array<{
+      region: string
+      rarity: number
+    }>
+  }>
+  loadScreenVintagePath?: string
+}
+
+interface CDragonChampion {
+  id: number
+  name: string
+  alias: string
+  title: string
+  shortBio: string
+  tacticalInfo: {
+    style: number
+    difficulty: number
+    damageType: string
+    attackType: string
+  }
+  playstyleInfo: {
+    damage: number
+    durability: number
+    crowdControl: number
+    mobility: number
+    utility: number
+  }
+  championTagInfo: {
+    championTagPrimary: string
+    championTagSecondary: string
+  }
+  squarePortraitPath: string
+  stingerSfxPath: string
+  chooseVoPath: string
+  banVoPath: string
+  roles: string[]
+  recommendedItemDefaults: any[]
+  skins: CDragonSkin[]
+  passive: {
+    name: string
+    abilityIconPath: string
+    abilityVideoPath: string
+    abilityVideoImagePath: string
+    description: string
+  }
+  spells: Array<{
+    spellKey: string
+    name: string
+    abilityIconPath: string
+    abilityVideoPath: string
+    abilityVideoImagePath: string
+    cost: string
+    cooldown: string
+    description: string
+    dynamicDescription: string
+    range: number[]
+    costCoefficients: number[]
+    cooldownCoefficients: number[]
+    coefficients: {
+      coefficient1: number
+      coefficient2: number
+    }
+    effectAmounts: {
+      [key: string]: number[]
+    }
+    ammo: {
+      ammoRechargeTime: number[]
+      maxAmmo: number[]
+    }
+    maxLevel: number
+  }>
 }
 
 const progress: ProgressTracker = {
@@ -93,6 +210,31 @@ function updateProgress(phase: string, completed?: number, total?: number) {
     `[${phase}] Progress: ${progress.completed}/${progress.total} (${percentage.toFixed(1)}%) - ` +
       `ETA: ${eta.toFixed(0)}s - Rate: ${rate.toFixed(1)}/s`
   )
+}
+
+function getRarityGemPath(rarity: string): string | null {
+  const rarityMap: Record<string, string> = {
+    kEpic: 'epic',
+    kLegendary: 'legendary',
+    kUltimate: 'ultimate',
+    kMythic: 'mythic'
+  }
+
+  const rarityKey = rarityMap[rarity]
+  if (!rarityKey) {
+    return null
+  }
+
+  return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/rarity-gem-icons/${rarityKey}.png`
+}
+
+function normalizeLocale(language: string): string {
+  // en_US uses default in CDragon
+  if (language === 'en_US') {
+    return 'default'
+  }
+  // Convert other locales to lowercase with underscore (e.g., vi_VN -> vi_vn)
+  return language.toLowerCase()
 }
 
 async function delay(ms: number): Promise<void> {
@@ -163,41 +305,7 @@ function buildChampionNameLookup(championFolders: string[]): Map<string, string>
   return lookup
 }
 
-async function fetchChromaDataForChampion(championId: number): Promise<Record<string, Chroma[]>> {
-  try {
-    const url = `${CDRAGON_BASE_URL}/champions/${championId}.json`
-    const response = await retryRequest(() => axios.get(url))
-    const data = response.data
-
-    const chromaMap: Record<string, Chroma[]> = {}
-
-    if (data.skins) {
-      for (const skin of data.skins) {
-        if (skin.chromas && skin.chromas.length > 0) {
-          const chromas: Chroma[] = skin.chromas.map((chroma: any) => ({
-            id: chroma.id,
-            name: chroma.name,
-            chromaPath: chroma.chromaPath
-              ? `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default${chroma.chromaPath.replace('/lol-game-data/assets/', '/')}`
-              : '',
-            colors: chroma.colors || []
-          }))
-          // Create skinId in format "championId_skinNum" (e.g., "266_2")
-          const skinNum = Math.floor(skin.id / 1000) === championId ? skin.id % 1000 : 0
-          const skinId = `${championId}_${skinNum}`
-          chromaMap[skinId] = chromas
-        }
-      }
-    }
-
-    return chromaMap
-  } catch (error) {
-    console.warn(`Failed to fetch chroma data for champion ${championId}:`, error.message)
-    return {}
-  }
-}
-
-async function fetchChampionDetailAndChroma(
+async function fetchChampionDetail(
   key: string,
   championBasic: any,
   version: string,
@@ -205,58 +313,181 @@ async function fetchChampionDetailAndChroma(
   lolSkinsData: Map<string, any[]>,
   championNameLookup: Map<string, string>
 ): Promise<{ champion: Champion; chromaData: Record<string, Chroma[]> }> {
-  const detailUrl = `${DDRAGON_BASE_URL}/cdn/${version}/data/${language}/champion/${key}.json`
+  const championId = parseInt(championBasic.key)
+  const locale = normalizeLocale(language)
+  const detailUrl = `${CDRAGON_BASE_URL.replace('/default/', `/${locale}/`)}/champions/${championId}.json`
 
-  // Fetch champion detail and chroma data in parallel
-  const [detailResponse, chromaData] = await Promise.all([
-    retryRequest(() => axios.get(detailUrl)),
-    fetchChromaDataForChampion(parseInt(championBasic.key))
-  ])
+  try {
+    const detailResponse = await retryRequest(() => axios.get<CDragonChampion>(detailUrl))
+    const detailData = detailResponse.data
 
-  const detailData = detailResponse.data.data[key]
+    // Use lookup map for faster champion folder finding
+    const normalizedName = detailData.name.toLowerCase()
+    let championFolder = championNameLookup.get(normalizedName)
 
-  // Use lookup map for faster champion folder finding
-  const normalizedName = detailData.name.toLowerCase()
-  let championFolder = championNameLookup.get(normalizedName)
+    if (!championFolder) {
+      // Fallback to original method if not in lookup
+      championFolder =
+        findChampionFolder(detailData.name, Array.from(lolSkinsData.keys())) || undefined
+    }
 
-  if (!championFolder) {
-    // Fallback to original method if not in lookup
-    championFolder =
-      findChampionFolder(detailData.name, Array.from(lolSkinsData.keys())) || undefined
-  }
+    const lolSkinsList = championFolder ? lolSkinsData.get(championFolder) || [] : []
 
-  const lolSkinsList = championFolder ? lolSkinsData.get(championFolder) || [] : []
-  const championId = parseInt(detailData.key)
+    // Extract chroma data from CDragon response
+    const chromaData: Record<string, Chroma[]> = {}
 
-  const champion: Champion = {
-    id: championId,
-    key: detailData.id,
-    name: detailData.name,
-    title: detailData.title,
-    image: `${DDRAGON_BASE_URL}/cdn/${version}/img/champion/${detailData.image.full}`,
-    tags: detailData.tags,
-    skins: detailData.skins.map((skin: any) => {
-      const skinName = skin.name === 'default' ? detailData.name : skin.name
+    // Get tags from roles or championTagInfo
+    const tags: string[] = []
+    if (detailData.championTagInfo.championTagPrimary) {
+      tags.push(detailData.championTagInfo.championTagPrimary)
+    }
+    if (detailData.championTagInfo.championTagSecondary) {
+      tags.push(detailData.championTagInfo.championTagSecondary)
+    }
+
+    // Process skins
+    const skins: Skin[] = detailData.skins.map((skin) => {
+      const skinNum = Math.floor(skin.id / 1000) === championId ? skin.id % 1000 : 0
+      const skinId = `${championId}_${skinNum}`
+      const skinName = skin.isBase ? detailData.name : skin.name
 
       // Don't try to match base skins (num: 0) with lol-skins
-      const match = skin.num === 0 ? null : findBestSkinMatch(skinName, lolSkinsList)
+      const match = skinNum === 0 ? null : findBestSkinMatch(skinName, lolSkinsList)
 
-      // Check if this skin has chromas based on the provided chroma data
-      const skinId = `${championId}_${skin.num}`
-      const hasChromas = chromaData[skinId] && chromaData[skinId].length > 0
+      // Process chromas
+      let chromaList: Chroma[] | undefined
+      if (skin.chromas && skin.chromas.length > 0) {
+        chromaList = skin.chromas.map((chroma) => ({
+          id: chroma.id,
+          name: chroma.name,
+          chromaPath: chroma.chromaPath
+            ? `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default${chroma.chromaPath.replace('/lol-game-data/assets/', '/')}`
+            : '',
+          colors: chroma.colors || []
+        }))
+        // Also add to chromaData for backward compatibility
+        chromaData[skinId] = chromaList
+      }
 
       return {
         id: skinId,
-        num: skin.num,
+        num: skinNum,
         name: skinName,
         lolSkinsName:
           match && match.skinInfo.skinName !== skinName ? match.skinInfo.skinName : undefined,
-        chromas: hasChromas
+        chromas: !!(skin.chromas && skin.chromas.length > 0),
+        chromaList: chromaList,
+        rarity: skin.rarity || 'kNoRarity',
+        rarityGemPath: getRarityGemPath(skin.rarity || 'kNoRarity'),
+        isLegacy: skin.isLegacy || false,
+        skinType: skin.skinType || '',
+        skinLines: skin.skinLines,
+        description: skin.description
       }
     })
-  }
 
-  return { champion, chromaData }
+    const champion: Champion = {
+      id: championId,
+      key: detailData.alias, // CDragon uses 'alias' for what DDragon calls 'id'
+      name: detailData.name,
+      title: detailData.title,
+      image: `${DDRAGON_BASE_URL}/cdn/${version}/img/champion/${detailData.alias}.png`,
+      tags: tags,
+      skins: skins
+    }
+
+    return { champion, chromaData }
+  } catch (error) {
+    console.error(error)
+
+    // Fallback to default locale if locale-specific request fails
+    if (locale !== 'default' && error.response?.status === 404) {
+      console.warn(`Failed to fetch ${locale} data for ${key}, falling back to default`)
+      const fallbackUrl = `${CDRAGON_BASE_URL}/champions/${championId}.json`
+
+      const detailResponse = await retryRequest(() => axios.get<CDragonChampion>(fallbackUrl))
+      const detailData = detailResponse.data
+
+      // Use lookup map for faster champion folder finding
+      const normalizedName = detailData.name.toLowerCase()
+      let championFolder = championNameLookup.get(normalizedName)
+
+      if (!championFolder) {
+        // Fallback to original method if not in lookup
+        championFolder =
+          findChampionFolder(detailData.name, Array.from(lolSkinsData.keys())) || undefined
+      }
+
+      const lolSkinsList = championFolder ? lolSkinsData.get(championFolder) || [] : []
+
+      // Extract chroma data from CDragon response
+      const chromaData: Record<string, Chroma[]> = {}
+
+      // Get tags from roles or championTagInfo
+      const tags: string[] = []
+      if (detailData.championTagInfo.championTagPrimary) {
+        tags.push(detailData.championTagInfo.championTagPrimary)
+      }
+      if (detailData.championTagInfo.championTagSecondary) {
+        tags.push(detailData.championTagInfo.championTagSecondary)
+      }
+
+      // Process skins
+      const skins: Skin[] = detailData.skins.map((skin) => {
+        const skinNum = Math.floor(skin.id / 1000) === championId ? skin.id % 1000 : 0
+        const skinId = `${championId}_${skinNum}`
+        const skinName = skin.isBase ? detailData.name : skin.name
+
+        // Don't try to match base skins (num: 0) with lol-skins
+        const match = skinNum === 0 ? null : findBestSkinMatch(skinName, lolSkinsList)
+
+        // Process chromas
+        let chromaList: Chroma[] | undefined
+        if (skin.chromas && skin.chromas.length > 0) {
+          chromaList = skin.chromas.map((chroma) => ({
+            id: chroma.id,
+            name: chroma.name,
+            chromaPath: chroma.chromaPath
+              ? `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default${chroma.chromaPath.replace('/lol-game-data/assets/', '/')}`
+              : '',
+            colors: chroma.colors || []
+          }))
+          // Also add to chromaData for backward compatibility
+          chromaData[skinId] = chromaList
+        }
+
+        return {
+          id: skinId,
+          num: skinNum,
+          name: skinName,
+          lolSkinsName:
+            match && match.skinInfo.skinName !== skinName ? match.skinInfo.skinName : undefined,
+          chromas: !!(skin.chromas && skin.chromas.length > 0),
+          chromaList: chromaList,
+          rarity: skin.rarity || 'kNoRarity',
+          rarityGemPath: getRarityGemPath(skin.rarity || 'kNoRarity'),
+          isLegacy: skin.isLegacy || false,
+          skinType: skin.skinType || '',
+          skinLines: skin.skinLines,
+          description: skin.description
+        }
+      })
+
+      const champion: Champion = {
+        id: championId,
+        key: detailData.alias, // CDragon uses 'alias' for what DDragon calls 'id'
+        name: detailData.name,
+        title: detailData.title,
+        image: `${DDRAGON_BASE_URL}/cdn/${version}/img/champion/${detailData.alias}.png`,
+        tags: tags,
+        skins: skins
+      }
+
+      return { champion, chromaData }
+    }
+
+    throw error
+  }
 }
 
 async function fetchAllChampionData(
@@ -289,7 +520,7 @@ async function fetchAllChampionData(
     championKeys.map((key, index) =>
       limit(async () => {
         try {
-          const result = await fetchChampionDetailAndChroma(
+          const result = await fetchChampionDetail(
             key,
             championList[key],
             version,
@@ -326,12 +557,8 @@ async function fetchAllChampionData(
 async function loadExistingData(
   dataDir: string,
   version: string
-): Promise<{
-  existingData: Record<string, ChampionData>
-  existingChromaData: ChromaData | null
-}> {
+): Promise<Record<string, ChampionData>> {
   const existingData: Record<string, ChampionData> = {}
-  let existingChromaData: ChromaData | null = null
 
   // Load all data into memory at once
   const loadPromises: Promise<void>[] = []
@@ -355,26 +582,9 @@ async function loadExistingData(
     )
   }
 
-  // Load chroma data
-  loadPromises.push(
-    (async () => {
-      const chromaDataPath = path.join(dataDir, 'chroma-data.json')
-      try {
-        const data = await fs.readFile(chromaDataPath, 'utf-8')
-        const parsed = JSON.parse(data)
-        if (parsed.version === version) {
-          existingChromaData = parsed
-          console.log(`Loaded existing chroma data (version ${version})`)
-        }
-      } catch {
-        // File doesn't exist
-      }
-    })()
-  )
-
   await Promise.all(loadPromises)
 
-  return { existingData, existingChromaData }
+  return existingData
 }
 
 async function saveAllData(
@@ -469,16 +679,10 @@ async function main() {
 
     // Load existing data
     updateProgress('Loading existing data')
-    const { existingData, existingChromaData } = await loadExistingData(
-      dataDir,
-      forceRefresh ? 'force-refresh' : version
-    )
+    const existingData = await loadExistingData(dataDir, forceRefresh ? 'force-refresh' : version)
 
     // Check if we need to fetch new data
-    const needsFetch =
-      forceRefresh ||
-      Object.keys(existingData).length < SUPPORTED_LANGUAGES.length ||
-      !existingChromaData
+    const needsFetch = forceRefresh || Object.keys(existingData).length < SUPPORTED_LANGUAGES.length
 
     if (!needsFetch) {
       console.log('All data is up to date!')
@@ -505,7 +709,7 @@ async function main() {
     } else {
       // Fetch new data
       const allData: Record<string, ChampionData> = { ...existingData }
-      const allChromaData: Record<string, Chroma[]> = existingChromaData?.chromaMap ?? {}
+      const allChromaData: Record<string, Chroma[]> = {}
 
       for (const language of SUPPORTED_LANGUAGES) {
         if (allData[language]) continue // Skip if already loaded
@@ -555,7 +759,6 @@ async function main() {
         lastUpdated: new Date().toISOString(),
         chromaMap: allChromaData
       }
-
       await saveAllData(dataDir, allData, chromaData)
     }
 
