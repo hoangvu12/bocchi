@@ -182,6 +182,7 @@ function AppContent(): React.JSX.Element {
     isInChampSelect,
     selectedChampion: lcuSelectedChampion,
     isChampionLocked,
+    autoViewSkinsEnabled,
     onChampionNavigate,
     clearSelectedChampion
   } = useChampionSelectHandler({
@@ -200,6 +201,16 @@ function AppContent(): React.JSX.Element {
       setChampionDetectionEnabled(championDetection !== false)
     })
   }, [])
+
+  // Handle auto-navigation when champion is selected and autoViewSkins is enabled
+  useEffect(() => {
+    if (lcuSelectedChampion && autoViewSkinsEnabled) {
+      // Automatically navigate to the champion's skins
+      onChampionNavigate()
+      // Clear the selected champion to prevent multiple navigations
+      clearSelectedChampion()
+    }
+  }, [lcuSelectedChampion, autoViewSkinsEnabled, onChampionNavigate, clearSelectedChampion])
 
   const loadChampionData = useCallback(
     async (preserveSelection = false) => {
@@ -1537,12 +1548,14 @@ function AppContent(): React.JSX.Element {
         onChampionDetectionChange={(enabled) => setChampionDetectionEnabled(enabled)}
       />
 
-      <ChampionSelectDialog
-        champion={lcuSelectedChampion}
-        isLocked={isChampionLocked}
-        onViewSkins={onChampionNavigate}
-        onClose={clearSelectedChampion}
-      />
+      {!autoViewSkinsEnabled && (
+        <ChampionSelectDialog
+          champion={lcuSelectedChampion}
+          isLocked={isChampionLocked}
+          onViewSkins={onChampionNavigate}
+          onClose={clearSelectedChampion}
+        />
+      )}
     </>
   )
 }

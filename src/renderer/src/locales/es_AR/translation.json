@@ -99,6 +99,10 @@
       "title": "Detección de campeones",
       "description": "Mostrar automáticamente notificaciones cuando seleccionás campeones en el cliente de League"
     },
+    "autoViewSkins": {
+      "title": "Ver skins automáticamente",
+      "description": "Ver skins automáticamente cuando se detecta un campeón (omite el diálogo de confirmación)"
+    },
     "smartApply": {
       "title": "Aplicación inteligente",
       "description": "Solo cargar skins para los campeones de tu equipo (reduce el tiempo de carga)"

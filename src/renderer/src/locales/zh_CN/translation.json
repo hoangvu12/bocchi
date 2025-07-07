@@ -99,6 +99,10 @@
       "title": "英雄检测",
       "description": "在英雄联盟客户端中选择英雄时自动显示通知"
     },
+    "autoViewSkins": {
+      "title": "自动查看皮肤",
+      "description": "检测到英雄时自动查看皮肤（跳过确认对话框）"
+    },
     "smartApply": {
       "title": "智能应用",
       "description": "仅加载你团队中英雄的皮肤（减少加载时间）"

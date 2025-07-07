@@ -27,6 +27,7 @@ export function useChampionSelectHandler({
   const [gameflowPhase, setGameflowPhase] = useState<string>('None')
   const [leagueClientEnabled, setLeagueClientEnabled] = useState(true)
   const [settingEnabled, setSettingEnabled] = useState(true)
+  const [autoViewSkinsEnabled, setAutoViewSkinsEnabled] = useState(false)
   const lastSelectedChampionIdRef = useRef<number | null>(null)
   const [, setSelectedChampionKey] = useAtom(selectedChampionKeyAtom)
 
@@ -40,11 +41,13 @@ export function useChampionSelectHandler({
   useEffect(() => {
     Promise.all([
       window.api.getSettings('leagueClientEnabled'),
-      window.api.getSettings('championDetection')
-    ]).then(([leagueClient, championDetection]) => {
-      // Default to true if not set
+      window.api.getSettings('championDetection'),
+      window.api.getSettings('autoViewSkinsEnabled')
+    ]).then(([leagueClient, championDetection, autoViewSkins]) => {
+      // Default to true if not set (except autoViewSkins which defaults to false)
       setLeagueClientEnabled(leagueClient !== false)
       setSettingEnabled(championDetection !== false)
+      setAutoViewSkinsEnabled(autoViewSkins === true)
     })
   }, [])
 
@@ -164,6 +167,7 @@ export function useChampionSelectHandler({
     isInChampSelect: settingEnabled && gameflowPhase === 'ChampSelect',
     selectedChampion: selectedChampionData.champion,
     isChampionLocked: selectedChampionData.isLocked,
+    autoViewSkinsEnabled,
     onChampionNavigate: handleChampionNavigate,
     clearSelectedChampion
   }

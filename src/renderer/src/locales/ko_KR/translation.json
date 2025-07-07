@@ -99,6 +99,10 @@
       "title": "챔피언 감지",
       "description": "리그 클라이언트에서 챔피언을 선택할 때 자동으로 알림 표시"
     },
+    "autoViewSkins": {
+      "title": "스킨 자동 보기",
+      "description": "챔피언이 감지될 때 스킨을 자동으로 표시 (확인 대화상자 건너뛰기)"
+    },
     "smartApply": {
       "title": "스마트 적용",
       "description": "팀의 챔피언 스킨만 로드 (로딩 시간 단축)"

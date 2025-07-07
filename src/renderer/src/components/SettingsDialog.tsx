@@ -28,6 +28,7 @@ export function SettingsDialog({
   const { t } = useTranslation()
   const [leagueClientEnabled, setLeagueClientEnabled] = useState(true)
   const [championDetection, setChampionDetection] = useState(true)
+  const [autoViewSkinsEnabled, setAutoViewSkinsEnabled] = useState(false)
   const [smartApplyEnabled, setSmartApplyEnabled] = useState(true)
   const [autoApplyEnabled, setAutoApplyEnabled] = useState(true)
   const [loading, setLoading] = useState(true)
@@ -41,9 +42,10 @@ export function SettingsDialog({
   const loadSettings = async () => {
     try {
       const settings = await window.api.getSettings()
-      // Default to true if not set
+      // Default to true if not set (except autoViewSkins which defaults to false)
       setLeagueClientEnabled(settings.leagueClientEnabled !== false)
       setChampionDetection(settings.championDetection !== false)
+      setAutoViewSkinsEnabled(settings.autoViewSkinsEnabled === true)
       setSmartApplyEnabled(settings.smartApplyEnabled !== false)
       setAutoApplyEnabled(settings.autoApplyEnabled !== false)
     } catch (error) {
@@ -61,9 +63,11 @@ export function SettingsDialog({
       // If disabling League Client, disable all sub-features
       if (!checked) {
         setChampionDetection(false)
+        setAutoViewSkinsEnabled(false)
         setSmartApplyEnabled(false)
         setAutoApplyEnabled(false)
         await window.api.setSettings('championDetection', false)
+        await window.api.setSettings('autoViewSkinsEnabled', false)
         await window.api.setSettings('smartApplyEnabled', false)
         await window.api.setSettings('autoApplyEnabled', false)
 
@@ -90,10 +94,25 @@ export function SettingsDialog({
     try {
       await window.api.setSettings('championDetection', checked)
 
+      // If disabling champion detection, also disable auto view skins
+      if (!checked) {
+        setAutoViewSkinsEnabled(false)
+        await window.api.setSettings('autoViewSkinsEnabled', false)
+      }
+
       // Notify the parent component
       onChampionDetectionChange?.(checked)
     } catch (error) {
       console.error('Failed to save champion detection setting:', error)
+    }
+  }
+
+  const handleAutoViewSkinsChange = async (checked: boolean) => {
+    setAutoViewSkinsEnabled(checked)
+    try {
+      await window.api.setSettings('autoViewSkinsEnabled', checked)
+    } catch (error) {
+      console.error('Failed to save auto view skins setting:', error)
     }
   }
 
@@ -145,14 +164,19 @@ export function SettingsDialog({
           </div>
 
           {/* Champion Detection Setting */}
-          <div className="flex items-center justify-between space-x-4 pl-6">
-            <div className="flex-1">
-              <h3 className="text-sm font-medium text-text-primary">
-                {t('settings.championDetection.title')}
-              </h3>
-              <p className="text-xs text-text-secondary mt-1">
-                {t('settings.championDetection.description')}
-              </p>
+          <div className="flex items-center justify-between space-x-4">
+            <div className="flex items-start gap-3">
+              <div className="flex items-start mt-1">
+                <div className="w-4 h-4 border-l-2 border-b-2 border-text-secondary/30"></div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.championDetection.title')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.championDetection.description')}
+                </p>
+              </div>
             </div>
             <Switch
               checked={championDetection}
@@ -161,15 +185,42 @@ export function SettingsDialog({
             />
           </div>
 
-          {/* Smart Apply Setting */}
+          {/* Auto View Skins Setting */}
           <div className="flex items-center justify-between space-x-4 pl-6">
-            <div className="flex-1">
-              <h3 className="text-sm font-medium text-text-primary">
-                {t('settings.smartApply.title')}
-              </h3>
-              <p className="text-xs text-text-secondary mt-1">
-                {t('settings.smartApply.description')}
-              </p>
+            <div className="flex items-start gap-3">
+              <div className="flex items-start mt-1">
+                <div className="w-4 h-4 border-l-2 border-b-2 border-text-secondary/30"></div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.autoViewSkins.title')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.autoViewSkins.description')}
+                </p>
+              </div>
+            </div>
+            <Switch
+              checked={autoViewSkinsEnabled}
+              onCheckedChange={handleAutoViewSkinsChange}
+              disabled={loading || !leagueClientEnabled || !championDetection}
+            />
+          </div>
+
+          {/* Smart Apply Setting */}
+          <div className="flex items-center justify-between space-x-4">
+            <div className="flex items-start gap-3">
+              <div className="flex items-start mt-1">
+                <div className="w-4 h-4 border-l-2 border-b-2 border-text-secondary/30"></div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.smartApply.title')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.smartApply.description')}
+                </p>
+              </div>
             </div>
             <Switch
               checked={smartApplyEnabled}
@@ -179,14 +230,19 @@ export function SettingsDialog({
           </div>
 
           {/* Auto Apply Setting */}
-          <div className="flex items-center justify-between space-x-4 pl-6">
-            <div className="flex-1">
-              <h3 className="text-sm font-medium text-text-primary">
-                {t('settings.autoApply.title')}
-              </h3>
-              <p className="text-xs text-text-secondary mt-1">
-                {t('settings.autoApply.description')}
-              </p>
+          <div className="flex items-center justify-between space-x-4">
+            <div className="flex items-start gap-3">
+              <div className="flex items-start mt-1">
+                <div className="w-4 h-4 border-l-2 border-b-2 border-text-secondary/30"></div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.autoApply.title')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.autoApply.description')}
+                </p>
+              </div>
             </div>
             <Switch
               checked={autoApplyEnabled}

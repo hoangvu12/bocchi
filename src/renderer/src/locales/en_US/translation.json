@@ -102,6 +102,10 @@
       "title": "Champion Detection",
       "description": "Automatically show notifications when you select champions in League client"
     },
+    "autoViewSkins": {
+      "title": "Auto View Skins",
+      "description": "Automatically view skins when a champion is detected (skips confirmation dialog)"
+    },
     "smartApply": {
       "title": "Smart Apply",
       "description": "Only load skins for champions in your team (reduces loading time)"

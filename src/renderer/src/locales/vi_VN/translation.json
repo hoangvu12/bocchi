@@ -101,6 +101,10 @@
       "title": "Phát hiện tướng",
       "description": "Tự động hiển thị thông báo khi bạn chọn tướng trong League client"
     },
+    "autoViewSkins": {
+      "title": "Tự động xem skin",
+      "description": "Tự động xem skin khi phát hiện tướng (bỏ qua hộp thoại xác nhận)"
+    },
     "smartApply": {
       "title": "Áp dụng thông minh",
       "description": "Chỉ tải trang phục cho các tướng trong đội của bạn (giảm thời gian tải)"
