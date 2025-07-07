@@ -202,7 +202,16 @@
     "nameDesc": "名称（Z-A）",
     "skinNumAsc": "皮肤编号（升序）",
     "skinNumDesc": "皮肤编号（降序）",
-    "championName": "英雄名称"
+    "championName": "英雄名称",
+    "rarity": "稀有度",
+    "rarities": {
+      "epic": "史诗",
+      "legendary": "传说",
+      "ultimate": "终极",
+      "mythic": "神话",
+      "transcendent": "超凡",
+      "exalted": "至臻"
+    }
   },
   "patcher": {
     "applying": "应用中...",

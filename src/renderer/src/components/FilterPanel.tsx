@@ -190,7 +190,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                       filters.rarity === rarity ? 'bg-primary-500 hover:bg-primary-600' : ''
                     }
                   >
-                    {rarity === 'all' ? t('filters.all') : rarity.replace('k', '')}
+                    {rarity === 'all'
+                      ? t('filters.all')
+                      : t(`filters.rarities.${rarity.replace('k', '').toLowerCase()}`)}
                   </Button>
                 ))}
               </div>

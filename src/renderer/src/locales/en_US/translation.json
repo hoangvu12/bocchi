@@ -197,7 +197,16 @@
     "nameDesc": "Name (Z-A)",
     "skinNumAsc": "Skin # (Low to High)",
     "skinNumDesc": "Skin # (High to Low)",
-    "championName": "Champion Name"
+    "championName": "Champion Name",
+    "rarity": "Rarity",
+    "rarities": {
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "ultimate": "Ultimate",
+      "mythic": "Mythic",
+      "transcendent": "Transcendent",
+      "exalted": "Exalted"
+    }
   },
   "patcher": {
     "applying": "Applying...",

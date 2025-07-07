@@ -202,7 +202,16 @@
     "nameDesc": "Nombre (Z-A)",
     "skinNumAsc": "N° de skin (menor a mayor)",
     "skinNumDesc": "N° de skin (mayor a menor)",
-    "championName": "Nombre del campeón"
+    "championName": "Nombre del campeón",
+    "rarity": "Rareza",
+    "rarities": {
+      "epic": "Épica",
+      "legendary": "Legendaria",
+      "ultimate": "Definitiva",
+      "mythic": "Mítica",
+      "transcendent": "Trascendente",
+      "exalted": "Exaltada"
+    }
   },
   "patcher": {
     "applying": "Aplicando...",

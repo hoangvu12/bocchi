@@ -202,7 +202,16 @@
     "nameDesc": "名前 (降順)",
     "skinNumAsc": "スキン番号 (昇順)",
     "skinNumDesc": "スキン番号 (降順)",
-    "championName": "チャンピオン名"
+    "championName": "チャンピオン名",
+    "rarity": "レアリティ",
+    "rarities": {
+      "epic": "エピック",
+      "legendary": "レジェンダリー",
+      "ultimate": "アルティメット",
+      "mythic": "ミシック",
+      "transcendent": "超越",
+      "exalted": "崇高"
+    }
   },
   "patcher": {
     "applying": "適用中...",

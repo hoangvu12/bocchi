@@ -202,7 +202,16 @@
     "nameDesc": "Имя (Я-А)",
     "skinNumAsc": "Номер скина (по возрастанию)",
     "skinNumDesc": "Номер скина (по убыванию)",
-    "championName": "Имя чемпиона"
+    "championName": "Имя чемпиона",
+    "rarity": "Редкость",
+    "rarities": {
+      "epic": "Эпический",
+      "legendary": "Легендарный",
+      "ultimate": "Превосходный",
+      "mythic": "Мифический",
+      "transcendent": "Запредельный",
+      "exalted": "Возвышенный"
+    }
   },
   "patcher": {
     "applying": "Применение...",

@@ -202,7 +202,16 @@
     "nameDesc": "이름 (내림차순)",
     "skinNumAsc": "스킨 번호 (오름차순)",
     "skinNumDesc": "스킨 번호 (내림차순)",
-    "championName": "챔피언 이름"
+    "championName": "챔피언 이름",
+    "rarity": "희귀도",
+    "rarities": {
+      "epic": "서사급",
+      "legendary": "전설급",
+      "ultimate": "궁극급",
+      "mythic": "신화급",
+      "transcendent": "초월급",
+      "exalted": "숭고급"
+    }
   },
   "patcher": {
     "applying": "적용 중...",
