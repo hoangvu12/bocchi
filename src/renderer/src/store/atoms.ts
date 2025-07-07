@@ -51,6 +51,10 @@ export const selectedSkinsDrawerExpandedAtom = atomWithStorage<boolean>(
   'cslol-selected-skins-drawer-expanded',
   false
 )
+export const championColumnCollapsedAtom = atomWithStorage<boolean>(
+  'cslol-champion-column-collapsed',
+  false
+)
 
 // Generate random player name
 export const generateRandomPlayerName = () => {

@@ -28,6 +28,7 @@ import { LCUStatusIndicator } from './components/LCUStatusIndicator'
 import { SettingsDialog } from './components/SettingsDialog'
 import { ChampionSelectDialog } from './components/ChampionSelectDialog'
 import { useChampionSelectHandler } from './hooks/useChampionSelectHandler'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import {
   championSearchQueryAtom,
   filtersAtom,
@@ -36,6 +37,7 @@ import {
   skinSearchQueryAtom,
   viewModeAtom,
   selectedSkinsAtom,
+  championColumnCollapsedAtom,
   type SelectedSkin
 } from './store/atoms'
 
@@ -145,6 +147,7 @@ function AppContent(): React.JSX.Element {
   const [filters, setFilters] = useAtom(filtersAtom)
   const [selectedChampionKey, setSelectedChampionKey] = useAtom(selectedChampionKeyAtom)
   const [selectedSkins, setSelectedSkins] = useAtom(selectedSkinsAtom)
+  const [championColumnCollapsed, setChampionColumnCollapsed] = useAtom(championColumnCollapsedAtom)
 
   // Edit dialog state
   const [showEditDialog, setShowEditDialog] = useState<boolean>(false)
@@ -1312,31 +1315,52 @@ function AppContent(): React.JSX.Element {
 
         {championData ? (
           <div className="flex flex-1 overflow-hidden">
-            <div className="w-80 bg-elevated border-r-2 border-border flex flex-col shadow-md dark:shadow-none">
-              <div className="p-6">
-                <input
-                  type="text"
-                  placeholder={t('champion.searchPlaceholder')}
-                  value={championSearchQuery}
-                  onChange={(e) => setChampionSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2.5 text-sm bg-surface border border-border rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                />
+            <div
+              className={`${championColumnCollapsed ? 'w-24' : 'w-80'} bg-elevated border-r-2 border-border flex flex-col shadow-md dark:shadow-none transition-all duration-300 ease-in-out`}
+            >
+              <div
+                className={`${championColumnCollapsed ? 'p-3' : 'p-6'} flex items-center ${championColumnCollapsed ? 'justify-center' : 'gap-2'}`}
+              >
+                {!championColumnCollapsed && (
+                  <input
+                    type="text"
+                    placeholder={t('champion.searchPlaceholder')}
+                    value={championSearchQuery}
+                    onChange={(e) => setChampionSearchQuery(e.target.value)}
+                    className="flex-1 px-4 py-2.5 text-sm bg-surface border border-border rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                  />
+                )}
+                <button
+                  onClick={() => setChampionColumnCollapsed(!championColumnCollapsed)}
+                  className="px-2 py-2.5 text-sm bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary rounded-lg transition-all duration-200 border border-border hover:border-border-strong"
+                  title={
+                    championColumnCollapsed ? 'Expand champion list' : 'Collapse champion list'
+                  }
+                >
+                  {championColumnCollapsed ? (
+                    <ChevronRight className="w-4 h-4" />
+                  ) : (
+                    <ChevronLeft className="w-4 h-4" />
+                  )}
+                </button>
               </div>
               <div className="flex-1 overflow-hidden" style={{ minHeight: 0 }}>
                 <AutoSizer>
                   {({ width, height }) => (
                     <VirtualizedChampionList
+                      key={championColumnCollapsed ? 'collapsed' : 'expanded'}
                       champions={filteredChampions}
                       selectedChampion={selectedChampion}
                       selectedChampionKey={selectedChampionKey}
                       onChampionSelect={handleChampionSelect}
                       height={height}
                       width={width}
+                      isCollapsed={championColumnCollapsed}
                     />
                   )}
                 </AutoSizer>
               </div>
-              {championData && (
+              {championData && !championColumnCollapsed && (
                 <div className="px-6 py-4 text-xs text-text-muted border-t-2 border-border bg-surface">
                   <div>Champion data: v{championData.version}</div>
                 </div>
