@@ -8,6 +8,7 @@ import { p2pService } from '../services/p2pService'
 import { p2pFileTransferService } from '../services/p2pFileTransferService'
 import { Badge } from './ui/badge'
 import { useChromaData } from '../hooks/useChromaData'
+import { useSmartSkinApply } from '../hooks/useSmartSkinApply'
 
 interface ExtendedSelectedSkin extends SelectedSkin {
   customModInfo?: {
@@ -37,6 +38,7 @@ interface SelectedSkinsDrawerProps {
   }
   statusMessage?: string
   errorMessage?: string
+  gamePath?: string
 }
 
 export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
@@ -47,7 +49,8 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   downloadedSkins,
   championData,
   statusMessage,
-  errorMessage
+  errorMessage,
+  gamePath
 }) => {
   const { t } = useTranslation()
   const [selectedSkins, setSelectedSkins] = useAtom(selectedSkinsAtom)
@@ -58,6 +61,46 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   const { chromaData, prefetchChromas } = useChromaData()
   const [p2pRoom] = useAtom(p2pRoomAtom)
   const [activeTab, setActiveTab] = useState<'my-skins' | 'room-skins'>('my-skins')
+  const [smartApplySummary, setSmartApplySummary] = useState<any>(null)
+
+  // Smart apply hook
+  const {
+    teamComposition,
+    smartApplyEnabled,
+    isReadyForSmartApply,
+    getSmartApplySummary,
+    isApplying: isSmartApplying,
+    autoApplyEnabled
+  } = useSmartSkinApply({
+    enabled: true,
+    gamePath,
+    onApplyStart: () => {
+      // Don't set loading here - we'll handle it in handleApplySkins
+    },
+    onApplyComplete: () => {
+      // Don't handle completion here - let parent handle it
+    },
+    parentApplyFunction: onApplySkins
+  })
+
+  // Log the hook state for debugging
+  useEffect(() => {
+    console.log('[SelectedSkinsDrawer] Smart apply hook state:', {
+      smartApplyEnabled,
+      autoApplyEnabled,
+      teamComposition,
+      isReadyForSmartApply,
+      gamePath,
+      selectedSkinsCount: selectedSkins.length
+    })
+  }, [
+    smartApplyEnabled,
+    autoApplyEnabled,
+    teamComposition,
+    isReadyForSmartApply,
+    gamePath,
+    selectedSkins.length
+  ])
 
   // Switch to my-skins tab when leaving room
   useEffect(() => {
@@ -71,6 +114,17 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
     const uniqueSkinIds = [...new Set(selectedSkins.map((s) => s.skinId))]
     prefetchChromas(uniqueSkinIds)
   }, [selectedSkins, prefetchChromas])
+
+  // Update smart apply summary when team composition changes
+  useEffect(() => {
+    if (teamComposition && smartApplyEnabled) {
+      getSmartApplySummary().then((summary) => {
+        setSmartApplySummary(summary)
+      })
+    } else {
+      setSmartApplySummary(null)
+    }
+  }, [teamComposition, smartApplyEnabled, selectedSkins, getSmartApplySummary])
 
   useEffect(() => {
     // Listen for patcher status updates
@@ -117,9 +171,16 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
     loadCustomImages()
   }, [selectedSkins, downloadedSkins, customImages])
 
-  const handleApplySkins = () => {
+  const handleApplySkins = async () => {
     // Clear previous patcher messages when starting a new session
     setPatcherMessages([])
+
+    console.log('[SelectedSkinsDrawer] Apply button clicked')
+    console.log('[SelectedSkinsDrawer] Smart apply enabled:', smartApplyEnabled)
+    console.log('[SelectedSkinsDrawer] Team composition:', teamComposition)
+
+    // Always use the parent's apply function which handles loading states
+    // The parent (App.tsx) will check if it should use smart apply or regular apply
     onApplySkins()
   }
 
@@ -329,6 +390,27 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                     {t('skins.toDownload', { count: selectedSkins.length - downloadedCount })}
                   </span>
                 )}
+                {smartApplySummary && smartApplyEnabled && (
+                  <div className="flex gap-2">
+                    <Badge
+                      variant="outline"
+                      className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-300 dark:border-green-700"
+                    >
+                      {t('smartApply.willApply', {
+                        count: smartApplySummary.willApply,
+                        total: smartApplySummary.totalSelected
+                      })}
+                    </Badge>
+                    {autoApplyEnabled && (
+                      <Badge
+                        variant="outline"
+                        className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-700"
+                      >
+                        Auto
+                      </Badge>
+                    )}
+                  </div>
+                )}
               </>
             )}
             {p2pRoom && (
@@ -356,7 +438,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                 : 'bg-primary-500 hover:bg-primary-600 text-white'
             }`}
             onClick={isPatcherRunning ? onStopPatcher : handleApplySkins}
-            disabled={loading}
+            disabled={loading || isSmartApplying}
           >
             {loading
               ? isPatcherRunning
@@ -364,7 +446,12 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                 : t('patcher.applying')
               : isPatcherRunning
                 ? t('patcher.stopPatcher')
-                : t('patcher.apply', { count: selectedSkins.length })}
+                : smartApplyEnabled &&
+                    smartApplySummary &&
+                    teamComposition &&
+                    teamComposition.championIds.length > 0
+                  ? t('patcher.apply', { count: smartApplySummary.willApply })
+                  : t('patcher.apply', { count: selectedSkins.length })}
           </button>
         </div>
       </div>

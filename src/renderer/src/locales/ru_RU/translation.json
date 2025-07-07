@@ -90,7 +90,23 @@
     "gamePath": "Путь к игре",
     "language": "Язык",
     "theme": "Тема",
-    "notifications": "Уведомления"
+    "notifications": "Уведомления",
+    "leagueClient": {
+      "title": "Интеграция с клиентом League",
+      "description": "Включить функции, которые подключаются к клиенту League of Legends"
+    },
+    "championDetection": {
+      "title": "Обнаружение чемпионов",
+      "description": "Автоматически показывать уведомления при выборе чемпионов в клиенте League"
+    },
+    "smartApply": {
+      "title": "Умное применение",
+      "description": "Загружать только скины для чемпионов вашей команды (уменьшает время загрузки)"
+    },
+    "autoApply": {
+      "title": "Автоприменение",
+      "description": "Автоматически применять скины, когда все чемпионы заблокированы"
+    }
   },
   "errors": {
     "generic": "Произошла ошибка",
@@ -232,5 +248,40 @@
     "joinDiscord": "Присоединиться к Discord",
     "viewGithub": "Посмотреть на GitHub",
     "donate": "Поддержать"
+  },
+  "lcu": {
+    "connected": "Подключено к клиенту League",
+    "disconnected": "Отключено от клиента League",
+    "championHovered": "Чемпион выбран",
+    "championLocked": "Чемпион заблокирован",
+    "viewSkins": "Посмотреть скины",
+    "connecting": "Подключение к клиенту League...",
+    "connectionFailed": "Не удалось подключиться к клиенту League",
+    "status": "Статус LCU",
+    "notConnected": "Не подключено",
+    "inChampSelect": "В выборе чемпиона",
+    "disabled": "Отключено",
+    "tooltipNotConnected": "Запустите клиент League of Legends для автоматического обнаружения чемпионов во время выбора",
+    "tooltipConnected": "Подключено к клиенту League. Уведомления будут появляться при выборе чемпионов",
+    "tooltipInChampSelect": "Сейчас в выборе чемпиона. Выберите чемпиона, чтобы увидеть уведомление",
+    "tooltipDisabled": "Обнаружение чемпионов отключено. Включите в настройках, чтобы получать уведомления при выборе чемпионов",
+    "championLockedDescription": "Вы заблокировали {{champion}}. Хотите посмотреть доступные скины?",
+    "championHoveredDescription": "Вы навелись на {{champion}}. Хотите посмотреть доступные скины?"
+  },
+  "smartApply": {
+    "willApply": "Умно: {{count}}/{{total}}",
+    "applying": "Применение {{count}} скинов для: {{champions}}",
+    "success": "Применено {{applied}} из {{total}} скинов",
+    "failed": "Не удалось применить скины",
+    "noSkinsToApply": "Нет скинов для применения к вашей команде",
+    "noSkinsForTeam": "Не выбрано скинов для чемпионов вашей команды"
+  },
+  "errors": {
+    "generic": "Произошла ошибка",
+    "downloadFailed": "Не удалось скачать",
+    "connectionError": "Ошибка подключения",
+    "pathNotSet": "Пожалуйста, сначала укажите путь к игре",
+    "operationTimeout": "Время операции истекло. Пожалуйста, попробуйте снова.",
+    "skinNotAvailable": "Скин недоступен в репозитории lol-skins или неправильное сопоставление"
   }
 }

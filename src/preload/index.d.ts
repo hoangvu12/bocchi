@@ -150,6 +150,57 @@ export interface IApi {
     filePath: string,
     options?: any
   ) => Promise<{ success: boolean; skinInfo?: SkinInfo; error?: string }>
+
+  // LCU Connection APIs
+  lcuConnect: () => Promise<{ success: boolean; error?: string }>
+  lcuDisconnect: () => Promise<{ success: boolean }>
+  lcuGetStatus: () => Promise<{ connected: boolean; gameflowPhase: string }>
+  lcuGetCurrentPhase: () => Promise<{ success: boolean; phase?: string; error?: string }>
+  lcuGetChampSelectSession: () => Promise<{ success: boolean; session?: any; error?: string }>
+
+  // LCU Events
+  onLcuConnected: (callback: () => void) => () => void
+  onLcuDisconnected: (callback: () => void) => () => void
+  onLcuPhaseChanged: (
+    callback: (data: { phase: string; previousPhase: string }) => void
+  ) => () => void
+  onLcuChampionSelected: (
+    callback: (data: { championId: number; isLocked: boolean; isHover: boolean }) => void
+  ) => () => void
+
+  // Team Composition APIs
+  getTeamComposition: () => Promise<{
+    success: boolean
+    composition?: { championIds: number[]; allLocked: boolean; inFinalization: boolean }
+    error?: string
+  }>
+  isReadyForSmartApply: () => Promise<{ success: boolean; ready?: boolean; error?: string }>
+  getSmartApplySummary: (
+    selectedSkins: any[],
+    teamChampionIds: number[]
+  ) => Promise<{ success: boolean; summary?: any; error?: string }>
+  smartApplySkins: (
+    gamePath: string,
+    selectedSkins: any[],
+    teamChampionIds: number[]
+  ) => Promise<{ success: boolean; summary?: any; error?: string }>
+
+  // Team Composition Events
+  onTeamCompositionUpdated: (
+    callback: (composition: {
+      championIds: number[]
+      allLocked: boolean
+      inFinalization: boolean
+    }) => void
+  ) => () => void
+  onReadyForSmartApply: (
+    callback: (composition: {
+      championIds: number[]
+      allLocked: boolean
+      inFinalization: boolean
+    }) => void
+  ) => () => void
+  onTeamReset: (callback: (newPhase?: string) => void) => () => void
 }
 
 declare global {

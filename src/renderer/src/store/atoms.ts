@@ -29,6 +29,7 @@ export interface SelectedSkin {
   skinId: string
   skinName: string
   skinNameEn?: string
+  lolSkinsName?: string
   skinNum: number
   chromaId?: string
   isDownloaded?: boolean
@@ -103,3 +104,14 @@ export interface Chroma {
 // Global chroma data cache
 export const chromaDataAtom = atom<Record<string, Chroma[]>>({})
 export const chromaDataLoadingAtom = atom<Set<string>>(new Set<string>())
+
+// Team composition for smart apply
+export const teamCompositionAtom = atom<{
+  championIds: number[]
+  allLocked: boolean
+  inFinalization: boolean
+} | null>(null)
+
+// Smart apply settings
+export const smartApplyEnabledAtom = atomWithStorage<boolean>('smartApplyEnabled', true)
+export const autoApplyEnabledAtom = atomWithStorage<boolean>('autoApplyEnabled', true)

@@ -33,6 +33,8 @@ const api = {
     ipcRenderer.invoke('run-patcher', gamePath, selectedSkins),
   stopPatcher: () => ipcRenderer.invoke('stop-patcher'),
   isPatcherRunning: () => ipcRenderer.invoke('is-patcher-running'),
+  smartApplySkins: (gamePath: string, selectedSkins: any[], teamChampionIds: number[]) =>
+    ipcRenderer.invoke('smart-apply-skins', gamePath, selectedSkins, teamChampionIds),
 
   // Champion data
   fetchChampionData: (language?: string) => ipcRenderer.invoke('fetch-champion-data', language),
@@ -148,7 +150,74 @@ const api = {
   writeFileFromChunks: (filePath: string, chunks: ArrayBuffer[], expectedHash: string) =>
     ipcRenderer.invoke('write-file-from-chunks', filePath, chunks, expectedHash),
   importFile: (filePath: string, options?: any) =>
-    ipcRenderer.invoke('import-file', filePath, options)
+    ipcRenderer.invoke('import-file', filePath, options),
+
+  // LCU Connection APIs
+  lcuConnect: () => ipcRenderer.invoke('lcu:connect'),
+  lcuDisconnect: () => ipcRenderer.invoke('lcu:disconnect'),
+  lcuGetStatus: () => ipcRenderer.invoke('lcu:get-status'),
+  lcuGetCurrentPhase: () => ipcRenderer.invoke('lcu:get-current-phase'),
+  lcuGetChampSelectSession: () => ipcRenderer.invoke('lcu:get-champ-select-session'),
+
+  // LCU Events
+  onLcuConnected: (callback: () => void) => {
+    ipcRenderer.on('lcu:connected', callback)
+    return () => ipcRenderer.removeListener('lcu:connected', callback)
+  },
+  onLcuDisconnected: (callback: () => void) => {
+    ipcRenderer.on('lcu:disconnected', callback)
+    return () => ipcRenderer.removeListener('lcu:disconnected', callback)
+  },
+  onLcuPhaseChanged: (callback: (data: { phase: string; previousPhase: string }) => void) => {
+    const handler = (_: any, data: any) => callback(data)
+    ipcRenderer.on('lcu:phase-changed', handler)
+    return () => ipcRenderer.removeListener('lcu:phase-changed', handler)
+  },
+  onLcuChampionSelected: (
+    callback: (data: { championId: number; isLocked: boolean; isHover: boolean }) => void
+  ) => {
+    const handler = (_: any, data: any) => callback(data)
+    ipcRenderer.on('lcu:champion-selected', handler)
+    return () => ipcRenderer.removeListener('lcu:champion-selected', handler)
+  },
+
+  // Team Composition APIs
+  getTeamComposition: () => ipcRenderer.invoke('team:get-composition'),
+  isReadyForSmartApply: () => ipcRenderer.invoke('team:is-ready-for-smart-apply'),
+  getSmartApplySummary: (selectedSkins: any[], teamChampionIds: number[]) =>
+    ipcRenderer.invoke('team:get-smart-apply-summary', selectedSkins, teamChampionIds),
+
+  // Team Composition Events
+  onTeamCompositionUpdated: (
+    callback: (composition: {
+      championIds: number[]
+      allLocked: boolean
+      inFinalization: boolean
+    }) => void
+  ) => {
+    const handler = (_: any, data: any) => callback(data)
+    ipcRenderer.on('team:composition-updated', handler)
+    return () => ipcRenderer.removeListener('team:composition-updated', handler)
+  },
+  onReadyForSmartApply: (
+    callback: (composition: {
+      championIds: number[]
+      allLocked: boolean
+      inFinalization: boolean
+    }) => void
+  ) => {
+    const handler = (_: any, data: any) => {
+      console.log('[Preload] Ready for smart apply event received:', data)
+      callback(data)
+    }
+    ipcRenderer.on('team:ready-for-smart-apply', handler)
+    return () => ipcRenderer.removeListener('team:ready-for-smart-apply', handler)
+  },
+  onTeamReset: (callback: (newPhase?: string) => void) => {
+    const handler = (_: any, newPhase?: string) => callback(newPhase)
+    ipcRenderer.on('team:reset', handler)
+    return () => ipcRenderer.removeListener('team:reset', handler)
+  }
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -25,6 +25,7 @@
     "decline": "Decline",
     "accept": "Accept",
     "join": "Join",
+    "cancel": "Cancel",
     "leave": "Leave",
     "create": "Create",
     "copy": "Copy",
@@ -87,16 +88,28 @@
     "downloadTools": "Download Tools"
   },
   "settings": {
+    "title": "Settings",
+    "description": "Configure your app preferences",
     "gamePath": "Game Path",
     "language": "Language",
     "theme": "Theme",
-    "notifications": "Notifications"
-  },
-  "errors": {
-    "generic": "An error occurred",
-    "downloadFailed": "Failed to download",
-    "connectionError": "Connection error",
-    "pathNotSet": "Please set game path first"
+    "notifications": "Notifications",
+    "leagueClient": {
+      "title": "League Client Integration",
+      "description": "Enable features that connect with the League of Legends client"
+    },
+    "championDetection": {
+      "title": "Champion Detection",
+      "description": "Automatically show notifications when you select champions in League client"
+    },
+    "smartApply": {
+      "title": "Smart Apply",
+      "description": "Only load skins for champions in your team (reduces loading time)"
+    },
+    "autoApply": {
+      "title": "Auto Apply",
+      "description": "Automatically apply skins when all champions are locked"
+    }
   },
   "fileUpload": {
     "uploadButton": "Upload Custom Mod",
@@ -230,6 +243,33 @@
     "joinDiscord": "Join Discord",
     "viewGithub": "View on GitHub",
     "donate": "Donate"
+  },
+  "lcu": {
+    "connected": "Connected to League Client",
+    "disconnected": "Disconnected from League Client",
+    "championHovered": "Champion Selected",
+    "championLocked": "Champion Locked",
+    "viewSkins": "View Skins",
+    "connecting": "Connecting to League Client...",
+    "connectionFailed": "Failed to connect to League Client",
+    "status": "LCU Status",
+    "notConnected": "Not Connected",
+    "inChampSelect": "In Champion Select",
+    "disabled": "Disabled",
+    "tooltipNotConnected": "Start League of Legends client to enable automatic champion detection during champion select",
+    "tooltipConnected": "Connected to League client. Will show notifications when you select champions",
+    "tooltipInChampSelect": "Currently in champion select. Select a champion to see a notification",
+    "tooltipDisabled": "Champion detection is disabled. Enable it in settings to receive notifications when selecting champions",
+    "championLockedDescription": "You have locked in {{champion}}. Would you like to browse available skins?",
+    "championHoveredDescription": "You are hovering {{champion}}. Would you like to browse available skins?"
+  },
+  "smartApply": {
+    "willApply": "Smart: {{count}}/{{total}}",
+    "applying": "Applying {{count}} skins for: {{champions}}",
+    "success": "Applied {{applied}} of {{total}} skins",
+    "failed": "Failed to apply skins",
+    "noSkinsToApply": "No skins to apply for your team",
+    "noSkinsForTeam": "No skins selected for your team champions"
   },
   "errors": {
     "generic": "An error occurred",

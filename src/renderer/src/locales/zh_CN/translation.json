@@ -90,7 +90,23 @@
     "gamePath": "游戏路径",
     "language": "语言",
     "theme": "主题",
-    "notifications": "通知"
+    "notifications": "通知",
+    "leagueClient": {
+      "title": "英雄联盟客户端集成",
+      "description": "启用与英雄联盟客户端连接的功能"
+    },
+    "championDetection": {
+      "title": "英雄检测",
+      "description": "在英雄联盟客户端中选择英雄时自动显示通知"
+    },
+    "smartApply": {
+      "title": "智能应用",
+      "description": "仅加载你团队中英雄的皮肤（减少加载时间）"
+    },
+    "autoApply": {
+      "title": "自动应用",
+      "description": "所有英雄锁定后自动应用皮肤"
+    }
   },
   "errors": {
     "generic": "发生错误",
@@ -232,5 +248,40 @@
     "joinDiscord": "加入 Discord",
     "viewGithub": "在 GitHub 上查看",
     "donate": "捐赠"
+  },
+  "lcu": {
+    "connected": "已连接到英雄联盟客户端",
+    "disconnected": "已断开与英雄联盟客户端的连接",
+    "championHovered": "英雄已选择",
+    "championLocked": "英雄已锁定",
+    "viewSkins": "查看皮肤",
+    "connecting": "正在连接到英雄联盟客户端...",
+    "connectionFailed": "连接到英雄联盟客户端失败",
+    "status": "LCU 状态",
+    "notConnected": "未连接",
+    "inChampSelect": "正在选择英雄",
+    "disabled": "已禁用",
+    "tooltipNotConnected": "启动英雄联盟客户端以在英雄选择期间启用自动英雄检测",
+    "tooltipConnected": "已连接到英雄联盟客户端。选择英雄时将显示通知",
+    "tooltipInChampSelect": "当前正在选择英雄。选择一个英雄以查看通知",
+    "tooltipDisabled": "英雄检测已禁用。在设置中启用以在选择英雄时接收通知",
+    "championLockedDescription": "您已锁定 {{champion}}。想要浏览可用的皮肤吗？",
+    "championHoveredDescription": "您正在查看 {{champion}}。想要浏览可用的皮肤吗？"
+  },
+  "smartApply": {
+    "willApply": "智能：{{count}}/{{total}}",
+    "applying": "正在为 {{champions}} 应用 {{count}} 个皮肤",
+    "success": "已应用 {{total}} 中的 {{applied}} 个皮肤",
+    "failed": "应用皮肤失败",
+    "noSkinsToApply": "您的团队没有可应用的皮肤",
+    "noSkinsForTeam": "您的团队英雄没有选择皮肤"
+  },
+  "errors": {
+    "generic": "发生错误",
+    "downloadFailed": "下载失败",
+    "connectionError": "连接错误",
+    "pathNotSet": "请先设置游戏路径",
+    "operationTimeout": "操作超时。请重试。",
+    "skinNotAvailable": "皮肤在 lol-skins 仓库中不可用或映射错误"
   }
 }

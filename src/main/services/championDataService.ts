@@ -398,3 +398,6 @@ export class ChampionDataService {
     }
   }
 }
+
+// Singleton instance
+export const championDataService = new ChampionDataService()

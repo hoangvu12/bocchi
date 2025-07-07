@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { Upload } from 'lucide-react'
+import { Toaster } from 'sonner'
 import { FilterPanel } from './components/FilterPanel'
 import { getChampionDisplayName } from './utils/championUtils'
 import { generateCustomModId, isOldFormatCustomId } from './utils/customModId'
@@ -23,6 +24,10 @@ import { FileUploadButton } from './components/FileUploadButton'
 import { EditCustomSkinDialog } from './components/EditCustomSkinDialog'
 import { DownloadedSkinsDialog } from './components/DownloadedSkinsDialog'
 import { FileTransferDialog } from './components/FileTransferDialog'
+import { LCUStatusIndicator } from './components/LCUStatusIndicator'
+import { SettingsDialog } from './components/SettingsDialog'
+import { ChampionSelectDialog } from './components/ChampionSelectDialog'
+import { useChampionSelectHandler } from './hooks/useChampionSelectHandler'
 import {
   championSearchQueryAtom,
   filtersAtom,
@@ -136,9 +141,53 @@ function AppContent(): React.JSX.Element {
   )
   // Downloaded skins dialog state
   const [showDownloadedSkinsDialog, setShowDownloadedSkinsDialog] = useState<boolean>(false)
+  // Settings dialog state
+  const [showSettingsDialog, setShowSettingsDialog] = useState<boolean>(false)
 
   // Initialize P2P skin sync with downloadedSkins
   useP2PSkinSync(downloadedSkins)
+
+  // Handle champion navigation
+  const navigateToChampion = useCallback(
+    (champion: Champion) => {
+      setSelectedChampion(champion)
+      setSelectedChampionKey(champion.key)
+      // Clear skin search to show all skins for the champion
+      setSkinSearchQuery('')
+      // Optionally clear favorites filter
+      if (showFavoritesOnly) {
+        setShowFavoritesOnly(false)
+      }
+    },
+    [setSelectedChampionKey, setSkinSearchQuery, showFavoritesOnly, setShowFavoritesOnly]
+  )
+
+  // Initialize champion select handler
+  const [leagueClientEnabled, setLeagueClientEnabled] = useState(true)
+  const [championDetectionEnabled, setChampionDetectionEnabled] = useState(true)
+  const {
+    lcuConnected,
+    isInChampSelect,
+    selectedChampion: lcuSelectedChampion,
+    isChampionLocked,
+    onChampionNavigate,
+    clearSelectedChampion
+  } = useChampionSelectHandler({
+    champions: championData?.champions,
+    onNavigateToChampion: navigateToChampion,
+    enabled: championDetectionEnabled
+  })
+
+  // Load champion detection setting
+  useEffect(() => {
+    Promise.all([
+      window.api.getSettings('leagueClientEnabled'),
+      window.api.getSettings('championDetection')
+    ]).then(([leagueClient, championDetection]) => {
+      setLeagueClientEnabled(leagueClient !== false)
+      setChampionDetectionEnabled(championDetection !== false)
+    })
+  }, [])
 
   const loadChampionData = useCallback(
     async (preserveSelection = false) => {
@@ -237,6 +286,46 @@ function AppContent(): React.JSX.Element {
     setChampionSearchQuery('')
     setSkinSearchQuery('')
   }, [setChampionSearchQuery, setSkinSearchQuery])
+
+  // Monitor LCU phase changes to update patcher status
+  useEffect(() => {
+    const unsubscribePhase = window.api.onLcuPhaseChanged(async (data) => {
+      console.log('[App] Phase changed:', data)
+
+      // Post-game phases where we should stop the patcher
+      const postGamePhases = ['WaitingForStats', 'PreEndOfGame', 'EndOfGame', 'Lobby']
+
+      // If transitioning to any post-game phase, check if we should stop the patcher
+      if (postGamePhases.includes(data.phase)) {
+        // Only stop patcher if auto-apply is enabled (meaning it was started automatically)
+        const autoApplyEnabled = await window.api.getSettings('autoApplyEnabled')
+
+        if (autoApplyEnabled !== false) {
+          window.api.isPatcherRunning().then((isRunning) => {
+            if (isRunning) {
+              console.log(
+                '[App] Game ended with auto-apply enabled, stopping patcher. Phase:',
+                data.phase
+              )
+              window.api.stopPatcher().then(() => {
+                // Update UI to reflect patcher stopped
+                setIsPatcherRunning(false)
+                setStatusMessage(t('status.stopped'))
+              })
+            }
+          })
+        } else {
+          console.log(
+            '[App] Game ended but auto-apply is disabled, keeping patcher running if active'
+          )
+        }
+      }
+    })
+
+    return () => {
+      unsubscribePhase()
+    }
+  }, [t])
 
   // Set up tools download progress listener
   useEffect(() => {
@@ -493,6 +582,7 @@ function AppContent(): React.JSX.Element {
         skinId: skin.id,
         skinName: skin.name,
         skinNameEn: skin.nameEn,
+        lolSkinsName: skin.lolSkinsName,
         skinNum: skin.num,
         chromaId: chromaId,
         isDownloaded: false // Will be checked when applying
@@ -551,10 +641,74 @@ function AppContent(): React.JSX.Element {
         await new Promise((resolve) => setTimeout(resolve, 500)) // Small delay
       }
 
+      // Determine which skins to apply based on smart apply settings
+      let skinsToApply = selectedSkins
+      let isUsingSmartApply = false
+      let smartApplySummary: any = null
+
+      // Check if we should filter skins for smart apply
+      const leagueClientEnabled = await window.api.getSettings('leagueClientEnabled')
+      const smartApplyEnabled = await window.api.getSettings('smartApplyEnabled')
+      const teamCompositionResult = await window.api.getTeamComposition()
+
+      if (
+        leagueClientEnabled &&
+        smartApplyEnabled &&
+        teamCompositionResult.success &&
+        teamCompositionResult.composition &&
+        teamCompositionResult.composition.championIds &&
+        teamCompositionResult.composition.championIds.length > 0
+      ) {
+        console.log(
+          '[App] Smart apply enabled, filtering skins for team:',
+          teamCompositionResult.composition.championIds
+        )
+
+        // Get smart apply summary to know which skins to filter
+        const summaryResult = await window.api.getSmartApplySummary(
+          selectedSkins,
+          teamCompositionResult.composition.championIds
+        )
+
+        if (summaryResult.success && summaryResult.summary) {
+          smartApplySummary = summaryResult.summary
+          const teamChampionKeys = new Set(smartApplySummary.teamChampions)
+
+          // Filter skins to only include team champions and custom mods
+          skinsToApply = selectedSkins.filter(
+            (skin) => skin.championKey === 'Custom' || teamChampionKeys.has(skin.championKey)
+          )
+
+          isUsingSmartApply = true
+
+          // Check if we have any skins to apply after filtering
+          if (skinsToApply.length === 0) {
+            setStatusMessage(t('smartApply.noSkinsForTeam'))
+            setIsApplyingSkins(false)
+            activeOperationRef.current = null
+            return
+          }
+
+          console.log(
+            `[App] Filtered ${selectedSkins.length} skins to ${skinsToApply.length} for smart apply`
+          )
+        }
+      }
+
       const skinKeys: string[] = []
 
+      // Show appropriate status message
+      if (isUsingSmartApply) {
+        setStatusMessage(
+          t('smartApply.applying', {
+            count: skinsToApply.length,
+            champions: 'your team'
+          })
+        )
+      }
+
       // Download any skins that aren't downloaded yet
-      for (const selectedSkin of selectedSkins) {
+      for (const selectedSkin of skinsToApply) {
         if (selectedSkin.championKey === 'Custom') {
           // Find the custom mod in downloadedSkins
           const userMod = downloadedSkins.find(
@@ -574,7 +728,7 @@ function AppContent(): React.JSX.Element {
 
         let skinFileName: string
         let githubUrl: string
-        // Use lol-skins name if available, otherwise fall back to English name
+        // Use proper name priority for downloading: lolSkinsName -> nameEn -> name
         const downloadName = (skin.lolSkinsName || skin.nameEn || skin.name).replace(/:/g, '')
 
         if (selectedSkin.chromaId) {
@@ -588,7 +742,10 @@ function AppContent(): React.JSX.Element {
             const championNameForUrl = getChampionDisplayName(champion)
             githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/chromas/${encodeURIComponent(downloadName)}/${encodeURIComponent(skinFileName)}`
 
-            setStatusMessage(t('status.downloading', { name: `${skin.name} (Chroma)` }))
+            const displayMessage = isUsingSmartApply
+              ? t('status.downloading', { name: `${skin.name} (Chroma) for your team` })
+              : t('status.downloading', { name: `${skin.name} (Chroma)` })
+            setStatusMessage(displayMessage)
 
             const downloadResult = await window.api.downloadSkin(githubUrl)
             if (!downloadResult.success) {
@@ -606,7 +763,10 @@ function AppContent(): React.JSX.Element {
             const championNameForUrl = getChampionDisplayName(champion)
             githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(skinFileName)}`
 
-            setStatusMessage(t('status.downloading', { name: skin.name }))
+            const displayMessage = isUsingSmartApply
+              ? t('status.downloading', { name: `${skin.name} for your team` })
+              : t('status.downloading', { name: skin.name })
+            setStatusMessage(displayMessage)
 
             const downloadResult = await window.api.downloadSkin(githubUrl)
             if (!downloadResult.success) {
@@ -625,15 +785,42 @@ function AppContent(): React.JSX.Element {
 
       console.log('skinKeys', skinKeys)
 
-      setStatusMessage(t('status.applying', { name: `${selectedSkins.length} skins` }))
+      // Update status message based on mode
+      if (isUsingSmartApply) {
+        setStatusMessage(
+          t('smartApply.applying', {
+            count: skinsToApply.length,
+            champions: 'your team'
+          })
+        )
+      } else {
+        setStatusMessage(t('status.applying', { name: `${skinsToApply.length} skins` }))
+      }
 
-      // Run patcher with all selected skins
+      // Run patcher with filtered skins
       const patcherResult = await window.api.runPatcher(gamePath, skinKeys)
       if (patcherResult.success) {
-        setStatusMessage(t('status.applied', { name: `${selectedSkins.length} skins` }))
+        if (isUsingSmartApply) {
+          setStatusMessage(
+            t('smartApply.success', {
+              applied: skinsToApply.length,
+              total: selectedSkins.length
+            })
+          )
+        } else {
+          setStatusMessage(t('status.applied', { name: `${skinsToApply.length} skins` }))
+        }
         setIsPatcherRunning(true)
-        // Optionally clear selection after successful application
-        // setSelectedSkins([])
+
+        // Start checking patcher status
+        const intervalId = setInterval(async () => {
+          const running = await window.api.isPatcherRunning()
+          setIsPatcherRunning(running)
+          if (!running) {
+            clearInterval(intervalId)
+            setStatusMessage(t('status.stopped'))
+          }
+        }, 1000)
       } else {
         throw new Error(patcherResult.message || 'Failed to apply skins')
       }
@@ -958,6 +1145,18 @@ function AppContent(): React.JSX.Element {
   return (
     <>
       <TitleBar appVersion={appVersion} />
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          className: 'sonner-toast',
+          duration: 5000,
+          style: {
+            background: 'var(--color-surface)',
+            color: 'var(--color-text-primary)',
+            border: '1px solid var(--color-border)'
+          }
+        }}
+      />
       <UpdateDialog isOpen={showUpdateDialog} onClose={() => setShowUpdateDialog(false)} />
       <ChampionDataUpdateDialog
         isOpen={showChampionDataUpdate}
@@ -1043,6 +1242,31 @@ function AppContent(): React.JSX.Element {
                 {t('champion.downloadData')}
               </button>
             )}
+            <LCUStatusIndicator
+              connected={lcuConnected}
+              inChampSelect={isInChampSelect}
+              enabled={leagueClientEnabled && championDetectionEnabled}
+            />
+            <button
+              className="px-3 py-2.5 text-sm bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary font-medium rounded-lg transition-all duration-200 border border-border hover:border-border-strong shadow-sm hover:shadow-md dark:shadow-none flex items-center gap-2"
+              onClick={() => setShowSettingsDialog(true)}
+              title={t('settings.title')}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+            </button>
             <RoomPanel />
           </div>
         </div>
@@ -1223,6 +1447,7 @@ function AppContent(): React.JSX.Element {
           championData={championData || undefined}
           statusMessage={statusMessage}
           errorMessage={errorMessage}
+          gamePath={gamePath}
         />
 
         {/* Drop overlay */}
@@ -1276,6 +1501,20 @@ function AppContent(): React.JSX.Element {
       />
 
       <FileTransferDialog championData={championData || undefined} />
+
+      <SettingsDialog
+        isOpen={showSettingsDialog}
+        onClose={() => setShowSettingsDialog(false)}
+        onLeagueClientChange={(enabled) => setLeagueClientEnabled(enabled)}
+        onChampionDetectionChange={(enabled) => setChampionDetectionEnabled(enabled)}
+      />
+
+      <ChampionSelectDialog
+        champion={lcuSelectedChampion}
+        isLocked={isChampionLocked}
+        onViewSkins={onChampionNavigate}
+        onClose={clearSelectedChampion}
+      />
     </>
   )
 }

@@ -8,19 +8,23 @@ import icon from '../../resources/icon.png?asset'
 import { GameDetector } from './services/gameDetector'
 import { SkinDownloader } from './services/skinDownloader'
 import { ModToolsWrapper } from './services/modToolsWrapper'
-import { ChampionDataService } from './services/championDataService'
+import { championDataService } from './services/championDataService'
 import { FavoritesService } from './services/favoritesService'
 import { ToolsDownloader } from './services/toolsDownloader'
 import { SettingsService } from './services/settingsService'
 import { UpdaterService } from './services/updaterService'
 import { FileImportService } from './services/fileImportService'
 import { ImageService } from './services/imageService'
+import { lcuConnector } from './services/lcuConnector'
+import { gameflowMonitor } from './services/gameflowMonitor'
+import { teamCompositionMonitor } from './services/teamCompositionMonitor'
+import { skinApplyService } from './services/skinApplyService'
+import type { SelectedSkin } from './types/index'
 
 // Initialize services
 const gameDetector = new GameDetector()
 const skinDownloader = new SkinDownloader()
 const modToolsWrapper = new ModToolsWrapper()
-const championDataService = new ChampionDataService()
 const favoritesService = new FavoritesService()
 const toolsDownloader = new ToolsDownloader()
 const settingsService = new SettingsService()
@@ -98,6 +102,9 @@ app.whenReady().then(async () => {
 
   createWindow()
 
+  // Initialize LCU connection
+  setupLCUConnection()
+
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -116,6 +123,10 @@ app.on('window-all-closed', () => {
 
 // Cleanup temp transfers on exit
 app.on('before-quit', async () => {
+  // Stop LCU auto-connect
+  lcuConnector.stopAutoConnect()
+  lcuConnector.disconnect()
+
   const tempTransfersDir = path.join(app.getPath('userData'), 'temp-transfers')
   try {
     await fs.promises.rm(tempTransfersDir, { recursive: true, force: true })
@@ -386,6 +397,114 @@ function setupIpcHandlers(): void {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
     }
   })
+
+  // Smart apply handler - applies only team-relevant skins
+  ipcMain.handle(
+    'smart-apply-skins',
+    async (_, gamePath: string, selectedSkins: SelectedSkin[], teamChampionIds: number[]) => {
+      try {
+        // Filter skins based on team composition
+        const filteredSkins = await skinApplyService.getSmartApplySkins(
+          selectedSkins,
+          teamChampionIds
+        )
+
+        // Convert to the format expected by run-patcher
+        const skinKeys = filteredSkins.map((skin) => {
+          if (skin.championKey === 'Custom') {
+            return `Custom/[User] ${skin.skinName}`
+          }
+          // For chromas, append the chroma ID
+          // Use proper name priority for downloading from repository: lolSkinsName -> nameEn -> name
+          const skinNameToUse = (skin.lolSkinsName || skin.skinNameEn || skin.skinName).replace(
+            /:/g,
+            ''
+          )
+          const skinNameWithChroma = skin.chromaId
+            ? `${skinNameToUse} ${skin.chromaId}.zip`
+            : `${skinNameToUse}.zip`
+          return `${skin.championKey}/${skinNameWithChroma}`
+        })
+
+        // Reuse the run-patcher logic directly
+        // First validate for single skin per champion
+        const championCounts = new Map<string, number>()
+        for (const skinKey of skinKeys) {
+          const champion = skinKey.split('/')[0]
+          championCounts.set(champion, (championCounts.get(champion) || 0) + 1)
+        }
+
+        for (const [champion, count] of championCounts.entries()) {
+          if (count > 1 && champion !== 'Custom') {
+            return {
+              success: false,
+              message: `Conflict: Only one skin per champion can be injected. You have selected ${count} skins for ${champion}.`
+            }
+          }
+        }
+
+        // Download skins and apply
+        const skinInfosToProcess = await Promise.all(
+          skinKeys.map(async (skinKey) => {
+            const [champion, skinFile] = skinKey.split('/')
+
+            if (skinFile.includes('[User]')) {
+              const skinNameWithExt = skinFile.replace('[User] ', '')
+              const skinName = skinNameWithExt.replace(/\.(wad\.client|wad|zip|fantome)$/i, '')
+
+              const modFilesDir = path.join(app.getPath('userData'), 'mod-files')
+              const possibleExtensions = ['.wad.client', '.wad', '.zip', '.fantome']
+              let modFilePath: string | null = null
+
+              for (const ext of possibleExtensions) {
+                const testPath = path.join(modFilesDir, `${champion}_${skinName}${ext}`)
+                try {
+                  await fs.promises.access(testPath)
+                  modFilePath = testPath
+                  break
+                } catch {
+                  // Continue
+                }
+              }
+
+              if (!modFilePath) {
+                modFilePath = path.join(app.getPath('userData'), 'mods', `${champion}_${skinName}`)
+              }
+
+              return { localPath: modFilePath }
+            }
+
+            const url = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion}/${encodeURIComponent(skinFile)}`
+            return skinDownloader.downloadSkin(url)
+          })
+        )
+
+        const preset = {
+          id: 'temp_' + Date.now(),
+          name: 'Temporary',
+          description: 'Smart apply preset',
+          selectedSkins: skinInfosToProcess.map((s) => s.localPath),
+          gamePath,
+          noTFT: true,
+          ignoreConflict: false,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+
+        const result = await modToolsWrapper.applyPreset(preset)
+
+        // Add summary info to response
+        const summary = await skinApplyService.getSmartApplySummary(selectedSkins, teamChampionIds)
+
+        return {
+          ...result,
+          summary
+        }
+      } catch (error) {
+        return { success: false, message: error instanceof Error ? error.message : 'Unknown error' }
+      }
+    }
+  )
 
   ipcMain.handle('is-patcher-running', async () => {
     return modToolsWrapper.isRunning()
@@ -714,4 +833,179 @@ function setupIpcHandlers(): void {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
     }
   })
+
+  // LCU Connection handlers
+  ipcMain.handle('lcu:connect', async () => {
+    try {
+      // Start auto-connect when manually enabled
+      lcuConnector.startAutoConnect(5000)
+      const connected = await lcuConnector.connect()
+      if (connected) {
+        await gameflowMonitor.start()
+        await teamCompositionMonitor.start()
+      }
+      return { success: connected }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('lcu:disconnect', () => {
+    gameflowMonitor.stop()
+    teamCompositionMonitor.stop()
+    lcuConnector.stopAutoConnect()
+    lcuConnector.disconnect()
+    return { success: true }
+  })
+
+  ipcMain.handle('lcu:get-status', () => {
+    return {
+      connected: lcuConnector.isConnected(),
+      gameflowPhase: gameflowMonitor.getCurrentPhase()
+    }
+  })
+
+  ipcMain.handle('lcu:get-current-phase', async () => {
+    try {
+      const phase = await lcuConnector.getGameflowPhase()
+      return { success: true, phase }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('lcu:get-champ-select-session', async () => {
+    try {
+      const session = await lcuConnector.getChampSelectSession()
+      return { success: true, session }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  // Team composition handlers
+  ipcMain.handle('team:get-composition', () => {
+    const composition = teamCompositionMonitor.getCurrentTeamComposition()
+    return { success: true, composition }
+  })
+
+  ipcMain.handle('team:is-ready-for-smart-apply', () => {
+    const ready = teamCompositionMonitor.isReadyForSmartApply()
+    return { success: true, ready }
+  })
+
+  ipcMain.handle(
+    'team:get-smart-apply-summary',
+    async (_, selectedSkins: SelectedSkin[], teamChampionIds: number[]) => {
+      const summary = await skinApplyService.getSmartApplySummary(selectedSkins, teamChampionIds)
+      return { success: true, summary }
+    }
+  )
 }
+
+// Setup LCU connection and event forwarding
+function setupLCUConnection(): void {
+  // Forward LCU events to renderer
+  lcuConnector.on('connected', () => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('lcu:connected')
+    })
+  })
+
+  lcuConnector.on('disconnected', () => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('lcu:disconnected')
+    })
+  })
+
+  lcuConnector.on('error', (error) => {
+    console.error('LCU Connection error:', error)
+  })
+
+  // Forward gameflow events
+  gameflowMonitor.on('phase-changed', (phase, previousPhase) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('lcu:phase-changed', { phase, previousPhase })
+    })
+  })
+
+  gameflowMonitor.on('champion-selected', (data) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('lcu:champion-selected', data)
+    })
+  })
+
+  // Forward team composition events
+  teamCompositionMonitor.on('team-composition-updated', (composition) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('team:composition-updated', composition)
+    })
+  })
+
+  teamCompositionMonitor.on('ready-for-smart-apply', (composition) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('team:ready-for-smart-apply', composition)
+    })
+  })
+
+  teamCompositionMonitor.on('team-reset', (newPhase: string) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('team:reset', newPhase)
+    })
+  })
+
+  // Check if League Client integration is enabled in settings
+  const leagueClientEnabled = settingsService.get('leagueClientEnabled')
+  // Default to true if not set
+  if (leagueClientEnabled !== false) {
+    // Start auto-connect which will keep trying to connect to League client
+    // This ensures we connect even if League is started after the app
+    lcuConnector.startAutoConnect(5000) // Check every 5 seconds
+  }
+
+  // When connected, start gameflow monitoring
+  lcuConnector.on('connected', () => {
+    gameflowMonitor.start()
+    teamCompositionMonitor.start()
+  })
+}
+
+// Cleanup function for graceful shutdown
+function cleanup(): void {
+  console.log('Cleaning up LCU connections...')
+
+  // Stop monitoring services
+  gameflowMonitor.stop()
+  teamCompositionMonitor.stop()
+
+  // Stop auto-connect and disconnect from LCU
+  lcuConnector.stopAutoConnect()
+  lcuConnector.disconnect()
+
+  // Remove all listeners to prevent memory leaks
+  lcuConnector.removeAllListeners()
+  gameflowMonitor.removeAllListeners()
+  teamCompositionMonitor.removeAllListeners()
+}
+
+// Handle app quit events
+app.on('before-quit', () => {
+  cleanup()
+})
+
+app.on('window-all-closed', () => {
+  cleanup()
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+app.on('will-quit', (event) => {
+  // Prevent quit until cleanup is done
+  event.preventDefault()
+  cleanup()
+  // Allow quit after cleanup
+  setTimeout(() => {
+    app.exit(0)
+  }, 100)
+})

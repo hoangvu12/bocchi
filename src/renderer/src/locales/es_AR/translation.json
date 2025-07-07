@@ -90,7 +90,23 @@
     "gamePath": "Ruta del juego",
     "language": "Idioma",
     "theme": "Tema",
-    "notifications": "Notificaciones"
+    "notifications": "Notificaciones",
+    "leagueClient": {
+      "title": "Integración con el Cliente de League",
+      "description": "Habilitar funciones que se conectan con el cliente de League of Legends"
+    },
+    "championDetection": {
+      "title": "Detección de campeones",
+      "description": "Mostrar automáticamente notificaciones cuando seleccionás campeones en el cliente de League"
+    },
+    "smartApply": {
+      "title": "Aplicación inteligente",
+      "description": "Solo cargar skins para los campeones de tu equipo (reduce el tiempo de carga)"
+    },
+    "autoApply": {
+      "title": "Aplicación automática",
+      "description": "Aplicar skins automáticamente cuando todos los campeones estén bloqueados"
+    }
   },
   "errors": {
     "generic": "Ocurrió un error",
@@ -232,6 +248,33 @@
     "joinDiscord": "Unirse a Discord",
     "viewGithub": "Ver en GitHub",
     "donate": "Donar"
+  },
+  "lcu": {
+    "connected": "Conectado al cliente de League",
+    "disconnected": "Desconectado del cliente de League",
+    "championHovered": "Campeón seleccionado",
+    "championLocked": "Campeón bloqueado",
+    "viewSkins": "Ver skins",
+    "connecting": "Conectando al cliente de League...",
+    "connectionFailed": "Error al conectar con el cliente de League",
+    "status": "Estado de LCU",
+    "notConnected": "No conectado",
+    "inChampSelect": "En selección de campeón",
+    "disabled": "Deshabilitado",
+    "tooltipNotConnected": "Iniciá el cliente de League of Legends para habilitar la detección automática de campeones durante la selección",
+    "tooltipConnected": "Conectado al cliente de League. Mostrará notificaciones cuando selecciones campeones",
+    "tooltipInChampSelect": "Actualmente en selección de campeón. Seleccioná un campeón para ver una notificación",
+    "tooltipDisabled": "La detección de campeones está deshabilitada. Habilitala en configuración para recibir notificaciones al seleccionar campeones",
+    "championLockedDescription": "Bloqueaste a {{champion}}. ¿Querés explorar los skins disponibles?",
+    "championHoveredDescription": "Estás viendo a {{champion}}. ¿Querés explorar los skins disponibles?"
+  },
+  "smartApply": {
+    "willApply": "Inteligente: {{count}}/{{total}}",
+    "applying": "Aplicando {{count}} skins para: {{champions}}",
+    "success": "Se aplicaron {{applied}} de {{total}} skins",
+    "failed": "Error al aplicar skins",
+    "noSkinsToApply": "No hay skins para aplicar a tu equipo",
+    "noSkinsForTeam": "No hay skins seleccionados para los campeones de tu equipo"
   },
   "errors": {
     "generic": "Ocurrió un error",

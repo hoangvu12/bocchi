@@ -90,7 +90,23 @@
     "gamePath": "게임 경로",
     "language": "언어",
     "theme": "테마",
-    "notifications": "알림"
+    "notifications": "알림",
+    "leagueClient": {
+      "title": "리그 클라이언트 통합",
+      "description": "리그 오브 레전드 클라이언트와 연결되는 기능 활성화"
+    },
+    "championDetection": {
+      "title": "챔피언 감지",
+      "description": "리그 클라이언트에서 챔피언을 선택할 때 자동으로 알림 표시"
+    },
+    "smartApply": {
+      "title": "스마트 적용",
+      "description": "팀의 챔피언 스킨만 로드 (로딩 시간 단축)"
+    },
+    "autoApply": {
+      "title": "자동 적용",
+      "description": "모든 챔피언이 잠긴 후 스킨을 자동으로 적용"
+    }
   },
   "errors": {
     "generic": "오류가 발생했습니다",
@@ -232,5 +248,40 @@
     "joinDiscord": "Discord 참가",
     "viewGithub": "GitHub에서 보기",
     "donate": "후원"
+  },
+  "lcu": {
+    "connected": "리그 클라이언트에 연결됨",
+    "disconnected": "리그 클라이언트와 연결 끊김",
+    "championHovered": "챔피언 선택",
+    "championLocked": "챔피언 잠김",
+    "viewSkins": "스킨 보기",
+    "connecting": "리그 클라이언트에 연결 중...",
+    "connectionFailed": "리그 클라이언트 연결 실패",
+    "status": "LCU 상태",
+    "notConnected": "연결되지 않음",
+    "inChampSelect": "챔피언 선택 중",
+    "disabled": "비활성화",
+    "tooltipNotConnected": "챔피언 선택 중 자동 챔피언 감지를 활성화하려면 리그 오브 레전드 클라이언트를 시작하세요",
+    "tooltipConnected": "리그 클라이언트에 연결됨. 챔피언을 선택하면 알림이 표시됩니다",
+    "tooltipInChampSelect": "현재 챔피언 선택 중입니다. 챔피언을 선택하여 알림을 표시하세요",
+    "tooltipDisabled": "챔피언 감지가 비활성화되었습니다. 설정에서 활성화하여 챔피언 선택 시 알림을 받으세요",
+    "championLockedDescription": "{{champion}}을(를) 잠겼습니다. 사용 가능한 스킨을 보시겠습니까?",
+    "championHoveredDescription": "{{champion}}을(를) 보고 계십니다. 사용 가능한 스킨을 보시겠습니까?"
+  },
+  "smartApply": {
+    "willApply": "스마트: {{count}}/{{total}}",
+    "applying": "{{champions}}에 대한 {{count}}개 스킨 적용 중",
+    "success": "{{total}}개 중 {{applied}}개 스킨 적용됨",
+    "failed": "스킨 적용 실패",
+    "noSkinsToApply": "팀에 적용할 스킨이 없습니다",
+    "noSkinsForTeam": "팀 챔피언에 선택된 스킨이 없습니다"
+  },
+  "errors": {
+    "generic": "오류가 발생했습니다",
+    "downloadFailed": "다운로드 실패",
+    "connectionError": "연결 오류",
+    "pathNotSet": "먼저 게임 경로를 설정하세요",
+    "operationTimeout": "작업 시간이 초과되었습니다. 다시 시도하세요.",
+    "skinNotAvailable": "스킨이 lol-skins 저장소에서 사용할 수 없거나 매핑이 잘못되었습니다"
   }
 }

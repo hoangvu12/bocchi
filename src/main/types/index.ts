@@ -29,6 +29,18 @@ export interface SkinInfo {
   sharedBy?: string
 }
 
+export interface SelectedSkin {
+  championKey: string
+  championName: string
+  skinId: string
+  skinName: string
+  skinNameEn?: string
+  lolSkinsName?: string
+  skinNum: number
+  chromaId?: string
+  isDownloaded?: boolean
+}
+
 export interface P2PRoom {
   id: string
   createdAt: Date
@@ -55,6 +67,7 @@ export interface SelectedSkin {
   skinId: string
   skinName: string
   skinNameEn?: string
+  lolSkinsName?: string
   skinNum: number
   chromaId?: string
   isDownloaded?: boolean

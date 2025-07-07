@@ -90,7 +90,23 @@
     "gamePath": "ゲームパス",
     "language": "言語",
     "theme": "テーマ",
-    "notifications": "通知"
+    "notifications": "通知",
+    "leagueClient": {
+      "title": "リーグクライアント統合",
+      "description": "League of Legendsクライアントと連携する機能を有効にする"
+    },
+    "championDetection": {
+      "title": "チャンピオン検出",
+      "description": "リーグクライアントでチャンピオンを選択した時に通知を自動的に表示"
+    },
+    "smartApply": {
+      "title": "スマート適用",
+      "description": "チームのチャンピオンのスキンのみを読み込む（読み込み時間を短縮）"
+    },
+    "autoApply": {
+      "title": "自動適用",
+      "description": "すべてのチャンピオンがロックされた時にスキンを自動的に適用"
+    }
   },
   "errors": {
     "generic": "エラーが発生しました",
@@ -232,5 +248,40 @@
     "joinDiscord": "Discordに参加",
     "viewGithub": "GitHubで表示",
     "donate": "寄付"
+  },
+  "lcu": {
+    "connected": "リーグクライアントに接続中",
+    "disconnected": "リーグクライアントから切断",
+    "championHovered": "チャンピオン選択中",
+    "championLocked": "チャンピオンロック済み",
+    "viewSkins": "スキンを表示",
+    "connecting": "リーグクライアントに接続中...",
+    "connectionFailed": "リーグクライアントへの接続に失敗しました",
+    "status": "LCUステータス",
+    "notConnected": "接続されていません",
+    "inChampSelect": "チャンピオン選択中",
+    "disabled": "無効",
+    "tooltipNotConnected": "League of Legendsクライアントを起動して、チャンピオン選択中の自動チャンピオン検出を有効にしてください",
+    "tooltipConnected": "リーグクライアントに接続中。チャンピオンを選択すると通知が表示されます",
+    "tooltipInChampSelect": "現在チャンピオン選択中です。チャンピオンを選択して通知を表示してください",
+    "tooltipDisabled": "チャンピオン検出が無効になっています。設定で有効にして、チャンピオン選択時に通知を受け取るようにしてください",
+    "championLockedDescription": "{{champion}}をロックしました。利用可能なスキンを見てみますか？",
+    "championHoveredDescription": "{{champion}}を表示中です。利用可能なスキンを見てみますか？"
+  },
+  "smartApply": {
+    "willApply": "スマート: {{count}}/{{total}}",
+    "applying": "{{champions}}の{{count}}個のスキンを適用中",
+    "success": "{{total}}個中{{applied}}個のスキンを適用しました",
+    "failed": "スキンの適用に失敗しました",
+    "noSkinsToApply": "チームに適用するスキンがありません",
+    "noSkinsForTeam": "チームチャンピオンのスキンが選択されていません"
+  },
+  "errors": {
+    "generic": "エラーが発生しました",
+    "downloadFailed": "ダウンロードに失敗しました",
+    "connectionError": "接続エラー",
+    "pathNotSet": "最初にゲームパスを設定してください",
+    "operationTimeout": "操作がタイムアウトしました。もう一度お試しください。",
+    "skinNotAvailable": "スキンはlol-skinsリポジトリで利用できないか、マッピングが間違っています"
   }
 }

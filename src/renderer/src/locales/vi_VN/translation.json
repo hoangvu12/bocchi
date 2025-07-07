@@ -25,6 +25,7 @@
     "decline": "Từ chối",
     "accept": "Chấp nhận",
     "join": "Tham gia",
+    "cancel": "Hủy",
     "leave": "Rời khỏi",
     "create": "Tạo",
     "copy": "Sao chép",
@@ -86,16 +87,28 @@
     "downloadTools": "Tải Công Cụ"
   },
   "settings": {
+    "title": "Cài đặt",
+    "description": "Cấu hình tùy chọn ứng dụng",
     "gamePath": "Đường Dẫn Game",
     "language": "Ngôn ngữ",
     "theme": "Giao diện",
-    "notifications": "Thông báo"
-  },
-  "errors": {
-    "generic": "Đã xảy ra lỗi",
-    "downloadFailed": "Tải xuống thất bại",
-    "connectionError": "Lỗi kết nối",
-    "pathNotSet": "Vui lòng thiết lập đường dẫn game trước"
+    "notifications": "Thông báo",
+    "leagueClient": {
+      "title": "Tích hợp League Client",
+      "description": "Bật các tính năng kết nối với League of Legends client"
+    },
+    "championDetection": {
+      "title": "Phát hiện tướng",
+      "description": "Tự động hiển thị thông báo khi bạn chọn tướng trong League client"
+    },
+    "smartApply": {
+      "title": "Áp dụng thông minh",
+      "description": "Chỉ tải trang phục cho các tướng trong đội của bạn (giảm thời gian tải)"
+    },
+    "autoApply": {
+      "title": "Tự động áp dụng",
+      "description": "Tự động áp dụng trang phục khi tất cả tướng đã khóa"
+    }
   },
   "fileUpload": {
     "uploadButton": "Tải Lên Mod Tùy Chỉnh",
@@ -224,6 +237,32 @@
     "joinDiscord": "Tham gia Discord",
     "viewGithub": "Xem trên GitHub",
     "donate": "Ủng hộ"
+  },
+  "lcu": {
+    "connected": "Đã kết nối với League Client",
+    "disconnected": "Đã ngắt kết nối với League Client",
+    "championHovered": "Đã chọn tướng",
+    "championLocked": "Đã khóa tướng",
+    "viewSkins": "Xem trang phục",
+    "connecting": "Đang kết nối với League Client...",
+    "connectionFailed": "Không thể kết nối với League Client",
+    "status": "Trạng thái LCU",
+    "notConnected": "Chưa kết nối",
+    "inChampSelect": "Đang chọn tướng",
+    "disabled": "Đã tắt",
+    "tooltipNotConnected": "Khởi động League of Legends để bật tính năng phát hiện tướng tự động khi chọn tướng",
+    "tooltipConnected": "Đã kết nối với League client. Sẽ hiển thị thông báo khi bạn chọn tướng",
+    "tooltipInChampSelect": "Đang trong màn hình chọn tướng. Chọn một tướng để xem thông báo",
+    "tooltipDisabled": "Tính năng phát hiện tướng đã tắt. Bật trong cài đặt để nhận thông báo khi chọn tướng",
+    "championLockedDescription": "Bạn đã khóa {{champion}}. Bạn có muốn xem các trang phục có sẵn không?",
+    "championHoveredDescription": "Bạn đang chọn {{champion}}. Bạn có muốn xem các trang phục có sẵn không?"
+  },
+  "smartApply": {
+    "willApply": "Thông minh: {{count}}/{{total}}",
+    "applying": "Đang áp dụng {{count}} trang phục cho: {{champions}}",
+    "success": "Đã áp dụng {{applied}} trong {{total}} trang phục",
+    "failed": "Không thể áp dụng trang phục",
+    "noSkinsToApply": "Không có trang phục nào để áp dụng cho đội của bạn"
   },
   "errors": {
     "generic": "Đã xảy ra lỗi",
