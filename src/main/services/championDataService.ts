@@ -11,15 +11,6 @@ interface Champion {
   tags: string[]
 }
 
-interface Skin {
-  id: string
-  num: number
-  name: string
-  nameEn?: string // English name for download purposes
-  lolSkinsName?: string // Name used in lol-skins repository if different
-  chromas: boolean
-}
-
 interface Chroma {
   id: number
   name: string
@@ -27,10 +18,20 @@ interface Chroma {
   colors: string[]
 }
 
-interface ChromaData {
-  version: string
-  lastUpdated: string
-  chromaMap: Record<string, Chroma[]>
+interface Skin {
+  id: string
+  num: number
+  name: string
+  nameEn?: string // English name for download purposes
+  lolSkinsName?: string // Name used in lol-skins repository if different
+  chromas: boolean
+  chromaList?: Chroma[]
+  rarity: string
+  rarityGemPath: string | null
+  isLegacy: boolean
+  skinType: string
+  skinLines?: Array<{ id: number }>
+  description?: string
 }
 
 interface SkinMapping {
@@ -54,11 +55,8 @@ export class ChampionDataService {
     'https://raw.githubusercontent.com/hoangvu12/bocchi/refs/heads/champion-data/data'
   private cachedData: Map<string, { version: string; champions: Champion[] }> = new Map()
   private skinMappings: Map<string, string> = new Map() // key: "championKey_skinNum", value: lolSkinsName
-  private chromaData: ChromaData | null = null
-
   constructor() {
     this.loadSkinMappings()
-    this.loadChromaData()
   }
 
   private async loadSkinMappings(): Promise<void> {
@@ -76,26 +74,6 @@ export class ChampionDataService {
       console.log(`Loaded ${data.skinMappings.length} skin name mappings`)
     } catch (error) {
       console.error('Failed to load skin name mappings:', error)
-    }
-  }
-
-  private async loadChromaData(): Promise<void> {
-    try {
-      const chromaUrl = `${this.githubDataUrl}/chroma-data.json`
-      const response = await axios.get<ChromaData>(chromaUrl)
-      this.chromaData = response.data
-
-      // Count total chromas
-      let totalChromas = 0
-      Object.values(this.chromaData.chromaMap).forEach((chromas) => {
-        totalChromas += chromas.length
-      })
-
-      console.log(
-        `Loaded chroma data: ${Object.keys(this.chromaData.chromaMap).length} skins with ${totalChromas} total chromas`
-      )
-    } catch (error) {
-      console.error('Failed to load chroma data:', error)
     }
   }
 
@@ -356,46 +334,6 @@ export class ChampionDataService {
   public async reloadSkinMappings(): Promise<void> {
     this.skinMappings.clear()
     await this.loadSkinMappings()
-  }
-
-  // Get chromas for a specific skin
-  public getChromasForSkin(skinId: string): Chroma[] {
-    if (!this.chromaData) {
-      return []
-    }
-    return this.chromaData.chromaMap[skinId] || []
-  }
-
-  // Get chroma by skin ID and chroma ID
-  public getChroma(skinId: string, chromaId: number): Chroma | null {
-    const chromas = this.getChromasForSkin(skinId)
-    return chromas.find((chroma) => chroma.id === chromaId) || null
-  }
-
-  // Reload chroma data
-  public async reloadChromaData(): Promise<void> {
-    this.chromaData = null
-    await this.loadChromaData()
-  }
-
-  // Check if chroma data needs update
-  public async checkChromaDataUpdate(): Promise<boolean> {
-    try {
-      if (!this.chromaData) return true
-
-      const chromaUrl = `${this.githubDataUrl}/chroma-data.json`
-      await axios.head(chromaUrl, {
-        headers: {
-          'Cache-Control': 'no-cache'
-        }
-      })
-
-      // Simple check - if we can't determine, assume update is needed
-      return true
-    } catch (error) {
-      console.error('Error checking chroma data update:', error)
-      return true
-    }
   }
 }
 

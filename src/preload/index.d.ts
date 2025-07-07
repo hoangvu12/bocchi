@@ -49,9 +49,6 @@ export interface IApi {
   checkChampionUpdates: (
     language?: string
   ) => Promise<{ success: boolean; needsUpdate?: boolean; error?: string }>
-  getChromasForSkin: (
-    skinId: string
-  ) => Promise<{ success: boolean; chromas?: any[]; error?: string }>
 
   // Favorites
   addFavorite: (

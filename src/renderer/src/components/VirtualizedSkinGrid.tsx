@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeGrid as Grid } from 'react-window'
 import type { Champion, Skin } from '../App'
-import { useChromaData } from '../hooks/useChromaData'
 import type { SelectedSkin } from '../store/atoms'
 import { isOldFormatCustomId } from '../utils/customModId'
 import { ChromaColorPie } from './ChromaColorPie'
@@ -110,7 +109,6 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
 
   const rowCount = Math.ceil(skins.length / columnCount)
   const [customImages, setCustomImages] = useState<Record<string, string>>({})
-  const { getChromasForSkin, prefetchChromas } = useChromaData()
 
   const getSkinImageUrl = useCallback(
     (championKey: string, skinNum: number, skinId: string, modPath?: string) => {
@@ -155,13 +153,6 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
 
     loadCustomImages()
   }, [skins, downloadedSkins])
-
-  // Prefetch chromas for skins that have them
-  useEffect(() => {
-    const skinsWithChromas = skins.filter((s) => s.skin.chromas)
-    const skinIds = skinsWithChromas.map(({ skin }) => skin.id)
-    prefetchChromas(skinIds)
-  }, [skins, prefetchChromas])
 
   const Cell = useCallback(
     ({ columnIndex, rowIndex, style }) => {
@@ -214,7 +205,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
         height: style.height - 24 // Subtract gap
       }
 
-      const chromas = skin.chromas ? getChromasForSkin(skin.id) : []
+      const chromas = skin.chromaList || []
 
       if (viewMode === 'list') {
         return (
@@ -260,7 +251,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                     </svg>
                   )}
                 </div>
-                {skin.chromas && chromas.length > 0 && (
+                {chromas.length > 0 && (
                   <Button
                     variant="ghost"
                     size="icon"
@@ -440,7 +431,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                 {isFavorite ? '❤️' : '🤍'}
               </Button>
               {/* Floating chroma button for grid mode */}
-              {skin.chromas && chromas.length > 0 && (
+              {chromas.length > 0 && (
                 <div
                   className="absolute bottom-2 left-12 w-8 h-8 rounded-full bg-white dark:bg-charcoal-800 backdrop-blur-sm hover:bg-charcoal-50 dark:hover:bg-charcoal-700 transition-all cursor-pointer shadow-lg flex items-center justify-center ring-2 ring-white dark:ring-charcoal-700"
                   onClick={(e) => {
@@ -543,8 +534,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       onToggleFavorite,
       onDeleteCustomSkin,
       onEditCustomSkin,
-      getSkinImageUrl,
-      getChromasForSkin
+      getSkinImageUrl
     ]
   )
 
@@ -573,7 +563,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
           }}
           champion={chromaDialogState.champion}
           skin={chromaDialogState.skin}
-          chromas={getChromasForSkin(chromaDialogState.skin.id)}
+          chromas={chromaDialogState.skin.chromaList || []}
           selectedSkins={selectedSkins}
           downloadedSkins={downloadedSkins}
           onChromaSelect={onSkinClick}

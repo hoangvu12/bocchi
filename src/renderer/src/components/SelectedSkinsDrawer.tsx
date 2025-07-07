@@ -3,7 +3,6 @@ import { useAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
 import { selectedSkinsAtom, selectedSkinsDrawerExpandedAtom } from '../store/atoms'
 import type { SelectedSkin } from '../store/atoms'
-import { useChromaData } from '../hooks/useChromaData'
 
 interface SelectedSkinsDrawerProps {
   onApplySkins: () => void
@@ -14,7 +13,18 @@ interface SelectedSkinsDrawerProps {
   championData?: {
     champions: Array<{
       key: string
-      skins: Array<{ id: string; nameEn?: string; name: string; lolSkinsName?: string }>
+      skins: Array<{
+        id: string
+        nameEn?: string
+        name: string
+        lolSkinsName?: string
+        chromaList?: Array<{
+          id: number
+          name: string
+          chromaPath: string
+          colors: string[]
+        }>
+      }>
     }>
   }
   statusMessage?: string
@@ -37,13 +47,6 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   const [patcherStatus, setPatcherStatus] = useState<string>('')
   const [patcherMessages, setPatcherMessages] = useState<string[]>([])
   const [customImages, setCustomImages] = useState<Record<string, string>>({})
-  const { chromaData, prefetchChromas } = useChromaData()
-
-  // Fetch chroma data for selected skins
-  useEffect(() => {
-    const uniqueSkinIds = [...new Set(selectedSkins.map((s) => s.skinId))]
-    prefetchChromas(uniqueSkinIds)
-  }, [selectedSkins, prefetchChromas])
 
   useEffect(() => {
     // Listen for patcher status updates
@@ -131,13 +134,16 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   }
 
   const getSkinDisplayName = (skin: SelectedSkin) => {
-    if (skin.chromaId && chromaData) {
-      // Try to find the chroma name
-      const chromas = chromaData[skin.skinId]
-      if (chromas) {
-        const chroma = chromas.find((c) => c.id.toString() === skin.chromaId)
-        if (chroma) {
-          return chroma.name
+    if (skin.chromaId && championData) {
+      // Try to find the chroma name from champion data
+      const champion = championData.champions.find((c) => c.key === skin.championKey)
+      if (champion) {
+        const skinData = champion.skins.find((s) => s.id === skin.skinId)
+        if (skinData?.chromaList) {
+          const chroma = skinData.chromaList.find((c) => c.id.toString() === skin.chromaId)
+          if (chroma) {
+            return chroma.name
+          }
         }
       }
       // Fallback to skin name + chroma ID
@@ -276,11 +282,20 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3">
             {selectedSkins.map((skin) => {
               const isDownloaded = isSkinDownloaded(skin)
-              const skinChromas = chromaData[skin.skinId]
-              const selectedChroma =
-                skin.chromaId && skinChromas
-                  ? skinChromas.find((c) => c.id.toString() === skin.chromaId)
-                  : null
+              let selectedChroma:
+                | { id: number; name: string; chromaPath: string; colors: string[] }
+                | undefined
+              if (skin.chromaId && championData) {
+                const champion = championData.champions.find((c) => c.key === skin.championKey)
+                if (champion) {
+                  const skinData = champion.skins.find((s) => s.id === skin.skinId)
+                  if (skinData?.chromaList) {
+                    selectedChroma = skinData.chromaList.find(
+                      (c) => c.id.toString() === skin.chromaId
+                    )
+                  }
+                }
+              }
 
               return (
                 <div

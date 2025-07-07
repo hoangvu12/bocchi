@@ -57,6 +57,18 @@ export interface Skin {
   nameEn?: string
   lolSkinsName?: string
   chromas: boolean
+  chromaList?: Array<{
+    id: number
+    name: string
+    chromaPath: string
+    colors: string[]
+  }>
+  rarity: string
+  rarityGemPath: string | null
+  isLegacy: boolean
+  skinType: string
+  skinLines?: Array<{ id: number }>
+  description?: string
 }
 
 interface ChampionData {
@@ -975,7 +987,11 @@ function AppContent(): React.JSX.Element {
           id: `custom_${selectedChampion.key}_${generateCustomModId(selectedChampion.key, skinName, mod.localPath)}`,
           num: 9000 + index, // High number to appear at the end
           name: skinName,
-          chromas: false
+          chromas: false,
+          rarity: 'kNoRarity',
+          rarityGemPath: null,
+          isLegacy: false,
+          skinType: 'kCustom'
         }
         if (!showFavoritesOnly || favorites.has(`${selectedChampion.key}_${customSkin.id}`)) {
           allSkins.push({ champion: selectedChampion, skin: customSkin })
@@ -1012,7 +1028,11 @@ function AppContent(): React.JSX.Element {
           id: `custom_${generateCustomModId('Custom', skinName, mod.localPath)}`,
           num: index + 1,
           name: skinName,
-          chromas: false
+          chromas: false,
+          rarity: 'kNoRarity',
+          rarityGemPath: null,
+          isLegacy: false,
+          skinType: 'kCustom'
         }
         allSkins.push({ champion: customChampion, skin: customSkin })
       })

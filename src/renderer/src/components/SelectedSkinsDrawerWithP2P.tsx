@@ -7,7 +7,6 @@ import type { P2PRoomMember } from '../../../main/types'
 import { p2pService } from '../services/p2pService'
 import { p2pFileTransferService } from '../services/p2pFileTransferService'
 import { Badge } from './ui/badge'
-import { useChromaData } from '../hooks/useChromaData'
 import { useSmartSkinApply } from '../hooks/useSmartSkinApply'
 
 interface ExtendedSelectedSkin extends SelectedSkin {
@@ -33,7 +32,18 @@ interface SelectedSkinsDrawerProps {
   championData?: {
     champions: Array<{
       key: string
-      skins: Array<{ id: string; nameEn?: string; name: string; lolSkinsName?: string }>
+      skins: Array<{
+        id: string
+        nameEn?: string
+        name: string
+        lolSkinsName?: string
+        chromaList?: Array<{
+          id: number
+          name: string
+          chromaPath: string
+          colors: string[]
+        }>
+      }>
     }>
   }
   statusMessage?: string
@@ -58,7 +68,6 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   const [patcherStatus, setPatcherStatus] = useState<string>('')
   const [patcherMessages, setPatcherMessages] = useState<string[]>([])
   const [customImages, setCustomImages] = useState<Record<string, string>>({})
-  const { chromaData, prefetchChromas } = useChromaData()
   const [p2pRoom] = useAtom(p2pRoomAtom)
   const [activeTab, setActiveTab] = useState<'my-skins' | 'room-skins'>('my-skins')
   const [smartApplySummary, setSmartApplySummary] = useState<any>(null)
@@ -108,12 +117,6 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
       setActiveTab('my-skins')
     }
   }, [p2pRoom, activeTab])
-
-  // Fetch chroma data for selected skins
-  useEffect(() => {
-    const uniqueSkinIds = [...new Set(selectedSkins.map((s) => s.skinId))]
-    prefetchChromas(uniqueSkinIds)
-  }, [selectedSkins, prefetchChromas])
 
   // Update smart apply summary when team composition changes
   useEffect(() => {
@@ -203,10 +206,16 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
 
   const getSkinImageUrl = (skin: SelectedSkin) => {
     // Check if it's a chroma and we have chroma data
-    if (skin.chromaId && chromaData[skin.skinId]) {
-      const chroma = chromaData[skin.skinId].find((c) => c.id.toString() === skin.chromaId)
-      if (chroma && chroma.chromaPath) {
-        return chroma.chromaPath
+    if (skin.chromaId && championData) {
+      const champion = championData.champions.find((c) => c.key === skin.championKey)
+      if (champion) {
+        const skinData = champion.skins.find((s) => s.id === skin.skinId)
+        if (skinData?.chromaList) {
+          const chroma = skinData.chromaList.find((c) => c.id.toString() === skin.chromaId)
+          if (chroma && chroma.chromaPath) {
+            return chroma.chromaPath
+          }
+        }
       }
     }
 
@@ -227,13 +236,16 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   }
 
   const getSkinDisplayName = (skin: SelectedSkin) => {
-    if (skin.chromaId && chromaData) {
-      // Try to find the chroma name
-      const chromas = chromaData[skin.skinId]
-      if (chromas) {
-        const chroma = chromas.find((c) => c.id.toString() === skin.chromaId)
-        if (chroma) {
-          return chroma.name
+    if (skin.chromaId && championData) {
+      // Try to find the chroma name from champion data
+      const champion = championData.champions.find((c) => c.key === skin.championKey)
+      if (champion) {
+        const skinData = champion.skins.find((s) => s.id === skin.skinId)
+        if (skinData?.chromaList) {
+          const chroma = skinData.chromaList.find((c) => c.id.toString() === skin.chromaId)
+          if (chroma) {
+            return chroma.name
+          }
         }
       }
       // Fallback to skin name + chroma ID
