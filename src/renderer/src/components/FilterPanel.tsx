@@ -9,12 +9,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 export type SortOption = 'name-asc' | 'name-desc' | 'skin-asc' | 'skin-desc' | 'champion'
 export type DownloadFilter = 'all' | 'downloaded' | 'not-downloaded'
 export type ChromaFilter = 'all' | 'has-chromas' | 'no-chromas'
+export type RarityFilter =
+  | 'all'
+  | 'kEpic'
+  | 'kLegendary'
+  | 'kUltimate'
+  | 'kMythic'
+  | 'kTranscendent'
+  | 'kExalted'
 
 export interface FilterOptions {
   downloadStatus: DownloadFilter
   chromaStatus: ChromaFilter
   championTags: string[]
   sortBy: SortOption
+  rarity: RarityFilter
 }
 
 interface FilterPanelProps {
@@ -52,7 +61,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     filters.downloadStatus !== 'all' ||
     filters.chromaStatus !== 'all' ||
     filters.championTags.length > 0 ||
-    filters.sortBy !== 'name-asc'
+    filters.sortBy !== 'name-asc' ||
+    filters.rarity !== 'all'
 
   return (
     <div className="bg-surface border-b-2 border-border transition-all duration-300">
@@ -149,6 +159,38 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                       : status === 'has-chromas'
                         ? t('filters.hasChromas')
                         : t('filters.noChromas')}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Rarity Filter */}
+            <div>
+              <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
+                {t('filters.rarity')}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {(
+                  [
+                    'all',
+                    'kEpic',
+                    'kLegendary',
+                    'kUltimate',
+                    'kMythic',
+                    'kTranscendent',
+                    'kExalted'
+                  ] as RarityFilter[]
+                ).map((rarity) => (
+                  <Button
+                    key={rarity}
+                    variant={filters.rarity === rarity ? 'default' : 'secondary'}
+                    size="sm"
+                    onClick={() => updateFilter('rarity', rarity)}
+                    className={
+                      filters.rarity === rarity ? 'bg-primary-500 hover:bg-primary-600' : ''
+                    }
+                  >
+                    {rarity === 'all' ? t('filters.all') : rarity.replace('k', '')}
                   </Button>
                 ))}
               </div>

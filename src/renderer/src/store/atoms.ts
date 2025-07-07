@@ -12,7 +12,8 @@ export const filtersAtom = atomWithStorage<FilterOptions>('cslol-filters', {
   downloadStatus: 'all',
   chromaStatus: 'all',
   championTags: [],
-  sortBy: 'name-asc'
+  sortBy: 'name-asc',
+  rarity: 'all'
 })
 
 // Show favorites only atom

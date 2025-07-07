@@ -927,6 +927,13 @@ function AppContent(): React.JSX.Element {
       })
     }
 
+    // Apply rarity filter
+    if (filters.rarity !== 'all') {
+      filtered = filtered.filter(({ skin }) => {
+        return skin.rarity === filters.rarity
+      })
+    }
+
     // Apply sorting
     filtered.sort((a, b) => {
       switch (filters.sortBy) {
@@ -1047,7 +1054,8 @@ function AppContent(): React.JSX.Element {
       downloadStatus: 'all',
       chromaStatus: 'all',
       championTags: [],
-      sortBy: 'name-asc'
+      sortBy: 'name-asc',
+      rarity: 'all'
     })
   }
 

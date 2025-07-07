@@ -269,6 +269,14 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                     />
                   </Button>
                 )}
+                {/* Rarity gem for list view */}
+                {skin.rarityGemPath && (
+                  <img
+                    src={skin.rarityGemPath}
+                    alt={skin.rarity}
+                    className="w-6 h-6 object-contain"
+                  />
+                )}
                 {isDownloaded && (
                   <span
                     className={`w-6 h-6 rounded-full flex items-center justify-center ${
@@ -441,6 +449,16 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                   title={`${chromas.length} chromas available`}
                 >
                   <ChromaColorPie colors={chromas.map((c) => c.colors[0])} size={28} className="" />
+                </div>
+              )}
+              {/* Rarity gem */}
+              {skin.rarityGemPath && (
+                <div className="absolute bottom-2 left-[5.5rem] w-8 h-8">
+                  <img
+                    src={skin.rarityGemPath}
+                    alt={skin.rarity}
+                    className="w-full h-full object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                  />
                 </div>
               )}
               {/* Edit and Delete buttons for custom mods */}
