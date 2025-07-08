@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
 import { downloadedSkinsAtom, favoritesAtom } from '../store/atoms/skin.atoms'
@@ -43,6 +43,13 @@ export function useSkinManagement() {
       setFavorites(favoriteKeys)
     }
   }, [setFavorites])
+
+  // Load downloaded skins and favorites on mount
+  useEffect(() => {
+    loadDownloadedSkins()
+    loadFavorites()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Empty dependency array for mount only
 
   const toggleFavorite = useCallback(
     async (champion: Champion, skin: Skin) => {

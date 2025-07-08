@@ -402,6 +402,52 @@ function AppContent(): React.JSX.Element {
           }
         })
       })
+    } else if (selectedChampionKey === 'custom') {
+      // Show custom mods
+      downloadedSkins.forEach((downloadedSkin) => {
+        // Check if this is a custom mod (user-imported)
+        if (downloadedSkin.skinName.includes('[User]')) {
+          // Find the champion for this custom mod
+          let champion: Champion | undefined
+
+          // First try to match the actual champion
+          if (downloadedSkin.championName && downloadedSkin.championName !== 'Custom') {
+            champion = championData.champions.find(
+              (c) => c.key.toLowerCase() === downloadedSkin.championName.toLowerCase()
+            )
+          }
+
+          // If no champion found or championName is 'Custom', create a custom champion
+          if (!champion) {
+            champion = {
+              id: -1,
+              key: 'Custom',
+              name: 'Custom',
+              nameEn: 'Custom',
+              title: 'Imported Mods',
+              image: '',
+              skins: [],
+              tags: []
+            }
+          }
+
+          // Create a custom skin object
+          const customSkin: Skin = {
+            id: `custom_${downloadedSkin.skinName}`,
+            num: -1, // Custom skins don't have a number
+            name: downloadedSkin.skinName.replace('[User] ', ''),
+            nameEn: downloadedSkin.skinName.replace('[User] ', ''),
+            chromas: false,
+            rarity: 'kNoRarity',
+            rarityGemPath: null,
+            isLegacy: false,
+            skinType: 'custom',
+            description: 'Custom imported mod'
+          }
+
+          allSkins.push({ champion, skin: customSkin })
+        }
+      })
     }
 
     return applyFiltersAndSort(allSkins)
