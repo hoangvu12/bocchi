@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { useAtom } from 'jotai'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
-import { selectedSkinsAtom } from '../store/atoms'
+import { selectedSkinsAtom, autoSyncedSkinsAtom } from '../store/atoms'
 import {
   leagueClientEnabledAtom,
   smartApplyEnabledAtom,
@@ -38,12 +38,16 @@ export function useSmartSkinApply({
 }: UseSmartSkinApplyProps & { parentApplyFunction?: () => void } = {}) {
   const { t } = useTranslation()
   const [selectedSkins] = useAtom(selectedSkinsAtom)
+  const [autoSyncedSkinsMap] = useAtom(autoSyncedSkinsAtom)
   const [teamComposition, setTeamComposition] = useState<TeamComposition | null>(null)
   const [leagueClientEnabled] = useAtom(leagueClientEnabledAtom)
   const [smartApplyEnabled] = useAtom(smartApplyEnabledAtom)
   const [autoApplyEnabled] = useAtom(autoApplyEnabledAtom)
   const [isApplying, setIsApplying] = useState(false)
   const lastAppliedTeamKey = useRef<string>('')
+
+  // Get all auto-synced skins as a flat array
+  const autoSyncedSkins = Array.from(autoSyncedSkinsMap.values()).flat()
 
   // Handle team composition updates
   useEffect(() => {
@@ -120,7 +124,8 @@ export function useSmartSkinApply({
         if (smartApplyEnabled) {
           const result = await window.api.getSmartApplySummary(
             selectedSkins,
-            composition.championIds
+            composition.championIds,
+            autoSyncedSkins
           )
           console.log('[SmartSkinApply] Summary result:', result)
 
@@ -215,7 +220,8 @@ export function useSmartSkinApply({
     selectedSkins,
     isApplying,
     t,
-    parentApplyFunction
+    parentApplyFunction,
+    autoSyncedSkins
   ])
 
   const applySkins = useCallback(
@@ -230,7 +236,12 @@ export function useSmartSkinApply({
 
         if (leagueClientEnabled && smartApplyEnabled && championIds.length > 0) {
           // Use smart apply
-          const result = await window.api.smartApplySkins(gamePath, selectedSkins, championIds)
+          const result = await window.api.smartApplySkins(
+            gamePath,
+            selectedSkins,
+            championIds,
+            autoSyncedSkins
+          )
 
           if (result.success) {
             onApplyComplete?.(true)
@@ -279,7 +290,8 @@ export function useSmartSkinApply({
       selectedSkins,
       onApplyStart,
       onApplyComplete,
-      t
+      t,
+      autoSyncedSkins
     ]
   )
 
@@ -288,9 +300,13 @@ export function useSmartSkinApply({
       return null
     }
 
-    const result = await window.api.getSmartApplySummary(selectedSkins, teamComposition.championIds)
+    const result = await window.api.getSmartApplySummary(
+      selectedSkins,
+      teamComposition.championIds,
+      autoSyncedSkins
+    )
     return result.success ? (result.summary as SmartApplySummary) : null
-  }, [teamComposition, selectedSkins])
+  }, [teamComposition, selectedSkins, autoSyncedSkins])
 
   return {
     teamComposition,

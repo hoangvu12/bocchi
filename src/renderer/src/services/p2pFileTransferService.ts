@@ -1,5 +1,5 @@
 import type { DataConnection } from 'peerjs'
-import type { SelectedSkin } from '../../../main/types'
+import type { SelectedSkin } from '../store/atoms'
 
 interface FileTransferMetadata {
   fileName: string

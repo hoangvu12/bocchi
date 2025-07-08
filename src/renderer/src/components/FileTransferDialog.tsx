@@ -4,7 +4,7 @@ import { Button } from './ui/button'
 import { Progress } from './ui/progress'
 import { p2pFileTransferService } from '../services/p2pFileTransferService'
 import { getChampionDisplayName } from '../utils/championUtils'
-import type { SelectedSkin } from '../../../main/types'
+import type { SelectedSkin } from '../store/atoms'
 
 interface FileTransferRequest {
   id: string

@@ -33,8 +33,19 @@ const api = {
     ipcRenderer.invoke('run-patcher', gamePath, selectedSkins),
   stopPatcher: () => ipcRenderer.invoke('stop-patcher'),
   isPatcherRunning: () => ipcRenderer.invoke('is-patcher-running'),
-  smartApplySkins: (gamePath: string, selectedSkins: any[], teamChampionIds: number[]) =>
-    ipcRenderer.invoke('smart-apply-skins', gamePath, selectedSkins, teamChampionIds),
+  smartApplySkins: (
+    gamePath: string,
+    selectedSkins: any[],
+    teamChampionIds: number[],
+    autoSyncedSkins?: any[]
+  ) =>
+    ipcRenderer.invoke(
+      'smart-apply-skins',
+      gamePath,
+      selectedSkins,
+      teamChampionIds,
+      autoSyncedSkins
+    ),
 
   // Champion data
   fetchChampionData: (language?: string) => ipcRenderer.invoke('fetch-champion-data', language),
@@ -184,8 +195,17 @@ const api = {
   // Team Composition APIs
   getTeamComposition: () => ipcRenderer.invoke('team:get-composition'),
   isReadyForSmartApply: () => ipcRenderer.invoke('team:is-ready-for-smart-apply'),
-  getSmartApplySummary: (selectedSkins: any[], teamChampionIds: number[]) =>
-    ipcRenderer.invoke('team:get-smart-apply-summary', selectedSkins, teamChampionIds),
+  getSmartApplySummary: (
+    selectedSkins: any[],
+    teamChampionIds: number[],
+    autoSyncedSkins?: any[]
+  ) =>
+    ipcRenderer.invoke(
+      'team:get-smart-apply-summary',
+      selectedSkins,
+      teamChampionIds,
+      autoSyncedSkins
+    ),
 
   // Team Composition Events
   onTeamCompositionUpdated: (

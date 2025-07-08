@@ -174,12 +174,14 @@ export interface IApi {
   isReadyForSmartApply: () => Promise<{ success: boolean; ready?: boolean; error?: string }>
   getSmartApplySummary: (
     selectedSkins: any[],
-    teamChampionIds: number[]
+    teamChampionIds: number[],
+    autoSyncedSkins?: any[]
   ) => Promise<{ success: boolean; summary?: any; error?: string }>
   smartApplySkins: (
     gamePath: string,
     selectedSkins: any[],
-    teamChampionIds: number[]
+    teamChampionIds: number[],
+    autoSyncedSkins?: any[]
   ) => Promise<{ success: boolean; summary?: any; error?: string }>
 
   // Team Composition Events

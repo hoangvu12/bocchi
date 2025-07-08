@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
 import { selectedSkinsAtom, selectedSkinsDrawerExpandedAtom, p2pRoomAtom } from '../store/atoms'
-import type { SelectedSkin } from '../store/atoms'
+import type { SelectedSkin, AutoSyncedSkin } from '../store/atoms'
 import type { P2PRoomMember } from '../../../main/types'
 import { p2pService } from '../services/p2pService'
 import { p2pFileTransferService } from '../services/p2pFileTransferService'
@@ -49,6 +49,7 @@ interface SelectedSkinsDrawerProps {
   statusMessage?: string
   errorMessage?: string
   gamePath?: string
+  autoSyncedSkins?: AutoSyncedSkin[]
 }
 
 export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
@@ -60,7 +61,8 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   championData,
   statusMessage,
   errorMessage,
-  gamePath
+  gamePath,
+  autoSyncedSkins = []
 }) => {
   const { t } = useTranslation()
   const [selectedSkins, setSelectedSkins] = useAtom(selectedSkinsAtom)
@@ -332,8 +334,10 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
     }
   }
 
-  const downloadedCount = selectedSkins.filter((skin) => isSkinDownloaded(skin)).length
-  const needsDownload = downloadedCount < selectedSkins.length
+  // Combine selected skins and auto-synced skins for display
+  const allSkinsForDisplay = [...selectedSkins, ...autoSyncedSkins]
+  const downloadedCount = allSkinsForDisplay.filter((skin) => isSkinDownloaded(skin)).length
+  const needsDownload = downloadedCount < allSkinsForDisplay.length
 
   // Get all room members (host + other members), excluding self
   const currentPeerId = p2pService.getCurrentPeerId()
@@ -395,11 +399,16 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             ) : (
               <>
                 <span className="font-medium text-text-primary">
-                  {t('skins.selected', { count: selectedSkins.length })}
+                  {t('skins.selected', { count: allSkinsForDisplay.length })}
                 </span>
+                {autoSyncedSkins.length > 0 && (
+                  <span className="text-sm text-text-secondary">
+                    ({autoSyncedSkins.length} auto-synced)
+                  </span>
+                )}
                 {needsDownload && (
                   <span className="text-sm text-text-muted">
-                    {t('skins.toDownload', { count: selectedSkins.length - downloadedCount })}
+                    {t('skins.toDownload', { count: allSkinsForDisplay.length - downloadedCount })}
                   </span>
                 )}
                 {smartApplySummary && smartApplyEnabled && (
@@ -463,7 +472,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                     teamComposition &&
                     teamComposition.championIds.length > 0
                   ? t('patcher.apply', { count: smartApplySummary.willApply })
-                  : t('patcher.apply', { count: selectedSkins.length })}
+                  : t('patcher.apply', { count: allSkinsForDisplay.length })}
           </button>
         </div>
       </div>
@@ -501,17 +510,18 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             {/* My Skins Tab */}
             {activeTab === 'my-skins' && (
               <>
-                {selectedSkins.length === 0 ? (
+                {allSkinsForDisplay.length === 0 ? (
                   <div className="text-center py-8 text-text-muted">
                     No skins selected yet. Click on skins above to add them to your selection.
                   </div>
                 ) : (
                   <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3">
-                    {selectedSkins.map((skin) => {
+                    {allSkinsForDisplay.map((skin, index) => {
                       const isDownloaded = isSkinDownloaded(skin)
+                      const isAutoSynced = 'isAutoSynced' in skin && (skin as any).isAutoSynced
                       return (
                         <div
-                          key={`${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}`}
+                          key={`${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}_${index}`}
                           className="relative group"
                         >
                           <div className="relative aspect-[0.67] overflow-hidden bg-secondary-100 dark:bg-secondary-800 rounded border border-border">
@@ -529,25 +539,39 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                                 </div>
                               </div>
                             )}
-                            <button
-                              className="absolute top-0.5 right-0.5 w-5 h-5 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                              onClick={() => removeSkin(skin)}
-                              disabled={loading}
-                            >
-                              <svg
-                                className="w-2.5 h-2.5 text-white"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                            {isAutoSynced && (
+                              <div className="absolute top-1 left-1 bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                                <svg
+                                  className="w-2.5 h-2.5"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+                                </svg>
+                                Auto
+                              </div>
+                            )}
+                            {!isAutoSynced && (
+                              <button
+                                className="absolute top-0.5 right-0.5 w-5 h-5 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={() => removeSkin(skin)}
+                                disabled={loading}
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2.5}
-                                  d="M6 18L18 6M6 6l12 12"
-                                />
-                              </svg>
-                            </button>
+                                <svg
+                                  className="w-2.5 h-2.5 text-white"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2.5}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
+                            )}
                           </div>
                           <div className="mt-1">
                             <p
@@ -556,6 +580,11 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                             >
                               {getSkinDisplayName(skin)}
                             </p>
+                            {isAutoSynced && 'fromPeerName' in skin && (
+                              <p className="text-[10px] text-text-secondary truncate">
+                                from {(skin as any).fromPeerName}
+                              </p>
+                            )}
                           </div>
                         </div>
                       )

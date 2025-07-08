@@ -1,5 +1,6 @@
 import Peer, { DataConnection } from 'peerjs'
-import type { P2PRoom, P2PRoomMember, SelectedSkin } from '../../../main/types'
+import type { P2PRoom, P2PRoomMember } from '../../../main/types'
+import type { SelectedSkin } from '../store/atoms'
 import { p2pFileTransferService } from './p2pFileTransferService'
 
 export class P2PService {
@@ -303,6 +304,57 @@ export class P2PService {
           this.emit('peer-skins-updated', { peerId, skins })
         }
         break
+
+      case 'champion-selected':
+        // Peer selected a champion
+        // eslint-disable-next-line no-case-declarations
+        const championData = message.data as {
+          id: number
+          key: string
+          name: string
+          isLocked: boolean
+        }
+
+        if (this.room) {
+          if (this.isHost) {
+            // Host updates member champion selection
+            const memberIndex = this.room.members.findIndex((m) => m.id === peerId)
+            if (memberIndex !== -1) {
+              this.room = {
+                ...this.room,
+                members: this.room.members.map((m, i) =>
+                  i === memberIndex ? { ...m, selectedChampion: championData } : m
+                )
+              }
+              this.broadcastRoomUpdate()
+              this.emit('room-updated', this.room)
+            }
+          } else {
+            // Non-host updates their view
+            if (this.room.host.id === peerId) {
+              // Host selected a champion
+              this.room = {
+                ...this.room,
+                host: { ...this.room.host, selectedChampion: championData }
+              }
+            } else {
+              // Another member selected a champion
+              const memberIndex = this.room.members.findIndex((m) => m.id === peerId)
+              if (memberIndex !== -1) {
+                this.room = {
+                  ...this.room,
+                  members: this.room.members.map((m, i) =>
+                    i === memberIndex ? { ...m, selectedChampion: championData } : m
+                  )
+                }
+              }
+            }
+            this.emit('room-updated', this.room)
+          }
+
+          this.emit('peer-champion-selected', { peerId, championData })
+        }
+        break
     }
   }
 
@@ -410,6 +462,40 @@ export class P2PService {
     console.log(
       `[P2P] Broadcasting ${preparedSkins.length} active skins (filtered from ${skins.length})`
     )
+  }
+
+  async broadcastChampionSelection(champion: {
+    id: number
+    key: string
+    name: string
+    isLocked: boolean
+  }) {
+    if (!this.peer || !this.room) return
+
+    const message = {
+      type: 'champion-selected',
+      data: champion
+    }
+
+    // Update own champion selection in room
+    if (this.isHost) {
+      // Create new room object for React state update
+      this.room = {
+        ...this.room,
+        host: { ...this.room.host, selectedChampion: champion }
+      }
+      this.emit('room-updated', this.room)
+      this.broadcastRoomUpdate()
+    } else {
+      // Send to host and other peers
+      this.connections.forEach((conn) => {
+        if (conn.open) {
+          conn.send(message)
+        }
+      })
+    }
+
+    console.log(`[P2P] Broadcasting champion selection:`, champion)
   }
 
   async leaveRoom() {

@@ -36,6 +36,7 @@ import { useToolsManagement } from './hooks/useToolsManagement'
 import { useAppInitialization } from './hooks/useAppInitialization'
 import { useChampionSelectHandler } from './hooks/useChampionSelectHandler'
 import { useP2PSkinSync } from './hooks/useP2PSkinSync'
+import { useP2PChampionSync } from './hooks/useP2PChampionSync'
 
 // Atoms
 import {
@@ -162,6 +163,7 @@ function AppContent(): React.JSX.Element {
 
   // Initialize P2P skin sync
   useP2PSkinSync(downloadedSkins)
+  const { autoSyncedSkins } = useP2PChampionSync({ downloadedSkins })
 
   // Refs
   const dragCounter = useRef(0)
@@ -762,6 +764,7 @@ function AppContent(): React.JSX.Element {
           statusMessage={statusMessage}
           errorMessage={errorMessage}
           gamePath={gamePath}
+          autoSyncedSkins={autoSyncedSkins}
         />
 
         {/* Drop overlay */}

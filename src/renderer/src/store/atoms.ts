@@ -36,7 +36,20 @@ export interface SelectedSkin {
   isDownloaded?: boolean
 }
 
+// Auto-synced skin from P2P room member
+export interface AutoSyncedSkin extends SelectedSkin {
+  fromPeerId: string
+  fromPeerName: string
+  isAutoSynced: true
+  championId?: number // The champion ID this skin is for
+  tempFilePath?: string // For downloaded custom mods
+}
+
 export const selectedSkinsAtom = atomWithStorage<SelectedSkin[]>('cslol-selected-skins', [])
+
+// Temporary auto-synced skins from room members (not persisted)
+// Key: peerId, Value: their auto-synced skins
+export const autoSyncedSkinsAtom = atom<Map<string, AutoSyncedSkin[]>>(new Map())
 
 // UI state atoms
 export const selectedChampionKeyAtom = atomWithStorage<string | null>(

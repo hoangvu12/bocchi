@@ -12,6 +12,12 @@ interface P2PContextValue {
     skins: any[],
     downloadedSkins: Array<{ championName: string; skinName: string; localPath?: string }>
   ) => void
+  broadcastChampion: (champion: {
+    id: number
+    key: string
+    name: string
+    isLocked: boolean
+  }) => void
   isConnected: boolean
 }
 
@@ -62,6 +68,9 @@ export const P2PProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       downloadedSkins: Array<{ championName: string; skinName: string; localPath?: string }>
     ) => {
       p2pService.broadcastActiveSkins(skins, downloadedSkins)
+    },
+    broadcastChampion: (champion: { id: number; key: string; name: string; isLocked: boolean }) => {
+      p2pService.broadcastChampionSelection(champion)
     },
     isConnected: p2pService.isConnected()
   }

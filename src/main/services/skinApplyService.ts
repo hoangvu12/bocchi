@@ -1,5 +1,17 @@
 import { championDataService } from './championDataService'
-import type { SelectedSkin } from '../types/index'
+// Import SelectedSkin type inline to avoid circular dependency
+interface SelectedSkin {
+  championKey: string
+  championName: string
+  skinId: string
+  skinName: string
+  skinNameEn?: string
+  lolSkinsName?: string
+  skinNum: number
+  chromaId?: string
+  isDownloaded?: boolean
+  isAutoSynced?: boolean
+}
 
 interface FilteredSkins {
   teamSkins: SelectedSkin[]
@@ -11,6 +23,7 @@ export class SkinApplyService {
   /**
    * Filter selected skins based on team composition
    * Always includes custom mods regardless of team
+   * For auto-synced skins, prioritizes based on who owns the champion
    */
   async filterSkinsByTeamComposition(
     selectedSkins: SelectedSkin[],
@@ -42,16 +55,61 @@ export class SkinApplyService {
     )
     console.log('[SkinApplyService] Team champion keys:', Array.from(teamChampionKeys))
 
-    // Filter skins
+    // Track which champions already have skins to prevent duplicates
+    const championSkinMap = new Map<string, SelectedSkin>()
+
+    // Filter skins with priority handling
     for (const skin of selectedSkins) {
       if (skin.championKey === 'Custom') {
         // Always include custom mods
         console.log('[SkinApplyService] Including custom mod:', skin.skinName)
         customMods.push(skin)
       } else if (teamChampionKeys.has(skin.championKey)) {
-        // Include if champion is in team
-        console.log('[SkinApplyService] Including team skin:', skin.championKey, skin.skinName)
-        teamSkins.push(skin)
+        // Check if we already have a skin for this champion
+        const existingSkin = championSkinMap.get(skin.championKey)
+
+        if (!existingSkin) {
+          // First skin for this champion, add it
+          console.log('[SkinApplyService] Including team skin:', skin.championKey, skin.skinName)
+          teamSkins.push(skin)
+          championSkinMap.set(skin.championKey, skin)
+        } else {
+          // We already have a skin for this champion
+          // If priority map is provided and this is an auto-synced skin, check priority
+          const isAutoSynced = 'isAutoSynced' in skin && skin.isAutoSynced
+          const existingIsAutoSynced = 'isAutoSynced' in existingSkin && existingSkin.isAutoSynced
+
+          // User's manual selections always take priority over auto-synced
+          if (!isAutoSynced && existingIsAutoSynced) {
+            // Replace auto-synced with manual selection
+            const index = teamSkins.indexOf(existingSkin)
+            if (index !== -1) {
+              teamSkins[index] = skin
+              championSkinMap.set(skin.championKey, skin)
+              console.log(
+                '[SkinApplyService] Replacing auto-synced skin with manual selection:',
+                skin.championKey,
+                skin.skinName
+              )
+            }
+          } else if (isAutoSynced && !existingIsAutoSynced) {
+            // Keep the manual selection, skip auto-synced
+            console.log(
+              '[SkinApplyService] Skipping auto-synced skin, manual selection exists:',
+              skin.championKey,
+              skin.skinName
+            )
+            filteredOut.push(skin)
+          } else {
+            // Both are same type (both manual or both auto), keep first one
+            console.log(
+              '[SkinApplyService] Skipping duplicate skin for champion:',
+              skin.championKey,
+              skin.skinName
+            )
+            filteredOut.push(skin)
+          }
+        }
       } else {
         // Track what was filtered out
         console.log('[SkinApplyService] Filtering out:', skin.championKey, skin.skinName)

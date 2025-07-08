@@ -29,18 +29,6 @@ export interface SkinInfo {
   sharedBy?: string
 }
 
-export interface SelectedSkin {
-  championKey: string
-  championName: string
-  skinId: string
-  skinName: string
-  skinNameEn?: string
-  lolSkinsName?: string
-  skinNum: number
-  chromaId?: string
-  isDownloaded?: boolean
-}
-
 export interface P2PRoom {
   id: string
   createdAt: Date
@@ -51,24 +39,18 @@ export interface P2PRoom {
 export interface P2PRoomMember {
   id: string
   name: string
-  activeSkins: SelectedSkin[]
+  activeSkins: any[] // Using any to avoid circular dependency, actual type is SelectedSkin from renderer
   isHost: boolean
   connected: boolean
+  selectedChampion?: {
+    id: number
+    key: string
+    name: string
+    isLocked: boolean
+  }
 }
 
 export interface P2PSettings {
   displayName: string
   autoSync: boolean
-}
-
-export interface SelectedSkin {
-  championKey: string
-  championName: string
-  skinId: string
-  skinName: string
-  skinNameEn?: string
-  lolSkinsName?: string
-  skinNum: number
-  chromaId?: string
-  isDownloaded?: boolean
 }
