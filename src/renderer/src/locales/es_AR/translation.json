@@ -22,6 +22,8 @@
     "save": "Guardar",
     "saveChanges": "Guardar cambios",
     "delete": "Eliminar",
+    "deleteAll": "Eliminar todas las skins",
+    "deleteAllForChampion": "Eliminar todas las skins de {{champion}}",
     "decline": "Rechazar",
     "accept": "Aceptar",
     "join": "Unirse",
@@ -306,5 +308,9 @@
     "pathNotSet": "Por favor, configurá la ruta del juego primero",
     "operationTimeout": "La operación agotó el tiempo de espera. Por favor, intentá de nuevo.",
     "skinNotAvailable": "El skin no está disponible en el repositorio lol-skins o el mapeo es incorrecto"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "¿Estás seguro de que querés eliminar todos los skins? Esta acción no se puede deshacer.",
+    "confirmDeleteChampion": "¿Estás seguro de que querés eliminar todos los skins de {{champion}}? Esta acción no se puede deshacer."
   }
 }

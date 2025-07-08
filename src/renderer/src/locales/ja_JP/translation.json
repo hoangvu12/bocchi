@@ -22,6 +22,8 @@
     "save": "保存",
     "saveChanges": "変更を保存",
     "delete": "削除",
+    "deleteAll": "すべてのスキンを削除",
+    "deleteAllForChampion": "{{champion}}のすべてのスキンを削除",
     "decline": "拒否",
     "accept": "承認",
     "join": "参加",
@@ -306,5 +308,9 @@
     "pathNotSet": "最初にゲームパスを設定してください",
     "operationTimeout": "操作がタイムアウトしました。もう一度お試しください。",
     "skinNotAvailable": "スキンはlol-skinsリポジトリで利用できないか、マッピングが間違っています"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "本当にすべてのスキンを削除しますか？この操作は元に戻せません。",
+    "confirmDeleteChampion": "本当に{{champion}}のすべてのスキンを削除しますか？この操作は元に戻せません。"
   }
 }

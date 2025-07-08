@@ -31,6 +31,8 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
   const [searchQuery, setSearchQuery] = useState('')
   const [deletingSkins, setDeletingSkins] = useState<Set<string>>(new Set())
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'repo' | 'custom'>('all')
+  const [isDeletingAll, setIsDeletingAll] = useState(false)
+  const [deletingChampions, setDeletingChampions] = useState<Set<string>>(new Set())
 
   // Group skins by champion
   const groupedSkins = useMemo(() => {
@@ -108,11 +110,103 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
     }
   }
 
+  const handleDeleteAllSkins = async () => {
+    if (!confirm(t('confirmations.confirmDeleteAll'))) return
+
+    setIsDeletingAll(true)
+    try {
+      // Get all skins to delete based on current filter
+      const skinsToDelete: Array<{
+        championName: string
+        skinName: string
+        localPath?: string
+        isCustom: boolean
+      }> = []
+
+      Object.entries(groupedSkins).forEach(([championKey, skins]) => {
+        skins.forEach((skin) => {
+          skinsToDelete.push({
+            championName: championKey,
+            skinName: skin.skinName,
+            localPath: skin.localPath,
+            isCustom: skin.isCustom
+          })
+        })
+      })
+
+      // Delete all skins
+      for (const skin of skinsToDelete) {
+        if (skin.isCustom && skin.localPath && onDeleteCustomSkin) {
+          await onDeleteCustomSkin(skin.localPath, skin.skinName)
+        } else {
+          await onDeleteSkin(skin.championName, skin.skinName)
+        }
+      }
+
+      await onRefresh()
+    } finally {
+      setIsDeletingAll(false)
+    }
+  }
+
+  const handleDeleteChampionSkins = async (
+    championKey: string,
+    skins: Array<{
+      skinName: string
+      localPath?: string
+      isCustom: boolean
+    }>
+  ) => {
+    const champion = championData?.champions.find((c) => c.key === championKey)
+    const championName = champion ? getChampionDisplayName(champion) : championKey
+
+    if (!confirm(t('confirmations.confirmDeleteChampion', { champion: championName }))) return
+
+    setDeletingChampions((prev) => new Set(prev).add(championKey))
+    try {
+      // Delete all skins for this champion
+      for (const skin of skins) {
+        if (skin.isCustom && skin.localPath && onDeleteCustomSkin) {
+          await onDeleteCustomSkin(skin.localPath, skin.skinName)
+        } else {
+          await onDeleteSkin(championKey, skin.skinName)
+        }
+      }
+
+      await onRefresh()
+    } finally {
+      setDeletingChampions((prev) => {
+        const newSet = new Set(prev)
+        newSet.delete(championKey)
+        return newSet
+      })
+    }
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[800px] max-h-[80vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle>{t('skins.downloadedCount', { count: totalSkins })}</DialogTitle>
+          <DialogTitle className="flex items-center justify-between">
+            <span>{t('skins.downloadedCount', { count: totalSkins })}</span>
+            {totalSkins > 0 && (
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={handleDeleteAllSkins}
+                disabled={isDeletingAll}
+              >
+                {isDeletingAll ? (
+                  <>
+                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    {t('skins.deleting')}
+                  </>
+                ) : (
+                  t('actions.deleteAll')
+                )}
+              </Button>
+            )}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -178,10 +272,25 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                       key={championKey}
                       className="border border-border rounded-lg overflow-hidden"
                     >
-                      <div className="bg-secondary-100 dark:bg-secondary-900 px-4 py-2">
+                      <div className="bg-secondary-100 dark:bg-secondary-900 px-4 py-2 flex items-center justify-between">
                         <h3 className="font-semibold text-text-primary">
                           {championName} ({skins.length})
                         </h3>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDeleteChampionSkins(championKey, skins)}
+                          disabled={deletingChampions.has(championKey)}
+                        >
+                          {deletingChampions.has(championKey) ? (
+                            <>
+                              <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                              {t('skins.deleting')}
+                            </>
+                          ) : (
+                            t('actions.deleteAllForChampion', { champion: championName })
+                          )}
+                        </Button>
                       </div>
                       <div className="divide-y divide-border">
                         {skins.map((skin) => {
@@ -194,7 +303,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                           return (
                             <div
                               key={skin.skinName}
-                              className="px-4 py-3 flex items-center justify-between hover:bg-secondary-100 dark:hover:bg-secondary-800/50 transition-colors"
+                              className="px-4 py-3 flex items-center justify-between hover:bg-secondary-200/50 dark:hover:bg-secondary-800/30 transition-colors"
                             >
                               <div className="flex items-center gap-2">
                                 <span className="text-sm text-text-secondary">{displayName}</span>

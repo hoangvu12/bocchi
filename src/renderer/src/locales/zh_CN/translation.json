@@ -22,6 +22,8 @@
     "save": "保存",
     "saveChanges": "保存更改",
     "delete": "删除",
+    "deleteAll": "删除所有皮肤",
+    "deleteAllForChampion": "删除{{champion}}的所有皮肤",
     "decline": "拒绝",
     "accept": "接受",
     "join": "加入",
@@ -306,5 +308,9 @@
     "pathNotSet": "请先设置游戏路径",
     "operationTimeout": "操作超时。请重试。",
     "skinNotAvailable": "皮肤在 lol-skins 仓库中不可用或映射错误"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "您确定要删除所有皮肤吗？此操作不可撤销。",
+    "confirmDeleteChampion": "您确定要删除{{champion}}的所有皮肤吗？此操作不可撤销。"
   }
 }

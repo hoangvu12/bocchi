@@ -22,6 +22,8 @@
     "save": "저장",
     "saveChanges": "변경사항 저장",
     "delete": "삭제",
+    "deleteAll": "모든 스킨 삭제",
+    "deleteAllForChampion": "{{champion}}의 모든 스킨 삭제",
     "decline": "거절",
     "accept": "수락",
     "join": "참가",
@@ -306,5 +308,9 @@
     "pathNotSet": "먼저 게임 경로를 설정하세요",
     "operationTimeout": "작업 시간이 초과되었습니다. 다시 시도하세요.",
     "skinNotAvailable": "스킨이 lol-skins 저장소에서 사용할 수 없거나 매핑이 잘못되었습니다"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "정말로 모든 스킨을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+    "confirmDeleteChampion": "정말로 {{champion}}의 모든 스킨을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
   }
 }

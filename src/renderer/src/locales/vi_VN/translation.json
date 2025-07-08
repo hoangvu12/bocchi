@@ -22,6 +22,8 @@
     "save": "Lưu",
     "saveChanges": "Lưu thay đổi",
     "delete": "Xóa",
+    "deleteAll": "Xóa tất cả trang phục",
+    "deleteAllForChampion": "Xóa tất cả trang phục của {{champion}}",
     "decline": "Từ chối",
     "accept": "Chấp nhận",
     "join": "Tham gia",
@@ -294,5 +296,9 @@
     "pathNotSet": "Vui lòng thiết lập đường dẫn game trước",
     "operationTimeout": "Thao tác hết thời gian chờ. Vui lòng thử lại.",
     "skinNotAvailable": "Trang phục không có trong kho lưu trữ lol-skins hoặc ánh xạ bị sai"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "Bạn có chắc chắn muốn xóa tất cả trang phục? Hành động này không thể hoàn tác.",
+    "confirmDeleteChampion": "Bạn có chắc chắn muốn xóa tất cả trang phục của {{champion}}? Hành động này không thể hoàn tác."
   }
 }
