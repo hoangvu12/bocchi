@@ -110,6 +110,14 @@
     "autoApply": {
       "title": "Aplicación automática",
       "description": "Aplicar skins automáticamente cuando todos los campeones estén bloqueados"
+    },
+    "autoRandomSkin": {
+      "title": "Skin aleatorio automático",
+      "description": "Seleccionar automáticamente un skin aleatorio cuando se detecta un campeón"
+    },
+    "autoRandomRaritySkin": {
+      "title": "Skin de rareza aleatorio automático",
+      "description": "Seleccionar automáticamente un skin aleatorio con rareza (Épico, Legendario, etc.) cuando se detecta un campeón"
     }
   },
   "errors": {
@@ -279,7 +287,9 @@
     "tooltipInChampSelect": "Actualmente en selección de campeón. Seleccioná un campeón para ver una notificación",
     "tooltipDisabled": "La detección de campeones está deshabilitada. Habilitala en configuración para recibir notificaciones al seleccionar campeones",
     "championLockedDescription": "Bloqueaste a {{champion}}. ¿Querés explorar los skins disponibles?",
-    "championHoveredDescription": "Estás viendo a {{champion}}. ¿Querés explorar los skins disponibles?"
+    "championHoveredDescription": "Estás viendo a {{champion}}. ¿Querés explorar los skins disponibles?",
+    "randomSkin": "Skin aleatorio",
+    "randomRaritySkin": "Skin de rareza aleatorio"
   },
   "smartApply": {
     "willApply": "Inteligente: {{count}}/{{total}}",

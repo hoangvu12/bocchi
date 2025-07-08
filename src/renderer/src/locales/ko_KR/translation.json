@@ -110,6 +110,14 @@
     "autoApply": {
       "title": "자동 적용",
       "description": "모든 챔피언이 잠긴 후 스킨을 자동으로 적용"
+    },
+    "autoRandomSkin": {
+      "title": "자동 랜덤 스킨",
+      "description": "챔피언이 감지될 때 랜덤 스킨을 자동으로 선택"
+    },
+    "autoRandomRaritySkin": {
+      "title": "자동 랜덤 희귀도 스킨",
+      "description": "챔피언이 감지될 때 희귀도(서사급, 전설급 등)가 있는 랜덤 스킨을 자동으로 선택"
     }
   },
   "errors": {
@@ -279,7 +287,9 @@
     "tooltipInChampSelect": "현재 챔피언 선택 중입니다. 챔피언을 선택하여 알림을 표시하세요",
     "tooltipDisabled": "챔피언 감지가 비활성화되었습니다. 설정에서 활성화하여 챔피언 선택 시 알림을 받으세요",
     "championLockedDescription": "{{champion}}을(를) 잠겼습니다. 사용 가능한 스킨을 보시겠습니까?",
-    "championHoveredDescription": "{{champion}}을(를) 보고 계십니다. 사용 가능한 스킨을 보시겠습니까?"
+    "championHoveredDescription": "{{champion}}을(를) 보고 계십니다. 사용 가능한 스킨을 보시겠습니까?",
+    "randomSkin": "랜덤 스킨",
+    "randomRaritySkin": "랜덤 희귀도 스킨"
   },
   "smartApply": {
     "willApply": "스마트: {{count}}/{{total}}",

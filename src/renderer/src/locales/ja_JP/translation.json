@@ -110,6 +110,14 @@
     "autoApply": {
       "title": "自動適用",
       "description": "すべてのチャンピオンがロックされた時にスキンを自動的に適用"
+    },
+    "autoRandomSkin": {
+      "title": "自動ランダムスキン",
+      "description": "チャンピオンが検出された時にランダムなスキンを自動的に選択"
+    },
+    "autoRandomRaritySkin": {
+      "title": "自動ランダムレアリティスキン",
+      "description": "チャンピオンが検出された時にレアリティ（エピック、レジェンダリーなど）を持つランダムなスキンを自動的に選択"
     }
   },
   "errors": {
@@ -279,7 +287,9 @@
     "tooltipInChampSelect": "現在チャンピオン選択中です。チャンピオンを選択して通知を表示してください",
     "tooltipDisabled": "チャンピオン検出が無効になっています。設定で有効にして、チャンピオン選択時に通知を受け取るようにしてください",
     "championLockedDescription": "{{champion}}をロックしました。利用可能なスキンを見てみますか？",
-    "championHoveredDescription": "{{champion}}を表示中です。利用可能なスキンを見てみますか？"
+    "championHoveredDescription": "{{champion}}を表示中です。利用可能なスキンを見てみますか？",
+    "randomSkin": "ランダムスキン",
+    "randomRaritySkin": "ランダムレアリティスキン"
   },
   "smartApply": {
     "willApply": "スマート: {{count}}/{{total}}",

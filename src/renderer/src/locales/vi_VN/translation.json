@@ -112,6 +112,14 @@
     "autoApply": {
       "title": "Tự động áp dụng",
       "description": "Tự động áp dụng trang phục khi tất cả tướng đã khóa"
+    },
+    "autoRandomSkin": {
+      "title": "Tự động chọn skin ngẫu nhiên",
+      "description": "Tự động chọn một skin ngẫu nhiên khi phát hiện tướng"
+    },
+    "autoRandomRaritySkin": {
+      "title": "Tự động chọn skin hiếm ngẫu nhiên",
+      "description": "Tự động chọn một skin ngẫu nhiên có độ hiếm (Epic, Legendary, v.v.) khi phát hiện tướng"
     }
   },
   "fileUpload": {
@@ -268,7 +276,9 @@
     "tooltipInChampSelect": "Đang trong màn hình chọn tướng. Chọn một tướng để xem thông báo",
     "tooltipDisabled": "Tính năng phát hiện tướng đã tắt. Bật trong cài đặt để nhận thông báo khi chọn tướng",
     "championLockedDescription": "Bạn đã khóa {{champion}}. Bạn có muốn xem các trang phục có sẵn không?",
-    "championHoveredDescription": "Bạn đang chọn {{champion}}. Bạn có muốn xem các trang phục có sẵn không?"
+    "championHoveredDescription": "Bạn đang chọn {{champion}}. Bạn có muốn xem các trang phục có sẵn không?",
+    "randomSkin": "Skin ngẫu nhiên",
+    "randomRaritySkin": "Skin hiếm ngẫu nhiên"
   },
   "smartApply": {
     "willApply": "Thông minh: {{count}}/{{total}}",

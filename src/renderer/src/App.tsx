@@ -186,12 +186,33 @@ function AppContent(): React.JSX.Element {
     selectedChampion: lcuSelectedChampion,
     isChampionLocked,
     autoViewSkinsEnabled,
+    autoRandomRaritySkinEnabled,
     onChampionNavigate,
     clearSelectedChampion
   } = useChampionSelectHandler({
     champions: championData?.champions,
     onNavigateToChampion: navigateToChampion,
-    enabled: championDetectionEnabled
+    enabled: championDetectionEnabled,
+    onAutoSelectSkin: (champion) => {
+      if (!championData) return
+
+      // Get available skins based on settings
+      let availableSkins = champion.skins.filter((skin) => skin.num !== 0)
+
+      if (autoRandomRaritySkinEnabled) {
+        // Filter to only rarity skins
+        availableSkins = availableSkins.filter((skin) => skin.rarity && skin.rarity !== 'kNoRarity')
+      }
+
+      if (availableSkins.length === 0) return
+
+      // Select a random skin
+      const randomIndex = Math.floor(Math.random() * availableSkins.length)
+      const randomSkin = availableSkins[randomIndex]
+
+      // Add the skin using handleSkinClick
+      handleSkinClick(champion, randomSkin)
+    }
   })
 
   // Load champion detection setting
@@ -1578,6 +1599,8 @@ function AppContent(): React.JSX.Element {
           isLocked={isChampionLocked}
           onViewSkins={onChampionNavigate}
           onClose={clearSelectedChampion}
+          championData={championData || undefined}
+          onAddSkin={handleSkinClick}
         />
       )}
     </>

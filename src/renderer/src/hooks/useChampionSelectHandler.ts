@@ -15,12 +15,14 @@ interface UseChampionSelectHandlerProps {
   champions?: Champion[]
   onNavigateToChampion?: (champion: Champion) => void
   enabled?: boolean
+  onAutoSelectSkin?: (champion: Champion) => void
 }
 
 export function useChampionSelectHandler({
   champions,
   onNavigateToChampion,
-  enabled = true
+  enabled = true,
+  onAutoSelectSkin
 }: UseChampionSelectHandlerProps) {
   const { t } = useTranslation()
   const [lcuConnected, setLcuConnected] = useState(false)
@@ -28,6 +30,8 @@ export function useChampionSelectHandler({
   const [leagueClientEnabled, setLeagueClientEnabled] = useState(true)
   const [settingEnabled, setSettingEnabled] = useState(true)
   const [autoViewSkinsEnabled, setAutoViewSkinsEnabled] = useState(false)
+  const [autoRandomSkinEnabled, setAutoRandomSkinEnabled] = useState(false)
+  const [autoRandomRaritySkinEnabled, setAutoRandomRaritySkinEnabled] = useState(false)
   const lastSelectedChampionIdRef = useRef<number | null>(null)
   const [, setSelectedChampionKey] = useAtom(selectedChampionKeyAtom)
 
@@ -42,13 +46,19 @@ export function useChampionSelectHandler({
     Promise.all([
       window.api.getSettings('leagueClientEnabled'),
       window.api.getSettings('championDetection'),
-      window.api.getSettings('autoViewSkinsEnabled')
-    ]).then(([leagueClient, championDetection, autoViewSkins]) => {
-      // Default to true if not set (except autoViewSkins which defaults to false)
-      setLeagueClientEnabled(leagueClient !== false)
-      setSettingEnabled(championDetection !== false)
-      setAutoViewSkinsEnabled(autoViewSkins === true)
-    })
+      window.api.getSettings('autoViewSkinsEnabled'),
+      window.api.getSettings('autoRandomSkinEnabled'),
+      window.api.getSettings('autoRandomRaritySkinEnabled')
+    ]).then(
+      ([leagueClient, championDetection, autoViewSkins, autoRandomSkin, autoRandomRaritySkin]) => {
+        // Default to true if not set (except autoViewSkins and autoRandom which default to false)
+        setLeagueClientEnabled(leagueClient !== false)
+        setSettingEnabled(championDetection !== false)
+        setAutoViewSkinsEnabled(autoViewSkins === true)
+        setAutoRandomSkinEnabled(autoRandomSkin === true)
+        setAutoRandomRaritySkinEnabled(autoRandomRaritySkin === true)
+      }
+    )
   }, [])
 
   // Initialize LCU connection status
@@ -128,8 +138,21 @@ export function useChampionSelectHandler({
         champion,
         isLocked: data.isLocked
       })
+
+      // Handle auto random skin selection
+      if (onAutoSelectSkin && (autoRandomSkinEnabled || autoRandomRaritySkinEnabled)) {
+        onAutoSelectSkin(champion)
+      }
     },
-    [champions, enabled, leagueClientEnabled, settingEnabled]
+    [
+      champions,
+      enabled,
+      leagueClientEnabled,
+      settingEnabled,
+      autoRandomSkinEnabled,
+      autoRandomRaritySkinEnabled,
+      onAutoSelectSkin
+    ]
   )
 
   // Set up champion selected event listener separately
@@ -168,6 +191,8 @@ export function useChampionSelectHandler({
     selectedChampion: selectedChampionData.champion,
     isChampionLocked: selectedChampionData.isLocked,
     autoViewSkinsEnabled,
+    autoRandomSkinEnabled,
+    autoRandomRaritySkinEnabled,
     onChampionNavigate: handleChampionNavigate,
     clearSelectedChampion
   }

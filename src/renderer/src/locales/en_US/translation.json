@@ -113,6 +113,14 @@
     "autoApply": {
       "title": "Auto Apply",
       "description": "Automatically apply skins when all champions are locked"
+    },
+    "autoRandomSkin": {
+      "title": "Auto Random Skin",
+      "description": "Automatically select a random skin when a champion is detected"
+    },
+    "autoRandomRaritySkin": {
+      "title": "Auto Random Rarity Skin",
+      "description": "Automatically select a random skin with rarity (Epic, Legendary, etc.) when a champion is detected"
     }
   },
   "fileUpload": {
@@ -274,7 +282,9 @@
     "tooltipInChampSelect": "Currently in champion select. Select a champion to see a notification",
     "tooltipDisabled": "Champion detection is disabled. Enable it in settings to receive notifications when selecting champions",
     "championLockedDescription": "You have locked in {{champion}}. Would you like to browse available skins?",
-    "championHoveredDescription": "You are hovering {{champion}}. Would you like to browse available skins?"
+    "championHoveredDescription": "You are hovering {{champion}}. Would you like to browse available skins?",
+    "randomSkin": "Random Skin",
+    "randomRaritySkin": "Random Rarity Skin"
   },
   "smartApply": {
     "willApply": "Smart: {{count}}/{{total}}",

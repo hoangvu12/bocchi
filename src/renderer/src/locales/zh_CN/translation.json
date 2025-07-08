@@ -110,6 +110,14 @@
     "autoApply": {
       "title": "自动应用",
       "description": "所有英雄锁定后自动应用皮肤"
+    },
+    "autoRandomSkin": {
+      "title": "自动随机皮肤",
+      "description": "检测到英雄时自动选择随机皮肤"
+    },
+    "autoRandomRaritySkin": {
+      "title": "自动随机稀有度皮肤",
+      "description": "检测到英雄时自动选择带有稀有度（史诗、传说等）的随机皮肤"
     }
   },
   "errors": {
@@ -279,7 +287,9 @@
     "tooltipInChampSelect": "当前正在选择英雄。选择一个英雄以查看通知",
     "tooltipDisabled": "英雄检测已禁用。在设置中启用以在选择英雄时接收通知",
     "championLockedDescription": "您已锁定 {{champion}}。想要浏览可用的皮肤吗？",
-    "championHoveredDescription": "您正在查看 {{champion}}。想要浏览可用的皮肤吗？"
+    "championHoveredDescription": "您正在查看 {{champion}}。想要浏览可用的皮肤吗？",
+    "randomSkin": "随机皮肤",
+    "randomRaritySkin": "随机稀有度皮肤"
   },
   "smartApply": {
     "willApply": "智能：{{count}}/{{total}}",

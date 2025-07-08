@@ -9,20 +9,26 @@ import {
   DialogTitle
 } from './ui/dialog'
 import { Button } from './ui/button'
-import type { Champion } from '../App'
+import type { Champion, Skin } from '../App'
 
 interface ChampionSelectDialogProps {
   champion: Champion | null
   isLocked: boolean
   onViewSkins: () => void
   onClose: () => void
+  championData?: {
+    champions: Champion[]
+  }
+  onAddSkin?: (champion: Champion, skin: Skin, chromaId?: string) => void
 }
 
 export function ChampionSelectDialog({
   champion,
   isLocked,
   onViewSkins,
-  onClose
+  onClose,
+  championData,
+  onAddSkin
 }: ChampionSelectDialogProps) {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
@@ -40,6 +46,46 @@ export function ChampionSelectDialog({
   const handleClose = () => {
     setIsOpen(false)
     onClose()
+  }
+
+  const handleRandomSkin = () => {
+    if (!champion || !onAddSkin) return
+
+    // Get all available skins (excluding base skin with num 0)
+    const availableSkins = champion.skins.filter((skin) => skin.num !== 0)
+
+    if (availableSkins.length === 0) return
+
+    // Select a random skin
+    const randomIndex = Math.floor(Math.random() * availableSkins.length)
+    const randomSkin = availableSkins[randomIndex]
+
+    // Add the skin
+    onAddSkin(champion, randomSkin)
+
+    // Close the dialog
+    handleClose()
+  }
+
+  const handleRandomRaritySkin = () => {
+    if (!champion || !onAddSkin) return
+
+    // Get all skins with rarity (excluding base skin and skins without rarity)
+    const raritySkins = champion.skins.filter(
+      (skin) => skin.num !== 0 && skin.rarity && skin.rarity !== 'kNoRarity'
+    )
+
+    if (raritySkins.length === 0) return
+
+    // Select a random rarity skin
+    const randomIndex = Math.floor(Math.random() * raritySkins.length)
+    const randomSkin = raritySkins[randomIndex]
+
+    // Add the skin
+    onAddSkin(champion, randomSkin)
+
+    // Close the dialog
+    handleClose()
   }
 
   if (!champion) return null
@@ -66,10 +112,20 @@ export function ChampionSelectDialog({
             </div>
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
+        <DialogFooter className="flex gap-2">
           <Button variant="secondary" onClick={handleClose}>
             {t('actions.cancel')}
           </Button>
+          {onAddSkin && championData && (
+            <>
+              <Button variant="outline" onClick={handleRandomSkin}>
+                {t('lcu.randomSkin')}
+              </Button>
+              <Button variant="outline" onClick={handleRandomRaritySkin}>
+                {t('lcu.randomRaritySkin')}
+              </Button>
+            </>
+          )}
           <Button onClick={handleViewSkins}>{t('lcu.viewSkins')}</Button>
         </DialogFooter>
       </DialogContent>
