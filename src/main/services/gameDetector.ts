@@ -9,8 +9,6 @@ export class GameDetector {
   async detectGamePath(): Promise<string | null> {
     if (process.platform === 'win32') {
       return this.detectWindows()
-    } else if (process.platform === 'darwin') {
-      return this.detectMacOS()
     }
     return null
   }
@@ -141,36 +139,6 @@ export class GameDetector {
     } catch (error) {
       console.error('Failed to detect via Registry:', error)
       // Registry key might not exist
-    }
-
-    return null
-  }
-
-  private async detectMacOS(): Promise<string | null> {
-    const appPath = '/Applications/League of Legends.app/Contents/LoL/Game'
-    if (await this.isValidGamePath(appPath)) {
-      return appPath
-    }
-
-    // Try to find running process
-    try {
-      const { stdout } = await execAsync('ps aux | grep "League of Legends"')
-      // Parse process list to find game path
-      const lines = stdout.split('\n')
-      for (const line of lines) {
-        if (line.includes('LeagueClient') || line.includes('League of Legends.exe')) {
-          // Extract path from process info
-          const match = line.match(/\/Applications\/League of Legends\.app[^\s]*/)
-          if (match) {
-            const gamePath = match[0].replace('/LeagueClient.app', '/Game')
-            if (await this.isValidGamePath(gamePath)) {
-              return gamePath
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Failed to detect running League client:', error)
     }
 
     return null

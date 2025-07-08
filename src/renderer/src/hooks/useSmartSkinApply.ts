@@ -3,6 +3,11 @@ import { useAtom } from 'jotai'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 import { selectedSkinsAtom } from '../store/atoms'
+import {
+  leagueClientEnabledAtom,
+  smartApplyEnabledAtom,
+  autoApplyEnabledAtom
+} from '../store/atoms/settings.atoms'
 
 interface TeamComposition {
   championIds: number[]
@@ -34,25 +39,11 @@ export function useSmartSkinApply({
   const { t } = useTranslation()
   const [selectedSkins] = useAtom(selectedSkinsAtom)
   const [teamComposition, setTeamComposition] = useState<TeamComposition | null>(null)
-  const [leagueClientEnabled, setLeagueClientEnabled] = useState(true)
-  const [smartApplyEnabled, setSmartApplyEnabled] = useState(true)
-  const [autoApplyEnabled, setAutoApplyEnabled] = useState(true)
+  const [leagueClientEnabled] = useAtom(leagueClientEnabledAtom)
+  const [smartApplyEnabled] = useAtom(smartApplyEnabledAtom)
+  const [autoApplyEnabled] = useAtom(autoApplyEnabledAtom)
   const [isApplying, setIsApplying] = useState(false)
   const lastAppliedTeamKey = useRef<string>('')
-
-  // Load settings
-  useEffect(() => {
-    const loadSettings = async () => {
-      const leagueClient = await window.api.getSettings('leagueClientEnabled')
-      const smartApply = await window.api.getSettings('smartApplyEnabled')
-      const autoApply = await window.api.getSettings('autoApplyEnabled')
-      console.log('[SmartSkinApply] Loading settings:', { leagueClient, smartApply, autoApply })
-      setLeagueClientEnabled(leagueClient !== false)
-      setSmartApplyEnabled(smartApply !== false)
-      setAutoApplyEnabled(autoApply !== false)
-    }
-    loadSettings()
-  }, [])
 
   // Handle team composition updates
   useEffect(() => {
@@ -310,14 +301,6 @@ export function useSmartSkinApply({
     isReadyForSmartApply:
       leagueClientEnabled && teamComposition?.allLocked && teamComposition?.inFinalization,
     applySkins,
-    getSmartApplySummary,
-    setSmartApplyEnabled: async (enabled: boolean) => {
-      setSmartApplyEnabled(enabled)
-      await window.api.setSettings('smartApplyEnabled', enabled)
-    },
-    setAutoApplyEnabled: async (enabled: boolean) => {
-      setAutoApplyEnabled(enabled)
-      await window.api.setSettings('autoApplyEnabled', enabled)
-    }
+    getSmartApplySummary
   }
 }

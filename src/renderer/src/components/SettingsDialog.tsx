@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSetAtom } from 'jotai'
 import { Settings } from 'lucide-react'
 import { Button } from './ui/button'
 import { Switch } from './ui/switch'
@@ -11,6 +12,13 @@ import {
   DialogHeader,
   DialogTitle
 } from './ui/dialog'
+import {
+  leagueClientEnabledAtom,
+  championDetectionEnabledAtom,
+  smartApplyEnabledAtom,
+  autoApplyEnabledAtom
+} from '../store/atoms/settings.atoms'
+import { autoViewSkinsEnabledAtom, autoRandomRaritySkinEnabledAtom } from '../store/atoms/lcu.atoms'
 
 interface SettingsDialogProps {
   isOpen: boolean
@@ -34,6 +42,14 @@ export function SettingsDialog({
   const [autoRandomSkinEnabled, setAutoRandomSkinEnabled] = useState(false)
   const [autoRandomRaritySkinEnabled, setAutoRandomRaritySkinEnabled] = useState(false)
   const [loading, setLoading] = useState(true)
+
+  // Atom setters for immediate updates
+  const setLeagueClientEnabledAtom = useSetAtom(leagueClientEnabledAtom)
+  const setChampionDetectionEnabledAtom = useSetAtom(championDetectionEnabledAtom)
+  const setAutoViewSkinsEnabledAtom = useSetAtom(autoViewSkinsEnabledAtom)
+  const setAutoRandomRaritySkinEnabledAtom = useSetAtom(autoRandomRaritySkinEnabledAtom)
+  const setSmartApplyEnabledAtom = useSetAtom(smartApplyEnabledAtom)
+  const setAutoApplyEnabledAtom = useSetAtom(autoApplyEnabledAtom)
 
   useEffect(() => {
     if (isOpen) {
@@ -61,6 +77,7 @@ export function SettingsDialog({
 
   const handleLeagueClientChange = async (checked: boolean) => {
     setLeagueClientEnabled(checked)
+    setLeagueClientEnabledAtom(checked) // Update atom immediately
     try {
       await window.api.setSettings('leagueClientEnabled', checked)
 
@@ -72,6 +89,12 @@ export function SettingsDialog({
         setAutoApplyEnabled(false)
         setAutoRandomSkinEnabled(false)
         setAutoRandomRaritySkinEnabled(false)
+
+        // Update atoms immediately
+        setChampionDetectionEnabledAtom(false)
+        setAutoViewSkinsEnabledAtom(false)
+        setAutoRandomRaritySkinEnabledAtom(false)
+
         await window.api.setSettings('championDetection', false)
         await window.api.setSettings('autoViewSkinsEnabled', false)
         await window.api.setSettings('smartApplyEnabled', false)
@@ -99,6 +122,7 @@ export function SettingsDialog({
 
   const handleChampionDetectionChange = async (checked: boolean) => {
     setChampionDetection(checked)
+    setChampionDetectionEnabledAtom(checked) // Update atom immediately
     try {
       await window.api.setSettings('championDetection', checked)
 
@@ -107,6 +131,10 @@ export function SettingsDialog({
         setAutoViewSkinsEnabled(false)
         setAutoRandomSkinEnabled(false)
         setAutoRandomRaritySkinEnabled(false)
+
+        // Update atoms immediately
+        setAutoViewSkinsEnabledAtom(false)
+        setAutoRandomRaritySkinEnabledAtom(false)
         await window.api.setSettings('autoViewSkinsEnabled', false)
         await window.api.setSettings('autoRandomSkinEnabled', false)
         await window.api.setSettings('autoRandomRaritySkinEnabled', false)
@@ -121,6 +149,7 @@ export function SettingsDialog({
 
   const handleAutoViewSkinsChange = async (checked: boolean) => {
     setAutoViewSkinsEnabled(checked)
+    setAutoViewSkinsEnabledAtom(checked) // Update atom immediately
     try {
       await window.api.setSettings('autoViewSkinsEnabled', checked)
     } catch (error) {
@@ -130,8 +159,16 @@ export function SettingsDialog({
 
   const handleSmartApplyChange = async (checked: boolean) => {
     setSmartApplyEnabled(checked)
+    setSmartApplyEnabledAtom(checked) // Update atom immediately
     try {
       await window.api.setSettings('smartApplyEnabled', checked)
+
+      // If disabling smart apply, also disable auto apply
+      if (!checked && autoApplyEnabled) {
+        setAutoApplyEnabled(false)
+        setAutoApplyEnabledAtom(false)
+        await window.api.setSettings('autoApplyEnabled', false)
+      }
     } catch (error) {
       console.error('Failed to save smart apply setting:', error)
     }
@@ -139,6 +176,7 @@ export function SettingsDialog({
 
   const handleAutoApplyChange = async (checked: boolean) => {
     setAutoApplyEnabled(checked)
+    setAutoApplyEnabledAtom(checked) // Update atom immediately
     try {
       await window.api.setSettings('autoApplyEnabled', checked)
     } catch (error) {
@@ -163,6 +201,7 @@ export function SettingsDialog({
 
   const handleAutoRandomRaritySkinChange = async (checked: boolean) => {
     setAutoRandomRaritySkinEnabled(checked)
+    setAutoRandomRaritySkinEnabledAtom(checked) // Update atom immediately
     try {
       await window.api.setSettings('autoRandomRaritySkinEnabled', checked)
 

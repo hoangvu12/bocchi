@@ -1,8 +1,20 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
-import { useAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { selectedChampionKeyAtom } from '../store/atoms'
+import {
+  lcuConnectedAtom,
+  isInChampSelectAtom,
+  lcuSelectedChampionAtom,
+  isChampionLockedAtom,
+  autoViewSkinsEnabledAtom,
+  autoRandomRaritySkinEnabledAtom
+} from '../store/atoms/lcu.atoms'
+import {
+  leagueClientEnabledAtom,
+  championDetectionEnabledAtom
+} from '../store/atoms/settings.atoms'
 import type { Champion } from '../App'
 
 interface ChampionSelectData {
@@ -25,50 +37,32 @@ export function useChampionSelectHandler({
   onAutoSelectSkin
 }: UseChampionSelectHandlerProps) {
   const { t } = useTranslation()
-  const [lcuConnected, setLcuConnected] = useState(false)
-  const [gameflowPhase, setGameflowPhase] = useState<string>('None')
-  const [leagueClientEnabled, setLeagueClientEnabled] = useState(true)
-  const [settingEnabled, setSettingEnabled] = useState(true)
-  const [autoViewSkinsEnabled, setAutoViewSkinsEnabled] = useState(false)
-  const [autoRandomSkinEnabled, setAutoRandomSkinEnabled] = useState(false)
-  const [autoRandomRaritySkinEnabled, setAutoRandomRaritySkinEnabled] = useState(false)
+
+  // Use atoms instead of local state
+  const [lcuConnected, setLcuConnected] = useAtom(lcuConnectedAtom)
+  const [isInChampSelect, setIsInChampSelect] = useAtom(isInChampSelectAtom)
+  const [lcuSelectedChampion, setLcuSelectedChampion] = useAtom(lcuSelectedChampionAtom)
+  const [isChampionLocked, setIsChampionLocked] = useAtom(isChampionLockedAtom)
+  const [autoViewSkinsEnabled] = useAtom(autoViewSkinsEnabledAtom)
+  const [autoRandomRaritySkinEnabled] = useAtom(autoRandomRaritySkinEnabledAtom)
+  const [leagueClientEnabled] = useAtom(leagueClientEnabledAtom)
+  const [championDetectionEnabled] = useAtom(championDetectionEnabledAtom)
+  const setSelectedChampionKey = useSetAtom(selectedChampionKeyAtom)
+
   const lastSelectedChampionIdRef = useRef<number | null>(null)
-  const [, setSelectedChampionKey] = useAtom(selectedChampionKeyAtom)
+  const gameflowPhaseRef = useRef<string>('None')
 
-  // State for champion selection dialog
-  const [selectedChampionData, setSelectedChampionData] = useState<{
-    champion: Champion | null
-    isLocked: boolean
-  }>({ champion: null, isLocked: false })
-
-  // Check if champion detection is enabled in settings
-  useEffect(() => {
-    Promise.all([
-      window.api.getSettings('leagueClientEnabled'),
-      window.api.getSettings('championDetection'),
-      window.api.getSettings('autoViewSkinsEnabled'),
-      window.api.getSettings('autoRandomSkinEnabled'),
-      window.api.getSettings('autoRandomRaritySkinEnabled')
-    ]).then(
-      ([leagueClient, championDetection, autoViewSkins, autoRandomSkin, autoRandomRaritySkin]) => {
-        // Default to true if not set (except autoViewSkins and autoRandom which default to false)
-        setLeagueClientEnabled(leagueClient !== false)
-        setSettingEnabled(championDetection !== false)
-        setAutoViewSkinsEnabled(autoViewSkins === true)
-        setAutoRandomSkinEnabled(autoRandomSkin === true)
-        setAutoRandomRaritySkinEnabled(autoRandomRaritySkin === true)
-      }
-    )
-  }, [])
+  // Settings are now loaded in useAppInitialization hook
 
   // Initialize LCU connection status
   useEffect(() => {
-    if (!enabled || !leagueClientEnabled || !settingEnabled) return
+    if (!enabled || !leagueClientEnabled || !championDetectionEnabled) return
 
     // Check initial status
     window.api.lcuGetStatus().then((status) => {
       setLcuConnected(status.connected)
-      setGameflowPhase(status.gameflowPhase)
+      gameflowPhaseRef.current = status.gameflowPhase
+      setIsInChampSelect(status.gameflowPhase === 'ChampSelect')
     })
 
     // Set up event listeners
@@ -81,18 +75,24 @@ export function useChampionSelectHandler({
 
     const unsubscribeDisconnected = window.api.onLcuDisconnected(() => {
       setLcuConnected(false)
-      setGameflowPhase('None')
+      gameflowPhaseRef.current = 'None'
+      setIsInChampSelect(false)
+      setLcuSelectedChampion(null)
+      setIsChampionLocked(false)
       toast.error(t('lcu.disconnected'), {
         duration: 3000
       })
     })
 
     const unsubscribePhaseChanged = window.api.onLcuPhaseChanged((data) => {
-      setGameflowPhase(data.phase)
+      gameflowPhaseRef.current = data.phase
+      setIsInChampSelect(data.phase === 'ChampSelect')
 
       // Reset last selected champion when leaving champion select
       if (data.previousPhase === 'ChampSelect' && data.phase !== 'ChampSelect') {
         lastSelectedChampionIdRef.current = null
+        setLcuSelectedChampion(null)
+        setIsChampionLocked(false)
       }
     })
 
@@ -101,11 +101,20 @@ export function useChampionSelectHandler({
       unsubscribeDisconnected()
       unsubscribePhaseChanged()
     }
-  }, [enabled, leagueClientEnabled, settingEnabled, t])
+  }, [
+    enabled,
+    leagueClientEnabled,
+    championDetectionEnabled,
+    t,
+    setLcuConnected,
+    setIsInChampSelect,
+    setLcuSelectedChampion,
+    setIsChampionLocked
+  ])
 
   const handleChampionSelection = useCallback(
     (data: ChampionSelectData) => {
-      if (!enabled || !leagueClientEnabled || !settingEnabled) {
+      if (!enabled || !leagueClientEnabled || !championDetectionEnabled) {
         return
       }
 
@@ -133,14 +142,12 @@ export function useChampionSelectHandler({
         return
       }
 
-      // Set the selected champion data for the dialog
-      setSelectedChampionData({
-        champion,
-        isLocked: data.isLocked
-      })
+      // Set the selected champion data in atoms
+      setLcuSelectedChampion(champion)
+      setIsChampionLocked(data.isLocked)
 
       // Handle auto random skin selection
-      if (onAutoSelectSkin && (autoRandomSkinEnabled || autoRandomRaritySkinEnabled)) {
+      if (onAutoSelectSkin && autoRandomRaritySkinEnabled) {
         onAutoSelectSkin(champion)
       }
     },
@@ -148,16 +155,17 @@ export function useChampionSelectHandler({
       champions,
       enabled,
       leagueClientEnabled,
-      settingEnabled,
-      autoRandomSkinEnabled,
+      championDetectionEnabled,
       autoRandomRaritySkinEnabled,
-      onAutoSelectSkin
+      onAutoSelectSkin,
+      setLcuSelectedChampion,
+      setIsChampionLocked
     ]
   )
 
   // Set up champion selected event listener separately
   useEffect(() => {
-    if (!enabled || !leagueClientEnabled || !settingEnabled) return
+    if (!enabled || !leagueClientEnabled || !championDetectionEnabled) return
 
     const unsubscribeChampionSelected = window.api.onLcuChampionSelected(
       (data: ChampionSelectData) => {
@@ -168,30 +176,31 @@ export function useChampionSelectHandler({
     return () => {
       unsubscribeChampionSelected()
     }
-  }, [enabled, leagueClientEnabled, settingEnabled, champions, handleChampionSelection])
+  }, [enabled, leagueClientEnabled, championDetectionEnabled, champions, handleChampionSelection])
 
   const handleChampionNavigate = useCallback(() => {
-    if (selectedChampionData.champion) {
+    if (lcuSelectedChampion) {
       if (onNavigateToChampion) {
-        onNavigateToChampion(selectedChampionData.champion)
+        onNavigateToChampion(lcuSelectedChampion)
       } else {
-        setSelectedChampionKey(selectedChampionData.champion.key)
+        setSelectedChampionKey(lcuSelectedChampion.key)
       }
     }
-  }, [selectedChampionData.champion, onNavigateToChampion, setSelectedChampionKey])
+  }, [lcuSelectedChampion, onNavigateToChampion, setSelectedChampionKey])
 
   const clearSelectedChampion = useCallback(() => {
-    setSelectedChampionData({ champion: null, isLocked: false })
-  }, [])
+    setLcuSelectedChampion(null)
+    setIsChampionLocked(false)
+  }, [setLcuSelectedChampion, setIsChampionLocked])
 
   return {
-    lcuConnected: settingEnabled ? lcuConnected : false,
-    gameflowPhase: settingEnabled ? gameflowPhase : 'None',
-    isInChampSelect: settingEnabled && gameflowPhase === 'ChampSelect',
-    selectedChampion: selectedChampionData.champion,
-    isChampionLocked: selectedChampionData.isLocked,
+    lcuConnected: championDetectionEnabled ? lcuConnected : false,
+    gameflowPhase: championDetectionEnabled ? gameflowPhaseRef.current : 'None',
+    isInChampSelect: championDetectionEnabled && isInChampSelect,
+    selectedChampion: lcuSelectedChampion,
+    isChampionLocked,
     autoViewSkinsEnabled,
-    autoRandomSkinEnabled,
+    autoRandomSkinEnabled: false, // Not used anymore, kept for compatibility
     autoRandomRaritySkinEnabled,
     onChampionNavigate: handleChampionNavigate,
     clearSelectedChampion

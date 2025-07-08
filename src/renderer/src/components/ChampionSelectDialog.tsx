@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from './ui/dialog'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
 import { Button } from './ui/button'
 import type { Champion, Skin } from '../App'
 
@@ -92,41 +85,51 @@ export function ChampionSelectDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{isLocked ? t('lcu.championLocked') : t('lcu.championHovered')}</DialogTitle>
-          <DialogDescription asChild>
-            <div className="flex flex-col gap-4 pt-4">
-              <div className="flex items-center gap-4">
-                <img src={champion.image} alt={champion.name} className="w-20 h-20 rounded-lg" />
-                <div>
-                  <h3 className="text-lg font-semibold text-text-primary">{champion.name}</h3>
-                  <p className="text-sm text-text-secondary">{champion.title}</p>
-                </div>
-              </div>
-              <p className="text-sm text-text-secondary">
-                {isLocked
-                  ? t('lcu.championLockedDescription', { champion: champion.name })
-                  : t('lcu.championHoveredDescription', { champion: champion.name })}
-              </p>
-            </div>
-          </DialogDescription>
+      <DialogContent className="sm:max-w-[500px] bg-surface border-border">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-xl font-semibold">
+            {isLocked ? t('lcu.championLocked') : t('lcu.championHovered')}
+          </DialogTitle>
         </DialogHeader>
-        <DialogFooter className="flex gap-2">
-          <Button variant="secondary" onClick={handleClose}>
+        <div className="flex flex-col gap-4 py-2">
+          <div className="flex items-center gap-4">
+            <img
+              src={champion.image}
+              alt={champion.name}
+              className="w-20 h-20 rounded-full border-2 border-border"
+            />
+            <div className="flex-1">
+              <h3 className="text-lg font-bold text-text-primary">{champion.name}</h3>
+              <p className="text-sm text-text-secondary">{champion.title}</p>
+            </div>
+          </div>
+          <p className="text-sm text-text-secondary">
+            {isLocked
+              ? t('lcu.championLockedDescription', { champion: champion.name })
+              : t('lcu.championHoveredDescription', { champion: champion.name })}
+          </p>
+        </div>
+        <DialogFooter className="flex flex-row gap-3 pt-4">
+          <Button variant="ghost" onClick={handleClose} className="flex-1">
             {t('actions.cancel')}
           </Button>
           {onAddSkin && championData && (
             <>
-              <Button variant="outline" onClick={handleRandomSkin}>
+              <Button variant="secondary" onClick={handleRandomSkin} className="flex-1">
                 {t('lcu.randomSkin')}
               </Button>
-              <Button variant="outline" onClick={handleRandomRaritySkin}>
+              <Button variant="secondary" onClick={handleRandomRaritySkin} className="flex-1">
                 {t('lcu.randomRaritySkin')}
               </Button>
             </>
           )}
-          <Button onClick={handleViewSkins}>{t('lcu.viewSkins')}</Button>
+          <Button
+            variant="default"
+            onClick={handleViewSkins}
+            className="flex-1 bg-primary-500 hover:bg-primary-600"
+          >
+            {t('lcu.viewSkins')}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
