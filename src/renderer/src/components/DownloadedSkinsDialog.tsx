@@ -366,7 +366,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
           )}
         </div>
 
-        <DialogFooter className="justify-between">
+        <DialogFooter className="flex flex-col items-center justify-center gap-2">
           <div className="text-sm text-text-muted">{t('skins.total', { count: totalSkins })}</div>
           <Button variant="secondary" onClick={onClose}>
             {t('actions.close')}
