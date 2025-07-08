@@ -1,5 +1,8 @@
 ### Features
 
-- Auto view skins of locked champion (open in settings)
-- Collapsable sidebar
-- Skins now show rarity.
+- Randomize skins when select champion
+- Delete all skins button in Manage
+
+### Fixes
+
+- Auto view skins sometime doesn't work
