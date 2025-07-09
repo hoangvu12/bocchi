@@ -390,7 +390,7 @@ function setupIpcHandlers(): void {
         selectedSkins: skinInfosToProcess.map((s) => s.localPath),
         gamePath,
         noTFT: true,
-        ignoreConflict: false,
+        ignoreConflict: allowMultipleSkinsPerChampion || false,
         createdAt: new Date(),
         updatedAt: new Date()
       }
