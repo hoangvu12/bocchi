@@ -62,6 +62,9 @@ export interface IApi {
   ) => Promise<{ success: boolean; error?: string }>
   isFavorite: (championKey: string, skinId: string) => Promise<boolean>
   getFavorites: () => Promise<{ success: boolean; favorites?: any[]; error?: string }>
+  getFavoritesByChampion: (
+    championKey: string
+  ) => Promise<{ success: boolean; favorites?: any[]; error?: string }>
 
   // Tools management
   checkToolsExist: () => Promise<boolean>

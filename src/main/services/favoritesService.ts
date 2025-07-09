@@ -75,6 +75,12 @@ export class FavoritesService {
     )
   }
 
+  getFavoritesByChampion(championKey: string): FavoriteItem[] {
+    return Array.from(this.favorites.values())
+      .filter((fav) => fav.championKey === championKey)
+      .sort((a, b) => b.addedAt.getTime() - a.addedAt.getTime())
+  }
+
   private async save(): Promise<void> {
     const favoritesArray = Array.from(this.favorites.values())
     await fs.writeFile(this.favoritesPath, JSON.stringify(favoritesArray, null, 2))

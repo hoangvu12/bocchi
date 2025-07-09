@@ -598,6 +598,15 @@ function setupIpcHandlers(): void {
     }
   })
 
+  ipcMain.handle('get-favorites-by-champion', async (_, championKey: string) => {
+    try {
+      const favorites = favoritesService.getFavoritesByChampion(championKey)
+      return { success: true, favorites }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
   // Tools management
   ipcMain.handle('check-tools-exist', async () => {
     return await toolsDownloader.checkToolsExist()

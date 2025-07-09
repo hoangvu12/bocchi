@@ -124,6 +124,10 @@
     "autoRandomRaritySkin": {
       "title": "Auto Random Rarity Skin",
       "description": "Automatically select a random skin with rarity (Epic, Legendary, etc.) when a champion is detected"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "Auto Random Favorite Skin",
+      "description": "Automatically select a random skin from your favorites when a champion is detected"
     }
   },
   "fileUpload": {

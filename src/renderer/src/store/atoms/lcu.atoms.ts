@@ -10,3 +10,4 @@ export const isChampionLockedAtom = atom<boolean>(false)
 // Auto-features atoms
 export const autoViewSkinsEnabledAtom = atom<boolean>(false)
 export const autoRandomRaritySkinEnabledAtom = atom<boolean>(false)
+export const autoRandomFavoriteSkinEnabledAtom = atom<boolean>(false)

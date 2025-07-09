@@ -18,7 +18,11 @@ import {
   smartApplyEnabledAtom,
   autoApplyEnabledAtom
 } from '../store/atoms/settings.atoms'
-import { autoViewSkinsEnabledAtom, autoRandomRaritySkinEnabledAtom } from '../store/atoms/lcu.atoms'
+import {
+  autoViewSkinsEnabledAtom,
+  autoRandomRaritySkinEnabledAtom,
+  autoRandomFavoriteSkinEnabledAtom
+} from '../store/atoms/lcu.atoms'
 
 interface SettingsDialogProps {
   isOpen: boolean
@@ -41,6 +45,7 @@ export function SettingsDialog({
   const [autoApplyEnabled, setAutoApplyEnabled] = useState(true)
   const [autoRandomSkinEnabled, setAutoRandomSkinEnabled] = useState(false)
   const [autoRandomRaritySkinEnabled, setAutoRandomRaritySkinEnabled] = useState(false)
+  const [autoRandomFavoriteSkinEnabled, setAutoRandomFavoriteSkinEnabled] = useState(false)
   const [loading, setLoading] = useState(true)
 
   // Atom setters for immediate updates
@@ -48,6 +53,7 @@ export function SettingsDialog({
   const setChampionDetectionEnabledAtom = useSetAtom(championDetectionEnabledAtom)
   const setAutoViewSkinsEnabledAtom = useSetAtom(autoViewSkinsEnabledAtom)
   const setAutoRandomRaritySkinEnabledAtom = useSetAtom(autoRandomRaritySkinEnabledAtom)
+  const setAutoRandomFavoriteSkinEnabledAtom = useSetAtom(autoRandomFavoriteSkinEnabledAtom)
   const setSmartApplyEnabledAtom = useSetAtom(smartApplyEnabledAtom)
   const setAutoApplyEnabledAtom = useSetAtom(autoApplyEnabledAtom)
 
@@ -68,6 +74,7 @@ export function SettingsDialog({
       setAutoApplyEnabled(settings.autoApplyEnabled !== false)
       setAutoRandomSkinEnabled(settings.autoRandomSkinEnabled === true)
       setAutoRandomRaritySkinEnabled(settings.autoRandomRaritySkinEnabled === true)
+      setAutoRandomFavoriteSkinEnabled(settings.autoRandomFavoriteSkinEnabled === true)
     } catch (error) {
       console.error('Failed to load settings:', error)
     } finally {
@@ -89,11 +96,13 @@ export function SettingsDialog({
         setAutoApplyEnabled(false)
         setAutoRandomSkinEnabled(false)
         setAutoRandomRaritySkinEnabled(false)
+        setAutoRandomFavoriteSkinEnabled(false)
 
         // Update atoms immediately
         setChampionDetectionEnabledAtom(false)
         setAutoViewSkinsEnabledAtom(false)
         setAutoRandomRaritySkinEnabledAtom(false)
+        setAutoRandomFavoriteSkinEnabledAtom(false)
 
         await window.api.setSettings('championDetection', false)
         await window.api.setSettings('autoViewSkinsEnabled', false)
@@ -101,6 +110,7 @@ export function SettingsDialog({
         await window.api.setSettings('autoApplyEnabled', false)
         await window.api.setSettings('autoRandomSkinEnabled', false)
         await window.api.setSettings('autoRandomRaritySkinEnabled', false)
+        await window.api.setSettings('autoRandomFavoriteSkinEnabled', false)
 
         // Disconnect LCU
         await window.api.lcuDisconnect()
@@ -131,13 +141,16 @@ export function SettingsDialog({
         setAutoViewSkinsEnabled(false)
         setAutoRandomSkinEnabled(false)
         setAutoRandomRaritySkinEnabled(false)
+        setAutoRandomFavoriteSkinEnabled(false)
 
         // Update atoms immediately
         setAutoViewSkinsEnabledAtom(false)
         setAutoRandomRaritySkinEnabledAtom(false)
+        setAutoRandomFavoriteSkinEnabledAtom(false)
         await window.api.setSettings('autoViewSkinsEnabled', false)
         await window.api.setSettings('autoRandomSkinEnabled', false)
         await window.api.setSettings('autoRandomRaritySkinEnabled', false)
+        await window.api.setSettings('autoRandomFavoriteSkinEnabled', false)
       }
 
       // Notify the parent component
@@ -189,10 +202,12 @@ export function SettingsDialog({
     try {
       await window.api.setSettings('autoRandomSkinEnabled', checked)
 
-      // If enabling this, disable the rarity option
+      // If enabling this, disable the other random options
       if (checked) {
         setAutoRandomRaritySkinEnabled(false)
+        setAutoRandomFavoriteSkinEnabled(false)
         await window.api.setSettings('autoRandomRaritySkinEnabled', false)
+        await window.api.setSettings('autoRandomFavoriteSkinEnabled', false)
       }
     } catch (error) {
       console.error('Failed to save auto random skin setting:', error)
@@ -205,13 +220,34 @@ export function SettingsDialog({
     try {
       await window.api.setSettings('autoRandomRaritySkinEnabled', checked)
 
-      // If enabling this, disable the regular random option
+      // If enabling this, disable the other random options
       if (checked) {
         setAutoRandomSkinEnabled(false)
+        setAutoRandomFavoriteSkinEnabled(false)
         await window.api.setSettings('autoRandomSkinEnabled', false)
+        await window.api.setSettings('autoRandomFavoriteSkinEnabled', false)
       }
     } catch (error) {
       console.error('Failed to save auto random rarity skin setting:', error)
+    }
+  }
+
+  const handleAutoRandomFavoriteSkinChange = async (checked: boolean) => {
+    setAutoRandomFavoriteSkinEnabled(checked)
+    setAutoRandomFavoriteSkinEnabledAtom(checked) // Update atom immediately
+    try {
+      await window.api.setSettings('autoRandomFavoriteSkinEnabled', checked)
+
+      // If enabling this, disable the other random options
+      if (checked) {
+        setAutoRandomSkinEnabled(false)
+        setAutoRandomRaritySkinEnabled(false)
+        setAutoRandomRaritySkinEnabledAtom(false)
+        await window.api.setSettings('autoRandomSkinEnabled', false)
+        await window.api.setSettings('autoRandomRaritySkinEnabled', false)
+      }
+    } catch (error) {
+      console.error('Failed to save auto random favorite skin setting:', error)
     }
   }
 
@@ -328,6 +364,28 @@ export function SettingsDialog({
             <Switch
               checked={autoRandomRaritySkinEnabled}
               onCheckedChange={handleAutoRandomRaritySkinChange}
+              disabled={loading || !leagueClientEnabled || !championDetection}
+            />
+          </div>
+
+          {/* Auto Random Favorite Skin Setting */}
+          <div className="flex items-center justify-between space-x-4 pl-12">
+            <div className="flex items-start gap-3">
+              <div className="flex items-start mt-1">
+                <div className="w-4 h-4 border-l-2 border-b-2 border-text-secondary/30"></div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.autoRandomFavoriteSkin.title')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.autoRandomFavoriteSkin.description')}
+                </p>
+              </div>
+            </div>
+            <Switch
+              checked={autoRandomFavoriteSkinEnabled}
+              onCheckedChange={handleAutoRandomFavoriteSkinChange}
               disabled={loading || !leagueClientEnabled || !championDetection}
             />
           </div>

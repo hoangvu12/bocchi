@@ -121,6 +121,10 @@
     "autoRandomRaritySkin": {
       "title": "自動ランダムレアリティスキン",
       "description": "チャンピオンが検出された時にレアリティ（エピック、レジェンダリーなど）を持つランダムなスキンを自動的に選択"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "自動ランダムお気に入りスキン",
+      "description": "チャンピオンが検出された時にお気に入りからランダムなスキンを自動的に選択"
     }
   },
   "errors": {

@@ -121,6 +121,10 @@
     "autoRandomRaritySkin": {
       "title": "Skin de rareza aleatorio automático",
       "description": "Seleccionar automáticamente un skin aleatorio con rareza (Épico, Legendario, etc.) cuando se detecta un campeón"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "Skin favorito aleatorio automático",
+      "description": "Seleccionar automáticamente un skin aleatorio de tus favoritos cuando se detecta un campeón"
     }
   },
   "errors": {

@@ -123,6 +123,10 @@
     "autoRandomRaritySkin": {
       "title": "Tự động chọn skin hiếm ngẫu nhiên",
       "description": "Tự động chọn một skin ngẫu nhiên có độ hiếm (Epic, Legendary, v.v.) khi phát hiện tướng"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "Tự động chọn skin yêu thích ngẫu nhiên",
+      "description": "Tự động chọn một skin ngẫu nhiên từ danh sách yêu thích của bạn khi phát hiện tướng"
     }
   },
   "fileUpload": {

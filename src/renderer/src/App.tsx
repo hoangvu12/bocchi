@@ -196,14 +196,37 @@ function AppContent(): React.JSX.Element {
     onAutoSelectSkin: async (champion) => {
       if (!championData) return
 
-      // Get available skins based on settings
-      let availableSkins = champion.skins.filter((skin) => skin.num !== 0)
-
-      // Filter to only rarity skins if autoRandomRaritySkinEnabled
+      // Check which auto mode is enabled
+      const autoRandomFavoriteSkinEnabled = await window.api.getSettings(
+        'autoRandomFavoriteSkinEnabled'
+      )
       const autoRandomRaritySkinEnabled = await window.api.getSettings(
         'autoRandomRaritySkinEnabled'
       )
-      if (autoRandomRaritySkinEnabled) {
+
+      let availableSkins = champion.skins.filter((skin) => skin.num !== 0)
+
+      if (autoRandomFavoriteSkinEnabled) {
+        // Get favorites for this champion
+        const favoritesResult = await window.api.getFavoritesByChampion(champion.key)
+        if (
+          !favoritesResult.success ||
+          !favoritesResult.favorites ||
+          favoritesResult.favorites.length === 0
+        ) {
+          // No favorites for this champion, skip auto-selection
+          console.log(
+            `No favorite skins found for champion ${champion.key}, skipping auto-selection`
+          )
+          return
+        }
+
+        // Filter skins to only those that are favorited
+        availableSkins = champion.skins.filter(
+          (skin) => favoritesResult.favorites?.some((fav) => fav.skinId === skin.id) || false
+        )
+      } else if (autoRandomRaritySkinEnabled) {
+        // Filter to only rarity skins
         availableSkins = availableSkins.filter((skin) => skin.rarity && skin.rarity !== 'kNoRarity')
       }
 

@@ -121,6 +121,10 @@
     "autoRandomRaritySkin": {
       "title": "自动随机稀有度皮肤",
       "description": "检测到英雄时自动选择带有稀有度（史诗、传说等）的随机皮肤"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "自动随机收藏皮肤",
+      "description": "检测到英雄时自动从收藏中选择随机皮肤"
     }
   },
   "errors": {

@@ -62,6 +62,8 @@ const api = {
   isFavorite: (championKey: string, skinId: string) =>
     ipcRenderer.invoke('is-favorite', championKey, skinId),
   getFavorites: () => ipcRenderer.invoke('get-favorites'),
+  getFavoritesByChampion: (championKey: string) =>
+    ipcRenderer.invoke('get-favorites-by-champion', championKey),
 
   // Tools management
   checkToolsExist: () => ipcRenderer.invoke('check-tools-exist'),

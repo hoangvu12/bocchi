@@ -121,6 +121,10 @@
     "autoRandomRaritySkin": {
       "title": "자동 랜덤 희귀도 스킨",
       "description": "챔피언이 감지될 때 희귀도(서사급, 전설급 등)가 있는 랜덤 스킨을 자동으로 선택"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "자동 랜덤 즐겨찾기 스킨",
+      "description": "챔피언이 감지될 때 즐겨찾기에서 랜덤 스킨을 자동으로 선택"
     }
   },
   "errors": {
