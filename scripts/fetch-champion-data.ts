@@ -122,6 +122,54 @@ interface CDragonSkin {
     }>
   }>
   loadScreenVintagePath?: string
+  questSkinInfo?: QuestSkinInfo
+}
+
+interface QuestSkinInfo {
+  name: string
+  productType: string
+  collectionDescription: string
+  descriptionInfo: Array<any>
+  splashPath: string
+  uncenteredSplashPath: string
+  tilePath: string
+  collectionCardPath: string
+  tiers?: Tier[]
+}
+
+interface Tier {
+  id: number
+  name: string
+  stage: number
+  description: string
+  splashPath: string
+  uncenteredSplashPath: string
+  tilePath: string
+  loadScreenPath: string
+  shortName: string
+  splashVideoPath: string | null
+  previewVideoUrl: string | null
+  collectionSplashVideoPath: string | null
+  collectionCardHoverVideoPath: string | null
+  skinAugments?: {
+    borders?: {
+      [key: string]: Array<{
+        contentId: string
+        layer: number
+        priority: number
+        borderPath: string
+      }>
+    }
+    augments?: Array<{
+      contentId: string
+      overlays: Array<{
+        centeredLCOverlayPath: string
+        uncenteredLCOverlayPath: string
+        socialCardLCOverlayPath: string
+        tileLCOverlayPath: string
+      }>
+    }>
+  }
 }
 
 interface CDragonChampion {
@@ -305,6 +353,40 @@ function buildChampionNameLookup(championFolders: string[]): Map<string, string>
   return lookup
 }
 
+function processTieredSkin(skin: CDragonSkin, championId: number, lolSkinsList: any[]): Skin[] {
+  const tiers = skin.questSkinInfo?.tiers
+  if (!tiers || tiers.length === 0) {
+    // If no tiers, return empty array to skip this skin
+    return []
+  }
+
+  // Process each tier as a separate skin
+  return tiers.map((tier) => {
+    const skinNum = Math.floor(tier.id / 1000) === championId ? tier.id % 1000 : 0
+    const skinId = `${championId}_${skinNum}`
+
+    // Don't try to match base skins (num: 0) with lol-skins
+    const match = skinNum === 0 ? null : findBestSkinMatch(tier.name, lolSkinsList)
+
+    // Note: Tiers typically don't have their own chromas, but we preserve the structure
+    return {
+      id: skinId,
+      num: skinNum,
+      name: tier.name,
+      lolSkinsName:
+        match && match.skinInfo.skinName !== tier.name ? match.skinInfo.skinName : undefined,
+      chromas: false, // Tiers usually don't have chromas
+      chromaList: undefined,
+      rarity: skin.rarity || 'kNoRarity',
+      rarityGemPath: getRarityGemPath(skin.rarity || 'kNoRarity'),
+      isLegacy: skin.isLegacy || false,
+      skinType: skin.skinType || '',
+      skinLines: skin.skinLines,
+      description: tier.description
+    }
+  })
+}
+
 async function fetchChampionDetail(
   key: string,
   championBasic: any,
@@ -346,7 +428,14 @@ async function fetchChampionDetail(
     }
 
     // Process skins
-    const skins: Skin[] = detailData.skins.map((skin) => {
+    const skins: Skin[] = detailData.skins.flatMap((skin) => {
+      // Check if this is a tiered skin
+      if (skin.questSkinInfo?.productType === 'kTieredSkin' && skin.questSkinInfo.tiers) {
+        // Process tiered skin
+        return processTieredSkin(skin, championId, lolSkinsList)
+      }
+
+      // Process regular skin
       const skinNum = Math.floor(skin.id / 1000) === championId ? skin.id % 1000 : 0
       const skinId = `${championId}_${skinNum}`
       const skinName = skin.isBase ? detailData.name : skin.name
@@ -433,7 +522,14 @@ async function fetchChampionDetail(
       }
 
       // Process skins
-      const skins: Skin[] = detailData.skins.map((skin) => {
+      const skins: Skin[] = detailData.skins.flatMap((skin) => {
+        // Check if this is a tiered skin
+        if (skin.questSkinInfo?.productType === 'kTieredSkin' && skin.questSkinInfo.tiers) {
+          // Process tiered skin
+          return processTieredSkin(skin, championId, lolSkinsList)
+        }
+
+        // Process regular skin
         const skinNum = Math.floor(skin.id / 1000) === championId ? skin.id % 1000 : 0
         const skinId = `${championId}_${skinNum}`
         const skinName = skin.isBase ? detailData.name : skin.name
