@@ -80,7 +80,8 @@
     "deletedCustomMod": "已删除自定义模组：{{name}}",
     "deletedSkin": "已删除皮肤：{{name}}",
     "failedToDeleteMod": "删除模组失败：{{error}}",
-    "failedToDeleteSkin": "删除皮肤失败：{{error}}"
+    "failedToDeleteSkin": "删除皮肤失败：{{error}}",
+    "autoSelectedSkinsCleanedUp": "已清理 {{count}} 个自动选择的皮肤"
   },
   "tools": {
     "required": "需要 CS:LOL 工具",
@@ -194,7 +195,8 @@
     "manage": "管理",
     "manageDownloaded": "管理已下载的皮肤",
     "downloadedCount": "已下载皮肤 ({{count}})",
-    "allSkins": "所有皮肤"
+    "allSkins": "所有皮肤",
+    "autoSelected": "自动"
   },
   "filters": {
     "title": "筛选和排序",

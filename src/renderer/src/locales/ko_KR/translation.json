@@ -80,7 +80,8 @@
     "deletedCustomMod": "커스텀 모드 삭제됨: {{name}}",
     "deletedSkin": "스킨 삭제됨: {{name}}",
     "failedToDeleteMod": "모드 삭제 실패: {{error}}",
-    "failedToDeleteSkin": "스킨 삭제 실패: {{error}}"
+    "failedToDeleteSkin": "스킨 삭제 실패: {{error}}",
+    "autoSelectedSkinsCleanedUp": "자동 선택된 스킨 {{count}}개 정리됨"
   },
   "tools": {
     "required": "CS:LOL 도구 필요",
@@ -194,7 +195,8 @@
     "manage": "관리",
     "manageDownloaded": "다운로드된 스킨 관리",
     "downloadedCount": "다운로드된 스킨 ({{count}})",
-    "allSkins": "모든 스킨"
+    "allSkins": "모든 스킨",
+    "autoSelected": "자동"
   },
   "filters": {
     "title": "필터 및 정렬",

@@ -213,8 +213,20 @@ function AppContent(): React.JSX.Element {
       const randomIndex = Math.floor(Math.random() * availableSkins.length)
       const randomSkin = availableSkins[randomIndex]
 
-      // Add the skin using handleSkinClick
-      handleSkinClick(champion, randomSkin)
+      // Add the auto-selected skin
+      const newSelectedSkin = {
+        championKey: champion.key,
+        championName: champion.name,
+        skinId: randomSkin.id,
+        skinName: randomSkin.name,
+        skinNameEn: randomSkin.nameEn,
+        lolSkinsName: randomSkin.lolSkinsName,
+        skinNum: randomSkin.num,
+        chromaId: undefined,
+        isDownloaded: false,
+        isAutoSelected: true
+      }
+      setSelectedSkins((prev) => [...prev, newSelectedSkin])
     }
   })
 
@@ -324,7 +336,8 @@ function AppContent(): React.JSX.Element {
           lolSkinsName: skin.lolSkinsName,
           skinNum: skin.num,
           chromaId: chromaId,
-          isDownloaded: false
+          isDownloaded: false,
+          isAutoSelected: false
         }
         setSelectedSkins((prev) => [...prev, newSelectedSkin])
       }

@@ -122,8 +122,32 @@ export function useSkinManagement() {
         await new Promise((resolve) => setTimeout(resolve, 500))
       }
 
+      // Filter skins based on auto-selected priority
+      // If a champion has both manual and auto-selected skins, only use the auto-selected one
+      const skinsByChampion = new Map<string, typeof selectedSkins>()
+
+      for (const skin of selectedSkins) {
+        const existing = skinsByChampion.get(skin.championKey) || []
+        skinsByChampion.set(skin.championKey, [...existing, skin])
+      }
+
+      let prioritizedSkins = selectedSkins
+
+      // Apply priority filtering
+      for (const [championKey, skins] of skinsByChampion) {
+        if (skins.length > 1) {
+          const autoSelectedSkin = skins.find((s) => s.isAutoSelected)
+          if (autoSelectedSkin) {
+            // Remove all skins for this champion except the auto-selected one
+            prioritizedSkins = prioritizedSkins.filter(
+              (s) => s.championKey !== championKey || s === autoSelectedSkin
+            )
+          }
+        }
+      }
+
       // Determine which skins to apply based on smart apply settings
-      let skinsToApply = selectedSkins
+      let skinsToApply = prioritizedSkins
       let isUsingSmartApply = false
 
       // Check if we should filter skins for smart apply

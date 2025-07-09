@@ -80,7 +80,8 @@
     "deletedCustomMod": "Đã xóa mod tùy chỉnh: {{name}}",
     "deletedSkin": "Đã xóa trang phục: {{name}}",
     "failedToDeleteMod": "Không thể xóa mod: {{error}}",
-    "failedToDeleteSkin": "Không thể xóa trang phục: {{error}}"
+    "failedToDeleteSkin": "Không thể xóa trang phục: {{error}}",
+    "autoSelectedSkinsCleanedUp": "Đã dọn dẹp {{count}} trang phục được chọn tự động"
   },
   "tools": {
     "required": "Cần Công Cụ CS:LOL",
@@ -185,7 +186,8 @@
     "manage": "Quản lý",
     "manageDownloaded": "Quản lý trang phục đã tải",
     "downloadedCount": "Trang phục đã tải ({{count}})",
-    "allSkins": "Tất cả trang phục"
+    "allSkins": "Tất cả trang phục",
+    "autoSelected": "Tự động"
   },
   "filters": {
     "title": "Bộ lọc & Sắp xếp",

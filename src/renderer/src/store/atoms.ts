@@ -34,6 +34,7 @@ export interface SelectedSkin {
   skinNum: number
   chromaId?: string
   isDownloaded?: boolean
+  isAutoSelected?: boolean
 }
 
 // Auto-synced skin from P2P room member

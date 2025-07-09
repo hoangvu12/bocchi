@@ -80,7 +80,8 @@
     "deletedCustomMod": "Удален пользовательский мод: {{name}}",
     "deletedSkin": "Удален скин: {{name}}",
     "failedToDeleteMod": "Не удалось удалить мод: {{error}}",
-    "failedToDeleteSkin": "Не удалось удалить скин: {{error}}"
+    "failedToDeleteSkin": "Не удалось удалить скин: {{error}}",
+    "autoSelectedSkinsCleanedUp": "Очищено {{count}} автоматически выбранных скинов"
   },
   "tools": {
     "required": "Требуются инструменты CS:LOL",
@@ -194,7 +195,8 @@
     "manage": "Управление",
     "manageDownloaded": "Управление скачанными скинами",
     "downloadedCount": "Скачанные скины ({{count}})",
-    "allSkins": "Все скины"
+    "allSkins": "Все скины",
+    "autoSelected": "Авто"
   },
   "filters": {
     "title": "Фильтры и сортировка",

@@ -81,7 +81,8 @@
     "deletedCustomMod": "Deleted custom mod: {{name}}",
     "deletedSkin": "Deleted skin: {{name}}",
     "failedToDeleteMod": "Failed to delete mod: {{error}}",
-    "failedToDeleteSkin": "Failed to delete skin: {{error}}"
+    "failedToDeleteSkin": "Failed to delete skin: {{error}}",
+    "autoSelectedSkinsCleanedUp": "Cleaned up {{count}} auto-selected skins"
   },
   "tools": {
     "required": "CS:LOL Tools Required",
@@ -189,7 +190,8 @@
     "manage": "Manage",
     "manageDownloaded": "Manage downloaded skins",
     "downloadedCount": "Downloaded Skins ({{count}})",
-    "allSkins": "All Skins"
+    "allSkins": "All Skins",
+    "autoSelected": "Auto"
   },
   "filters": {
     "title": "Filters & Sort",

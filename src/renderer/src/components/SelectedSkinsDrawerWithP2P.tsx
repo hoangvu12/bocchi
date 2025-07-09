@@ -531,7 +531,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                               className="w-full h-full object-cover"
                             />
                             {!isDownloaded && (
-                              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                              <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
                                 <div className="text-[10px] text-white bg-black/75 px-1.5 py-0.5 rounded text-center">
                                   {t('skins.notDownloaded').split(' ')[0]}
                                   <br />
@@ -539,8 +539,13 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                                 </div>
                               </div>
                             )}
+                            {skin.isAutoSelected && (
+                              <div className="absolute top-0.5 left-0.5 bg-purple-600 text-white rounded px-1 py-0.5 text-[10px] font-medium shadow-sm z-20">
+                                {t('skins.autoSelected')}
+                              </div>
+                            )}
                             {isAutoSynced && (
-                              <div className="absolute top-1 left-1 bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                              <div className="absolute top-1 right-1 bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full flex items-center gap-1 z-20">
                                 <svg
                                   className="w-2.5 h-2.5"
                                   fill="currentColor"
@@ -548,7 +553,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                                 >
                                   <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
                                 </svg>
-                                Auto
+                                Sync
                               </div>
                             )}
                             {!isAutoSynced && (

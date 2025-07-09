@@ -80,7 +80,8 @@
     "deletedCustomMod": "カスタムMODを削除しました: {{name}}",
     "deletedSkin": "スキンを削除しました: {{name}}",
     "failedToDeleteMod": "MODの削除に失敗しました: {{error}}",
-    "failedToDeleteSkin": "スキンの削除に失敗しました: {{error}}"
+    "failedToDeleteSkin": "スキンの削除に失敗しました: {{error}}",
+    "autoSelectedSkinsCleanedUp": "自動選択されたスキン{{count}}個をクリーンアップしました"
   },
   "tools": {
     "required": "CS:LOLツールが必要です",
@@ -194,7 +195,8 @@
     "manage": "管理",
     "manageDownloaded": "ダウンロード済みスキンを管理",
     "downloadedCount": "ダウンロード済みスキン ({{count}})",
-    "allSkins": "すべてのスキン"
+    "allSkins": "すべてのスキン",
+    "autoSelected": "自動"
   },
   "filters": {
     "title": "フィルターと並び替え",

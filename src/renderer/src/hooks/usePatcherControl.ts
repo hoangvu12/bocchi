@@ -6,12 +6,16 @@ import {
   statusMessageAtom,
   loadingStatesAtom
 } from '../store/atoms/game.atoms'
+import { selectedSkinsAtom } from '../store/atoms'
+import { downloadedSkinsAtom } from '../store/atoms/skin.atoms'
 
 export function usePatcherControl() {
   const { t } = useTranslation()
   const [isPatcherRunning, setIsPatcherRunning] = useAtom(isPatcherRunningAtom)
   const setStatusMessage = useSetAtom(statusMessageAtom)
   const [loadingStates, setLoadingStates] = useAtom(loadingStatesAtom)
+  const [selectedSkins, setSelectedSkins] = useAtom(selectedSkinsAtom)
+  const [downloadedSkins, setDownloadedSkins] = useAtom(downloadedSkinsAtom)
 
   const checkPatcherStatus = useCallback(async () => {
     const isRunning = await window.api.isPatcherRunning()
@@ -54,7 +58,11 @@ export function usePatcherControl() {
       // Post-game phases where we should stop the patcher
       const postGamePhases = ['WaitingForStats', 'PreEndOfGame', 'EndOfGame', 'Lobby']
 
-      if (postGamePhases.includes(data.phase)) {
+      // Check if we're leaving champion select without entering game
+      const leavingChampSelect =
+        data.previousPhase === 'ChampSelect' && !['InGame', 'GameStart'].includes(data.phase)
+
+      if (postGamePhases.includes(data.phase) || leavingChampSelect) {
         const autoApplyEnabled = await window.api.getSettings('autoApplyEnabled')
 
         if (autoApplyEnabled !== false) {
@@ -64,13 +72,70 @@ export function usePatcherControl() {
             await stopPatcher()
           }
         }
+
+        // Clean up auto-selected skins after game ends or when leaving champ select
+        const autoRandomRaritySkinEnabled = await window.api.getSettings(
+          'autoRandomRaritySkinEnabled'
+        )
+        if (
+          autoRandomRaritySkinEnabled &&
+          (postGamePhases.includes(data.phase) || leavingChampSelect)
+        ) {
+          const autoSelectedSkins = selectedSkins.filter((skin) => skin.isAutoSelected)
+
+          if (autoSelectedSkins.length > 0) {
+            console.log('[Patcher] Cleaning up auto-selected skins:', autoSelectedSkins.length)
+
+            // Remove auto-selected skins from the selection
+            setSelectedSkins((prev) => prev.filter((skin) => !skin.isAutoSelected))
+
+            // Delete downloaded files for auto-selected skins
+            for (const skin of autoSelectedSkins) {
+              if (skin.championKey !== 'Custom') {
+                // Find the downloaded skin file
+                const downloadedSkin = downloadedSkins.find(
+                  (ds) =>
+                    ds.championName === skin.championKey &&
+                    (ds.skinName.includes(skin.skinNameEn || skin.skinName) ||
+                      ds.skinName.includes(skin.lolSkinsName || skin.skinName))
+                )
+
+                if (downloadedSkin) {
+                  console.log(
+                    '[Patcher] Deleting auto-selected skin file:',
+                    downloadedSkin.skinName
+                  )
+                  await window.api.deleteSkin(downloadedSkin.championName, downloadedSkin.skinName)
+                }
+              }
+            }
+
+            // Reload downloaded skins list
+            const result = await window.api.listDownloadedSkins()
+            if (result.success && result.skins) {
+              setDownloadedSkins(result.skins)
+            }
+
+            setStatusMessage(
+              t('status.autoSelectedSkinsCleanedUp', { count: autoSelectedSkins.length })
+            )
+          }
+        }
       }
     })
 
     return () => {
       unsubscribePhase()
     }
-  }, [stopPatcher])
+  }, [
+    stopPatcher,
+    selectedSkins,
+    setSelectedSkins,
+    downloadedSkins,
+    setDownloadedSkins,
+    setStatusMessage,
+    t
+  ])
 
   return {
     isPatcherRunning,

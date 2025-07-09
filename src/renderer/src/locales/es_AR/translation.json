@@ -80,7 +80,8 @@
     "deletedCustomMod": "Mod personalizado eliminado: {{name}}",
     "deletedSkin": "Skin eliminado: {{name}}",
     "failedToDeleteMod": "Error al eliminar mod: {{error}}",
-    "failedToDeleteSkin": "Error al eliminar skin: {{error}}"
+    "failedToDeleteSkin": "Error al eliminar skin: {{error}}",
+    "autoSelectedSkinsCleanedUp": "Se limpiaron {{count}} skins seleccionados automáticamente"
   },
   "tools": {
     "required": "Se requieren herramientas CS:LOL",
@@ -194,7 +195,8 @@
     "manage": "Administrar",
     "manageDownloaded": "Administrar skins descargados",
     "downloadedCount": "Skins descargados ({{count}})",
-    "allSkins": "Todos los skins"
+    "allSkins": "Todos los skins",
+    "autoSelected": "Auto"
   },
   "filters": {
     "title": "Filtros y ordenamiento",
