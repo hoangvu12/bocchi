@@ -46,6 +46,7 @@ export function SettingsDialog({
   const [autoRandomSkinEnabled, setAutoRandomSkinEnabled] = useState(false)
   const [autoRandomRaritySkinEnabled, setAutoRandomRaritySkinEnabled] = useState(false)
   const [autoRandomFavoriteSkinEnabled, setAutoRandomFavoriteSkinEnabled] = useState(false)
+  const [allowMultipleSkinsPerChampion, setAllowMultipleSkinsPerChampion] = useState(false)
   const [loading, setLoading] = useState(true)
 
   // Atom setters for immediate updates
@@ -75,6 +76,7 @@ export function SettingsDialog({
       setAutoRandomSkinEnabled(settings.autoRandomSkinEnabled === true)
       setAutoRandomRaritySkinEnabled(settings.autoRandomRaritySkinEnabled === true)
       setAutoRandomFavoriteSkinEnabled(settings.autoRandomFavoriteSkinEnabled === true)
+      setAllowMultipleSkinsPerChampion(settings.allowMultipleSkinsPerChampion === true)
     } catch (error) {
       console.error('Failed to load settings:', error)
     } finally {
@@ -248,6 +250,15 @@ export function SettingsDialog({
       }
     } catch (error) {
       console.error('Failed to save auto random favorite skin setting:', error)
+    }
+  }
+
+  const handleAllowMultipleSkinsPerChampionChange = async (checked: boolean) => {
+    setAllowMultipleSkinsPerChampion(checked)
+    try {
+      await window.api.setSettings('allowMultipleSkinsPerChampion', checked)
+    } catch (error) {
+      console.error('Failed to save allow multiple skins per champion setting:', error)
     }
   }
 
@@ -431,6 +442,23 @@ export function SettingsDialog({
               checked={autoApplyEnabled}
               onCheckedChange={handleAutoApplyChange}
               disabled={loading || !leagueClientEnabled}
+            />
+          </div>
+
+          {/* Allow Multiple Skins Per Champion Setting */}
+          <div className="flex items-center justify-between space-x-4">
+            <div className="flex-1">
+              <h3 className="text-sm font-medium text-text-primary">
+                {t('settings.allowMultipleSkinsPerChampion.title')}
+              </h3>
+              <p className="text-xs text-text-secondary mt-1">
+                {t('settings.allowMultipleSkinsPerChampion.description')}
+              </p>
+            </div>
+            <Switch
+              checked={allowMultipleSkinsPerChampion}
+              onCheckedChange={handleAllowMultipleSkinsPerChampionChange}
+              disabled={loading}
             />
           </div>
         </div>

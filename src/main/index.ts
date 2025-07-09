@@ -322,17 +322,20 @@ function setupIpcHandlers(): void {
       })
 
       // Validate for single skin per champion (after filtering)
-      const championCounts = new Map<string, number>()
-      for (const skinKey of filteredSkins) {
-        const champion = skinKey.split('/')[0]
-        championCounts.set(champion, (championCounts.get(champion) || 0) + 1)
-      }
+      const allowMultipleSkinsPerChampion = settingsService.get('allowMultipleSkinsPerChampion')
+      if (!allowMultipleSkinsPerChampion) {
+        const championCounts = new Map<string, number>()
+        for (const skinKey of filteredSkins) {
+          const champion = skinKey.split('/')[0]
+          championCounts.set(champion, (championCounts.get(champion) || 0) + 1)
+        }
 
-      for (const [champion, count] of championCounts.entries()) {
-        if (count > 1 && champion !== 'Custom') {
-          return {
-            success: false,
-            message: `Conflict: Only one skin per champion can be injected. You have selected ${count} skins for ${champion}.`
+        for (const [champion, count] of championCounts.entries()) {
+          if (count > 1 && champion !== 'Custom') {
+            return {
+              success: false,
+              message: `Conflict: Only one skin per champion can be injected. You have selected ${count} skins for ${champion}.`
+            }
           }
         }
       }

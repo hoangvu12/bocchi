@@ -125,6 +125,10 @@
     "autoRandomFavoriteSkin": {
       "title": "Skin favorito aleatorio automático",
       "description": "Seleccionar automáticamente un skin aleatorio de tus favoritos cuando se detecta un campeón"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "Permitir múltiples skins por campeón",
+      "description": "Habilitar para usar múltiples skins para el mismo campeón simultáneamente"
     }
   },
   "errors": {

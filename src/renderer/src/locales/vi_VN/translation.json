@@ -127,6 +127,10 @@
     "autoRandomFavoriteSkin": {
       "title": "Tự động chọn skin yêu thích ngẫu nhiên",
       "description": "Tự động chọn một skin ngẫu nhiên từ danh sách yêu thích của bạn khi phát hiện tướng"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "Cho phép nhiều skin cho mỗi tướng",
+      "description": "Bật để sử dụng nhiều skin cho cùng một tướng đồng thời"
     }
   },
   "fileUpload": {

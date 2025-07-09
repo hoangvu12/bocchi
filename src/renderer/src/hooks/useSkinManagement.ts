@@ -124,24 +124,29 @@ export function useSkinManagement() {
 
       // Filter skins based on auto-selected priority
       // If a champion has both manual and auto-selected skins, only use the auto-selected one
-      const skinsByChampion = new Map<string, typeof selectedSkins>()
-
-      for (const skin of selectedSkins) {
-        const existing = skinsByChampion.get(skin.championKey) || []
-        skinsByChampion.set(skin.championKey, [...existing, skin])
-      }
-
+      const allowMultipleSkinsPerChampion = await window.api.getSettings(
+        'allowMultipleSkinsPerChampion'
+      )
       let prioritizedSkins = selectedSkins
 
-      // Apply priority filtering
-      for (const [championKey, skins] of skinsByChampion) {
-        if (skins.length > 1) {
-          const autoSelectedSkin = skins.find((s) => s.isAutoSelected)
-          if (autoSelectedSkin) {
-            // Remove all skins for this champion except the auto-selected one
-            prioritizedSkins = prioritizedSkins.filter(
-              (s) => s.championKey !== championKey || s === autoSelectedSkin
-            )
+      if (!allowMultipleSkinsPerChampion) {
+        const skinsByChampion = new Map<string, typeof selectedSkins>()
+
+        for (const skin of selectedSkins) {
+          const existing = skinsByChampion.get(skin.championKey) || []
+          skinsByChampion.set(skin.championKey, [...existing, skin])
+        }
+
+        // Apply priority filtering
+        for (const [championKey, skins] of skinsByChampion) {
+          if (skins.length > 1) {
+            const autoSelectedSkin = skins.find((s) => s.isAutoSelected)
+            if (autoSelectedSkin) {
+              // Remove all skins for this champion except the auto-selected one
+              prioritizedSkins = prioritizedSkins.filter(
+                (s) => s.championKey !== championKey || s === autoSelectedSkin
+              )
+            }
           }
         }
       }

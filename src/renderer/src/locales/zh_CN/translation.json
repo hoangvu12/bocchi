@@ -125,6 +125,10 @@
     "autoRandomFavoriteSkin": {
       "title": "自动随机收藏皮肤",
       "description": "检测到英雄时自动从收藏中选择随机皮肤"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "允许每个英雄使用多个皮肤",
+      "description": "启用后可同时为同一英雄使用多个皮肤"
     }
   },
   "errors": {
