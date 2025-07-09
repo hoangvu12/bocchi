@@ -372,10 +372,70 @@ function AppContent(): React.JSX.Element {
 
   // Apply filters and sort
   const applyFiltersAndSort = (skins: Array<{ champion: Champion; skin: Skin }>) => {
-    const filtered = [...skins]
+    let filtered = [...skins]
 
-    // Apply filters...
-    // This is simplified - you can add the full filtering logic here
+    // Apply download status filter
+    if (filters.downloadStatus !== 'all') {
+      filtered = filtered.filter(({ champion, skin }) => {
+        const skinFileName = `${skin.nameEn || skin.name}.zip`.replace(/:/g, '')
+        const isDownloaded = downloadedSkins.some(
+          (ds) => ds.championName === champion.key && ds.skinName === skinFileName
+        )
+
+        if (filters.downloadStatus === 'downloaded') {
+          return isDownloaded
+        } else {
+          return !isDownloaded
+        }
+      })
+    }
+
+    // Apply chroma status filter
+    if (filters.chromaStatus !== 'all') {
+      filtered = filtered.filter(({ skin }) => {
+        const hasChromas = skin.chromas && skin.chromaList && skin.chromaList.length > 0
+
+        if (filters.chromaStatus === 'has-chromas') {
+          return hasChromas
+        } else {
+          return !hasChromas
+        }
+      })
+    }
+
+    // Apply rarity filter
+    if (filters.rarity !== 'all') {
+      filtered = filtered.filter(({ skin }) => {
+        return skin.rarity === filters.rarity
+      })
+    }
+
+    // Apply champion tag filter
+    if (filters.championTags.length > 0) {
+      filtered = filtered.filter(({ champion }) => {
+        return filters.championTags.some((tag) => champion.tags.includes(tag))
+      })
+    }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      switch (filters.sortBy) {
+        case 'name-asc':
+          return (a.skin.nameEn || a.skin.name).localeCompare(b.skin.nameEn || b.skin.name)
+        case 'name-desc':
+          return (b.skin.nameEn || b.skin.name).localeCompare(a.skin.nameEn || a.skin.name)
+        case 'skin-asc':
+          return a.skin.num - b.skin.num
+        case 'skin-desc':
+          return b.skin.num - a.skin.num
+        case 'champion':
+          return (a.champion.nameEn || a.champion.name).localeCompare(
+            b.champion.nameEn || b.champion.name
+          )
+        default:
+          return 0
+      }
+    })
 
     return filtered
   }
