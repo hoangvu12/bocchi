@@ -17,7 +17,6 @@ interface ChampionSelectDialogProps {
 
 export function ChampionSelectDialog({
   champion,
-  isLocked,
   onViewSkins,
   onClose,
   championData,
@@ -87,9 +86,7 @@ export function ChampionSelectDialog({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[500px] bg-surface border-border">
         <DialogHeader className="pb-4">
-          <DialogTitle className="text-xl font-semibold">
-            {isLocked ? t('lcu.championLocked') : t('lcu.championHovered')}
-          </DialogTitle>
+          <DialogTitle className="text-xl font-semibold">{t('lcu.championLocked')}</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4 py-2">
           <div className="flex items-center gap-4">
@@ -104,9 +101,7 @@ export function ChampionSelectDialog({
             </div>
           </div>
           <p className="text-sm text-text-secondary">
-            {isLocked
-              ? t('lcu.championLockedDescription', { champion: champion.name })
-              : t('lcu.championHoveredDescription', { champion: champion.name })}
+            {t('lcu.championLockedDescription', { champion: champion.name })}
           </p>
         </div>
         <DialogFooter className="flex flex-row gap-3 pt-4">

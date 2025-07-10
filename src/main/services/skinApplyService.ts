@@ -29,31 +29,17 @@ export class SkinApplyService {
     selectedSkins: SelectedSkin[],
     teamChampionIds: number[]
   ): Promise<FilteredSkins> {
-    console.log('[SkinApplyService] Filtering skins for team champion IDs:', teamChampionIds)
-    console.log(
-      '[SkinApplyService] Selected skins to filter:',
-      selectedSkins.map((s) => ({
-        championKey: s.championKey,
-        skinName: s.skinName
-      }))
-    )
-
     const teamSkins: SelectedSkin[] = []
     const customMods: SelectedSkin[] = []
     const filteredOut: SelectedSkin[] = []
 
     // Get champion key mapping
     const championKeyMap = await this.getChampionKeyMap()
-    console.log(
-      '[SkinApplyService] Champion key map sample:',
-      Object.entries(championKeyMap).slice(0, 5)
-    )
 
     // Convert team champion IDs to keys
     const teamChampionKeys = new Set(
       teamChampionIds.map((id) => championKeyMap[id]).filter((key) => key !== undefined)
     )
-    console.log('[SkinApplyService] Team champion keys:', Array.from(teamChampionKeys))
 
     // Track which champions already have skins to prevent duplicates
     const championSkinMap = new Map<string, SelectedSkin>()
@@ -62,7 +48,6 @@ export class SkinApplyService {
     for (const skin of selectedSkins) {
       if (skin.championKey === 'Custom') {
         // Always include custom mods
-        console.log('[SkinApplyService] Including custom mod:', skin.skinName)
         customMods.push(skin)
       } else if (teamChampionKeys.has(skin.championKey)) {
         // Check if we already have a skin for this champion
@@ -70,7 +55,6 @@ export class SkinApplyService {
 
         if (!existingSkin) {
           // First skin for this champion, add it
-          console.log('[SkinApplyService] Including team skin:', skin.championKey, skin.skinName)
           teamSkins.push(skin)
           championSkinMap.set(skin.championKey, skin)
         } else {
@@ -86,19 +70,9 @@ export class SkinApplyService {
             if (index !== -1) {
               teamSkins[index] = skin
               championSkinMap.set(skin.championKey, skin)
-              console.log(
-                '[SkinApplyService] Replacing auto-synced skin with manual selection:',
-                skin.championKey,
-                skin.skinName
-              )
             }
           } else if (isAutoSynced && !existingIsAutoSynced) {
             // Keep the manual selection, skip auto-synced
-            console.log(
-              '[SkinApplyService] Skipping auto-synced skin, manual selection exists:',
-              skin.championKey,
-              skin.skinName
-            )
             filteredOut.push(skin)
           } else {
             // Both are same type (both manual or both auto), keep first one
@@ -112,16 +86,9 @@ export class SkinApplyService {
         }
       } else {
         // Track what was filtered out
-        console.log('[SkinApplyService] Filtering out:', skin.championKey, skin.skinName)
         filteredOut.push(skin)
       }
     }
-
-    console.log('[SkinApplyService] Filter results:', {
-      teamSkins: teamSkins.length,
-      customMods: customMods.length,
-      filteredOut: filteredOut.length
-    })
 
     return {
       teamSkins,

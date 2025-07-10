@@ -14,6 +14,7 @@ interface ChampSelectSession {
   actions: Array<
     Array<{
       id: number
+      actorCellId: number
       type: string
       championId: number
       completed: boolean
@@ -24,7 +25,7 @@ interface ChampSelectSession {
 
 export class GameflowMonitor extends EventEmitter {
   private currentPhase: string = 'None'
-  private lastSelectedChampionId: number | null = null
+  private lastLockedChampionId: number | null = null
   private monitoringActive: boolean = false
   private sessionCheckInterval: NodeJS.Timeout | null = null
 
@@ -54,7 +55,7 @@ export class GameflowMonitor extends EventEmitter {
 
     // Reset state
     this.currentPhase = 'None'
-    this.lastSelectedChampionId = null
+    this.lastLockedChampionId = null
   }
 
   private setupEventListeners(): void {
@@ -77,7 +78,7 @@ export class GameflowMonitor extends EventEmitter {
 
     lcuConnector.on('disconnected', () => {
       this.currentPhase = 'None'
-      this.lastSelectedChampionId = null
+      this.lastLockedChampionId = null
       this.stopSessionMonitoring()
     })
   }
@@ -92,7 +93,7 @@ export class GameflowMonitor extends EventEmitter {
       this.startChampSelectMonitoring()
     } else {
       this.stopSessionMonitoring()
-      this.lastSelectedChampionId = null
+      this.lastLockedChampionId = null
     }
   }
 
@@ -137,21 +138,37 @@ export class GameflowMonitor extends EventEmitter {
       return
     }
 
-    // Check for champion selection (either locked or intent)
-    const selectedChampionId = localPlayer.championId || localPlayer.championPickIntent
+    const currentChampionId = localPlayer.championId || localPlayer.championPickIntent
 
-    if (selectedChampionId && selectedChampionId !== this.lastSelectedChampionId) {
-      this.lastSelectedChampionId = selectedChampionId
+    if (currentChampionId) {
+      // Check if this champion is actually locked by checking the actions
+      let isActuallyLocked = false
 
-      const isLocked = !!localPlayer.championId
-      const isHover = !localPlayer.championId && !!localPlayer.championPickIntent
+      if (session.actions && localPlayer.championId) {
+        const allActions = session.actions.flat()
+        const localPlayerPickAction = allActions.find(
+          (action) =>
+            action.actorCellId === session.localPlayerCellId &&
+            action.type === 'pick' &&
+            action.championId === localPlayer.championId
+        )
 
-      this.emit('champion-selected', {
-        championId: selectedChampionId,
-        isLocked: isLocked,
-        isHover: isHover,
-        session: session
-      })
+        if (localPlayerPickAction) {
+          isActuallyLocked = localPlayerPickAction.completed
+        }
+      }
+
+      // Check if this is a newly locked champion
+      if (isActuallyLocked && localPlayer.championId !== this.lastLockedChampionId) {
+        this.lastLockedChampionId = localPlayer.championId
+
+        this.emit('champion-selected', {
+          championId: localPlayer.championId,
+          isLocked: true,
+          isHover: false,
+          session: session
+        })
+      }
     }
   }
 
