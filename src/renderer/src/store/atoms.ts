@@ -48,6 +48,16 @@ export interface AutoSyncedSkin extends SelectedSkin {
 
 export const selectedSkinsAtom = atomWithStorage<SelectedSkin[]>('cslol-selected-skins', [])
 
+// Track pre-downloaded auto-selected skins for cleanup
+export interface PreDownloadedAutoSkin {
+  championKey: string
+  championName: string // For file system operations
+  skinFileName: string // The actual file name on disk
+  downloadUrl: string
+}
+
+export const preDownloadedAutoSkinAtom = atom<PreDownloadedAutoSkin | null>(null)
+
 // Temporary auto-synced skins from room members (not persisted)
 // Key: peerId, Value: their auto-synced skins
 export const autoSyncedSkinsAtom = atom<Map<string, AutoSyncedSkin[]>>(new Map())

@@ -27,6 +27,9 @@ import { LocaleProvider } from './contexts/LocaleContextProvider'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { P2PProvider } from './contexts/P2PContext'
 
+// Utils
+import { getChampionDisplayName } from './utils/championUtils'
+
 // Hooks
 import { useGameDetection } from './hooks/useGameDetection'
 import { useChampionData } from './hooks/useChampionData'
@@ -46,6 +49,7 @@ import {
   isLoadingAtom,
   showUpdateDialogAtom
 } from './store/atoms/game.atoms'
+import { preDownloadedAutoSkinAtom } from './store/atoms'
 import { showChampionDataUpdateAtom, selectedChampionAtom } from './store/atoms/champion.atoms'
 import {
   isDraggingAtom,
@@ -69,9 +73,6 @@ import {
   viewModeAtom,
   championColumnCollapsedAtom
 } from './store/atoms'
-
-// Utils
-import { getChampionDisplayName } from './utils/championUtils'
 
 // Types
 export interface Champion {
@@ -142,6 +143,7 @@ function AppContent(): React.JSX.Element {
   const [selectedChampionKey, setSelectedChampionKey] = useAtom(selectedChampionKeyAtom)
   const [championColumnCollapsed, setChampionColumnCollapsed] = useAtom(championColumnCollapsedAtom)
   const setStatusMessage = useSetAtom(statusMessageAtom)
+  const [preDownloadedAutoSkin, setPreDownloadedAutoSkin] = useAtom(preDownloadedAutoSkinAtom)
 
   // Hooks
   const { gamePath } = useGameDetection()
@@ -250,6 +252,22 @@ function AppContent(): React.JSX.Element {
         isAutoSelected: true
       }
 
+      // Clean up previous auto-selected skin if it exists
+      if (preDownloadedAutoSkin) {
+        try {
+          // Delete the previously downloaded auto-selected skin from disk
+          await window.api.deleteSkin(
+            preDownloadedAutoSkin.championName,
+            preDownloadedAutoSkin.skinFileName
+          )
+          console.log(
+            `Deleted previous auto-selected skin: ${preDownloadedAutoSkin.championName}/${preDownloadedAutoSkin.skinFileName}`
+          )
+        } catch (error) {
+          console.error('Failed to delete previous auto-selected skin:', error)
+        }
+      }
+
       // Remove previous auto-selected skins and add the new one
       setSelectedSkins((prev) => {
         // Filter out any existing auto-selected skins
@@ -257,6 +275,65 @@ function AppContent(): React.JSX.Element {
         // Add the new auto-selected skin
         return [...filteredSkins, newSelectedSkin]
       })
+
+      // Pre-download the auto-selected skin in the background
+      const downloadName = (
+        randomSkin.lolSkinsName ||
+        randomSkin.nameEn ||
+        randomSkin.name
+      ).replace(/:/g, '')
+      const skinFileName = `${downloadName}.zip`
+      const championNameForUrl = getChampionDisplayName(champion)
+      const githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(
+        skinFileName
+      )}`
+
+      // Update tracking for the new auto-selected skin
+      setPreDownloadedAutoSkin({
+        championKey: champion.key,
+        championName: champion.key, // Use key for file system operations
+        skinFileName,
+        downloadUrl: githubUrl
+      })
+
+      // Check if already downloaded
+      const downloadedSkinsResult = await window.api.listDownloadedSkins()
+      if (downloadedSkinsResult.success) {
+        const isAlreadyDownloaded = downloadedSkinsResult.skins?.some(
+          (ds) => ds.championName === champion.key && ds.skinName === skinFileName
+        )
+
+        if (!isAlreadyDownloaded) {
+          // Download in the background
+          console.log(`Pre-downloading auto-selected skin: ${champion.name} - ${randomSkin.name}`)
+          window.api.downloadSkin(githubUrl).then((result) => {
+            if (result.success) {
+              console.log(`Successfully pre-downloaded: ${randomSkin.name}`)
+              // Update the skin's download status
+              setSelectedSkins((prev) =>
+                prev.map((skin) =>
+                  skin.skinId === randomSkin.id && skin.isAutoSelected
+                    ? { ...skin, isDownloaded: true }
+                    : skin
+                )
+              )
+              // Reload downloaded skins list
+              loadDownloadedSkins()
+            } else {
+              console.error(`Failed to pre-download skin: ${result.error}`)
+            }
+          })
+        } else {
+          // Skin is already downloaded, update the status
+          setSelectedSkins((prev) =>
+            prev.map((skin) =>
+              skin.skinId === randomSkin.id && skin.isAutoSelected
+                ? { ...skin, isDownloaded: true }
+                : skin
+            )
+          )
+        }
+      }
     }
   })
 
@@ -267,6 +344,14 @@ function AppContent(): React.JSX.Element {
       clearSelectedChampion()
     }
   }, [lcuSelectedChampion, autoViewSkinsEnabled, onChampionNavigate, clearSelectedChampion])
+
+  // Clean up auto-selected skins when leaving champion select or disabling auto-selection
+  useEffect(() => {
+    return () => {
+      // Cleanup when component unmounts
+      // Note: We don't delete the downloaded file here since the user might want to use it later
+    }
+  }, [])
 
   // Drag and drop handlers
   useEffect(() => {
