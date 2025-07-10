@@ -249,7 +249,14 @@ function AppContent(): React.JSX.Element {
         isDownloaded: false,
         isAutoSelected: true
       }
-      setSelectedSkins((prev) => [...prev, newSelectedSkin])
+
+      // Remove previous auto-selected skins and add the new one
+      setSelectedSkins((prev) => {
+        // Filter out any existing auto-selected skins
+        const filteredSkins = prev.filter((skin) => !skin.isAutoSelected)
+        // Add the new auto-selected skin
+        return [...filteredSkins, newSelectedSkin]
+      })
     }
   })
 
