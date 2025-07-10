@@ -30,6 +30,12 @@ export class GameDetector {
       }
     }
 
+    // Try RiotClientInstalls.json
+    const riotInstallsPath = await this.detectFromRiotClientInstalls()
+    if (riotInstallsPath) {
+      return riotInstallsPath
+    }
+
     // Try multiple methods to find running process
     // Method 1: Try LeagueClientUx.exe (more reliable)
     try {
@@ -142,6 +148,56 @@ export class GameDetector {
     }
 
     return null
+  }
+
+  private async detectFromRiotClientInstalls(): Promise<string | null> {
+    try {
+      const riotInstallsPath = 'C:\\ProgramData\\Riot Games\\RiotClientInstalls.json'
+
+      // Check if file exists
+      try {
+        await fs.access(riotInstallsPath)
+      } catch {
+        // File doesn't exist, return null
+        return null
+      }
+
+      // Read and parse the JSON file
+      const fileContent = await fs.readFile(riotInstallsPath, 'utf-8')
+      const data = JSON.parse(fileContent)
+
+      // Check if associated_client exists
+      if (!data.associated_client || typeof data.associated_client !== 'object') {
+        return null
+      }
+
+      // Look for League of Legends path in associated_client
+      for (const [installPath] of Object.entries(data.associated_client)) {
+        // Check if this is a League of Legends installation
+        if (installPath.toLowerCase().includes('league of legends')) {
+          // Normalize the path (convert forward slashes to backslashes)
+          let normalizedPath = installPath.replace(/\//g, '\\')
+
+          // Remove trailing slash if present
+          if (normalizedPath.endsWith('\\')) {
+            normalizedPath = normalizedPath.slice(0, -1)
+          }
+
+          // Append Game folder
+          const gamePath = path.join(normalizedPath, 'Game')
+
+          // Validate the path
+          if (await this.isValidGamePath(gamePath)) {
+            return gamePath
+          }
+        }
+      }
+
+      return null
+    } catch (error) {
+      console.error('Failed to detect from RiotClientInstalls.json:', error)
+      return null
+    }
   }
 
   private async isValidGamePath(gamePath: string): Promise<boolean> {
