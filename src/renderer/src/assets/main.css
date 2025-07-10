@@ -86,42 +86,6 @@
     animation: cardAppear 0.4s ease-out forwards;
   }
 
-  /* Stagger animation for grid items */
-  .grid > div {
-    animation: cardAppear 0.4s ease-out forwards;
-    opacity: 0;
-  }
-
-  .grid > div:nth-child(1) {
-    animation-delay: 0ms;
-  }
-  .grid > div:nth-child(2) {
-    animation-delay: 50ms;
-  }
-  .grid > div:nth-child(3) {
-    animation-delay: 100ms;
-  }
-  .grid > div:nth-child(4) {
-    animation-delay: 150ms;
-  }
-  .grid > div:nth-child(5) {
-    animation-delay: 200ms;
-  }
-  .grid > div:nth-child(6) {
-    animation-delay: 250ms;
-  }
-  .grid > div:nth-child(7) {
-    animation-delay: 300ms;
-  }
-  .grid > div:nth-child(8) {
-    animation-delay: 350ms;
-  }
-  .grid > div:nth-child(9) {
-    animation-delay: 400ms;
-  }
-  .grid > div:nth-child(10) {
-    animation-delay: 450ms;
-  }
 
   /* Slide up animation for drawer */
   @keyframes slideUp {
