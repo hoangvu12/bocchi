@@ -106,6 +106,10 @@
       "title": "스킨 자동 보기",
       "description": "챔피언이 감지될 때 스킨을 자동으로 표시 (확인 대화상자 건너뛰기)"
     },
+    "autoAcceptMatch": {
+      "title": "대전 자동 수락",
+      "description": "대전이 찾아지면 준비 확인을 자동으로 수락"
+    },
     "smartApply": {
       "title": "스마트 적용",
       "description": "팀의 챔피언 스킨만 로드 (로딩 시간 단축)"
@@ -301,7 +305,8 @@
     "championLockedDescription": "{{champion}}을(를) 잠겼습니다. 사용 가능한 스킨을 보시겠습니까?",
     "championHoveredDescription": "{{champion}}을(를) 보고 계십니다. 사용 가능한 스킨을 보시겠습니까?",
     "randomSkin": "랜덤 스킨",
-    "randomRaritySkin": "랜덤 희귀도 스킨"
+    "randomRaritySkin": "랜덤 희귀도 스킨",
+    "readyCheckAccepted": "대전이 자동으로 수락되었습니다!"
   },
   "smartApply": {
     "willApply": "스마트: {{count}}/{{total}}",

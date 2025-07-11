@@ -8,7 +8,11 @@ import {
   smartApplyEnabledAtom,
   autoApplyEnabledAtom
 } from '../store/atoms/settings.atoms'
-import { autoViewSkinsEnabledAtom, autoRandomRaritySkinEnabledAtom } from '../store/atoms/lcu.atoms'
+import {
+  autoViewSkinsEnabledAtom,
+  autoRandomRaritySkinEnabledAtom,
+  autoAcceptEnabledAtom
+} from '../store/atoms/lcu.atoms'
 
 // This hook initializes all app settings and state on mount
 export function useAppInitialization() {
@@ -22,6 +26,7 @@ export function useAppInitialization() {
   const setAutoRandomRaritySkinEnabled = useSetAtom(autoRandomRaritySkinEnabledAtom)
   const setSmartApplyEnabled = useSetAtom(smartApplyEnabledAtom)
   const setAutoApplyEnabled = useSetAtom(autoApplyEnabledAtom)
+  const setAutoAcceptEnabled = useSetAtom(autoAcceptEnabledAtom)
 
   // Load app version
   useEffect(() => {
@@ -63,7 +68,8 @@ export function useAppInitialization() {
       window.api.getSettings('autoViewSkinsEnabled'),
       window.api.getSettings('autoRandomRaritySkinEnabled'),
       window.api.getSettings('smartApplyEnabled'),
-      window.api.getSettings('autoApplyEnabled')
+      window.api.getSettings('autoApplyEnabled'),
+      window.api.getSettings('autoAcceptEnabled')
     ]).then(
       ([
         leagueClient,
@@ -71,7 +77,8 @@ export function useAppInitialization() {
         autoViewSkins,
         autoRandomRaritySkin,
         smartApply,
-        autoApply
+        autoApply,
+        autoAccept
       ]) => {
         setLeagueClientEnabled(leagueClient !== false)
         setChampionDetectionEnabled(championDetection !== false)
@@ -79,6 +86,7 @@ export function useAppInitialization() {
         setAutoRandomRaritySkinEnabled(autoRandomRaritySkin === true)
         setSmartApplyEnabled(smartApply !== false) // Default to true
         setAutoApplyEnabled(autoApply !== false) // Default to true
+        setAutoAcceptEnabled(autoAccept === true)
       }
     )
   }, [
@@ -87,6 +95,7 @@ export function useAppInitialization() {
     setAutoViewSkinsEnabled,
     setAutoRandomRaritySkinEnabled,
     setSmartApplyEnabled,
-    setAutoApplyEnabled
+    setAutoApplyEnabled,
+    setAutoAcceptEnabled
   ])
 }

@@ -106,6 +106,10 @@
       "title": "スキン自動表示",
       "description": "チャンピオンが検出された時にスキンを自動的に表示（確認ダイアログをスキップ）"
     },
+    "autoAcceptMatch": {
+      "title": "マッチを自動承認",
+      "description": "マッチが見つかったときに準備確認を自動的に承認"
+    },
     "smartApply": {
       "title": "スマート適用",
       "description": "チームのチャンピオンのスキンのみを読み込む（読み込み時間を短縮）"
@@ -301,7 +305,8 @@
     "championLockedDescription": "{{champion}}をロックしました。利用可能なスキンを見てみますか？",
     "championHoveredDescription": "{{champion}}を表示中です。利用可能なスキンを見てみますか？",
     "randomSkin": "ランダムスキン",
-    "randomRaritySkin": "ランダムレアリティスキン"
+    "randomRaritySkin": "ランダムレアリティスキン",
+    "readyCheckAccepted": "マッチが自動的に承認されました！"
   },
   "smartApply": {
     "willApply": "スマート: {{count}}/{{total}}",

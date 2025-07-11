@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
-import { Toaster } from 'sonner'
+import { Toaster, toast } from 'sonner'
 
 // Components
 import { TitleBar } from './components/TitleBar'
@@ -329,6 +329,20 @@ function AppContent(): React.JSX.Element {
       // Note: We don't delete the downloaded file here since the user might want to use it later
     }
   }, [])
+
+  // Listen for auto-accept events
+  useEffect(() => {
+    const unsubscribe = window.api.onLcuReadyCheckAccepted(() => {
+      toast.success(t('status.autoAcceptedMatch'), {
+        duration: 3000,
+        position: 'top-center'
+      })
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [t])
 
   // Handle skin click
   const handleSkinClick = useCallback(

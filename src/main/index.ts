@@ -1034,6 +1034,7 @@ function setupLCUConnection(): void {
       window.webContents.send('lcu:champion-selected', data)
     })
 
+    // Also handle overlay display in the same event
     // Handle overlay display
     if (data.isLocked) {
       try {
@@ -1154,6 +1155,13 @@ function setupLCUConnection(): void {
         console.error('[Overlay] Error handling champion lock:', error)
       }
     }
+  })
+
+  gameflowMonitor.on('ready-check-accepted', () => {
+    // Forward to all windows
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('lcu:ready-check-accepted')
+    })
   })
 
   // Forward team composition events

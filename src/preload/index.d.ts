@@ -167,6 +167,7 @@ export interface IApi {
   onLcuChampionSelected: (
     callback: (data: { championId: number; isLocked: boolean; isHover: boolean }) => void
   ) => () => void
+  onLcuReadyCheckAccepted: (callback: () => void) => () => void
 
   // Team Composition APIs
   getTeamComposition: () => Promise<{

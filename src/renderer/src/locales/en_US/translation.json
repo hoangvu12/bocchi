@@ -71,6 +71,7 @@
     "stopped": "Patcher stopped",
     "error": "Error: {{message}}",
     "fetchingData": "Fetching champion data...",
+    "autoAcceptedMatch": "Match automatically accepted!",
     "dataFetched": "Successfully fetched data for {{count}} champions!",
     "gamePathSet": "Game path set successfully!",
     "pleaseSetGamePath": "Please set game path first",
@@ -116,6 +117,10 @@
     "autoApply": {
       "title": "Auto Apply",
       "description": "Automatically apply skins when all champions are locked"
+    },
+    "autoAccept": {
+      "title": "Auto Accept Match",
+      "description": "Automatically accept ready check when a match is found"
     },
     "autoRandomSkin": {
       "title": "Auto Random Skin",

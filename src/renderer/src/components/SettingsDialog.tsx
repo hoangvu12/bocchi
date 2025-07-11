@@ -20,7 +20,8 @@ import {
 import {
   autoViewSkinsEnabledAtom,
   autoRandomRaritySkinEnabledAtom,
-  autoRandomFavoriteSkinEnabledAtom
+  autoRandomFavoriteSkinEnabledAtom,
+  autoAcceptEnabledAtom
 } from '../store/atoms/lcu.atoms'
 
 interface SettingsDialogProps {
@@ -47,6 +48,7 @@ export function SettingsDialog({
   const [autoRandomFavoriteSkinEnabled, setAutoRandomFavoriteSkinEnabled] = useState(false)
   const [allowMultipleSkinsPerChampion, setAllowMultipleSkinsPerChampion] = useState(false)
   const [inGameOverlayEnabled, setInGameOverlayEnabled] = useState(false)
+  const [autoAcceptEnabled, setAutoAcceptEnabled] = useState(false)
   const [loading, setLoading] = useState(true)
 
   // Atom setters for immediate updates
@@ -57,6 +59,7 @@ export function SettingsDialog({
   const setAutoRandomFavoriteSkinEnabledAtom = useSetAtom(autoRandomFavoriteSkinEnabledAtom)
   const setSmartApplyEnabledAtom = useSetAtom(smartApplyEnabledAtom)
   const setAutoApplyEnabledAtom = useSetAtom(autoApplyEnabledAtom)
+  const setAutoAcceptEnabledAtom = useSetAtom(autoAcceptEnabledAtom)
 
   useEffect(() => {
     if (isOpen) {
@@ -78,6 +81,7 @@ export function SettingsDialog({
       setAutoRandomFavoriteSkinEnabled(settings.autoRandomFavoriteSkinEnabled === true)
       setAllowMultipleSkinsPerChampion(settings.allowMultipleSkinsPerChampion === true)
       setInGameOverlayEnabled(settings.inGameOverlayEnabled === true)
+      setAutoAcceptEnabled(settings.autoAcceptEnabled === true)
     } catch (error) {
       console.error('Failed to load settings:', error)
     } finally {
@@ -101,12 +105,14 @@ export function SettingsDialog({
         setAutoRandomRaritySkinEnabled(false)
         setAutoRandomFavoriteSkinEnabled(false)
         setInGameOverlayEnabled(false)
+        setAutoAcceptEnabled(false)
 
         // Update atoms immediately
         setChampionDetectionEnabledAtom(false)
         setAutoViewSkinsEnabledAtom(false)
         setAutoRandomRaritySkinEnabledAtom(false)
         setAutoRandomFavoriteSkinEnabledAtom(false)
+        setAutoAcceptEnabledAtom(false)
 
         await window.api.setSettings('championDetection', false)
         await window.api.setSettings('autoViewSkinsEnabled', false)
@@ -116,6 +122,7 @@ export function SettingsDialog({
         await window.api.setSettings('autoRandomRaritySkinEnabled', false)
         await window.api.setSettings('autoRandomFavoriteSkinEnabled', false)
         await window.api.setSettings('inGameOverlayEnabled', false)
+        await window.api.setSettings('autoAcceptEnabled', false)
 
         // Disconnect LCU
         await window.api.lcuDisconnect()
@@ -308,6 +315,16 @@ export function SettingsDialog({
     }
   }
 
+  const handleAutoAcceptChange = async (checked: boolean) => {
+    setAutoAcceptEnabled(checked)
+    setAutoAcceptEnabledAtom(checked) // Update atom immediately
+    try {
+      await window.api.setSettings('autoAcceptEnabled', checked)
+    } catch (error) {
+      console.error('Failed to save auto accept setting:', error)
+    }
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
@@ -337,6 +354,28 @@ export function SettingsDialog({
             />
           </div>
 
+          {/* Auto Accept Setting - Independent feature */}
+          <div className="flex items-center justify-between space-x-4">
+            <div className="flex items-start gap-3">
+              <div className="flex items-start mt-1">
+                <div className="w-4 h-4 border-l-2 border-b-2 border-text-secondary/30"></div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.autoAccept.title')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.autoAccept.description')}
+                </p>
+              </div>
+            </div>
+            <Switch
+              checked={autoAcceptEnabled}
+              onCheckedChange={handleAutoAcceptChange}
+              disabled={loading || !leagueClientEnabled}
+            />
+          </div>
+
           {/* Champion Detection Setting */}
           <div className="flex items-center justify-between space-x-4">
             <div className="flex items-start gap-3">
@@ -359,7 +398,7 @@ export function SettingsDialog({
             />
           </div>
 
-          {/* Auto View Skins Setting */}
+          {/* Auto View Skins Setting - Now properly nested under Champion Detection */}
           <div className="flex items-center justify-between space-x-4 pl-6">
             <div className="flex items-start gap-3">
               <div className="flex items-start mt-1">

@@ -106,6 +106,10 @@
       "title": "Ver skins automáticamente",
       "description": "Ver skins automáticamente cuando se detecta un campeón (omite el diálogo de confirmación)"
     },
+    "autoAcceptMatch": {
+      "title": "Aceptar partida automáticamente",
+      "description": "Aceptar automáticamente la verificación de listo cuando se encuentre una partida"
+    },
     "smartApply": {
       "title": "Aplicación inteligente",
       "description": "Solo cargar skins para los campeones de tu equipo (reduce el tiempo de carga)"
@@ -301,7 +305,8 @@
     "championLockedDescription": "Bloqueaste a {{champion}}. ¿Querés explorar los skins disponibles?",
     "championHoveredDescription": "Estás viendo a {{champion}}. ¿Querés explorar los skins disponibles?",
     "randomSkin": "Skin aleatorio",
-    "randomRaritySkin": "Skin de rareza aleatorio"
+    "randomRaritySkin": "Skin de rareza aleatorio",
+    "readyCheckAccepted": "¡Partida aceptada automáticamente!"
   },
   "smartApply": {
     "willApply": "Inteligente: {{count}}/{{total}}",

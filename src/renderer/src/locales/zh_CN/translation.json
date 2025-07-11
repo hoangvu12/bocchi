@@ -106,6 +106,10 @@
       "title": "自动查看皮肤",
       "description": "检测到英雄时自动查看皮肤（跳过确认对话框）"
     },
+    "autoAcceptMatch": {
+      "title": "自动接受对局",
+      "description": "找到对局时自动接受准备检查"
+    },
     "smartApply": {
       "title": "智能应用",
       "description": "仅加载你团队中英雄的皮肤（减少加载时间）"
@@ -301,7 +305,8 @@
     "championLockedDescription": "您已锁定 {{champion}}。想要浏览可用的皮肤吗？",
     "championHoveredDescription": "您正在查看 {{champion}}。想要浏览可用的皮肤吗？",
     "randomSkin": "随机皮肤",
-    "randomRaritySkin": "随机稀有度皮肤"
+    "randomRaritySkin": "随机稀有度皮肤",
+    "readyCheckAccepted": "对局已自动接受！"
   },
   "smartApply": {
     "willApply": "智能：{{count}}/{{total}}",

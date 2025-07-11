@@ -193,6 +193,10 @@ const api = {
     ipcRenderer.on('lcu:champion-selected', handler)
     return () => ipcRenderer.removeListener('lcu:champion-selected', handler)
   },
+  onLcuReadyCheckAccepted: (callback: () => void) => {
+    ipcRenderer.on('lcu:ready-check-accepted', callback)
+    return () => ipcRenderer.removeListener('lcu:ready-check-accepted', callback)
+  },
 
   // Team Composition APIs
   getTeamComposition: () => ipcRenderer.invoke('team:get-composition'),

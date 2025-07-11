@@ -91,6 +91,8 @@ export class GameflowMonitor extends EventEmitter {
 
     if (phase === 'ChampSelect') {
       this.startChampSelectMonitoring()
+    } else if (phase === 'ReadyCheck') {
+      this.handleReadyCheck()
     } else {
       this.stopSessionMonitoring()
       this.lastLockedChampionId = null
@@ -178,6 +180,35 @@ export class GameflowMonitor extends EventEmitter {
 
   isInChampSelect(): boolean {
     return this.currentPhase === 'ChampSelect'
+  }
+
+  private async handleReadyCheck(): Promise<void> {
+    // Check if auto-accept is enabled
+    const { SettingsService } = await import('./settingsService')
+    const settingsService = new SettingsService()
+    const autoAcceptEnabled = settingsService.get('autoAcceptEnabled')
+
+    if (!autoAcceptEnabled) {
+      return
+    }
+
+    // Wait 2 seconds before accepting (like the reference implementation)
+    setTimeout(async () => {
+      try {
+        // Make sure we're still in ReadyCheck phase
+        const currentPhase = await lcuConnector.getGameflowPhase()
+        if (currentPhase !== 'ReadyCheck') {
+          return
+        }
+
+        // Accept the ready check
+        await lcuConnector.request('POST', '/lol-matchmaking/v1/ready-check/accept')
+        console.log('[GameflowMonitor] Auto-accepted ready check')
+        this.emit('ready-check-accepted')
+      } catch (error) {
+        console.error('[GameflowMonitor] Failed to auto-accept ready check:', error)
+      }
+    }, 2000)
   }
 }
 

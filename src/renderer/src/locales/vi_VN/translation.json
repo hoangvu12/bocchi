@@ -70,6 +70,7 @@
     "stopped": "Đã dừng patcher",
     "error": "Lỗi: {{message}}",
     "fetchingData": "Đang tải dữ liệu tướng...",
+    "autoAcceptedMatch": "Đã tự động chấp nhận trận đấu!",
     "dataFetched": "Đã tải thành công dữ liệu cho {{count}} tướng!",
     "gamePathSet": "Đã thiết lập đường dẫn game thành công!",
     "pleaseSetGamePath": "Vui lòng thiết lập đường dẫn game trước",
@@ -115,6 +116,10 @@
     "autoApply": {
       "title": "Tự động áp dụng",
       "description": "Tự động áp dụng trang phục khi tất cả tướng đã khóa"
+    },
+    "autoAccept": {
+      "title": "Tự động chấp nhận trận",
+      "description": "Tự động chấp nhận khi tìm thấy trận đấu"
     },
     "autoRandomSkin": {
       "title": "Tự động chọn skin ngẫu nhiên",
