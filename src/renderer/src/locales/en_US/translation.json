@@ -157,6 +157,14 @@
     "allowMultipleSkinsPerChampion": {
       "title": "Allow Multiple Skins per Champion",
       "description": "Enable to use multiple skins for the same champion simultaneously"
+    },
+    "tabs": {
+      "leagueClient": "League Client",
+      "skinManagement": "Skin Management"
+    },
+    "randomSkinSelection": {
+      "title": "Random Skin Selection",
+      "none": "Disabled"
     }
   },
   "fileUpload": {

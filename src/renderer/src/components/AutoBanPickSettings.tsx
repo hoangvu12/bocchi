@@ -133,18 +133,11 @@ export function AutoBanPickSettings({ disabled = false }: AutoBanPickSettingsPro
       {/* Auto Pick Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-start gap-3">
-            <div className="flex items-start mt-1">
-              <div className="w-4 h-4 border-l-2 border-b-2 border-text-secondary/30"></div>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-sm font-medium text-text-primary">
-                {t('settings.autoPick.title')}
-              </h3>
-              <p className="text-xs text-text-secondary mt-1">
-                {t('settings.autoPick.description')}
-              </p>
-            </div>
+          <div className="flex-1">
+            <h3 className="text-sm font-medium text-text-primary">
+              {t('settings.autoPick.title')}
+            </h3>
+            <p className="text-xs text-text-secondary mt-1">{t('settings.autoPick.description')}</p>
           </div>
           <Switch
             checked={autoPickEnabled}
@@ -154,7 +147,7 @@ export function AutoBanPickSettings({ disabled = false }: AutoBanPickSettingsPro
         </div>
 
         {autoPickEnabled && (
-          <div className="ml-9 space-y-4">
+          <div className="ml-6 space-y-4">
             {/* Force Pick Option */}
             <div className="flex items-center justify-between">
               <div className="flex-1">
@@ -187,18 +180,9 @@ export function AutoBanPickSettings({ disabled = false }: AutoBanPickSettingsPro
       {/* Auto Ban Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-start gap-3">
-            <div className="flex items-start mt-1">
-              <div className="w-4 h-4 border-l-2 border-b-2 border-text-secondary/30"></div>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-sm font-medium text-text-primary">
-                {t('settings.autoBan.title')}
-              </h3>
-              <p className="text-xs text-text-secondary mt-1">
-                {t('settings.autoBan.description')}
-              </p>
-            </div>
+          <div className="flex-1">
+            <h3 className="text-sm font-medium text-text-primary">{t('settings.autoBan.title')}</h3>
+            <p className="text-xs text-text-secondary mt-1">{t('settings.autoBan.description')}</p>
           </div>
           <Switch
             checked={autoBanEnabled}
@@ -208,7 +192,7 @@ export function AutoBanPickSettings({ disabled = false }: AutoBanPickSettingsPro
         </div>
 
         {autoBanEnabled && (
-          <div className="ml-9 space-y-4">
+          <div className="ml-6 space-y-4">
             {/* Force Ban Option */}
             <div className="flex items-center justify-between">
               <div className="flex-1">

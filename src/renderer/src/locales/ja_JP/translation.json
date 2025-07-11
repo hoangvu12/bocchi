@@ -94,6 +94,14 @@
     "language": "言語",
     "theme": "テーマ",
     "notifications": "通知",
+    "tabs": {
+      "leagueClient": "リーグクライアント",
+      "skinManagement": "スキン管理"
+    },
+    "randomSkinSelection": {
+      "title": "ランダムスキン選択",
+      "none": "無効"
+    },
     "leagueClient": {
       "title": "リーグクライアント統合",
       "description": "League of Legendsクライアントと連携する機能を有効にする"

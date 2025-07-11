@@ -94,6 +94,14 @@
     "language": "Idioma",
     "theme": "Tema",
     "notifications": "Notificaciones",
+    "tabs": {
+      "leagueClient": "Cliente de League",
+      "skinManagement": "Gestión de Aspectos"
+    },
+    "randomSkinSelection": {
+      "title": "Selección Aleatoria de Aspectos",
+      "none": "Deshabilitado"
+    },
     "leagueClient": {
       "title": "Integración con el Cliente de League",
       "description": "Habilitar funciones que se conectan con el cliente de League of Legends"

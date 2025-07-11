@@ -94,6 +94,14 @@
     "language": "언어",
     "theme": "테마",
     "notifications": "알림",
+    "tabs": {
+      "leagueClient": "리그 클라이언트",
+      "skinManagement": "스킨 관리"
+    },
+    "randomSkinSelection": {
+      "title": "무작위 스킨 선택",
+      "none": "비활성화"
+    },
     "leagueClient": {
       "title": "리그 클라이언트 통합",
       "description": "리그 오브 레전드 클라이언트와 연결되는 기능 활성화"

@@ -94,6 +94,14 @@
     "language": "Язык",
     "theme": "Тема",
     "notifications": "Уведомления",
+    "tabs": {
+      "leagueClient": "Клиент League",
+      "skinManagement": "Управление обликами"
+    },
+    "randomSkinSelection": {
+      "title": "Случайный выбор облика",
+      "none": "Отключено"
+    },
     "leagueClient": {
       "title": "Интеграция с клиентом League",
       "description": "Включить функции, которые подключаются к клиенту League of Legends"

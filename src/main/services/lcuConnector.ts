@@ -152,11 +152,11 @@ export class LCUConnector extends EventEmitter {
         // Suppress 404 errors for champ-select endpoint as they're expected when not in champ select
         const isChampSelectEndpoint = endpoint.includes('/lol-champ-select/')
         const is404Error = error.response.status === 404
-        
+
         if (!isChampSelectEndpoint || !is404Error) {
           console.error(`LCU: HTTP ${error.response.status} for ${endpoint}:`, error.response.data)
         }
-        
+
         // Include httpStatus in the error for easier handling
         const err: any = new Error(`LCU request failed: ${error.response.status}`)
         err.httpStatus = error.response.status

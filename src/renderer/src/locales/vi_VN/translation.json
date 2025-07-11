@@ -152,6 +152,14 @@
     "allowMultipleSkinsPerChampion": {
       "title": "Cho phép nhiều skin cho mỗi tướng",
       "description": "Bật để sử dụng nhiều skin cho cùng một tướng đồng thời"
+    },
+    "tabs": {
+      "leagueClient": "League Client",
+      "skinManagement": "Quản lý Trang phục"
+    },
+    "randomSkinSelection": {
+      "title": "Chọn Trang phục Ngẫu nhiên",
+      "none": "Tắt"
     }
   },
   "fileUpload": {

@@ -94,6 +94,14 @@
     "language": "语言",
     "theme": "主题",
     "notifications": "通知",
+    "tabs": {
+      "leagueClient": "英雄联盟客户端",
+      "skinManagement": "皮肤管理"
+    },
+    "randomSkinSelection": {
+      "title": "随机皮肤选择",
+      "none": "已禁用"
+    },
     "leagueClient": {
       "title": "英雄联盟客户端集成",
       "description": "启用与英雄联盟客户端连接的功能"

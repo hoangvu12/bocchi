@@ -17,13 +17,13 @@ import {
 function arrayMoveImmutable<T>(array: T[], fromIndex: number, toIndex: number): T[] {
   const newArray = [...array]
   const startIndex = fromIndex < 0 ? array.length + fromIndex : fromIndex
-  
+
   if (startIndex >= 0 && startIndex < array.length) {
     const endIndex = toIndex < 0 ? array.length + toIndex : toIndex
     const [item] = newArray.splice(fromIndex, 1)
     newArray.splice(endIndex, 0, item)
   }
-  
+
   return newArray
 }
 
@@ -91,12 +91,11 @@ export function ChampionSelector({
     })
   }
 
-
   return (
     <div className="space-y-2">
       <div className="text-sm font-medium text-text-secondary mb-2">{label}</div>
 
-      <SortableList 
+      <SortableList
         onSortEnd={handleSortEnd}
         className="space-y-2"
         draggedItemClassName="opacity-50"
