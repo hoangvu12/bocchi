@@ -110,6 +110,22 @@
       "title": "Aceptar partida automáticamente",
       "description": "Aceptar automáticamente la verificación de listo cuando se encuentre una partida"
     },
+    "autoPick": {
+      "title": "Selección automática",
+      "description": "Seleccionar campeones automáticamente durante la selección de campeón",
+      "force": "Forzar selección",
+      "forceDescription": "Anular selección del equipo y elegir aunque ya esté seleccionado",
+      "championPriority": "Lista de prioridad de selección"
+    },
+    "autoBan": {
+      "title": "Baneo automático",
+      "description": "Banear campeones automáticamente durante la selección de campeón",
+      "force": "Forzar baneo",
+      "forceDescription": "Anular intención del equipo y banear aunque un compañero quiera jugarlo",
+      "championPriority": "Lista de prioridad de baneos"
+    },
+    "selectChampion": "Seleccionar campeón",
+    "addChampion": "Agregar campeón",
     "smartApply": {
       "title": "Aplicación inteligente",
       "description": "Solo cargar skins para los campeones de tu equipo (reduce el tiempo de carga)"
@@ -144,6 +160,7 @@
     "skinNotAvailable": "El skin no está disponible en el repositorio lol-skins o el mapeo es incorrecto"
   },
   "fileUpload": {
+    "selectChampion": "Seleccionar campeón",
     "uploadButton": "Subir mod personalizado",
     "importTitle": "Importar mod personalizado",
     "importDescription": "Opcionalmente seleccioná un campeón y establecé un nombre personalizado para tu mod.",

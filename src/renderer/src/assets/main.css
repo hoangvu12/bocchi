@@ -137,4 +137,20 @@
   .overlay-backdrop {
     @apply bg-black/20 backdrop-blur-sm;
   }
+
+  /* React Easy Sort styles */
+  .dragged {
+    opacity: 0.5;
+  }
+
+  /* Disable text selection and image dragging in sortable items */
+  [data-react-easy-sort-item] {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  [data-react-easy-sort-item] img {
+    pointer-events: none;
+    -webkit-user-drag: none;
+  }
 }

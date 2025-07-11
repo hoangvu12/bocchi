@@ -157,6 +157,12 @@ export interface IApi {
   lcuGetStatus: () => Promise<{ connected: boolean; gameflowPhase: string }>
   lcuGetCurrentPhase: () => Promise<{ success: boolean; phase?: string; error?: string }>
   lcuGetChampSelectSession: () => Promise<{ success: boolean; session?: any; error?: string }>
+  lcuGetOwnedChampions: () => Promise<{ success: boolean; champions?: any[]; error?: string }>
+  lcuGetAllChampions: () => Promise<{ success: boolean; champions?: any[]; error?: string }>
+
+  // Auto Ban/Pick APIs
+  setAutoPickChampions: (championIds: number[]) => Promise<{ success: boolean; error?: string }>
+  setAutoBanChampions: (championIds: number[]) => Promise<{ success: boolean; error?: string }>
 
   // LCU Events
   onLcuConnected: (callback: () => void) => () => void

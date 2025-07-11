@@ -10,7 +10,7 @@ import { ModToolsWrapper } from './services/modToolsWrapper'
 import { championDataService } from './services/championDataService'
 import { FavoritesService } from './services/favoritesService'
 import { ToolsDownloader } from './services/toolsDownloader'
-import { SettingsService } from './services/settingsService'
+import { settingsService } from './services/settingsService'
 import { UpdaterService } from './services/updaterService'
 import { FileImportService } from './services/fileImportService'
 import { ImageService } from './services/imageService'
@@ -19,6 +19,7 @@ import { gameflowMonitor } from './services/gameflowMonitor'
 import { teamCompositionMonitor } from './services/teamCompositionMonitor'
 import { skinApplyService } from './services/skinApplyService'
 import { overlayWindowManager } from './services/overlayWindowManager'
+import { autoBanPickService } from './services/autoBanPickService'
 // Import SelectedSkin type from renderer atoms
 interface SelectedSkin {
   championKey: string
@@ -37,7 +38,6 @@ const skinDownloader = new SkinDownloader()
 const modToolsWrapper = new ModToolsWrapper()
 const favoritesService = new FavoritesService()
 const toolsDownloader = new ToolsDownloader()
-const settingsService = new SettingsService()
 const updaterService = new UpdaterService()
 const fileImportService = new FileImportService()
 const imageService = new ImageService()
@@ -944,6 +944,43 @@ function setupIpcHandlers(): void {
     }
   })
 
+  // Auto Ban/Pick handlers
+  ipcMain.handle('lcu:get-owned-champions', async () => {
+    try {
+      const champions = await lcuConnector.getOwnedChampions()
+      return { success: true, champions }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('lcu:get-all-champions', async () => {
+    try {
+      const champions = await lcuConnector.getAllChampions()
+      return { success: true, champions }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('set-auto-pick-champions', async (_, championIds: number[]) => {
+    try {
+      await autoBanPickService.setPickChampions(championIds)
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('set-auto-ban-champions', async (_, championIds: number[]) => {
+    try {
+      await autoBanPickService.setBanChampions(championIds)
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
   // Team composition handlers
   ipcMain.handle('team:get-composition', () => {
     const composition = teamCompositionMonitor.getCurrentTeamComposition()
@@ -1026,6 +1063,17 @@ function setupLCUConnection(): void {
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send('lcu:phase-changed', { phase, previousPhase })
     })
+
+    // Handle auto ban/pick based on phase
+    if (phase === 'ChampSelect') {
+      const autoPickEnabled = settingsService.get('autoPickEnabled')
+      const autoBanEnabled = settingsService.get('autoBanEnabled')
+      if (autoPickEnabled || autoBanEnabled) {
+        autoBanPickService.start()
+      }
+    } else if (phase !== 'ChampSelect' && previousPhase === 'ChampSelect') {
+      autoBanPickService.stop()
+    }
   })
 
   gameflowMonitor.on('champion-selected', async (data) => {
@@ -1196,6 +1244,13 @@ function setupLCUConnection(): void {
   lcuConnector.on('connected', () => {
     gameflowMonitor.start()
     teamCompositionMonitor.start()
+
+    // Start auto ban/pick if enabled
+    const autoPickEnabled = settingsService.get('autoPickEnabled')
+    const autoBanEnabled = settingsService.get('autoBanEnabled')
+    if (autoPickEnabled || autoBanEnabled) {
+      autoBanPickService.start()
+    }
   })
 }
 
@@ -1206,6 +1261,7 @@ function cleanup(): void {
   // Stop monitoring services
   gameflowMonitor.stop()
   teamCompositionMonitor.stop()
+  autoBanPickService.stop()
 
   // Stop auto-connect and disconnect from LCU
   lcuConnector.stopAutoConnect()
@@ -1219,6 +1275,7 @@ function cleanup(): void {
   gameflowMonitor.removeAllListeners()
   teamCompositionMonitor.removeAllListeners()
   overlayWindowManager.removeAllListeners()
+  autoBanPickService.removeAllListeners()
 }
 
 // Handle app quit events

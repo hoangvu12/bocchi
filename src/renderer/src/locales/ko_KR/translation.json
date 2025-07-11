@@ -110,6 +110,22 @@
       "title": "대전 자동 수락",
       "description": "대전이 찾아지면 준비 확인을 자동으로 수락"
     },
+    "autoPick": {
+      "title": "자동 픽",
+      "description": "챔피언 선택 중 자동으로 챔피언 선택",
+      "force": "강제 픽",
+      "forceDescription": "팀 선택을 무시하고 이미 선택되어도 픽",
+      "championPriority": "픽 우선순위 목록"
+    },
+    "autoBan": {
+      "title": "자동 밴",
+      "description": "챔피언 선택 중 자동으로 챔피언 밴",
+      "force": "강제 밴",
+      "forceDescription": "팀 의도를 무시하고 팀원이 플레이하고 싶어해도 밴",
+      "championPriority": "밴 우선순위 목록"
+    },
+    "selectChampion": "챔피언 선택",
+    "addChampion": "챔피언 추가",
     "smartApply": {
       "title": "스마트 적용",
       "description": "팀의 챔피언 스킨만 로드 (로딩 시간 단축)"
@@ -144,6 +160,7 @@
     "skinNotAvailable": "스킨이 lol-skins 저장소에서 사용할 수 없거나 매핑이 잘못되었습니다"
   },
   "fileUpload": {
+    "selectChampion": "챔피언 선택",
     "uploadButton": "커스텀 모드 업로드",
     "importTitle": "커스텀 모드 가져오기",
     "importDescription": "선택적으로 챔피언을 선택하고 모드에 커스텀 이름을 설정하세요.",

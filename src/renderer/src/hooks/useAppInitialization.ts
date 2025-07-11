@@ -11,7 +11,13 @@ import {
 import {
   autoViewSkinsEnabledAtom,
   autoRandomRaritySkinEnabledAtom,
-  autoAcceptEnabledAtom
+  autoAcceptEnabledAtom,
+  autoPickEnabledAtom,
+  autoPickForceAtom,
+  autoPickChampionsAtom,
+  autoBanEnabledAtom,
+  autoBanForceAtom,
+  autoBanChampionsAtom
 } from '../store/atoms/lcu.atoms'
 
 // This hook initializes all app settings and state on mount
@@ -27,6 +33,12 @@ export function useAppInitialization() {
   const setSmartApplyEnabled = useSetAtom(smartApplyEnabledAtom)
   const setAutoApplyEnabled = useSetAtom(autoApplyEnabledAtom)
   const setAutoAcceptEnabled = useSetAtom(autoAcceptEnabledAtom)
+  const setAutoPickEnabled = useSetAtom(autoPickEnabledAtom)
+  const setAutoPickForce = useSetAtom(autoPickForceAtom)
+  const setAutoPickChampions = useSetAtom(autoPickChampionsAtom)
+  const setAutoBanEnabled = useSetAtom(autoBanEnabledAtom)
+  const setAutoBanForce = useSetAtom(autoBanForceAtom)
+  const setAutoBanChampions = useSetAtom(autoBanChampionsAtom)
 
   // Load app version
   useEffect(() => {
@@ -69,7 +81,13 @@ export function useAppInitialization() {
       window.api.getSettings('autoRandomRaritySkinEnabled'),
       window.api.getSettings('smartApplyEnabled'),
       window.api.getSettings('autoApplyEnabled'),
-      window.api.getSettings('autoAcceptEnabled')
+      window.api.getSettings('autoAcceptEnabled'),
+      window.api.getSettings('autoPickEnabled'),
+      window.api.getSettings('autoPickForce'),
+      window.api.getSettings('autoPickChampions'),
+      window.api.getSettings('autoBanEnabled'),
+      window.api.getSettings('autoBanForce'),
+      window.api.getSettings('autoBanChampions')
     ]).then(
       ([
         leagueClient,
@@ -78,7 +96,13 @@ export function useAppInitialization() {
         autoRandomRaritySkin,
         smartApply,
         autoApply,
-        autoAccept
+        autoAccept,
+        autoPickEnabled,
+        autoPickForce,
+        autoPickChampions,
+        autoBanEnabled,
+        autoBanForce,
+        autoBanChampions
       ]) => {
         setLeagueClientEnabled(leagueClient !== false)
         setChampionDetectionEnabled(championDetection !== false)
@@ -87,6 +111,12 @@ export function useAppInitialization() {
         setSmartApplyEnabled(smartApply !== false) // Default to true
         setAutoApplyEnabled(autoApply !== false) // Default to true
         setAutoAcceptEnabled(autoAccept === true)
+        setAutoPickEnabled(autoPickEnabled === true)
+        setAutoPickForce(autoPickForce === true)
+        setAutoPickChampions(autoPickChampions || [])
+        setAutoBanEnabled(autoBanEnabled === true)
+        setAutoBanForce(autoBanForce === true)
+        setAutoBanChampions(autoBanChampions || [])
       }
     )
   }, [
@@ -96,6 +126,12 @@ export function useAppInitialization() {
     setAutoRandomRaritySkinEnabled,
     setSmartApplyEnabled,
     setAutoApplyEnabled,
-    setAutoAcceptEnabled
+    setAutoAcceptEnabled,
+    setAutoPickEnabled,
+    setAutoPickForce,
+    setAutoPickChampions,
+    setAutoBanEnabled,
+    setAutoBanForce,
+    setAutoBanChampions
   ])
 }

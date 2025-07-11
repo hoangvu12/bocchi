@@ -10,13 +10,21 @@ interface Settings {
 }
 
 export class SettingsService {
+  private static instance: SettingsService
   private settingsPath: string
   private settings: Settings = {}
 
-  constructor() {
+  private constructor() {
     const userDataPath = app.getPath('userData')
     this.settingsPath = path.join(userDataPath, 'settings.json')
     this.load()
+  }
+
+  static getInstance(): SettingsService {
+    if (!SettingsService.instance) {
+      SettingsService.instance = new SettingsService()
+    }
+    return SettingsService.instance
   }
 
   private load(): void {
@@ -65,3 +73,6 @@ export class SettingsService {
     this.save()
   }
 }
+
+// Export singleton instance
+export const settingsService = SettingsService.getInstance()

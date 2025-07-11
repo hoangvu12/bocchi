@@ -149,8 +149,18 @@ export class LCUConnector extends EventEmitter {
       return response.data
     } catch (error: any) {
       if (error.response) {
-        console.error(`LCU: HTTP ${error.response.status} for ${endpoint}:`, error.response.data)
-        throw new Error(`LCU request failed: ${error.response.status}`)
+        // Suppress 404 errors for champ-select endpoint as they're expected when not in champ select
+        const isChampSelectEndpoint = endpoint.includes('/lol-champ-select/')
+        const is404Error = error.response.status === 404
+        
+        if (!isChampSelectEndpoint || !is404Error) {
+          console.error(`LCU: HTTP ${error.response.status} for ${endpoint}:`, error.response.data)
+        }
+        
+        // Include httpStatus in the error for easier handling
+        const err: any = new Error(`LCU request failed: ${error.response.status}`)
+        err.httpStatus = error.response.status
+        throw err
       } else if (error.request) {
         console.error('LCU: No response from server:', error.message)
         throw new Error('No response from League client')
@@ -175,6 +185,36 @@ export class LCUConnector extends EventEmitter {
       return await this.request('GET', '/lol-champ-select/v1/session')
     } catch {
       return null
+    }
+  }
+
+  async performChampSelectAction(actionId: number, championId: number): Promise<any> {
+    try {
+      return await this.request('PATCH', `/lol-champ-select/v1/session/actions/${actionId}`, {
+        championId,
+        completed: true
+      })
+    } catch (error) {
+      console.error('[LCUConnector] Failed to perform champ select action:', error)
+      throw error
+    }
+  }
+
+  async getOwnedChampions(): Promise<any> {
+    try {
+      return await this.request('GET', '/lol-champions/v1/owned-champions-minimal')
+    } catch (error) {
+      console.error('[LCUConnector] Failed to get owned champions:', error)
+      return []
+    }
+  }
+
+  async getAllChampions(): Promise<any> {
+    try {
+      return await this.request('GET', '/lol-game-data/assets/v1/champion-summary.json')
+    } catch (error) {
+      console.error('[LCUConnector] Failed to get all champions:', error)
+      return []
     }
   }
 

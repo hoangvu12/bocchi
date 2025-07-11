@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events'
 import { lcuConnector } from './lcuConnector'
+import { settingsService } from './settingsService'
 
 interface ChampSelectSession {
   gameId: number
@@ -184,8 +185,6 @@ export class GameflowMonitor extends EventEmitter {
 
   private async handleReadyCheck(): Promise<void> {
     // Check if auto-accept is enabled
-    const { SettingsService } = await import('./settingsService')
-    const settingsService = new SettingsService()
     const autoAcceptEnabled = settingsService.get('autoAcceptEnabled')
 
     if (!autoAcceptEnabled) {

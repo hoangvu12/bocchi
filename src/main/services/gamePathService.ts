@@ -1,19 +1,17 @@
 import { GameDetector } from './gameDetector'
-import { SettingsService } from './settingsService'
+import { settingsService } from './settingsService'
 import * as path from 'path'
 import * as fs from 'fs'
 
 export class GamePathService {
   private static instance: GamePathService
   private gameDetector: GameDetector
-  private settingsService: SettingsService
   private cachedGamePath: string | null = null
   private lastDetectionTime: number = 0
   private readonly CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
 
   private constructor() {
     this.gameDetector = new GameDetector()
-    this.settingsService = new SettingsService()
   }
 
   static getInstance(): GamePathService {
@@ -36,7 +34,7 @@ export class GamePathService {
     }
 
     // Try to get from settings
-    const savedPath = this.settingsService.get('gamePath')
+    const savedPath = settingsService.get('gamePath')
     if (savedPath && typeof savedPath === 'string') {
       if (await this.isValidGamePath(savedPath)) {
         this.cachedGamePath = savedPath
@@ -49,7 +47,7 @@ export class GamePathService {
     const detectedPath = await this.gameDetector.detectGamePath()
     if (detectedPath) {
       // Save to settings and cache
-      this.settingsService.set('gamePath', detectedPath)
+      settingsService.set('gamePath', detectedPath)
       this.cachedGamePath = detectedPath
       this.lastDetectionTime = Date.now()
       return detectedPath
@@ -95,7 +93,7 @@ export class GamePathService {
    */
   async setGamePath(gamePath: string): Promise<boolean> {
     if (await this.isValidGamePath(gamePath)) {
-      this.settingsService.set('gamePath', gamePath)
+      settingsService.set('gamePath', gamePath)
       this.cachedGamePath = gamePath
       this.lastDetectionTime = Date.now()
       return true
@@ -107,7 +105,7 @@ export class GamePathService {
    * Clear the saved game path
    */
   clearGamePath(): void {
-    this.settingsService.delete('gamePath')
+    settingsService.delete('gamePath')
     this.cachedGamePath = null
     this.lastDetectionTime = 0
   }

@@ -171,6 +171,14 @@ const api = {
   lcuGetStatus: () => ipcRenderer.invoke('lcu:get-status'),
   lcuGetCurrentPhase: () => ipcRenderer.invoke('lcu:get-current-phase'),
   lcuGetChampSelectSession: () => ipcRenderer.invoke('lcu:get-champ-select-session'),
+  lcuGetOwnedChampions: () => ipcRenderer.invoke('lcu:get-owned-champions'),
+  lcuGetAllChampions: () => ipcRenderer.invoke('lcu:get-all-champions'),
+
+  // Auto Ban/Pick APIs
+  setAutoPickChampions: (championIds: number[]) =>
+    ipcRenderer.invoke('set-auto-pick-champions', championIds),
+  setAutoBanChampions: (championIds: number[]) =>
+    ipcRenderer.invoke('set-auto-ban-champions', championIds),
 
   // LCU Events
   onLcuConnected: (callback: () => void) => {

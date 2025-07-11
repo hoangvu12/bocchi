@@ -121,6 +121,22 @@
       "title": "Tự động chấp nhận trận",
       "description": "Tự động chấp nhận khi tìm thấy trận đấu"
     },
+    "autoPick": {
+      "title": "Tự động chọn tướng",
+      "description": "Tự động chọn tướng trong giai đoạn chọn tướng",
+      "force": "Ép chọn",
+      "forceDescription": "Ghi đè lựa chọn của đội và chọn ngay cả khi đã được chọn",
+      "championPriority": "Danh sách ưu tiên chọn"
+    },
+    "autoBan": {
+      "title": "Tự động cấm tướng",
+      "description": "Tự động cấm tướng trong giai đoạn cấm chọn",
+      "force": "Ép cấm",
+      "forceDescription": "Ghi đè ý định của đội và cấm ngay cả khi đồng đội muốn chơi",
+      "championPriority": "Danh sách ưu tiên cấm"
+    },
+    "selectChampion": "Chọn tướng",
+    "addChampion": "Thêm tướng",
     "autoRandomSkin": {
       "title": "Tự động chọn skin ngẫu nhiên",
       "description": "Tự động chọn một skin ngẫu nhiên khi phát hiện tướng"

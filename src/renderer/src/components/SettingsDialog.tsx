@@ -23,6 +23,7 @@ import {
   autoRandomFavoriteSkinEnabledAtom,
   autoAcceptEnabledAtom
 } from '../store/atoms/lcu.atoms'
+import { AutoBanPickSettings } from './AutoBanPickSettings'
 
 interface SettingsDialogProps {
   isOpen: boolean
@@ -375,6 +376,9 @@ export function SettingsDialog({
               disabled={loading || !leagueClientEnabled}
             />
           </div>
+
+          {/* Auto Ban/Pick Settings */}
+          <AutoBanPickSettings disabled={loading || !leagueClientEnabled} />
 
           {/* Champion Detection Setting */}
           <div className="flex items-center justify-between space-x-4">

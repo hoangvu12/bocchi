@@ -110,6 +110,22 @@
       "title": "マッチを自動承認",
       "description": "マッチが見つかったときに準備確認を自動的に承認"
     },
+    "autoPick": {
+      "title": "自動ピック",
+      "description": "チャンピオン選択中に自動的にチャンピオンを選択",
+      "force": "強制ピック",
+      "forceDescription": "チームの選択を無視して、既に選択されていてもピック",
+      "championPriority": "ピック優先リスト"
+    },
+    "autoBan": {
+      "title": "自動バン",
+      "description": "チャンピオン選択中に自動的にチャンピオンをバン",
+      "force": "強制バン",
+      "forceDescription": "チームの意図を無視して、チームメイトがプレイしたくてもバン",
+      "championPriority": "バン優先リスト"
+    },
+    "selectChampion": "チャンピオンを選択",
+    "addChampion": "チャンピオンを追加",
     "smartApply": {
       "title": "スマート適用",
       "description": "チームのチャンピオンのスキンのみを読み込む（読み込み時間を短縮）"
@@ -144,6 +160,7 @@
     "skinNotAvailable": "スキンはlol-skinsリポジトリで利用できないか、マッピングが間違っています"
   },
   "fileUpload": {
+    "selectChampion": "チャンピオンを選択",
     "uploadButton": "カスタムMODをアップロード",
     "importTitle": "カスタムMODをインポート",
     "importDescription": "オプションでチャンピオンを選択し、MODにカスタム名を設定してください。",

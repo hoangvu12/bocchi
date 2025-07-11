@@ -122,6 +122,22 @@
       "title": "Auto Accept Match",
       "description": "Automatically accept ready check when a match is found"
     },
+    "autoPick": {
+      "title": "Auto Pick",
+      "description": "Automatically pick champions during champion select",
+      "force": "Force Pick",
+      "forceDescription": "Override team picks and pick even if already selected",
+      "championPriority": "Pick Priority List"
+    },
+    "autoBan": {
+      "title": "Auto Ban",
+      "description": "Automatically ban champions during champion select",
+      "force": "Force Ban",
+      "forceDescription": "Override team intent and ban even if teammate wants to play",
+      "championPriority": "Ban Priority List"
+    },
+    "selectChampion": "Select champion",
+    "addChampion": "Add Champion",
     "autoRandomSkin": {
       "title": "Auto Random Skin",
       "description": "Automatically select a random skin when a champion is detected"
