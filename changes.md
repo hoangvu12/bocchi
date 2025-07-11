@@ -1,11 +1,12 @@
 ### Features
 
-- In-game overlay for auto-selected skins
-- Pre-download auto selected skins
-- Remove previous auto selected skins when auto-select new skins
-- Use RiotInstalls.json file for game path detection
-- An option to allow using many skins in one champion.
+- Auto apply trigger time
+- Add MultiRitoFixes support for custom mods
+- Auto ban/pick (not tested)
+- Auto accept match
 
 ### Fixes
 
-- Selecting skins will not be counted as Locked
+- Overlay not showing the right selected skin
+- Random skins from favourites not working
+- LCU Lockfile not detected like game path detection.
