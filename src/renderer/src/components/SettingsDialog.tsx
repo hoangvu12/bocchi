@@ -10,6 +10,7 @@ import {
 } from '../store/atoms/lcu.atoms'
 import {
   autoApplyEnabledAtom,
+  autoApplyTriggerTimeAtom,
   championDetectionEnabledAtom,
   leagueClientEnabledAtom,
   smartApplyEnabledAtom
@@ -26,6 +27,7 @@ import {
 } from './ui/dialog'
 import { Label } from './ui/label'
 import { RadioGroup, RadioGroupItem } from './ui/radio-group'
+import { Slider } from './ui/slider'
 import { Switch } from './ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 
@@ -48,6 +50,7 @@ export function SettingsDialog({
   const [autoViewSkinsEnabled, setAutoViewSkinsEnabled] = useState(false)
   const [smartApplyEnabled, setSmartApplyEnabled] = useState(true)
   const [autoApplyEnabled, setAutoApplyEnabled] = useState(true)
+  const [autoApplyTriggerTime, setAutoApplyTriggerTime] = useState(15)
   const [autoRandomSkinEnabled, setAutoRandomSkinEnabled] = useState(false)
   const [autoRandomRaritySkinEnabled, setAutoRandomRaritySkinEnabled] = useState(false)
   const [autoRandomFavoriteSkinEnabled, setAutoRandomFavoriteSkinEnabled] = useState(false)
@@ -65,6 +68,7 @@ export function SettingsDialog({
   const setAutoRandomFavoriteSkinEnabledAtom = useSetAtom(autoRandomFavoriteSkinEnabledAtom)
   const setSmartApplyEnabledAtom = useSetAtom(smartApplyEnabledAtom)
   const setAutoApplyEnabledAtom = useSetAtom(autoApplyEnabledAtom)
+  const setAutoApplyTriggerTimeAtom = useSetAtom(autoApplyTriggerTimeAtom)
   const setAutoAcceptEnabledAtom = useSetAtom(autoAcceptEnabledAtom)
 
   useEffect(() => {
@@ -82,6 +86,7 @@ export function SettingsDialog({
       setAutoViewSkinsEnabled(settings.autoViewSkinsEnabled === true)
       setSmartApplyEnabled(settings.smartApplyEnabled !== false)
       setAutoApplyEnabled(settings.autoApplyEnabled !== false)
+      setAutoApplyTriggerTime(settings.autoApplyTriggerTime || 15)
       setAutoRandomSkinEnabled(settings.autoRandomSkinEnabled === true)
       setAutoRandomRaritySkinEnabled(settings.autoRandomRaritySkinEnabled === true)
       setAutoRandomFavoriteSkinEnabled(settings.autoRandomFavoriteSkinEnabled === true)
@@ -218,6 +223,17 @@ export function SettingsDialog({
       await window.api.setSettings('autoApplyEnabled', checked)
     } catch (error) {
       console.error('Failed to save auto apply setting:', error)
+    }
+  }
+
+  const handleAutoApplyTriggerTimeChange = async (value: number[]) => {
+    const time = value[0]
+    setAutoApplyTriggerTime(time)
+    setAutoApplyTriggerTimeAtom(time)
+    try {
+      await window.api.setSettings('autoApplyTriggerTime', time)
+    } catch (error) {
+      console.error('Failed to save auto apply trigger time setting:', error)
     }
   }
 
@@ -541,6 +557,34 @@ export function SettingsDialog({
                     disabled={loading || !smartApplyEnabled}
                   />
                 </div>
+
+                {/* Auto Apply Trigger Time Setting */}
+                {autoApplyEnabled && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between space-x-4">
+                      <div className="flex-1">
+                        <h3 className="text-sm font-medium text-text-primary">
+                          {t('settings.autoApplyTriggerTime.title')}
+                        </h3>
+                        <p className="text-xs text-text-secondary mt-1">
+                          {t('settings.autoApplyTriggerTime.description')}
+                        </p>
+                      </div>
+                      <span className="text-sm font-medium text-text-primary min-w-[3rem] text-right">
+                        {autoApplyTriggerTime}s
+                      </span>
+                    </div>
+                    <Slider
+                      value={[autoApplyTriggerTime]}
+                      onValueChange={handleAutoApplyTriggerTimeChange}
+                      min={5}
+                      max={30}
+                      step={1}
+                      disabled={loading || !smartApplyEnabled || !autoApplyEnabled}
+                      className="w-full"
+                    />
+                  </div>
+                )}
               </>
             )}
           </TabsContent>

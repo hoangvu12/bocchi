@@ -142,6 +142,10 @@
       "title": "Aplicación automática",
       "description": "Aplicar skins automáticamente cuando todos los campeones estén bloqueados"
     },
+    "autoApplyTriggerTime": {
+      "title": "Tiempo de activación de aplicación automática",
+      "description": "Segundos antes de que comience la partida para aplicar skins automáticamente (5-30 segundos)"
+    },
     "autoRandomSkin": {
       "title": "Skin aleatorio automático",
       "description": "Seleccionar automáticamente un skin aleatorio cuando se detecta un campeón"

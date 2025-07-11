@@ -116,7 +116,7 @@ export class LCUConnector extends EventEmitter {
     }
 
     const message = JSON.stringify([5, eventName])
-    console.log('[LCUConnector] Subscribing to event:', eventName)
+
     this.ws.send(message)
     this.subscriptions.add(eventName)
 
@@ -369,18 +369,12 @@ export class LCUConnector extends EventEmitter {
             if (opcode === 8 && eventName) {
               // Log champion select events
               if (eventName.includes('lol-champ-select')) {
-                console.log(
-                  '[LCUConnector] Champion select event:',
-                  eventName,
-                  eventData?.eventType
-                )
               }
 
               this.emit('event', eventName, eventData)
 
               // Emit specific events
               if (eventName === 'OnJsonApiEvent_lol-gameflow_v1_gameflow-phase') {
-                console.log('[LCUConnector] Gameflow phase changed:', eventData?.data)
                 this.emit('gameflow-phase', eventData?.data)
               } else if (eventName === 'OnJsonApiEvent_lol-champ-select_v1_session') {
                 this.emit('champ-select-session', eventData?.data)

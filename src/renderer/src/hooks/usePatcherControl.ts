@@ -53,8 +53,6 @@ export function usePatcherControl() {
   // Monitor LCU phase changes to update patcher status
   useEffect(() => {
     const unsubscribePhase = window.api.onLcuPhaseChanged(async (data) => {
-      console.log('[Patcher] Phase changed:', data)
-
       // Post-game phases where we should stop the patcher
       const postGamePhases = ['WaitingForStats', 'PreEndOfGame', 'EndOfGame', 'Lobby']
 
@@ -68,7 +66,6 @@ export function usePatcherControl() {
         if (autoApplyEnabled !== false) {
           const isRunning = await window.api.isPatcherRunning()
           if (isRunning) {
-            console.log('[Patcher] Game ended with auto-apply enabled, stopping patcher')
             await stopPatcher()
           }
         }
@@ -84,8 +81,6 @@ export function usePatcherControl() {
           const autoSelectedSkins = selectedSkins.filter((skin) => skin.isAutoSelected)
 
           if (autoSelectedSkins.length > 0) {
-            console.log('[Patcher] Cleaning up auto-selected skins:', autoSelectedSkins.length)
-
             // Remove auto-selected skins from the selection
             setSelectedSkins((prev) => prev.filter((skin) => !skin.isAutoSelected))
 
@@ -101,10 +96,6 @@ export function usePatcherControl() {
                 )
 
                 if (downloadedSkin) {
-                  console.log(
-                    '[Patcher] Deleting auto-selected skin file:',
-                    downloadedSkin.skinName
-                  )
                   await window.api.deleteSkin(downloadedSkin.championName, downloadedSkin.skinName)
                 }
               }

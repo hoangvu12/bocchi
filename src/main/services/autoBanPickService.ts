@@ -60,8 +60,6 @@ export class AutoBanPickService extends EventEmitter {
     this.monitoringInterval = setInterval(() => {
       this.checkAndPerformActions()
     }, 300)
-
-    console.log('[AutoBanPickService] Started monitoring')
   }
 
   stop(): void {
@@ -73,8 +71,6 @@ export class AutoBanPickService extends EventEmitter {
       clearInterval(this.monitoringInterval)
       this.monitoringInterval = null
     }
-
-    console.log('[AutoBanPickService] Stopped monitoring')
   }
 
   async setPickChampions(championIds: number[]): Promise<void> {

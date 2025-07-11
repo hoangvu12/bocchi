@@ -202,7 +202,7 @@ export class GameflowMonitor extends EventEmitter {
 
         // Accept the ready check
         await lcuConnector.request('POST', '/lol-matchmaking/v1/ready-check/accept')
-        console.log('[GameflowMonitor] Auto-accepted ready check')
+
         this.emit('ready-check-accepted')
       } catch (error) {
         console.error('[GameflowMonitor] Failed to auto-accept ready check:', error)

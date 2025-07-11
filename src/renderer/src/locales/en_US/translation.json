@@ -118,6 +118,10 @@
       "title": "Auto Apply",
       "description": "Automatically apply skins when all champions are locked"
     },
+    "autoApplyTriggerTime": {
+      "title": "Auto Apply Trigger Time",
+      "description": "Seconds before game starts to automatically apply skins (5-30 seconds)"
+    },
     "autoAccept": {
       "title": "Auto Accept Match",
       "description": "Automatically accept ready check when a match is found"

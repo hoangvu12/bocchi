@@ -117,6 +117,10 @@
       "title": "Tự động áp dụng",
       "description": "Tự động áp dụng trang phục khi tất cả tướng đã khóa"
     },
+    "autoApplyTriggerTime": {
+      "title": "Thời gian kích hoạt tự động áp dụng",
+      "description": "Số giây trước khi trận đấu bắt đầu để tự động áp dụng trang phục (5-30 giây)"
+    },
     "autoAccept": {
       "title": "Tự động chấp nhận trận",
       "description": "Tự động chấp nhận khi tìm thấy trận đấu"

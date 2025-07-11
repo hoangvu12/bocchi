@@ -6,7 +6,8 @@ import {
   leagueClientEnabledAtom,
   championDetectionEnabledAtom,
   smartApplyEnabledAtom,
-  autoApplyEnabledAtom
+  autoApplyEnabledAtom,
+  autoApplyTriggerTimeAtom
 } from '../store/atoms/settings.atoms'
 import {
   autoViewSkinsEnabledAtom,
@@ -32,6 +33,7 @@ export function useAppInitialization() {
   const setAutoRandomRaritySkinEnabled = useSetAtom(autoRandomRaritySkinEnabledAtom)
   const setSmartApplyEnabled = useSetAtom(smartApplyEnabledAtom)
   const setAutoApplyEnabled = useSetAtom(autoApplyEnabledAtom)
+  const setAutoApplyTriggerTime = useSetAtom(autoApplyTriggerTimeAtom)
   const setAutoAcceptEnabled = useSetAtom(autoAcceptEnabledAtom)
   const setAutoPickEnabled = useSetAtom(autoPickEnabledAtom)
   const setAutoPickForce = useSetAtom(autoPickForceAtom)
@@ -81,6 +83,7 @@ export function useAppInitialization() {
       window.api.getSettings('autoRandomRaritySkinEnabled'),
       window.api.getSettings('smartApplyEnabled'),
       window.api.getSettings('autoApplyEnabled'),
+      window.api.getSettings('autoApplyTriggerTime'),
       window.api.getSettings('autoAcceptEnabled'),
       window.api.getSettings('autoPickEnabled'),
       window.api.getSettings('autoPickForce'),
@@ -96,6 +99,7 @@ export function useAppInitialization() {
         autoRandomRaritySkin,
         smartApply,
         autoApply,
+        autoApplyTriggerTime,
         autoAccept,
         autoPickEnabled,
         autoPickForce,
@@ -110,6 +114,7 @@ export function useAppInitialization() {
         setAutoRandomRaritySkinEnabled(autoRandomRaritySkin === true)
         setSmartApplyEnabled(smartApply !== false) // Default to true
         setAutoApplyEnabled(autoApply !== false) // Default to true
+        setAutoApplyTriggerTime(autoApplyTriggerTime || 15) // Default to 15 seconds
         setAutoAcceptEnabled(autoAccept === true)
         setAutoPickEnabled(autoPickEnabled === true)
         setAutoPickForce(autoPickForce === true)
@@ -126,6 +131,7 @@ export function useAppInitialization() {
     setAutoRandomRaritySkinEnabled,
     setSmartApplyEnabled,
     setAutoApplyEnabled,
+    setAutoApplyTriggerTime,
     setAutoAcceptEnabled,
     setAutoPickEnabled,
     setAutoPickForce,

@@ -55,18 +55,14 @@ export function useSmartSkinApply({
 
     // Listen for phase changes to reset when entering new champion select
     const unsubscribePhase = window.api.onLcuPhaseChanged((data) => {
-      console.log('[SmartSkinApply] Phase changed:', data)
-
       // Reset when entering champion select from a different phase
       // This handles the case where user finished a game and starts a new one
       if (data.phase === 'ChampSelect' && data.previousPhase !== 'ChampSelect') {
-        console.log('[SmartSkinApply] Entering new champion select, resetting auto-apply state')
         lastAppliedTeamKey.current = ''
 
         // Also stop any running patcher from previous game
         window.api.isPatcherRunning().then((isRunning) => {
           if (isRunning) {
-            console.log('[SmartSkinApply] Stopping patcher from previous game')
             window.api.stopPatcher()
           }
         })
@@ -75,31 +71,20 @@ export function useSmartSkinApply({
 
     // Also reset on LCU reconnection (could be a new game session)
     const unsubscribeLcuConnected = window.api.onLcuConnected(() => {
-      console.log('[SmartSkinApply] LCU reconnected, resetting auto-apply state')
       lastAppliedTeamKey.current = ''
     })
 
     const unsubscribeComposition = window.api.onTeamCompositionUpdated(
       (composition: TeamComposition) => {
-        console.log('[SmartSkinApply] Team composition updated:', composition)
         setTeamComposition(composition)
       }
     )
 
     const unsubscribeReady = window.api.onReadyForSmartApply(
       async (composition: TeamComposition) => {
-        console.log('[SmartSkinApply] Ready for smart apply event received:', composition)
-        console.log('[SmartSkinApply] Current settings:', {
-          autoApplyEnabled,
-          smartApplyEnabled,
-          gamePath,
-          isApplying
-        })
-
         // Check if patcher is already running
         const isPatcherRunning = await window.api.isPatcherRunning()
         if (isPatcherRunning) {
-          console.log('[SmartSkinApply] Patcher already running, skipping auto-apply')
           return
         }
 
@@ -110,13 +95,11 @@ export function useSmartSkinApply({
 
         // Don't apply if we already applied for this exact team
         if (teamKey === lastAppliedTeamKey.current) {
-          console.log('[SmartSkinApply] Already applied for this team, skipping')
           return
         }
 
         // Check if we have any skins selected at all
         if (selectedSkins.length === 0) {
-          console.log('[SmartSkinApply] No skins selected at all')
           return
         }
 
@@ -127,32 +110,20 @@ export function useSmartSkinApply({
             composition.championIds,
             autoSyncedSkins
           )
-          console.log('[SmartSkinApply] Summary result:', result)
 
           if (result.success && result.summary) {
             const summary = result.summary as SmartApplySummary
 
             if (summary.willApply === 0) {
-              console.log('[SmartSkinApply] No skins to apply for this team composition')
               // Don't show toast for no skins - this is expected behavior
               return
             }
-
-            console.log('[SmartSkinApply] Auto-applying skins with smart apply:', {
-              willApply: summary.willApply,
-              total: summary.totalSelected,
-              champions: summary.teamChampions
-            })
           }
-        } else {
-          console.log('[SmartSkinApply] Auto-applying all selected skins (smart apply disabled):', {
-            count: selectedSkins.length
-          })
         }
 
         // Apply the skins using parent function
         // The parent function (from App.tsx) handles all the loading states and error handling properly
-        console.log('[SmartSkinApply] Triggering auto-apply')
+
         parentApplyFunction?.()
         lastAppliedTeamKey.current = teamKey
       }
@@ -180,27 +151,10 @@ export function useSmartSkinApply({
         if (autoApplyEnabled) {
           window.api.isPatcherRunning().then((isRunning) => {
             if (isRunning) {
-              console.log(
-                '[SmartSkinApply] Leaving champion select to',
-                newPhase,
-                '- stopping patcher (dodge/leave with auto-apply)'
-              )
               window.api.stopPatcher()
             }
           })
-        } else {
-          console.log(
-            '[SmartSkinApply] Leaving champion select to',
-            newPhase,
-            '- but auto-apply is disabled, keeping patcher if running'
-          )
         }
-      } else {
-        console.log(
-          '[SmartSkinApply] Transitioning to:',
-          newPhase,
-          '- patcher will be managed by main App'
-        )
       }
     })
 

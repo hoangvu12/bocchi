@@ -173,12 +173,16 @@ export function useSkinManagement() {
           teamCompositionResult.composition.championIds
         )
 
+        console.log('summaryResult', summaryResult)
+
         if (summaryResult.success && summaryResult.summary) {
           const teamChampionKeys = new Set(summaryResult.summary.teamChampions)
 
           skinsToApply = selectedSkins.filter(
             (skin) => skin.championKey === 'Custom' || teamChampionKeys.has(skin.championKey)
           )
+
+          console.log('skinsToApply', skinsToApply)
 
           isUsingSmartApply = true
 

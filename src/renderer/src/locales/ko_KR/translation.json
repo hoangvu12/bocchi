@@ -142,6 +142,10 @@
       "title": "자동 적용",
       "description": "모든 챔피언이 잠긴 후 스킨을 자동으로 적용"
     },
+    "autoApplyTriggerTime": {
+      "title": "자동 적용 트리거 시간",
+      "description": "게임 시작 전 스킨을 자동으로 적용하기까지의 시간(초) (5-30초)"
+    },
     "autoRandomSkin": {
       "title": "자동 랜덤 스킨",
       "description": "챔피언이 감지될 때 랜덤 스킨을 자동으로 선택"

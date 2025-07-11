@@ -146,7 +146,6 @@ app.whenReady().then(async () => {
   ) {
     try {
       await overlayWindowManager.create()
-      console.log('[Main] Overlay created on startup')
     } catch (error) {
       console.error('[Main] Failed to create overlay on startup:', error)
     }
@@ -1117,7 +1116,6 @@ function setupIpcHandlers(): void {
           ...skinData,
           splashPath: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${skinData.championKey}_${skinData.skinNum}.jpg`
         }
-        console.log('[Main] Received auto-selected skin from renderer:', rendererAutoSelectedSkin)
 
         // Now show the overlay with the auto-selected skin
         await showOverlayWithAutoSelectedSkin(skinData.championKey)
@@ -1134,7 +1132,6 @@ function setupIpcHandlers(): void {
 async function showOverlayWithAutoSelectedSkin(championKey: string): Promise<void> {
   try {
     if (!rendererAutoSelectedSkin || rendererAutoSelectedSkin.championKey !== championKey) {
-      console.log('[Overlay] No matching auto-selected skin data found')
       return
     }
 
@@ -1160,7 +1157,6 @@ async function showOverlayWithAutoSelectedSkin(championKey: string): Promise<voi
       autoRandomSkinEnabled || autoRandomRaritySkinEnabled || autoRandomFavoriteSkinEnabled
 
     if (!championDetectionEnabled || !autoRandomEnabled) {
-      console.log('[Overlay] Champion detection or auto-random not enabled')
       return
     }
 
@@ -1178,8 +1174,6 @@ async function showOverlayWithAutoSelectedSkin(championKey: string): Promise<voi
       autoSelectedSkin: rendererAutoSelectedSkin,
       theme: null // Will be set by renderer based on current theme
     }
-
-    console.log('[Overlay] Showing overlay with auto-selected skin:', rendererAutoSelectedSkin)
 
     // Ensure we only show overlay when we have valid auto-selected skin data
     if (overlayData.autoSelectedSkin) {
@@ -1250,7 +1244,6 @@ function setupLCUConnection(): void {
       rendererAutoSelectedSkin.championKey !== data.championId.toString()
     ) {
       rendererAutoSelectedSkin = null
-      console.log('[Overlay] Cleared previous auto-selected skin data for new champion')
     }
 
     // Note: Overlay display is now handled when renderer sends auto-selected skin data

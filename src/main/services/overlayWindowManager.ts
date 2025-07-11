@@ -46,9 +46,7 @@ export class OverlayWindowManager extends EventEmitter {
     })
 
     // Handle overlay ready event
-    ipcMain.on('overlay:ready', () => {
-      console.log('[OverlayWindowManager] Overlay window ready')
-    })
+    ipcMain.on('overlay:ready', () => {})
   }
 
   async create(): Promise<void> {
@@ -133,7 +131,6 @@ export class OverlayWindowManager extends EventEmitter {
       // Attach to League of Legends window
       OverlayController.attachByTitle(this.overlayWindow, this.targetProcessName)
       this.isAttached = true
-      console.log('[OverlayWindowManager] Successfully attached to League of Legends')
 
       // Position overlay in top right
       this.positionOverlay()
@@ -141,7 +138,6 @@ export class OverlayWindowManager extends EventEmitter {
       this.emit('attached')
     } catch {
       // League client not found, will retry
-      console.log('[OverlayWindowManager] League of Legends window not found, will retry...')
     }
   }
 

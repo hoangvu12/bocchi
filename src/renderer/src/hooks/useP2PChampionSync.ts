@@ -49,8 +49,6 @@ export const useP2PChampionSync = ({
     ({ peerId, championData }: { peerId: string; championData: any }) => {
       if (!enabled || !championDetectionEnabled || !p2pAutoSyncEnabled) return
 
-      console.log('[P2PChampionSync] Peer selected champion:', peerId, championData)
-
       // Find the peer in the room
       const allMembers = p2pRoom ? [p2pRoom.host, ...p2pRoom.members] : []
       const peer = allMembers.find((m) => m.id === peerId)
@@ -92,8 +90,6 @@ export const useP2PChampionSync = ({
 
           return newMap
         })
-
-        console.log('[P2PChampionSync] Auto-synced skin for', championKey, 'from', peer.name)
       }
     },
     [
@@ -119,8 +115,6 @@ export const useP2PChampionSync = ({
     if (!enabled || !p2pRoom) return
 
     const handleMemberLeft = (peerId: string) => {
-      console.log('[P2PChampionSync] Member left, cleaning up skins:', peerId)
-
       setAutoSyncedSkins((prev) => {
         const newMap = new Map(prev)
 
@@ -141,7 +135,6 @@ export const useP2PChampionSync = ({
   // Clean up all auto-synced skins when leaving room
   useEffect(() => {
     if (!p2pRoom && autoSyncedSkins.size > 0) {
-      console.log('[P2PChampionSync] Left room, cleaning up all auto-synced skins')
       setAutoSyncedSkins(new Map())
     }
   }, [p2pRoom, autoSyncedSkins.size, setAutoSyncedSkins])

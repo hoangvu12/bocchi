@@ -241,7 +241,6 @@ const api = {
     }) => void
   ) => {
     const handler = (_: any, data: any) => {
-      console.log('[Preload] Ready for smart apply event received:', data)
       callback(data)
     }
     ipcRenderer.on('team:ready-for-smart-apply', handler)

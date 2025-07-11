@@ -126,6 +126,10 @@
       "title": "自动应用",
       "description": "所有英雄锁定后自动应用皮肤"
     },
+    "autoApplyTriggerTime": {
+      "title": "自动应用触发时间",
+      "description": "游戏开始前自动应用皮肤的秒数（5-30秒）"
+    },
     "autoRandomSkin": {
       "title": "自动随机皮肤",
       "description": "检测到英雄时自动选择随机皮肤"

@@ -142,6 +142,10 @@
       "title": "自動適用",
       "description": "すべてのチャンピオンがロックされた時にスキンを自動的に適用"
     },
+    "autoApplyTriggerTime": {
+      "title": "自動適用トリガー時間",
+      "description": "ゲーム開始前にスキンを自動的に適用するまでの秒数（5～30秒）"
+    },
     "autoRandomSkin": {
       "title": "自動ランダムスキン",
       "description": "チャンピオンが検出された時にランダムなスキンを自動的に選択"

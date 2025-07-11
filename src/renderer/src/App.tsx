@@ -230,7 +230,6 @@ function AppContent(): React.JSX.Element {
           skinNum: randomSkin.num,
           rarity: randomSkin.rarity
         })
-        console.log('[AutoSelect] Sent auto-selected skin to main process for overlay')
       } catch (error) {
         console.error('[AutoSelect] Failed to send auto-selected skin to main process:', error)
       }
@@ -334,8 +333,6 @@ function AppContent(): React.JSX.Element {
   // Handle overlay skin selection
   useEffect(() => {
     const handleOverlaySkinSelected = (_event: any, skin: any) => {
-      console.log('[App] Received skin selection from overlay:', skin)
-
       // Check if skin is already selected
       const existingIndex = selectedSkins.findIndex(
         (s) =>

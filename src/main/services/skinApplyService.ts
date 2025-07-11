@@ -76,11 +76,7 @@ export class SkinApplyService {
             filteredOut.push(skin)
           } else {
             // Both are same type (both manual or both auto), keep first one
-            console.log(
-              '[SkinApplyService] Skipping duplicate skin for champion:',
-              skin.championKey,
-              skin.skinName
-            )
+
             filteredOut.push(skin)
           }
         }

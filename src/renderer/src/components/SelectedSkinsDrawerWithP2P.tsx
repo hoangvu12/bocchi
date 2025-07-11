@@ -78,7 +78,6 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   const {
     teamComposition,
     smartApplyEnabled,
-    isReadyForSmartApply,
     getSmartApplySummary,
     isApplying: isSmartApplying,
     autoApplyEnabled
@@ -93,25 +92,6 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
     },
     parentApplyFunction: onApplySkins
   })
-
-  // Log the hook state for debugging
-  useEffect(() => {
-    console.log('[SelectedSkinsDrawer] Smart apply hook state:', {
-      smartApplyEnabled,
-      autoApplyEnabled,
-      teamComposition,
-      isReadyForSmartApply,
-      gamePath,
-      selectedSkinsCount: selectedSkins.length
-    })
-  }, [
-    smartApplyEnabled,
-    autoApplyEnabled,
-    teamComposition,
-    isReadyForSmartApply,
-    gamePath,
-    selectedSkins.length
-  ])
 
   // Switch to my-skins tab when leaving room
   useEffect(() => {
@@ -179,10 +159,6 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   const handleApplySkins = async () => {
     // Clear previous patcher messages when starting a new session
     setPatcherMessages([])
-
-    console.log('[SelectedSkinsDrawer] Apply button clicked')
-    console.log('[SelectedSkinsDrawer] Smart apply enabled:', smartApplyEnabled)
-    console.log('[SelectedSkinsDrawer] Team composition:', teamComposition)
 
     // Always use the parent's apply function which handles loading states
     // The parent (App.tsx) will check if it should use smart apply or regular apply
