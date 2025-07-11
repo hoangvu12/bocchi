@@ -1187,8 +1187,9 @@ function setupLCUConnection(): void {
 
             if (autoRandomFavoriteSkinEnabled && favorites.length > 0) {
               // Only select from favorites
+              // Convert both skinId (string) and skin.id (number) to strings for comparison
               selectableSkins = selectableSkins.filter((skin: any) =>
-                favorites.some((f: any) => f.skinId === skin.id)
+                favorites.some((f: any) => f.skinId === String(skin.id))
               )
               if (selectableSkins.length > 0) {
                 selectedSkin = selectableSkins[Math.floor(Math.random() * selectableSkins.length)]

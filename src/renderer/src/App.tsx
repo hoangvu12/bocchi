@@ -160,6 +160,8 @@ function AppContent(): React.JSX.Element {
       if (autoRandomFavoriteSkinEnabled) {
         // Get favorites for this champion
         const favoritesResult = await window.api.getFavoritesByChampion(champion.key)
+        console.log(`[AutoFavorite] Champion ${champion.key} favorites:`, favoritesResult.favorites)
+
         if (
           !favoritesResult.success ||
           !favoritesResult.favorites ||
@@ -173,19 +175,35 @@ function AppContent(): React.JSX.Element {
         }
 
         // Filter skins to only those that are favorited
-        availableSkins = champion.skins.filter(
-          (skin) => favoritesResult.favorites?.some((fav) => fav.skinId === skin.id) || false
+        // Convert both skinId (string) and skin.id (number) to strings for comparison
+        availableSkins = champion.skins.filter((skin) => {
+          const found = favoritesResult.favorites?.some((fav) => fav.skinId === String(skin.id))
+          console.log(
+            `[AutoFavorite] Checking skin ${skin.name} (id: ${skin.id}, type: ${typeof skin.id}) against favorites - found: ${found}`
+          )
+          return found || false
+        })
+        console.log(
+          `[AutoFavorite] Filtered available skins:`,
+          availableSkins.map((s) => ({ name: s.name, id: s.id }))
         )
       } else if (autoRandomRaritySkinEnabled) {
         // Filter to only rarity skins
         availableSkins = availableSkins.filter((skin) => skin.rarity && skin.rarity !== 'kNoRarity')
       }
 
-      if (availableSkins.length === 0) return
+      if (availableSkins.length === 0) {
+        console.log(`[AutoFavorite] No available skins found, returning early`)
+        return
+      }
 
       // Select a random skin
       const randomIndex = Math.floor(Math.random() * availableSkins.length)
       const randomSkin = availableSkins[randomIndex]
+      console.log(`[AutoFavorite] Selected random skin:`, {
+        name: randomSkin.name,
+        id: randomSkin.id
+      })
 
       // Add the auto-selected skin
       const newSelectedSkin = {
@@ -200,6 +218,7 @@ function AppContent(): React.JSX.Element {
         isDownloaded: false,
         isAutoSelected: true
       }
+      console.log(`[AutoFavorite] Created newSelectedSkin:`, newSelectedSkin)
 
       // Clean up previous auto-selected skin if it exists
       if (preDownloadedAutoSkin) {
@@ -221,8 +240,11 @@ function AppContent(): React.JSX.Element {
       setSelectedSkins((prev) => {
         // Filter out any existing auto-selected skins
         const filteredSkins = prev.filter((skin) => !skin.isAutoSelected)
+        console.log(`[AutoFavorite] Previous selected skins (filtered):`, filteredSkins)
         // Add the new auto-selected skin
-        return [...filteredSkins, newSelectedSkin]
+        const newSkins = [...filteredSkins, newSelectedSkin]
+        console.log(`[AutoFavorite] New selected skins list:`, newSkins)
+        return newSkins
       })
 
       // Pre-download the auto-selected skin in the background
