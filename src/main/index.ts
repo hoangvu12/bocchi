@@ -5,7 +5,6 @@ import fs from 'fs'
 import crypto from 'crypto'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { GameDetector } from './services/gameDetector'
 import { SkinDownloader } from './services/skinDownloader'
 import { ModToolsWrapper } from './services/modToolsWrapper'
 import { championDataService } from './services/championDataService'
@@ -34,7 +33,6 @@ interface SelectedSkin {
 }
 
 // Initialize services
-const gameDetector = new GameDetector()
 const skinDownloader = new SkinDownloader()
 const modToolsWrapper = new ModToolsWrapper()
 const favoritesService = new FavoritesService()
@@ -177,7 +175,9 @@ function setupIpcHandlers(): void {
   // Game detection
   ipcMain.handle('detect-game', async () => {
     try {
-      const gamePath = await gameDetector.detectGamePath()
+      const { GamePathService } = await import('./services/gamePathService')
+      const gamePathService = GamePathService.getInstance()
+      const gamePath = await gamePathService.forceDetect()
       return { success: true, gamePath }
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
@@ -192,7 +192,15 @@ function setupIpcHandlers(): void {
     })
 
     if (!result.canceled && result.filePaths.length > 0) {
-      return { success: true, gamePath: result.filePaths[0] }
+      const { GamePathService } = await import('./services/gamePathService')
+      const gamePathService = GamePathService.getInstance()
+      const success = await gamePathService.setGamePath(result.filePaths[0])
+
+      if (success) {
+        return { success: true, gamePath: result.filePaths[0] }
+      } else {
+        return { success: false, error: 'Invalid game path selected' }
+      }
     }
     return { success: false }
   })
@@ -695,6 +703,13 @@ function setupIpcHandlers(): void {
 
   ipcMain.handle('set-settings', async (_, key: string, value: any) => {
     settingsService.set(key, value)
+
+    // If game path is being set, update the GamePathService cache
+    if (key === 'gamePath' && typeof value === 'string') {
+      const { GamePathService } = await import('./services/gamePathService')
+      const gamePathService = GamePathService.getInstance()
+      await gamePathService.setGamePath(value)
+    }
   })
 
   // Auto-updater handlers

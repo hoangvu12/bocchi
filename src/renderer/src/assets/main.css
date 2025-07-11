@@ -86,7 +86,6 @@
     animation: cardAppear 0.4s ease-out forwards;
   }
 
-
   /* Slide up animation for drawer */
   @keyframes slideUp {
     from {
@@ -119,12 +118,12 @@
     width: 100%;
     height: 100%;
   }
-  
+
   /* Override theme backgrounds for overlay */
   .overlay-window .bg-background {
     background: transparent !important;
   }
-  
+
   .overlay-window .bg-base {
     background: transparent !important;
   }
@@ -133,7 +132,7 @@
   .overlay-window * {
     @apply transition-colors duration-200;
   }
-  
+
   /* Semi-transparent backdrop for better visibility */
   .overlay-backdrop {
     @apply bg-black/20 backdrop-blur-sm;

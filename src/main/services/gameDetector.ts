@@ -13,19 +13,48 @@ export class GameDetector {
     return null
   }
 
+  private async getAvailableDrives(): Promise<string[]> {
+    const drives: string[] = []
+
+    if (process.platform === 'win32') {
+      try {
+        // Use WMIC to get available drives
+        const { stdout } = await execAsync('wmic logicaldisk get caption')
+        const lines = stdout.split('\n')
+
+        for (const line of lines) {
+          const match = line.match(/^([A-Z]):/)
+          if (match) {
+            drives.push(match[1])
+          }
+        }
+      } catch (error) {
+        console.error('Failed to get available drives:', error)
+        // Fallback to common drives if WMIC fails
+        return ['C', 'D', 'E', 'F', 'G', 'H']
+      }
+    }
+
+    return drives.length > 0 ? drives : ['C', 'D', 'E', 'F', 'G', 'H']
+  }
+
   private async detectWindows(): Promise<string | null> {
-    // Try common installation paths - need to check Game subfolder
-    const commonPaths = [
-      'C:\\Riot Games\\League of Legends\\Game',
-      'D:\\Riot Games\\League of Legends\\Game',
-      'C:\\Program Files\\Riot Games\\League of Legends\\Game',
-      'C:\\Program Files (x86)\\Riot Games\\League of Legends\\Game',
-      'E:\\Riot Games\\League of Legends\\Game',
-      'F:\\Riot Games\\League of Legends\\Game'
-    ]
+    // Try common installation paths - check all available drives
+    const commonPaths: string[] = []
+
+    // Get all available drive letters dynamically
+    const driveLetters = await this.getAvailableDrives()
+
+    // Build paths for each drive
+    for (const drive of driveLetters) {
+      commonPaths.push(`${drive}:\\Riot Games\\League of Legends\\Game`)
+      commonPaths.push(`${drive}:\\Program Files\\Riot Games\\League of Legends\\Game`)
+      commonPaths.push(`${drive}:\\Program Files (x86)\\Riot Games\\League of Legends\\Game`)
+    }
 
     for (const gamePath of commonPaths) {
       if (await this.isValidGamePath(gamePath)) {
+        console.log('GameDetector: Found game at:', gamePath)
         return gamePath
       }
     }

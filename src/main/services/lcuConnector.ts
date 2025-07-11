@@ -5,6 +5,7 @@ import * as https from 'https'
 import WebSocket from 'ws'
 import { app } from 'electron'
 import axios from 'axios'
+import { GamePathService } from './gamePathService'
 
 interface LCUCredentials {
   protocol: string
@@ -182,29 +183,39 @@ export class LCUConnector extends EventEmitter {
   }
 
   private async findLockfile(): Promise<LCUCredentials | null> {
-    const possiblePaths = [
-      'C:\\Riot Games\\League of Legends\\lockfile',
-      'D:\\Riot Games\\League of Legends\\lockfile',
-      'E:\\Riot Games\\League of Legends\\lockfile',
-      'C:\\Program Files\\Riot Games\\League of Legends\\lockfile',
-      'C:\\Program Files (x86)\\Riot Games\\League of Legends\\lockfile',
-      '/Applications/League of Legends.app/Contents/LoL/lockfile',
-      path.join(app.getPath('home'), 'Riot Games/League of Legends/lockfile')
-    ]
+    const possiblePaths: string[] = []
 
-    // Also check if game path is set in settings
+    // Use the centralized GamePathService
     try {
-      const { SettingsService } = await import('./settingsService')
-      const settingsService = new SettingsService()
-      const gamePath = settingsService.get('gamePath')
-      if (gamePath && typeof gamePath === 'string') {
-        // Game path points to the "Game" folder, we need to go up one level
-        const leaguePath = path.dirname(gamePath)
-        const gamePathLockfile = path.join(leaguePath, 'lockfile')
-        possiblePaths.unshift(gamePathLockfile)
+      const gamePathService = GamePathService.getInstance()
+      const lockfilePath = await gamePathService.getLockfilePath()
+
+      if (lockfilePath) {
+        possiblePaths.push(lockfilePath)
+        console.log('LCU: Using detected lockfile path:', lockfilePath)
       }
     } catch (error) {
-      console.error('Failed to get game path from settings:', error)
+      console.error('Failed to get lockfile path from GamePathService:', error)
+    }
+
+    // Add common fallback paths if detection failed
+    if (possiblePaths.length === 0) {
+      const fallbackPaths = [
+        'C:\\Riot Games\\League of Legends\\lockfile',
+        'D:\\Riot Games\\League of Legends\\lockfile',
+        'E:\\Riot Games\\League of Legends\\lockfile',
+        'F:\\Riot Games\\League of Legends\\lockfile',
+        'G:\\Riot Games\\League of Legends\\lockfile',
+        'H:\\Riot Games\\League of Legends\\lockfile',
+        'C:\\Program Files\\Riot Games\\League of Legends\\lockfile',
+        'C:\\Program Files (x86)\\Riot Games\\League of Legends\\lockfile',
+        'D:\\Program Files\\Riot Games\\League of Legends\\lockfile',
+        'D:\\Program Files (x86)\\Riot Games\\League of Legends\\lockfile',
+        '/Applications/League of Legends.app/Contents/LoL/lockfile',
+        path.join(app.getPath('home'), 'Riot Games/League of Legends/lockfile')
+      ]
+
+      possiblePaths.push(...fallbackPaths)
     }
 
     for (const lockfilePath of possiblePaths) {
