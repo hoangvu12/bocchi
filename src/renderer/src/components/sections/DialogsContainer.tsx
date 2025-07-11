@@ -95,11 +95,16 @@ export function DialogsContainer({
         <EditCustomSkinDialog
           isOpen={showEditDialog}
           currentName={editingCustomSkin.name}
+          modPath={editingCustomSkin.path}
           onClose={() => {
             setShowEditDialog(false)
             setEditingCustomSkin(null)
           }}
           onSave={handleEditCustomSkinSave}
+          onFixComplete={async () => {
+            await loadDownloadedSkins()
+            setStatusMessage('Mod fixed successfully')
+          }}
         />
       )}
 

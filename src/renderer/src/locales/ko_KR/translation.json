@@ -157,6 +157,10 @@
     "allowMultipleSkinsPerChampion": {
       "title": "챔피언당 여러 스킨 허용",
       "description": "활성화하면 동일한 챔피언에 여러 스킨을 동시에 사용할 수 있습니다"
+    },
+    "autoFixModIssues": {
+      "title": "가져오기 시 모드 문제 자동 해결",
+      "description": "모드를 가져올 때 누락된 체력바, 재료, VFX 효과를 자동으로 수정합니다"
     }
   },
   "errors": {
@@ -192,7 +196,26 @@
     "succeeded": "성공",
     "failed": "실패",
     "failedFiles": "실패한 파일:",
-    "close": "닫기"
+    "close": "닫기",
+    "fixModIssues": "모드 문제 해결",
+    "fixModIssuesDescription": "누락된 체력바, 재료, VFX 효과를 수정합니다"
+  },
+  "editCustomSkin": {
+    "title": "사용자 정의 모드 편집",
+    "modName": "모드 이름",
+    "modNamePlaceholder": "모드 이름을 입력하세요",
+    "previewImage": "미리보기 이미지 (선택사항)",
+    "selectImage": "이미지 선택",
+    "newImageSelected": "새 이미지가 선택되었습니다",
+    "modMaintenance": "모드 유지보수",
+    "fixModIssues": "모드 문제 해결",
+    "fixing": "수정 중...",
+    "fixDescription": "누락된 체력바, 재료, VFX 효과를 수정합니다",
+    "startingFix": "수정 프로세스를 시작하는 중...",
+    "fixCompleted": "수정이 성공적으로 완료되었습니다!",
+    "fixFailed": "수정에 실패했습니다: {{error}}",
+    "fixError": "모드를 수정하는 중 오류가 발생했습니다",
+    "saveChanges": "변경사항 저장"
   },
   "cancel": "취소",
   "success": "성공",

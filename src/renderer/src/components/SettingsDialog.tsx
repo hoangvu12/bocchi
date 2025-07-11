@@ -54,6 +54,7 @@ export function SettingsDialog({
   const [allowMultipleSkinsPerChampion, setAllowMultipleSkinsPerChampion] = useState(false)
   const [inGameOverlayEnabled, setInGameOverlayEnabled] = useState(false)
   const [autoAcceptEnabled, setAutoAcceptEnabled] = useState(false)
+  const [autoFixModIssues, setAutoFixModIssues] = useState(false)
   const [loading, setLoading] = useState(true)
 
   // Atom setters for immediate updates
@@ -87,6 +88,7 @@ export function SettingsDialog({
       setAllowMultipleSkinsPerChampion(settings.allowMultipleSkinsPerChampion === true)
       setInGameOverlayEnabled(settings.inGameOverlayEnabled === true)
       setAutoAcceptEnabled(settings.autoAcceptEnabled === true)
+      setAutoFixModIssues(settings.autoFixModIssues === true)
     } catch (error) {
       console.error('Failed to load settings:', error)
     } finally {
@@ -297,6 +299,15 @@ export function SettingsDialog({
         await window.api.setSettings('inGameOverlayEnabled', false)
         await window.api.destroyOverlay()
         break
+    }
+  }
+
+  const handleAutoFixModIssuesChange = async (checked: boolean) => {
+    setAutoFixModIssues(checked)
+    try {
+      await window.api.setSettings('autoFixModIssues', checked)
+    } catch (error) {
+      console.error('Failed to save auto fix mod issues setting:', error)
     }
   }
 
@@ -548,6 +559,23 @@ export function SettingsDialog({
               <Switch
                 checked={allowMultipleSkinsPerChampion}
                 onCheckedChange={handleAllowMultipleSkinsPerChampionChange}
+                disabled={loading}
+              />
+            </div>
+
+            {/* Auto Fix Mod Issues Setting */}
+            <div className="flex items-center justify-between space-x-4">
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.autoFixModIssues.title')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.autoFixModIssues.description')}
+                </p>
+              </div>
+              <Switch
+                checked={autoFixModIssues}
+                onCheckedChange={handleAutoFixModIssuesChange}
                 disabled={loading}
               />
             </div>

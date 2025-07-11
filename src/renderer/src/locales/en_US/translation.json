@@ -158,6 +158,10 @@
       "title": "Allow Multiple Skins per Champion",
       "description": "Enable to use multiple skins for the same champion simultaneously"
     },
+    "autoFixModIssues": {
+      "title": "Auto-fix mod issues on import",
+      "description": "Automatically fix missing health bars, materials, and VFX when importing mods"
+    },
     "tabs": {
       "leagueClient": "League Client",
       "skinManagement": "Skin Management"
@@ -191,7 +195,26 @@
     "succeeded": "succeeded",
     "failed": "failed",
     "failedFiles": "Failed files:",
-    "close": "Close"
+    "close": "Close",
+    "fixModIssues": "Fix mod issues",
+    "fixModIssuesDescription": "Fixes missing health bars, materials, and VFX"
+  },
+  "editCustomSkin": {
+    "title": "Edit Custom Mod",
+    "modName": "Mod Name",
+    "modNamePlaceholder": "Enter mod name",
+    "previewImage": "Preview Image (Optional)",
+    "selectImage": "Select Image",
+    "newImageSelected": "New image selected",
+    "modMaintenance": "Mod Maintenance",
+    "fixModIssues": "Fix Mod Issues",
+    "fixing": "Fixing...",
+    "fixDescription": "Fixes missing health bars, materials, and VFX issues",
+    "startingFix": "Starting fix process...",
+    "fixCompleted": "Fix completed successfully!",
+    "fixFailed": "Fix failed: {{error}}",
+    "fixError": "An error occurred while fixing the mod",
+    "saveChanges": "Save Changes"
   },
   "cancel": "Cancel",
   "success": "Success",

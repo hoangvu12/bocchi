@@ -214,6 +214,13 @@ export interface IApi {
   // Overlay management
   createOverlay: () => Promise<{ success: boolean; error?: string }>
   destroyOverlay: () => Promise<{ success: boolean; error?: string }>
+
+  // MultiRitoFixes API
+  checkMultiRitoFixTool: () => Promise<{ success: boolean; exists?: boolean; error?: string }>
+  downloadMultiRitoFixTool: () => Promise<{ success: boolean; error?: string }>
+  fixModIssues: (modPath: string) => Promise<{ success: boolean; error?: string; output?: string }>
+  onMultiRitoFixDownloadProgress: (callback: (progress: number) => void) => () => void
+  onFixModProgress: (callback: (message: string) => void) => () => void
 }
 
 declare global {

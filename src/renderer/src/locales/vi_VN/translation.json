@@ -153,6 +153,10 @@
       "title": "Cho phép nhiều skin cho mỗi tướng",
       "description": "Bật để sử dụng nhiều skin cho cùng một tướng đồng thời"
     },
+    "autoFixModIssues": {
+      "title": "Tự động sửa lỗi mod khi nhập",
+      "description": "Tự động sửa lỗi thanh máu thiếu, vật liệu thiếu và hiệu ứng VFX khi nhập mod"
+    },
     "tabs": {
       "leagueClient": "League Client",
       "skinManagement": "Quản lý Trang phục"
@@ -186,7 +190,26 @@
     "succeeded": "thành công",
     "failed": "thất bại",
     "failedFiles": "Các tệp thất bại:",
-    "close": "Đóng"
+    "close": "Đóng",
+    "fixModIssues": "Sửa lỗi mod",
+    "fixModIssuesDescription": "Sửa lỗi thanh máu thiếu, vật liệu thiếu và hiệu ứng VFX"
+  },
+  "editCustomSkin": {
+    "title": "Chỉnh Sửa Mod Tùy Chỉnh",
+    "modName": "Tên Mod",
+    "modNamePlaceholder": "Nhập tên mod",
+    "previewImage": "Ảnh Xem Trước (Tùy chọn)",
+    "selectImage": "Chọn Ảnh",
+    "newImageSelected": "Đã chọn ảnh mới",
+    "modMaintenance": "Bảo Trì Mod",
+    "fixModIssues": "Sửa Lỗi Mod",
+    "fixing": "Đang sửa...",
+    "fixDescription": "Sửa lỗi thanh máu thiếu, vật liệu thiếu và hiệu ứng VFX",
+    "startingFix": "Bắt đầu quá trình sửa lỗi...",
+    "fixCompleted": "Sửa lỗi hoàn thành!",
+    "fixFailed": "Sửa lỗi thất bại: {{error}}",
+    "fixError": "Đã xảy ra lỗi khi sửa mod",
+    "saveChanges": "Lưu Thay Đổi"
   },
   "cancel": "Hủy",
   "success": "Thành công",

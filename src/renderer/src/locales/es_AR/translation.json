@@ -157,6 +157,10 @@
     "allowMultipleSkinsPerChampion": {
       "title": "Permitir múltiples skins por campeón",
       "description": "Habilitar para usar múltiples skins para el mismo campeón simultáneamente"
+    },
+    "autoFixModIssues": {
+      "title": "Auto-arreglar problemas del mod al importar",
+      "description": "Automáticamente arregla barras de vida faltantes, materiales faltantes y efectos VFX al importar mods"
     }
   },
   "errors": {
@@ -192,7 +196,26 @@
     "succeeded": "exitosos",
     "failed": "fallidos",
     "failedFiles": "Archivos fallidos:",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "fixModIssues": "Arreglar problemas del mod",
+    "fixModIssuesDescription": "Arregla barras de vida faltantes, materiales faltantes y efectos VFX"
+  },
+  "editCustomSkin": {
+    "title": "Editar Mod Personalizado",
+    "modName": "Nombre del Mod",
+    "modNamePlaceholder": "Ingresa el nombre del mod",
+    "previewImage": "Imagen de Vista Previa (Opcional)",
+    "selectImage": "Seleccionar Imagen",
+    "newImageSelected": "Nueva imagen seleccionada",
+    "modMaintenance": "Mantenimiento del Mod",
+    "fixModIssues": "Arreglar Problemas del Mod",
+    "fixing": "Arreglando...",
+    "fixDescription": "Arregla barras de vida faltantes, materiales faltantes y efectos VFX",
+    "startingFix": "Iniciando proceso de arreglo...",
+    "fixCompleted": "¡Arreglo completado exitosamente!",
+    "fixFailed": "Arreglo falló: {{error}}",
+    "fixError": "Ocurrió un error al arreglar el mod",
+    "saveChanges": "Guardar Cambios"
   },
   "cancel": "Cancelar",
   "success": "Éxito",

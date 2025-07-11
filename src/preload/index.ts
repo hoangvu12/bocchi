@@ -255,7 +255,22 @@ const api = {
 
   // Overlay management
   createOverlay: () => ipcRenderer.invoke('create-overlay'),
-  destroyOverlay: () => ipcRenderer.invoke('destroy-overlay')
+  destroyOverlay: () => ipcRenderer.invoke('destroy-overlay'),
+
+  // MultiRitoFixes API
+  checkMultiRitoFixTool: () => ipcRenderer.invoke('check-multiritofix-tool'),
+  downloadMultiRitoFixTool: () => ipcRenderer.invoke('download-multiritofix-tool'),
+  fixModIssues: (modPath: string) => ipcRenderer.invoke('fix-mod-issues', modPath),
+  onMultiRitoFixDownloadProgress: (callback: (progress: number) => void) => {
+    const handler = (_: any, progress: number) => callback(progress)
+    ipcRenderer.on('multiritofix-download-progress', handler)
+    return () => ipcRenderer.removeListener('multiritofix-download-progress', handler)
+  },
+  onFixModProgress: (callback: (message: string) => void) => {
+    const handler = (_: any, message: string) => callback(message)
+    ipcRenderer.on('fix-mod-progress', handler)
+    return () => ipcRenderer.removeListener('fix-mod-progress', handler)
+  }
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

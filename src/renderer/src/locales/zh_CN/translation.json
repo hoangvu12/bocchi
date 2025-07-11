@@ -141,6 +141,10 @@
     "allowMultipleSkinsPerChampion": {
       "title": "允许每个英雄使用多个皮肤",
       "description": "启用后可同时为同一英雄使用多个皮肤"
+    },
+    "autoFixModIssues": {
+      "title": "导入时自动修复模组问题",
+      "description": "导入模组时自动修复缺失的血条、材质和VFX效果"
     }
   },
   "errors": {
@@ -175,7 +179,26 @@
     "succeeded": "成功",
     "failed": "失败",
     "failedFiles": "失败的文件：",
-    "close": "关闭"
+    "close": "关闭",
+    "fixModIssues": "修复模组问题",
+    "fixModIssuesDescription": "修复缺失的血条、材质和VFX效果"
+  },
+  "editCustomSkin": {
+    "title": "编辑自定义模组",
+    "modName": "模组名称",
+    "modNamePlaceholder": "输入模组名称",
+    "previewImage": "预览图像（可选）",
+    "selectImage": "选择图像",
+    "newImageSelected": "已选择新图像",
+    "modMaintenance": "模组维护",
+    "fixModIssues": "修复模组问题",
+    "fixing": "修复中...",
+    "fixDescription": "修复缺失的血条、材质和VFX效果",
+    "startingFix": "开始修复过程...",
+    "fixCompleted": "修复成功完成！",
+    "fixFailed": "修复失败：{{error}}",
+    "fixError": "修复模组时发生错误",
+    "saveChanges": "保存更改"
   },
   "cancel": "取消",
   "success": "成功",

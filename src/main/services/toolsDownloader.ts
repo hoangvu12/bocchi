@@ -6,10 +6,14 @@ import AdmZip from 'adm-zip'
 
 export class ToolsDownloader {
   private toolsPath: string
+  private multiRitoFixesPath: string
+  private multiRitoFixesVersionPath: string
 
   constructor() {
     // Store tools in user data directory so they persist across app updates
     this.toolsPath = path.join(app.getPath('userData'), 'cslol-tools')
+    this.multiRitoFixesPath = path.join(app.getPath('userData'), 'MultiRitoFixes.exe')
+    this.multiRitoFixesVersionPath = path.join(app.getPath('userData'), 'multiritofix-version.txt')
 
     // Migrate tools from old location if they exist
     this.migrateToolsFromOldLocation()
@@ -144,6 +148,110 @@ export class ToolsDownloader {
 
   getToolsPath(): string {
     return this.toolsPath
+  }
+
+  async checkMultiRitoFixesExist(): Promise<boolean> {
+    try {
+      await fs.promises.access(this.multiRitoFixesPath, fs.constants.F_OK)
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  async getMultiRitoFixesLatestVersion(): Promise<{
+    downloadUrl: string
+    version: string
+    fileName: string
+  }> {
+    try {
+      const response = await axios.get(
+        'https://api.github.com/repos/TheMartynasXS/MultiRitoFixes/releases/latest',
+        {
+          headers: {
+            Accept: 'application/vnd.github.v3+json'
+          }
+        }
+      )
+
+      const release = response.data
+      // Find the executable asset (e.g., MultiRitoFixes-v25.13.exe)
+      const asset = release.assets.find(
+        (a: any) => a.name.startsWith('MultiRitoFixes-v') && a.name.endsWith('.exe')
+      )
+
+      if (!asset) {
+        throw new Error('Could not find MultiRitoFixes executable in latest release')
+      }
+
+      return {
+        downloadUrl: asset.browser_download_url,
+        version: release.tag_name,
+        fileName: asset.name
+      }
+    } catch (error) {
+      throw new Error(
+        `Failed to get MultiRitoFixes release info: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
+    }
+  }
+
+  async downloadMultiRitoFixes(onProgress?: (progress: number) => void): Promise<void> {
+    try {
+      const { downloadUrl, version } = await this.getMultiRitoFixesLatestVersion()
+
+      // Download the file
+      const response = await axios.get(downloadUrl, {
+        responseType: 'stream',
+        onDownloadProgress: (progressEvent) => {
+          if (progressEvent.total && onProgress) {
+            const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100)
+            onProgress(progress)
+          }
+        }
+      })
+
+      // Save to file
+      const writer = fs.createWriteStream(this.multiRitoFixesPath)
+      response.data.pipe(writer)
+
+      await new Promise<void>((resolve, reject) => {
+        writer.on('finish', () => resolve())
+        writer.on('error', reject)
+      })
+
+      // Save version info
+      await fs.promises.writeFile(this.multiRitoFixesVersionPath, version)
+    } catch (error) {
+      throw new Error(
+        `Failed to download MultiRitoFixes: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
+    }
+  }
+
+  async getMultiRitoFixesVersion(): Promise<string | null> {
+    try {
+      const version = await fs.promises.readFile(this.multiRitoFixesVersionPath, 'utf-8')
+      return version.trim()
+    } catch {
+      return null
+    }
+  }
+
+  async checkMultiRitoFixesUpdate(): Promise<boolean> {
+    try {
+      const currentVersion = await this.getMultiRitoFixesVersion()
+      if (!currentVersion) return true // No version file means we should download
+
+      const { version: latestVersion } = await this.getMultiRitoFixesLatestVersion()
+      return currentVersion !== latestVersion
+    } catch {
+      return false // If we can't check, assume no update needed
+    }
+  }
+
+  getMultiRitoFixesPath(): string {
+    return this.multiRitoFixesPath
   }
 
   private async migrateToolsFromOldLocation(): Promise<void> {

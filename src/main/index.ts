@@ -20,6 +20,7 @@ import { teamCompositionMonitor } from './services/teamCompositionMonitor'
 import { skinApplyService } from './services/skinApplyService'
 import { overlayWindowManager } from './services/overlayWindowManager'
 import { autoBanPickService } from './services/autoBanPickService'
+import { multiRitoFixesService } from './services/multiRitoFixesService'
 // Import SelectedSkin type from renderer atoms
 interface SelectedSkin {
   championKey: string
@@ -785,6 +786,50 @@ function setupIpcHandlers(): void {
   ipcMain.handle('delete-custom-skin', async (_, modPath: string) => {
     try {
       const result = await fileImportService.deleteCustomSkin(modPath)
+      return result
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  // MultiRitoFixes handlers
+  ipcMain.handle('check-multiritofix-tool', async () => {
+    try {
+      const exists = await toolsDownloader.checkMultiRitoFixesExist()
+      return { success: true, exists }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('download-multiritofix-tool', async (event) => {
+    try {
+      await toolsDownloader.downloadMultiRitoFixes((progress) => {
+        event.sender.send('multiritofix-download-progress', progress)
+      })
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('fix-mod-issues', async (event, modPath: string) => {
+    try {
+      // Check if it's a valid mod file
+      if (!multiRitoFixesService.isValidModFile(modPath)) {
+        return { success: false, error: 'Invalid mod file type' }
+      }
+
+      const result = await multiRitoFixesService.fixModWithDownload(
+        modPath,
+        (message) => {
+          event.sender.send('fix-mod-progress', message)
+        },
+        (progress) => {
+          event.sender.send('multiritofix-download-progress', progress)
+        }
+      )
+
       return result
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }

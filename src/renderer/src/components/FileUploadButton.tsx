@@ -1,8 +1,9 @@
-import React, { useState, forwardRef, useImperativeHandle, useCallback } from 'react'
+import React, { useState, forwardRef, useImperativeHandle, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Upload, Loader2, X, Image } from 'lucide-react'
 import type { Champion } from '../App'
 import { getChampionDisplayName } from '../utils/championUtils'
+import { Switch } from './ui/switch'
 
 interface FileUploadButtonProps {
   champions: Champion[]
@@ -23,6 +24,16 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
     const [customName, setCustomName] = useState<string>('')
     const [selectedImage, setSelectedImage] = useState<string>('')
     const [error, setError] = useState<string>('')
+    const [fixModIssues, setFixModIssues] = useState<boolean>(false)
+
+    // Load auto-fix setting when dialog opens
+    useEffect(() => {
+      if (showDialog) {
+        window.api.getSettings('autoFixModIssues').then((value) => {
+          setFixModIssues(value === true)
+        })
+      }
+    }, [showDialog])
 
     // Batch import states
     const [showBatchDialog, setShowBatchDialog] = useState(false)
@@ -68,6 +79,14 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
             // Import with default options (auto-detect)
             const result = await window.api.importSkinFile(filePath, {})
 
+            // Fix mod issues if requested and import was successful
+            if (result.success && fixModIssues && result.skinInfo?.localPath) {
+              const fixResult = await window.api.fixModIssues(result.skinInfo.localPath)
+              if (!fixResult.success) {
+                console.warn(`Failed to fix mod issues for ${fileName}:`, fixResult.error)
+              }
+            }
+
             results.push({
               filePath,
               success: result.success,
@@ -94,7 +113,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
           onSkinImported()
         }
       },
-      [onSkinImported]
+      [onSkinImported, fixModIssues]
     )
 
     // Expose handleDroppedFiles method to parent
@@ -186,6 +205,14 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
           imagePath: selectedImage || undefined
         })
 
+        // Fix mod issues if requested
+        if (result.success && fixModIssues && result.skinInfo?.localPath) {
+          const fixResult = await window.api.fixModIssues(result.skinInfo.localPath)
+          if (!fixResult.success) {
+            console.warn('Failed to fix mod issues:', fixResult.error)
+          }
+        }
+
         if (result.success) {
           setShowDialog(false)
           onSkinImported()
@@ -194,6 +221,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
           setSelectedChampion('')
           setCustomName('')
           setSelectedImage('')
+          setFixModIssues(false)
         } else {
           setError(result.error || t('fileUpload.importFailed'))
         }
@@ -276,6 +304,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
         setSelectedChampion('')
         setCustomName('')
         setSelectedImage('')
+        setFixModIssues(false)
       }
     }
 
@@ -395,6 +424,25 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                       {t('fileUpload.browseImage')}
                     </button>
                   </div>
+                </div>
+
+                <div className="flex items-center justify-between space-x-4">
+                  <div className="flex-1">
+                    <label
+                      htmlFor="fix-mod-issues"
+                      className="text-sm text-text-primary cursor-pointer select-none"
+                    >
+                      {t('fileUpload.fixModIssues')}
+                      <span className="block text-xs text-text-muted mt-0.5">
+                        {t('fileUpload.fixModIssuesDescription')}
+                      </span>
+                    </label>
+                  </div>
+                  <Switch
+                    id="fix-mod-issues"
+                    checked={fixModIssues}
+                    onCheckedChange={setFixModIssues}
+                  />
                 </div>
               </div>
 

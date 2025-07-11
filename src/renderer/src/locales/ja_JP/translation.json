@@ -157,6 +157,10 @@
     "allowMultipleSkinsPerChampion": {
       "title": "複数のスキンを同じチャンピオンに許可",
       "description": "有効にすると、同じチャンピオンに複数のスキンを同時に使用できます"
+    },
+    "autoFixModIssues": {
+      "title": "インポート時にMODの問題を自動修正",
+      "description": "MODをインポートする際に不足しているヘルスバー、マテリアル、VFXエフェクトを自動的に修正"
     }
   },
   "errors": {
@@ -192,7 +196,26 @@
     "succeeded": "成功",
     "failed": "失敗",
     "failedFiles": "失敗したファイル:",
-    "close": "閉じる"
+    "close": "閉じる",
+    "fixModIssues": "MODの問題を修正",
+    "fixModIssuesDescription": "不足しているヘルスバー、マテリアル、VFXエフェクトを修正"
+  },
+  "editCustomSkin": {
+    "title": "カスタムMODを編集",
+    "modName": "MOD名",
+    "modNamePlaceholder": "MOD名を入力",
+    "previewImage": "プレビュー画像（オプション）",
+    "selectImage": "画像を選択",
+    "newImageSelected": "新しい画像が選択されました",
+    "modMaintenance": "MODメンテナンス",
+    "fixModIssues": "MODの問題を修正",
+    "fixing": "修正中...",
+    "fixDescription": "不足しているヘルスバー、マテリアル、VFXエフェクトを修正",
+    "startingFix": "修正プロセスを開始中...",
+    "fixCompleted": "修正が正常に完了しました！",
+    "fixFailed": "修正に失敗しました：{{error}}",
+    "fixError": "MODの修正中にエラーが発生しました",
+    "saveChanges": "変更を保存"
   },
   "cancel": "キャンセル",
   "success": "成功",
