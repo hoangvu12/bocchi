@@ -39,6 +39,7 @@
     "clsx": "^2.1.1",
     "electron-overlay-window": "^3.3.0",
     "electron-updater": "^6.3.9",
+    "framer-motion": "^12.23.3",
     "i18next": "^25.2.1",
     "i18next-electron-fs-backend": "^3.0.3",
     "jotai": "^2.12.5",
