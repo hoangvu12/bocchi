@@ -203,6 +203,10 @@ export interface IApi {
     }) => void
   ) => () => void
   onTeamReset: (callback: (newPhase?: string) => void) => () => void
+  
+  // Overlay management
+  createOverlay: () => Promise<{ success: boolean; error?: string }>
+  destroyOverlay: () => Promise<{ success: boolean; error?: string }>
 }
 
 declare global {

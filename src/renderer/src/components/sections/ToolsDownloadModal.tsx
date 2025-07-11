@@ -4,7 +4,8 @@ import { useStyles, useClassNames } from '../../hooks/useOptimizedState'
 
 export function ToolsDownloadModal() {
   const { t } = useTranslation()
-  const { toolsExist, downloadingTools, toolsDownloadProgress, downloadTools } = useToolsManagement()
+  const { toolsExist, downloadingTools, toolsDownloadProgress, downloadTools } =
+    useToolsManagement()
   const styles = useStyles()
   const { getProgressBarFillStyle } = useClassNames()
 

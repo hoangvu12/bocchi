@@ -261,6 +261,31 @@ export class ChampionDataService {
     }
   }
 
+  public async getChampionById(
+    championId: string,
+    language: string = 'en_US'
+  ): Promise<Champion | null> {
+    // Ensure we have data loaded
+    const data = await this.loadChampionData(language)
+    if (!data) {
+      return null
+    }
+
+    // Find champion by ID (as string or number)
+    const champion = data.champions.find(
+      (c) => c.id.toString() === championId || c.key === championId
+    )
+    return champion || null
+  }
+
+  public async getChampionByKey(
+    championKey: string,
+    language: string = 'en_US'
+  ): Promise<Champion | null> {
+    // For backward compatibility, this method can handle both ID and key
+    return this.getChampionById(championKey, language)
+  }
+
   public async loadChampionData(
     language: string = 'en_US'
   ): Promise<{ version: string; champions: Champion[] } | null> {

@@ -239,7 +239,11 @@ const api = {
     const handler = (_: any, newPhase?: string) => callback(newPhase)
     ipcRenderer.on('team:reset', handler)
     return () => ipcRenderer.removeListener('team:reset', handler)
-  }
+  },
+
+  // Overlay management
+  createOverlay: () => ipcRenderer.invoke('create-overlay'),
+  destroyOverlay: () => ipcRenderer.invoke('destroy-overlay')
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

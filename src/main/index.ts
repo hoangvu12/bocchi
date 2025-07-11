@@ -19,6 +19,7 @@ import { lcuConnector } from './services/lcuConnector'
 import { gameflowMonitor } from './services/gameflowMonitor'
 import { teamCompositionMonitor } from './services/teamCompositionMonitor'
 import { skinApplyService } from './services/skinApplyService'
+import { overlayWindowManager } from './services/overlayWindowManager'
 // Import SelectedSkin type from renderer atoms
 interface SelectedSkin {
   championKey: string
@@ -112,6 +113,31 @@ app.whenReady().then(async () => {
   setupIpcHandlers()
 
   createWindow()
+
+  // Create overlay if enabled in settings
+  const inGameOverlayEnabled = settingsService.get('inGameOverlayEnabled')
+  const autoRandomSkinEnabled = settingsService.get('autoRandomSkinEnabled')
+  const autoRandomRaritySkinEnabled = settingsService.get('autoRandomRaritySkinEnabled')
+  const autoRandomFavoriteSkinEnabled = settingsService.get('autoRandomFavoriteSkinEnabled')
+  const championDetectionEnabled = settingsService.get('championDetectionEnabled')
+  const leagueClientEnabled = settingsService.get('leagueClientEnabled')
+
+  const anyAutoRandomEnabled =
+    autoRandomSkinEnabled || autoRandomRaritySkinEnabled || autoRandomFavoriteSkinEnabled
+
+  if (
+    inGameOverlayEnabled &&
+    anyAutoRandomEnabled &&
+    championDetectionEnabled &&
+    leagueClientEnabled
+  ) {
+    try {
+      await overlayWindowManager.create()
+      console.log('[Main] Overlay created on startup')
+    } catch (error) {
+      console.error('[Main] Failed to create overlay on startup:', error)
+    }
+  }
 
   // Initialize LCU connection
   setupLCUConnection()
@@ -928,6 +954,37 @@ function setupIpcHandlers(): void {
       return { success: true, summary }
     }
   )
+
+  // Overlay skin selection handler
+  overlayWindowManager.on('skin-selected', (skin: SelectedSkin) => {
+    // Send the selected skin to the main window
+    const mainWindow = BrowserWindow.getAllWindows().find(
+      (w) => !w.webContents.getURL().includes('overlay.html')
+    )
+    if (mainWindow) {
+      mainWindow.webContents.send('overlay:skin-selected', skin)
+    }
+  })
+
+  // Create overlay handler
+  ipcMain.handle('create-overlay', async () => {
+    try {
+      await overlayWindowManager.create()
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  // Destroy overlay handler
+  ipcMain.handle('destroy-overlay', async () => {
+    try {
+      overlayWindowManager.destroy()
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
 }
 
 // Setup LCU connection and event forwarding
@@ -956,10 +1013,132 @@ function setupLCUConnection(): void {
     })
   })
 
-  gameflowMonitor.on('champion-selected', (data) => {
+  gameflowMonitor.on('champion-selected', async (data) => {
+    // Forward to all windows
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send('lcu:champion-selected', data)
     })
+
+    // Handle overlay display
+    if (data.isLocked) {
+      try {
+        // Get current language from settings
+        const currentLanguage = settingsService.get('language') || 'en_US'
+
+        // Get champion data
+        const champData = await championDataService.getChampionByKey(
+          data.championId.toString(),
+          currentLanguage
+        )
+        if (!champData) {
+          console.error('[Overlay] Champion data not found for ID:', data.championId)
+          return
+        }
+
+        // Get user settings
+        const autoRandomSkinEnabled = settingsService.get('autoRandomSkinEnabled') || false
+        const autoRandomRaritySkinEnabled =
+          settingsService.get('autoRandomRaritySkinEnabled') || false
+        const autoRandomFavoriteSkinEnabled =
+          settingsService.get('autoRandomFavoriteSkinEnabled') || false
+        const championDetectionEnabled = settingsService.get('championDetectionEnabled') !== false
+
+        // Check if any auto-random feature is enabled
+        const autoRandomEnabled =
+          autoRandomSkinEnabled || autoRandomRaritySkinEnabled || autoRandomFavoriteSkinEnabled
+
+        if (!championDetectionEnabled) {
+          return
+        }
+
+        // Theme will be handled by the overlay renderer
+
+        // Prepare overlay data
+        const overlayData: any = {
+          championId: data.championId,
+          championKey: champData.key,
+          championName: champData.name,
+          skins: (champData.skins || []).map((skin: any) => ({
+            ...skin,
+            splashPath: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champData.key}_${skin.num}.jpg`,
+            tilePath: `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champData.key}_${skin.num}.jpg`
+          })),
+          autoRandomEnabled,
+          theme: null // Will be set by renderer based on current theme
+        }
+
+        // If auto-random is enabled, select a random skin
+        if (autoRandomEnabled && overlayData.skins && overlayData.skins.length > 1) {
+          let selectableSkins = overlayData.skins.filter((s: any) => s.num > 0)
+          let selectedSkin = null
+
+          if (selectableSkins.length > 0) {
+            // Get favorites for potential use
+            const favorites = favoritesService.getFavoritesByChampion(champData.key)
+
+            if (autoRandomFavoriteSkinEnabled && favorites.length > 0) {
+              // Only select from favorites
+              selectableSkins = selectableSkins.filter((skin: any) =>
+                favorites.some((f: any) => f.skinId === skin.id)
+              )
+              if (selectableSkins.length > 0) {
+                selectedSkin = selectableSkins[Math.floor(Math.random() * selectableSkins.length)]
+              }
+            } else if (autoRandomRaritySkinEnabled) {
+              // Only select from skins with rarity
+              selectableSkins = selectableSkins.filter(
+                (skin: any) => skin.rarity && skin.rarity !== 'kNoRarity'
+              )
+              if (selectableSkins.length > 0) {
+                // Weight by rarity
+                const weightedSkins = selectableSkins.map((skin: any) => {
+                  let weight = 1
+                  if (skin.rarity === 'kEpic') weight = 2
+                  if (skin.rarity === 'kLegendary') weight = 3
+                  if (skin.rarity === 'kUltimate') weight = 4
+                  if (skin.rarity === 'kMythic') weight = 5
+                  return { skin, weight }
+                })
+
+                const totalWeight = weightedSkins.reduce(
+                  (sum: number, item: any) => sum + item.weight,
+                  0
+                )
+                let random = Math.random() * totalWeight
+
+                for (const item of weightedSkins) {
+                  random -= item.weight
+                  if (random <= 0) {
+                    selectedSkin = item.skin
+                    break
+                  }
+                }
+              }
+            } else if (autoRandomSkinEnabled) {
+              // Pure random from all skins
+              selectedSkin = selectableSkins[Math.floor(Math.random() * selectableSkins.length)]
+            }
+
+            if (selectedSkin) {
+              overlayData.autoSelectedSkin = {
+                championKey: champData.key,
+                championName: champData.name,
+                skinId: (selectedSkin as any).id,
+                skinName: (selectedSkin as any).name,
+                skinNum: (selectedSkin as any).num,
+                splashPath: (selectedSkin as any).splashPath,
+                rarity: (selectedSkin as any).rarity
+              }
+            }
+          }
+        }
+
+        // Show overlay
+        await overlayWindowManager.show(overlayData)
+      } catch (error) {
+        console.error('[Overlay] Error handling champion lock:', error)
+      }
+    }
   })
 
   // Forward team composition events
@@ -1009,10 +1188,14 @@ function cleanup(): void {
   lcuConnector.stopAutoConnect()
   lcuConnector.disconnect()
 
+  // Clean up overlay window
+  overlayWindowManager.destroy()
+
   // Remove all listeners to prevent memory leaks
   lcuConnector.removeAllListeners()
   gameflowMonitor.removeAllListeners()
   teamCompositionMonitor.removeAllListeners()
+  overlayWindowManager.removeAllListeners()
 }
 
 // Handle app quit events

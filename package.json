@@ -37,6 +37,7 @@
     "axios": "^1.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "electron-overlay-window": "^3.3.0",
     "electron-updater": "^6.3.9",
     "i18next": "^25.2.1",
     "i18next-electron-fs-backend": "^3.0.3",

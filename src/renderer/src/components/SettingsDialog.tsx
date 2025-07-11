@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSetAtom } from 'jotai'
 import { Settings } from 'lucide-react'
-import { Button } from './ui/button'
 import { Switch } from './ui/switch'
 import {
   Dialog,
@@ -47,6 +46,7 @@ export function SettingsDialog({
   const [autoRandomRaritySkinEnabled, setAutoRandomRaritySkinEnabled] = useState(false)
   const [autoRandomFavoriteSkinEnabled, setAutoRandomFavoriteSkinEnabled] = useState(false)
   const [allowMultipleSkinsPerChampion, setAllowMultipleSkinsPerChampion] = useState(false)
+  const [inGameOverlayEnabled, setInGameOverlayEnabled] = useState(false)
   const [loading, setLoading] = useState(true)
 
   // Atom setters for immediate updates
@@ -77,6 +77,7 @@ export function SettingsDialog({
       setAutoRandomRaritySkinEnabled(settings.autoRandomRaritySkinEnabled === true)
       setAutoRandomFavoriteSkinEnabled(settings.autoRandomFavoriteSkinEnabled === true)
       setAllowMultipleSkinsPerChampion(settings.allowMultipleSkinsPerChampion === true)
+      setInGameOverlayEnabled(settings.inGameOverlayEnabled === true)
     } catch (error) {
       console.error('Failed to load settings:', error)
     } finally {
@@ -99,6 +100,7 @@ export function SettingsDialog({
         setAutoRandomSkinEnabled(false)
         setAutoRandomRaritySkinEnabled(false)
         setAutoRandomFavoriteSkinEnabled(false)
+        setInGameOverlayEnabled(false)
 
         // Update atoms immediately
         setChampionDetectionEnabledAtom(false)
@@ -113,6 +115,7 @@ export function SettingsDialog({
         await window.api.setSettings('autoRandomSkinEnabled', false)
         await window.api.setSettings('autoRandomRaritySkinEnabled', false)
         await window.api.setSettings('autoRandomFavoriteSkinEnabled', false)
+        await window.api.setSettings('inGameOverlayEnabled', false)
 
         // Disconnect LCU
         await window.api.lcuDisconnect()
@@ -144,6 +147,7 @@ export function SettingsDialog({
         setAutoRandomSkinEnabled(false)
         setAutoRandomRaritySkinEnabled(false)
         setAutoRandomFavoriteSkinEnabled(false)
+        setInGameOverlayEnabled(false)
 
         // Update atoms immediately
         setAutoViewSkinsEnabledAtom(false)
@@ -153,6 +157,10 @@ export function SettingsDialog({
         await window.api.setSettings('autoRandomSkinEnabled', false)
         await window.api.setSettings('autoRandomRaritySkinEnabled', false)
         await window.api.setSettings('autoRandomFavoriteSkinEnabled', false)
+        await window.api.setSettings('inGameOverlayEnabled', false)
+
+        // Destroy overlay if it exists
+        await window.api.destroyOverlay()
       }
 
       // Notify the parent component
@@ -210,6 +218,13 @@ export function SettingsDialog({
         setAutoRandomFavoriteSkinEnabled(false)
         await window.api.setSettings('autoRandomRaritySkinEnabled', false)
         await window.api.setSettings('autoRandomFavoriteSkinEnabled', false)
+      } else {
+        // Check if no other auto-random features are enabled
+        if (!autoRandomRaritySkinEnabled && !autoRandomFavoriteSkinEnabled) {
+          setInGameOverlayEnabled(false)
+          await window.api.setSettings('inGameOverlayEnabled', false)
+          await window.api.destroyOverlay()
+        }
       }
     } catch (error) {
       console.error('Failed to save auto random skin setting:', error)
@@ -228,6 +243,13 @@ export function SettingsDialog({
         setAutoRandomFavoriteSkinEnabled(false)
         await window.api.setSettings('autoRandomSkinEnabled', false)
         await window.api.setSettings('autoRandomFavoriteSkinEnabled', false)
+      } else {
+        // Check if no other auto-random features are enabled
+        if (!autoRandomSkinEnabled && !autoRandomFavoriteSkinEnabled) {
+          setInGameOverlayEnabled(false)
+          await window.api.setSettings('inGameOverlayEnabled', false)
+          await window.api.destroyOverlay()
+        }
       }
     } catch (error) {
       console.error('Failed to save auto random rarity skin setting:', error)
@@ -247,6 +269,13 @@ export function SettingsDialog({
         setAutoRandomRaritySkinEnabledAtom(false)
         await window.api.setSettings('autoRandomSkinEnabled', false)
         await window.api.setSettings('autoRandomRaritySkinEnabled', false)
+      } else {
+        // Check if no other auto-random features are enabled
+        if (!autoRandomSkinEnabled && !autoRandomRaritySkinEnabled) {
+          setInGameOverlayEnabled(false)
+          await window.api.setSettings('inGameOverlayEnabled', false)
+          await window.api.destroyOverlay()
+        }
       }
     } catch (error) {
       console.error('Failed to save auto random favorite skin setting:', error)
@@ -259,6 +288,23 @@ export function SettingsDialog({
       await window.api.setSettings('allowMultipleSkinsPerChampion', checked)
     } catch (error) {
       console.error('Failed to save allow multiple skins per champion setting:', error)
+    }
+  }
+
+  const handleInGameOverlayChange = async (checked: boolean) => {
+    setInGameOverlayEnabled(checked)
+    try {
+      await window.api.setSettings('inGameOverlayEnabled', checked)
+
+      // If enabling, create and attach overlay immediately
+      if (checked) {
+        await window.api.createOverlay()
+      } else {
+        // If disabling, destroy overlay
+        await window.api.destroyOverlay()
+      }
+    } catch (error) {
+      console.error('Failed to save in-game overlay setting:', error)
     }
   }
 
@@ -379,6 +425,35 @@ export function SettingsDialog({
             />
           </div>
 
+          {/* In-Game Overlay Setting */}
+          <div className="flex items-center justify-between space-x-4 pl-12">
+            <div className="flex items-start gap-3">
+              <div className="flex items-start mt-1">
+                <div className="w-4 h-4 border-l-2 border-b-2 border-text-secondary/30"></div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.inGameOverlay.title')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.inGameOverlay.description')}
+                </p>
+              </div>
+            </div>
+            <Switch
+              checked={inGameOverlayEnabled}
+              onCheckedChange={handleInGameOverlayChange}
+              disabled={
+                loading ||
+                !leagueClientEnabled ||
+                !championDetection ||
+                (!autoRandomSkinEnabled &&
+                  !autoRandomRaritySkinEnabled &&
+                  !autoRandomFavoriteSkinEnabled)
+              }
+            />
+          </div>
+
           {/* Auto Random Favorite Skin Setting */}
           <div className="flex items-center justify-between space-x-4 pl-12">
             <div className="flex items-start gap-3">
@@ -464,9 +539,12 @@ export function SettingsDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="secondary" onClick={onClose}>
+          <button
+            className="px-4 py-2 text-sm font-medium rounded-md bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
+            onClick={onClose}
+          >
             {t('actions.close')}
-          </Button>
+          </button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -6,11 +6,7 @@ import { VirtualizedSkinGrid } from '../VirtualizedSkinGrid'
 import { FilterPanel } from '../FilterPanel'
 import { GridViewToggle } from '../GridViewToggle'
 import { FileUploadButton } from '../FileUploadButton'
-import {
-  filtersAtom,
-  skinSearchQueryAtom,
-  viewModeAtom
-} from '../../store/atoms'
+import { filtersAtom, skinSearchQueryAtom, viewModeAtom } from '../../store/atoms'
 import { showDownloadedSkinsDialogAtom } from '../../store/atoms/ui.atoms'
 import {
   useDisplaySkins,
@@ -31,29 +27,29 @@ interface SkinBrowserSectionProps {
   selectedSkins: any[]
 }
 
-export function SkinBrowserSection({ loading, onEditCustomSkin, onSkinClick, selectedSkins }: SkinBrowserSectionProps) {
+export function SkinBrowserSection({
+  loading,
+  onEditCustomSkin,
+  onSkinClick,
+  selectedSkins
+}: SkinBrowserSectionProps) {
   const { t } = useTranslation()
   const { championData } = useChampionData()
   const fileUploadRef = useRef<any>(null)
-  
+
   const [filters, setFilters] = useAtom(filtersAtom)
   const [skinSearchQuery, setSkinSearchQuery] = useAtom(skinSearchQueryAtom)
   const [viewMode, setViewMode] = useAtom(viewModeAtom)
   const setShowDownloadedSkinsDialog = useSetAtom(showDownloadedSkinsDialogAtom)
-  
+
   const displaySkins = useDisplaySkins()
   const allChampionTags = useAllChampionTags()
   const downloadedCount = useDownloadedCount()
   const totalCount = useTotalCount()
   const styles = useStyles()
-  
-  const {
-    downloadedSkins,
-    favorites,
-    loadDownloadedSkins,
-    toggleFavorite,
-    deleteCustomSkin
-  } = useSkinManagement()
+
+  const { downloadedSkins, favorites, loadDownloadedSkins, toggleFavorite, deleteCustomSkin } =
+    useSkinManagement()
 
   if (!championData) return null
 

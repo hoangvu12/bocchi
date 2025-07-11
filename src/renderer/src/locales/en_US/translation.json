@@ -129,6 +129,10 @@
       "title": "Auto Random Favorite Skin",
       "description": "Automatically select a random skin from your favorites when a champion is detected"
     },
+    "inGameOverlay": {
+      "title": "In-Game Overlay",
+      "description": "Pre-attach overlay to League client for faster skin notifications (requires any Auto Random feature)"
+    },
     "allowMultipleSkinsPerChampion": {
       "title": "Allow Multiple Skins per Champion",
       "description": "Enable to use multiple skins for the same champion simultaneously"

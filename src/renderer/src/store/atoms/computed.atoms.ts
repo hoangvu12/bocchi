@@ -21,11 +21,11 @@ interface DisplaySkin {
 export const filteredChampionsAtom = atom((get) => {
   const championData = get(championDataAtom)
   const searchQuery = get(championSearchQueryAtom)
-  
+
   if (!championData?.champions) return []
-  
+
   if (!searchQuery.trim()) return championData.champions
-  
+
   const searchLower = searchQuery.toLowerCase()
   return championData.champions.filter((champ) => {
     const displayName = getChampionDisplayName(champ)
@@ -37,7 +37,7 @@ export const filteredChampionsAtom = atom((get) => {
 export const allChampionTagsAtom = atom((get) => {
   const championData = get(championDataAtom)
   if (!championData?.champions) return []
-  
+
   const tagSet = new Set<string>()
   championData.champions.forEach((champ) => {
     champ.tags.forEach((tag) => tagSet.add(tag))
@@ -220,7 +220,7 @@ export const displaySkinsAtom = atom((get) => {
 export const skinStatsAtom = atom((get) => {
   const championData = get(championDataAtom)
   const downloadedSkins = get(downloadedSkinsAtom)
-  
+
   let total = 0
   let downloaded = 0
 

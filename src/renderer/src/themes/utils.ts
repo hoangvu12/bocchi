@@ -24,6 +24,7 @@ export function generateCSSVariables(theme: Theme): string {
   variables.push(`--color-text-secondary: ${theme.colors.text.secondary};`)
   variables.push(`--color-text-muted: ${theme.colors.text.muted};`)
   variables.push(`--color-text-inverse: ${theme.colors.text.inverse};`)
+  variables.push(`--color-foreground: ${theme.colors.text.primary};`) // Alias for primary text
 
   // Border colors
   variables.push(`--color-border: ${theme.colors.border.default};`)

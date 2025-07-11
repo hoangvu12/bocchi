@@ -294,6 +294,34 @@ function AppContent(): React.JSX.Element {
     }
   }, [lcuSelectedChampion, autoViewSkinsEnabled, onChampionNavigate, clearSelectedChampion])
 
+  // Handle overlay skin selection
+  useEffect(() => {
+    const handleOverlaySkinSelected = (_event: any, skin: any) => {
+      console.log('[App] Received skin selection from overlay:', skin)
+
+      // Check if skin is already selected
+      const existingIndex = selectedSkins.findIndex(
+        (s) =>
+          s.championKey === skin.championKey &&
+          s.skinId === skin.skinId &&
+          s.chromaId === skin.chromaId
+      )
+
+      if (existingIndex === -1) {
+        // Add to selected skins
+        setSelectedSkins((prev) => [...prev, skin])
+        setStatusMessage(t('status.skinAddedFromOverlay', { name: skin.skinName }))
+      }
+    }
+
+    // Listen for overlay skin selection
+    window.electron.ipcRenderer.on('overlay:skin-selected', handleOverlaySkinSelected)
+
+    return () => {
+      window.electron.ipcRenderer.removeListener('overlay:skin-selected', handleOverlaySkinSelected)
+    }
+  }, [selectedSkins, setSelectedSkins, setStatusMessage, t])
+
   // Clean up auto-selected skins when leaving champion select or disabling auto-selection
   useEffect(() => {
     return () => {

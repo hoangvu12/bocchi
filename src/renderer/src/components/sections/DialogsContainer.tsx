@@ -16,7 +16,10 @@ import {
   showSettingsDialogAtom
 } from '../../store/atoms/ui.atoms'
 import { lcuStateSelector } from '../../store/atoms/selectors.atoms'
-import { leagueClientEnabledAtom, championDetectionEnabledAtom } from '../../store/atoms/settings.atoms'
+import {
+  leagueClientEnabledAtom,
+  championDetectionEnabledAtom
+} from '../../store/atoms/settings.atoms'
 import { useChampionData } from '../../hooks/useChampionData'
 import { useSkinManagement } from '../../hooks/useSkinManagement'
 import type { Champion, Skin } from '../../App'
@@ -33,45 +36,53 @@ export function DialogsContainer({
   handleSkinClick
 }: DialogsContainerProps) {
   const { championData, updateChampionData, isUpdatingChampionData } = useChampionData()
-  const { downloadedSkins, loadDownloadedSkins, deleteDownloadedSkin, deleteCustomSkin } = useSkinManagement()
-  
+  const { downloadedSkins, loadDownloadedSkins, deleteDownloadedSkin, deleteCustomSkin } =
+    useSkinManagement()
+
   const [showUpdateDialog, setShowUpdateDialog] = useAtom(showUpdateDialogAtom)
   const [showChampionDataUpdate, setShowChampionDataUpdate] = useAtom(showChampionDataUpdateAtom)
   const [showEditDialog, setShowEditDialog] = useAtom(showEditDialogAtom)
   const [editingCustomSkin, setEditingCustomSkin] = useAtom(editingCustomSkinAtom)
-  const [showDownloadedSkinsDialog, setShowDownloadedSkinsDialog] = useAtom(showDownloadedSkinsDialogAtom)
+  const [showDownloadedSkinsDialog, setShowDownloadedSkinsDialog] = useAtom(
+    showDownloadedSkinsDialogAtom
+  )
   const [showSettingsDialog, setShowSettingsDialog] = useAtom(showSettingsDialogAtom)
   const [, setLeagueClientEnabled] = useAtom(leagueClientEnabledAtom)
   const [, setChampionDetectionEnabled] = useAtom(championDetectionEnabledAtom)
   const setStatusMessage = useSetAtom(statusMessageAtom)
-  
+
   const lcuState = useAtomValue(lcuStateSelector)
   const { lcuSelectedChampion, isChampionLocked, autoViewSkinsEnabled } = lcuState
 
-  const handleEditCustomSkinSave = useCallback(async (newName: string, newImagePath?: string) => {
-    if (!editingCustomSkin) return
-    
-    const result = await window.api.editCustomSkin(
-      editingCustomSkin.path,
-      newName,
-      newImagePath
-    )
+  const handleEditCustomSkinSave = useCallback(
+    async (newName: string, newImagePath?: string) => {
+      if (!editingCustomSkin) return
 
-    if (result.success) {
-      await loadDownloadedSkins()
-      setStatusMessage(`Updated custom mod: ${newName}`)
-    } else {
-      setStatusMessage(`Failed to update mod: ${result.error}`)
-    }
+      const result = await window.api.editCustomSkin(editingCustomSkin.path, newName, newImagePath)
 
-    setShowEditDialog(false)
-    setEditingCustomSkin(null)
-  }, [editingCustomSkin, loadDownloadedSkins, setStatusMessage, setShowEditDialog, setEditingCustomSkin])
+      if (result.success) {
+        await loadDownloadedSkins()
+        setStatusMessage(`Updated custom mod: ${newName}`)
+      } else {
+        setStatusMessage(`Failed to update mod: ${result.error}`)
+      }
+
+      setShowEditDialog(false)
+      setEditingCustomSkin(null)
+    },
+    [
+      editingCustomSkin,
+      loadDownloadedSkins,
+      setStatusMessage,
+      setShowEditDialog,
+      setEditingCustomSkin
+    ]
+  )
 
   return (
     <>
       <UpdateDialog isOpen={showUpdateDialog} onClose={() => setShowUpdateDialog(false)} />
-      
+
       <ChampionDataUpdateDialog
         isOpen={showChampionDataUpdate}
         onUpdate={updateChampionData}

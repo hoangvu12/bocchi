@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/renderer/index.html', './src/renderer/src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './src/renderer/index.html',
+    './src/renderer/overlay.html',
+    './src/renderer/src/**/*.{js,ts,jsx,tsx}'
+  ],
   darkMode: ['class'],
   theme: {
     extend: {
@@ -35,6 +39,7 @@ module.exports = {
         background: 'var(--color-background)',
         surface: 'var(--color-surface)',
         elevated: 'var(--color-elevated)',
+        foreground: 'var(--color-foreground)',
         'text-primary': 'var(--color-text-primary)',
         'text-secondary': 'var(--color-text-secondary)',
         'text-muted': 'var(--color-text-muted)',

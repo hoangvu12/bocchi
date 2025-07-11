@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { VirtualizedChampionList } from '../VirtualizedChampionList'
-import { 
-  championSearchQueryAtom, 
+import {
+  championSearchQueryAtom,
   championColumnCollapsedAtom,
   selectedChampionKeyAtom
 } from '../../store/atoms'
@@ -21,7 +21,7 @@ export function ChampionListSection() {
   const [championColumnCollapsed, setChampionColumnCollapsed] = useAtom(championColumnCollapsedAtom)
   const [selectedChampion, setSelectedChampion] = useAtom(selectedChampionAtom)
   const [selectedChampionKey, setSelectedChampionKey] = useAtom(selectedChampionKeyAtom)
-  
+
   const filteredChampions = useFilteredChampions()
   const styles = useStyles()
   const { getChampionColumnClass, getChampionHeaderClass } = useClassNames()
