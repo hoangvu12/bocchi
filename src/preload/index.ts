@@ -256,6 +256,14 @@ const api = {
   // Overlay management
   createOverlay: () => ipcRenderer.invoke('create-overlay'),
   destroyOverlay: () => ipcRenderer.invoke('destroy-overlay'),
+  setOverlayAutoSelectedSkin: (skinData: {
+    championKey: string
+    championName: string
+    skinId: string | number
+    skinName: string
+    skinNum: number
+    rarity?: string
+  }) => ipcRenderer.invoke('set-overlay-auto-selected-skin', skinData),
 
   // MultiRitoFixes API
   checkMultiRitoFixTool: () => ipcRenderer.invoke('check-multiritofix-tool'),

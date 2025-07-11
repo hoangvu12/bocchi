@@ -220,6 +220,21 @@ function AppContent(): React.JSX.Element {
       }
       console.log(`[AutoFavorite] Created newSelectedSkin:`, newSelectedSkin)
 
+      // Send the auto-selected skin to main process for overlay display
+      try {
+        await window.api.setOverlayAutoSelectedSkin({
+          championKey: champion.key,
+          championName: champion.name,
+          skinId: randomSkin.id,
+          skinName: randomSkin.name,
+          skinNum: randomSkin.num,
+          rarity: randomSkin.rarity
+        })
+        console.log('[AutoSelect] Sent auto-selected skin to main process for overlay')
+      } catch (error) {
+        console.error('[AutoSelect] Failed to send auto-selected skin to main process:', error)
+      }
+
       // Clean up previous auto-selected skin if it exists
       if (preDownloadedAutoSkin) {
         try {

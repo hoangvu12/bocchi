@@ -43,6 +43,20 @@ const updaterService = new UpdaterService()
 const fileImportService = new FileImportService()
 const imageService = new ImageService()
 
+// Store auto-selected skin data from renderer for overlay display
+let rendererAutoSelectedSkin: {
+  championKey: string
+  championName: string
+  skinId: string | number
+  skinName: string
+  skinNum: number
+  splashPath?: string
+  rarity?: string
+} | null = null
+
+// Store the current champion ID for overlay display
+let currentChampionId: number | null = null
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -1082,6 +1096,106 @@ function setupIpcHandlers(): void {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
     }
   })
+
+  // Handler for renderer to communicate auto-selected skin to main process
+  ipcMain.handle(
+    'set-overlay-auto-selected-skin',
+    async (
+      _,
+      skinData: {
+        championKey: string
+        championName: string
+        skinId: string | number
+        skinName: string
+        skinNum: number
+        rarity?: string
+      }
+    ) => {
+      try {
+        // Store the skin data with splash path for overlay
+        rendererAutoSelectedSkin = {
+          ...skinData,
+          splashPath: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${skinData.championKey}_${skinData.skinNum}.jpg`
+        }
+        console.log('[Main] Received auto-selected skin from renderer:', rendererAutoSelectedSkin)
+
+        // Now show the overlay with the auto-selected skin
+        await showOverlayWithAutoSelectedSkin(skinData.championKey)
+
+        return { success: true }
+      } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+      }
+    }
+  )
+}
+
+// Show overlay with auto-selected skin data
+async function showOverlayWithAutoSelectedSkin(championKey: string): Promise<void> {
+  try {
+    if (!rendererAutoSelectedSkin || rendererAutoSelectedSkin.championKey !== championKey) {
+      console.log('[Overlay] No matching auto-selected skin data found')
+      return
+    }
+
+    // Get current language from settings
+    const currentLanguage = settingsService.get('language') || 'en_US'
+
+    // Get champion data
+    const champData = await championDataService.getChampionByKey(championKey, currentLanguage)
+    if (!champData) {
+      console.error('[Overlay] Champion data not found for key:', championKey)
+      return
+    }
+
+    // Get user settings
+    const autoRandomSkinEnabled = settingsService.get('autoRandomSkinEnabled') || false
+    const autoRandomRaritySkinEnabled = settingsService.get('autoRandomRaritySkinEnabled') || false
+    const autoRandomFavoriteSkinEnabled =
+      settingsService.get('autoRandomFavoriteSkinEnabled') || false
+    const championDetectionEnabled = settingsService.get('championDetectionEnabled') !== false
+
+    // Check if any auto-random feature is enabled
+    const autoRandomEnabled =
+      autoRandomSkinEnabled || autoRandomRaritySkinEnabled || autoRandomFavoriteSkinEnabled
+
+    if (!championDetectionEnabled || !autoRandomEnabled) {
+      console.log('[Overlay] Champion detection or auto-random not enabled')
+      return
+    }
+
+    // Prepare overlay data
+    const overlayData: any = {
+      championId: currentChampionId || parseInt(championKey), // Use stored ID or fallback
+      championKey: champData.key,
+      championName: champData.name,
+      skins: (champData.skins || []).map((skin: any) => ({
+        ...skin,
+        splashPath: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champData.key}_${skin.num}.jpg`,
+        tilePath: `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champData.key}_${skin.num}.jpg`
+      })),
+      autoRandomEnabled,
+      autoSelectedSkin: rendererAutoSelectedSkin,
+      theme: null // Will be set by renderer based on current theme
+    }
+
+    console.log('[Overlay] Showing overlay with auto-selected skin:', rendererAutoSelectedSkin)
+
+    // Ensure we only show overlay when we have valid auto-selected skin data
+    if (overlayData.autoSelectedSkin) {
+      // Hide any existing overlay first to ensure clean state
+      overlayWindowManager.hide()
+
+      // Small delay to ensure clean state before showing new data
+      await new Promise((resolve) => setTimeout(resolve, 100))
+
+      await overlayWindowManager.show(overlayData)
+    } else {
+      console.warn('[Overlay] No auto-selected skin data, not showing overlay')
+    }
+  } catch (error) {
+    console.error('[Overlay] Error showing overlay with auto-selected skin:', error)
+  }
 }
 
 // Setup LCU connection and event forwarding
@@ -1127,128 +1241,19 @@ function setupLCUConnection(): void {
       window.webContents.send('lcu:champion-selected', data)
     })
 
-    // Also handle overlay display in the same event
-    // Handle overlay display
-    if (data.isLocked) {
-      try {
-        // Get current language from settings
-        const currentLanguage = settingsService.get('language') || 'en_US'
+    // Store the current champion ID for overlay display
+    currentChampionId = data.championId
 
-        // Get champion data
-        const champData = await championDataService.getChampionByKey(
-          data.championId.toString(),
-          currentLanguage
-        )
-        if (!champData) {
-          console.error('[Overlay] Champion data not found for ID:', data.championId)
-          return
-        }
-
-        // Get user settings
-        const autoRandomSkinEnabled = settingsService.get('autoRandomSkinEnabled') || false
-        const autoRandomRaritySkinEnabled =
-          settingsService.get('autoRandomRaritySkinEnabled') || false
-        const autoRandomFavoriteSkinEnabled =
-          settingsService.get('autoRandomFavoriteSkinEnabled') || false
-        const championDetectionEnabled = settingsService.get('championDetectionEnabled') !== false
-
-        // Check if any auto-random feature is enabled
-        const autoRandomEnabled =
-          autoRandomSkinEnabled || autoRandomRaritySkinEnabled || autoRandomFavoriteSkinEnabled
-
-        if (!championDetectionEnabled) {
-          return
-        }
-
-        // Theme will be handled by the overlay renderer
-
-        // Prepare overlay data
-        const overlayData: any = {
-          championId: data.championId,
-          championKey: champData.key,
-          championName: champData.name,
-          skins: (champData.skins || []).map((skin: any) => ({
-            ...skin,
-            splashPath: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champData.key}_${skin.num}.jpg`,
-            tilePath: `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champData.key}_${skin.num}.jpg`
-          })),
-          autoRandomEnabled,
-          theme: null // Will be set by renderer based on current theme
-        }
-
-        // If auto-random is enabled, select a random skin
-        if (autoRandomEnabled && overlayData.skins && overlayData.skins.length > 1) {
-          let selectableSkins = overlayData.skins.filter((s: any) => s.num > 0)
-          let selectedSkin = null
-
-          if (selectableSkins.length > 0) {
-            // Get favorites for potential use
-            const favorites = favoritesService.getFavoritesByChampion(champData.key)
-
-            if (autoRandomFavoriteSkinEnabled && favorites.length > 0) {
-              // Only select from favorites
-              // Convert both skinId (string) and skin.id (number) to strings for comparison
-              selectableSkins = selectableSkins.filter((skin: any) =>
-                favorites.some((f: any) => f.skinId === String(skin.id))
-              )
-              if (selectableSkins.length > 0) {
-                selectedSkin = selectableSkins[Math.floor(Math.random() * selectableSkins.length)]
-              }
-            } else if (autoRandomRaritySkinEnabled) {
-              // Only select from skins with rarity
-              selectableSkins = selectableSkins.filter(
-                (skin: any) => skin.rarity && skin.rarity !== 'kNoRarity'
-              )
-              if (selectableSkins.length > 0) {
-                // Weight by rarity
-                const weightedSkins = selectableSkins.map((skin: any) => {
-                  let weight = 1
-                  if (skin.rarity === 'kEpic') weight = 2
-                  if (skin.rarity === 'kLegendary') weight = 3
-                  if (skin.rarity === 'kUltimate') weight = 4
-                  if (skin.rarity === 'kMythic') weight = 5
-                  return { skin, weight }
-                })
-
-                const totalWeight = weightedSkins.reduce(
-                  (sum: number, item: any) => sum + item.weight,
-                  0
-                )
-                let random = Math.random() * totalWeight
-
-                for (const item of weightedSkins) {
-                  random -= item.weight
-                  if (random <= 0) {
-                    selectedSkin = item.skin
-                    break
-                  }
-                }
-              }
-            } else if (autoRandomSkinEnabled) {
-              // Pure random from all skins
-              selectedSkin = selectableSkins[Math.floor(Math.random() * selectableSkins.length)]
-            }
-
-            if (selectedSkin) {
-              overlayData.autoSelectedSkin = {
-                championKey: champData.key,
-                championName: champData.name,
-                skinId: (selectedSkin as any).id,
-                skinName: (selectedSkin as any).name,
-                skinNum: (selectedSkin as any).num,
-                splashPath: (selectedSkin as any).splashPath,
-                rarity: (selectedSkin as any).rarity
-              }
-            }
-          }
-        }
-
-        // Show overlay
-        await overlayWindowManager.show(overlayData)
-      } catch (error) {
-        console.error('[Overlay] Error handling champion lock:', error)
-      }
+    // Clear previous auto-selected skin data when a new champion is selected
+    if (
+      rendererAutoSelectedSkin &&
+      rendererAutoSelectedSkin.championKey !== data.championId.toString()
+    ) {
+      rendererAutoSelectedSkin = null
+      console.log('[Overlay] Cleared previous auto-selected skin data for new champion')
     }
+
+    // Note: Overlay display is now handled when renderer sends auto-selected skin data
   })
 
   gameflowMonitor.on('ready-check-accepted', () => {
