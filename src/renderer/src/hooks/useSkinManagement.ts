@@ -13,6 +13,7 @@ import {
 } from '../store/atoms/game.atoms'
 import { selectedSkinsAtom } from '../store/atoms'
 import { getChampionDisplayName } from '../utils/championUtils'
+import { generateSkinFilename } from '../../../shared/utils/skinFilename'
 import type { Champion, Skin } from '../App'
 
 export function useSkinManagement() {
@@ -225,49 +226,48 @@ export function useSkinManagement() {
         const skin = champion.skins.find((s) => s.id === selectedSkin.skinId)
         if (!skin) continue
 
-        let skinFileName: string
+        // Use centralized filename generation
+        const skinFileName = generateSkinFilename({
+          ...skin,
+          chromaId: selectedSkin.chromaId
+        })
+        const downloadName = skinFileName.replace(/\.zip$/i, '').replace(/\s+\d+$/, '')
         let githubUrl: string
-        const downloadName = (skin.lolSkinsName || skin.nameEn || skin.name).replace(/:/g, '')
 
-        if (selectedSkin.chromaId) {
-          skinFileName = `${downloadName} ${selectedSkin.chromaId}.zip`
-          const isChromaDownloaded = downloadedSkins.some(
-            (ds) => ds.championName === champion.key && ds.skinName === skinFileName
-          )
+        console.log(`[Download] Generating filename for ${skin.name}:`)
+        console.log(`  lolSkinsName: ${skin.lolSkinsName}`)
+        console.log(`  nameEn: ${skin.nameEn}`)
+        console.log(`  name: ${skin.name}`)
+        console.log(`  chromaId: ${selectedSkin.chromaId}`)
+        console.log(`  Generated filename: ${skinFileName}`)
 
-          if (!isChromaDownloaded) {
-            const championNameForUrl = getChampionDisplayName(champion)
+        // Check if skin is already downloaded
+        const isSkinDownloaded = downloadedSkins.some(
+          (ds) => ds.championName === champion.key && ds.skinName === skinFileName
+        )
+
+        if (!isSkinDownloaded) {
+          const championNameForUrl = getChampionDisplayName(champion)
+
+          if (selectedSkin.chromaId) {
             githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/chromas/${encodeURIComponent(downloadName)}/${encodeURIComponent(skinFileName)}`
 
             const displayMessage = isUsingSmartApply
               ? t('status.downloading', { name: `${skin.name} (Chroma) for your team` })
               : t('status.downloading', { name: `${skin.name} (Chroma)` })
             setStatusMessage(displayMessage)
-
-            const downloadResult = await window.api.downloadSkin(githubUrl)
-            if (!downloadResult.success) {
-              throw new Error(downloadResult.error || 'Failed to download chroma')
-            }
-          }
-        } else {
-          skinFileName = `${downloadName}.zip`
-          const isSkinDownloaded = downloadedSkins.some(
-            (ds) => ds.championName === champion.key && ds.skinName === skinFileName
-          )
-
-          if (!isSkinDownloaded) {
-            const championNameForUrl = getChampionDisplayName(champion)
+          } else {
             githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(skinFileName)}`
 
             const displayMessage = isUsingSmartApply
               ? t('status.downloading', { name: `${skin.name} for your team` })
               : t('status.downloading', { name: skin.name })
             setStatusMessage(displayMessage)
+          }
 
-            const downloadResult = await window.api.downloadSkin(githubUrl)
-            if (!downloadResult.success) {
-              throw new Error(downloadResult.error || 'Failed to download skin')
-            }
+          const downloadResult = await window.api.downloadSkin(githubUrl)
+          if (!downloadResult.success) {
+            throw new Error(downloadResult.error || 'Failed to download skin')
           }
         }
 

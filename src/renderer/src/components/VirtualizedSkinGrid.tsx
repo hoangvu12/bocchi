@@ -6,6 +6,7 @@ import { isOldFormatCustomId } from '../utils/customModId'
 import { ChromaColorPie } from './ChromaColorPie'
 import { ChromaSelectionDialog } from './ChromaSelectionDialog'
 import { Button } from './ui/button'
+import { generateSkinFilename } from '../../../shared/utils/skinFilename'
 
 interface VirtualizedSkinGridProps {
   skins: Array<{ champion: Champion; skin: Skin }>
@@ -160,7 +161,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       if (index >= skins.length) return null
 
       const { champion, skin } = skins[index]
-      const skinFileName = `${skin.lolSkinsName || skin.nameEn || skin.name}.zip`.replace(/:/g, '')
+      const skinFileName = generateSkinFilename(skin)
       const downloadedSkin = downloadedSkins.find((ds) => {
         if (champion.key === 'Custom') {
           // For custom mods, match by [User] prefix and skin name

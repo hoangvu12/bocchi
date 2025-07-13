@@ -21,6 +21,7 @@ import { skinApplyService } from './services/skinApplyService'
 import { overlayWindowManager } from './services/overlayWindowManager'
 import { autoBanPickService } from './services/autoBanPickService'
 import { multiRitoFixesService } from './services/multiRitoFixesService'
+import { skinMigrationService } from './services/skinMigrationService'
 // Import SelectedSkin type from renderer atoms
 interface SelectedSkin {
   championKey: string
@@ -32,6 +33,7 @@ interface SelectedSkin {
   skinNum: number
   chromaId?: string
   isDownloaded?: boolean
+  downloadedFilename?: string
 }
 
 // Initialize services
@@ -109,6 +111,9 @@ function createWindow(): void {
 app.whenReady().then(async () => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
+
+  // Initialize migration service
+  await skinMigrationService.initialize()
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.

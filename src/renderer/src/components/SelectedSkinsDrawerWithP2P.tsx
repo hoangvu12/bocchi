@@ -8,6 +8,7 @@ import { p2pService } from '../services/p2pService'
 import { p2pFileTransferService } from '../services/p2pFileTransferService'
 import { Badge } from './ui/badge'
 import { useSmartSkinApply } from '../hooks/useSmartSkinApply'
+import { generateSkinFilename } from '../../../shared/utils/skinFilename'
 
 interface ExtendedSelectedSkin extends SelectedSkin {
   customModInfo?: {
@@ -238,32 +239,66 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
       return true
     }
 
-    // Look up the actual skin data to get the correct name (lolSkinsName > nameEn > name)
-    let actualName = skin.skinName
+    // If skin has a stored filename, use it for consistency
+    if (skin.downloadedFilename) {
+      const found = downloadedSkins.some(
+        (ds) => ds.championName === skin.championKey && ds.skinName === skin.downloadedFilename
+      )
+      console.log(
+        `[Download Check] Using stored filename: ${skin.downloadedFilename}, Found: ${found}`
+      )
+      return found
+    }
+
+    // Look up the actual skin data to get the correct name
+    let skinFileName: string
     if (championData) {
       const champion = championData.champions.find((c) => c.key === skin.championKey)
       if (champion) {
         const actualSkin = champion.skins.find((s) => s.id === skin.skinId)
         if (actualSkin) {
-          actualName = actualSkin.lolSkinsName || actualSkin.nameEn || actualSkin.name
+          // Use centralized filename generation
+          skinFileName = generateSkinFilename({
+            ...actualSkin,
+            chromaId: skin.chromaId
+          })
+        } else {
+          // Fallback if skin not found in champion data
+          skinFileName = generateSkinFilename({
+            name: skin.skinName,
+            chromaId: skin.chromaId
+          })
         }
+      } else {
+        // Fallback if champion not found
+        skinFileName = generateSkinFilename({
+          name: skin.skinName,
+          chromaId: skin.chromaId
+        })
       }
-    }
-
-    // Use the actual name for file checking
-    const baseName = actualName.replace(/:/g, '')
-
-    if (skin.chromaId) {
-      const chromaFileName = `${baseName} ${skin.chromaId}.zip`
-      return downloadedSkins.some(
-        (ds) => ds.championName === skin.championKey && ds.skinName === chromaFileName
-      )
     } else {
-      const skinFileName = `${baseName}.zip`
-      return downloadedSkins.some(
-        (ds) => ds.championName === skin.championKey && ds.skinName === skinFileName
-      )
+      // Fallback if no champion data available
+      skinFileName = generateSkinFilename({
+        name: skin.skinName,
+        chromaId: skin.chromaId
+      })
     }
+
+    const found = downloadedSkins.some(
+      (ds) => ds.championName === skin.championKey && ds.skinName === skinFileName
+    )
+
+    console.log(`[Download Check] ${skin.championName} - ${skin.skinName}:`)
+    console.log(`  Generated filename: ${skinFileName}`)
+    console.log(
+      `  Downloaded skins for champion: ${downloadedSkins
+        .filter((ds) => ds.championName === skin.championKey)
+        .map((ds) => ds.skinName)
+        .join(', ')}`
+    )
+    console.log(`  Found: ${found}`)
+
+    return found
   }
 
   const applySkinFromPeer = async (skin: ExtendedSelectedSkin, peerId: string) => {

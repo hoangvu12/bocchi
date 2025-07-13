@@ -35,6 +35,7 @@ export interface SelectedSkin {
   chromaId?: string
   isDownloaded?: boolean
   isAutoSelected?: boolean
+  downloadedFilename?: string // Stores the actual filename used when downloading
 }
 
 // Auto-synced skin from P2P room member

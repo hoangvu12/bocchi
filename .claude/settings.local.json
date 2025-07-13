@@ -1,6 +1,13 @@
 {
   "permissions": {
-    "allow": ["Bash(cp:*)", "Bash(rg:*)", "Bash(grep:*)", "Bash(mkdir:*)"],
+    "allow": [
+      "Bash(cp:*)",
+      "Bash(rg:*)",
+      "Bash(grep:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npm run format:*)"
+    ],
     "deny": []
   }
 }

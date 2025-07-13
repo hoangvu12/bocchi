@@ -24,6 +24,7 @@ import { P2PProvider } from './contexts/P2PContext'
 
 // Utils
 import { getChampionDisplayName } from './utils/championUtils'
+import { generateSkinFilename } from '../../shared/utils/skinFilename'
 
 // Hooks
 import { useGameDetection } from './hooks/useGameDetection'
@@ -262,12 +263,7 @@ function AppContent(): React.JSX.Element {
       })
 
       // Pre-download the auto-selected skin in the background
-      const downloadName = (
-        randomSkin.lolSkinsName ||
-        randomSkin.nameEn ||
-        randomSkin.name
-      ).replace(/:/g, '')
-      const skinFileName = `${downloadName}.zip`
+      const skinFileName = generateSkinFilename(randomSkin)
       const championNameForUrl = getChampionDisplayName(champion)
       const githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(
         skinFileName
