@@ -408,20 +408,65 @@ function setupIpcHandlers(): void {
             const possibleExtensions = ['.wad.client', '.wad', '.zip', '.fantome']
             let modFilePath: string | null = null
 
+            // Try champion-specific paths first
             for (const ext of possibleExtensions) {
               const testPath = path.join(modFilesDir, `${champion}_${skinName}${ext}`)
               try {
                 await fs.promises.access(testPath)
                 modFilePath = testPath
+                console.log(`[Patcher] Found mod at champion-specific path: ${testPath}`)
                 break
               } catch {
                 // Continue to next extension
               }
             }
 
+            // If not found, try Custom_ paths (for mods imported without champion selection)
+            if (!modFilePath) {
+              for (const ext of possibleExtensions) {
+                const customPath = path.join(modFilesDir, `Custom_${skinName}${ext}`)
+                try {
+                  await fs.promises.access(customPath)
+                  modFilePath = customPath
+                  console.log(`[Patcher] Found mod at custom path: ${customPath}`)
+                  break
+                } catch {
+                  // Continue to next extension
+                }
+              }
+            }
+
             // If not found in mod-files, check legacy mods directory
             if (!modFilePath) {
-              modFilePath = path.join(app.getPath('userData'), 'mods', `${champion}_${skinName}`)
+              // Try champion-specific legacy path
+              const legacyPath = path.join(
+                app.getPath('userData'),
+                'mods',
+                `${champion}_${skinName}`
+              )
+              try {
+                await fs.promises.access(legacyPath)
+                modFilePath = legacyPath
+                console.log(`[Patcher] Found mod at legacy champion path: ${legacyPath}`)
+              } catch {
+                // Try Custom_ legacy path
+                const customLegacyPath = path.join(
+                  app.getPath('userData'),
+                  'mods',
+                  `Custom_${skinName}`
+                )
+                try {
+                  await fs.promises.access(customLegacyPath)
+                  modFilePath = customLegacyPath
+                  console.log(`[Patcher] Found mod at legacy custom path: ${customLegacyPath}`)
+                } catch {
+                  // Not found anywhere, use the expected path (will fail later but provides better error)
+                  modFilePath = path.join(modFilesDir, `${champion}_${skinName}.wad`)
+                  console.warn(
+                    `[Patcher] Mod not found for ${champion}/${skinName}, using expected path: ${modFilePath}`
+                  )
+                }
+              }
             }
 
             return { localPath: modFilePath }
@@ -529,19 +574,65 @@ function setupIpcHandlers(): void {
               const possibleExtensions = ['.wad.client', '.wad', '.zip', '.fantome']
               let modFilePath: string | null = null
 
+              // Try champion-specific paths first
               for (const ext of possibleExtensions) {
                 const testPath = path.join(modFilesDir, `${champion}_${skinName}${ext}`)
                 try {
                   await fs.promises.access(testPath)
                   modFilePath = testPath
+                  console.log(`[SmartApply] Found mod at champion-specific path: ${testPath}`)
                   break
                 } catch {
                   // Continue
                 }
               }
 
+              // If not found, try Custom_ paths (for mods imported without champion selection)
               if (!modFilePath) {
-                modFilePath = path.join(app.getPath('userData'), 'mods', `${champion}_${skinName}`)
+                for (const ext of possibleExtensions) {
+                  const customPath = path.join(modFilesDir, `Custom_${skinName}${ext}`)
+                  try {
+                    await fs.promises.access(customPath)
+                    modFilePath = customPath
+                    console.log(`[SmartApply] Found mod at custom path: ${customPath}`)
+                    break
+                  } catch {
+                    // Continue
+                  }
+                }
+              }
+
+              // If not found in mod-files, check legacy mods directory
+              if (!modFilePath) {
+                // Try champion-specific legacy path
+                const legacyPath = path.join(
+                  app.getPath('userData'),
+                  'mods',
+                  `${champion}_${skinName}`
+                )
+                try {
+                  await fs.promises.access(legacyPath)
+                  modFilePath = legacyPath
+                  console.log(`[SmartApply] Found mod at legacy champion path: ${legacyPath}`)
+                } catch {
+                  // Try Custom_ legacy path
+                  const customLegacyPath = path.join(
+                    app.getPath('userData'),
+                    'mods',
+                    `Custom_${skinName}`
+                  )
+                  try {
+                    await fs.promises.access(customLegacyPath)
+                    modFilePath = customLegacyPath
+                    console.log(`[SmartApply] Found mod at legacy custom path: ${customLegacyPath}`)
+                  } catch {
+                    // Not found anywhere, use the expected path (will fail later but provides better error)
+                    modFilePath = path.join(modFilesDir, `${champion}_${skinName}.wad`)
+                    console.warn(
+                      `[SmartApply] Mod not found for ${champion}/${skinName}, using expected path: ${modFilePath}`
+                    )
+                  }
+                }
               }
 
               return { localPath: modFilePath }

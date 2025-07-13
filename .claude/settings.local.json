@@ -6,7 +6,9 @@
       "Bash(grep:*)",
       "Bash(mkdir:*)",
       "Bash(npm run typecheck:*)",
-      "Bash(npm run format:*)"
+      "Bash(npm run format:*)",
+      "Bash(pnpm run:*)",
+      "Bash(npm run lint)"
     ],
     "deny": []
   }
