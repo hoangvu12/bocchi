@@ -344,6 +344,8 @@ function setupIpcHandlers(): void {
   // Patcher controls
   ipcMain.handle('run-patcher', async (_, gamePath: string, selectedSkins: string[]) => {
     try {
+      console.log(selectedSkins)
+
       // 0. Filter out base skins when their chromas are selected
       const filteredSkins = selectedSkins.filter((skinKey) => {
         const [champion, skinFile] = skinKey.split('/')
@@ -394,14 +396,24 @@ function setupIpcHandlers(): void {
       }
 
       // 1. Download skins that are not local and get all local paths
-      const skinInfosToProcess = await Promise.all(
+      const skinProcessingErrors: string[] = []
+      const skinInfosToProcess = await Promise.allSettled(
         filteredSkins.map(async (skinKey) => {
           const [champion, skinFile] = skinKey.split('/')
 
           // Handle user-imported skins
           if (skinFile.includes('[User]')) {
             const skinNameWithExt = skinFile.replace('[User] ', '')
-            const skinName = skinNameWithExt.replace(/\.(wad\.client|wad|zip|fantome)$/i, '')
+            // Extract the actual filename without extension more carefully
+            const extMatch = skinNameWithExt.match(/\.(wad\.client|wad|zip|fantome)$/i)
+            const skinName = extMatch
+              ? skinNameWithExt.slice(0, -extMatch[0].length)
+              : skinNameWithExt
+            const fileExt = extMatch ? extMatch[0] : ''
+
+            console.log(
+              `[Patcher] Processing custom mod: champion=${champion}, skinFile=${skinFile}, skinName=${skinName}, fileExt=${fileExt}`
+            )
 
             // First try to find the mod file in mod-files directory
             const modFilesDir = path.join(app.getPath('userData'), 'mod-files')
@@ -409,14 +421,21 @@ function setupIpcHandlers(): void {
             let modFilePath: string | null = null
 
             // Try champion-specific paths first
-            for (const ext of possibleExtensions) {
+            // If we already know the extension, try that first
+            const extensionsToTry = fileExt
+              ? [fileExt, ...possibleExtensions.filter((e) => e !== fileExt)]
+              : possibleExtensions
+
+            for (const ext of extensionsToTry) {
               const testPath = path.join(modFilesDir, `${champion}_${skinName}${ext}`)
+              console.log(`[Patcher] Trying path: ${testPath}`)
               try {
                 await fs.promises.access(testPath)
                 modFilePath = testPath
                 console.log(`[Patcher] Found mod at champion-specific path: ${testPath}`)
                 break
-              } catch {
+              } catch (error) {
+                console.log(`[Patcher] Path not found: ${testPath}, error:`, error)
                 // Continue to next extension
               }
             }
@@ -460,13 +479,15 @@ function setupIpcHandlers(): void {
                   modFilePath = customLegacyPath
                   console.log(`[Patcher] Found mod at legacy custom path: ${customLegacyPath}`)
                 } catch {
-                  // Not found anywhere, use the expected path (will fail later but provides better error)
-                  modFilePath = path.join(modFilesDir, `${champion}_${skinName}.wad`)
-                  console.warn(
-                    `[Patcher] Mod not found for ${champion}/${skinName}, using expected path: ${modFilePath}`
-                  )
+                  // Not found anywhere
+                  console.error(`[Patcher] Mod file not found for ${champion}/${skinName}`)
+                  modFilePath = null
                 }
               }
+            }
+
+            if (!modFilePath) {
+              throw new Error(`Custom mod file not found: ${champion}/${skinName}`)
             }
 
             return { localPath: modFilePath }
@@ -480,12 +501,46 @@ function setupIpcHandlers(): void {
         })
       )
 
+      // Process Promise.allSettled results
+      const successfulSkins = skinInfosToProcess
+        .filter(
+          (result): result is PromiseFulfilledResult<{ localPath: string }> =>
+            result.status === 'fulfilled'
+        )
+        .map((result) => result.value)
+
+      const failedSkins = skinInfosToProcess
+        .filter((result): result is PromiseRejectedResult => result.status === 'rejected')
+        .map((result, index) => ({
+          skin: filteredSkins[index],
+          error: result.reason?.message || result.reason
+        }))
+
+      if (failedSkins.length > 0) {
+        failedSkins.forEach(({ skin, error }) => {
+          console.error(`[Patcher] Failed to process ${skin}: ${error}`)
+          skinProcessingErrors.push(`${skin}: ${error}`)
+        })
+      }
+
       // 2. Prepare preset for patcher
+      console.log('[Patcher] Successfully processed skins:', successfulSkins)
+      const validPaths = successfulSkins.map((s) => s.localPath).filter((path) => path != null)
+
+      if (validPaths.length === 0) {
+        console.error('[Patcher] No valid skin paths found!')
+        const errorMessage =
+          skinProcessingErrors.length > 0
+            ? `Failed to find skin files:\n${skinProcessingErrors.join('\n')}`
+            : 'Failed to resolve skin file paths'
+        return { success: false, message: errorMessage }
+      }
+
       const preset = {
         id: 'temp_' + Date.now(),
         name: 'Temporary',
         description: 'Temporary preset for patcher',
-        selectedSkins: skinInfosToProcess.map((s) => s.localPath),
+        selectedSkins: validPaths,
         gamePath,
         noTFT: true,
         ignoreConflict: allowMultipleSkinsPerChampion || false,
@@ -529,9 +584,20 @@ function setupIpcHandlers(): void {
 
         // Convert to the format expected by run-patcher
         const skinKeys = filteredSkins.map((skin) => {
+          // Handle custom mods without champion (old format)
           if (skin.championKey === 'Custom') {
             return `Custom/[User] ${skin.skinName}`
           }
+
+          // Handle custom mods with champion assigned (new format)
+          // These have skinId starting with "custom_[User] "
+          if (skin.skinId.startsWith('custom_[User] ')) {
+            // Extract the filename from skinId after "custom_"
+            const modFileName = skin.skinId.replace('custom_', '')
+            return `${skin.championKey}/${modFileName}`
+          }
+
+          // Regular skins from repository
           // For chromas, append the chroma ID
           // Use proper name priority for downloading from repository: lolSkinsName -> nameEn -> name
           const skinNameToUse = (skin.lolSkinsName || skin.skinNameEn || skin.skinName).replace(
@@ -562,27 +628,44 @@ function setupIpcHandlers(): void {
         }
 
         // Download skins and apply
-        const skinInfosToProcess = await Promise.all(
+        const skinProcessingErrors: string[] = []
+        const skinInfosToProcess = await Promise.allSettled(
           skinKeys.map(async (skinKey) => {
             const [champion, skinFile] = skinKey.split('/')
 
             if (skinFile.includes('[User]')) {
               const skinNameWithExt = skinFile.replace('[User] ', '')
-              const skinName = skinNameWithExt.replace(/\.(wad\.client|wad|zip|fantome)$/i, '')
+              // Extract the actual filename without extension more carefully
+              const extMatch = skinNameWithExt.match(/\.(wad\.client|wad|zip|fantome)$/i)
+              const skinName = extMatch
+                ? skinNameWithExt.slice(0, -extMatch[0].length)
+                : skinNameWithExt
+              const fileExt = extMatch ? extMatch[0] : ''
+
+              console.log(
+                `[SmartApply] Processing custom mod: champion=${champion}, skinFile=${skinFile}, skinName=${skinName}, fileExt=${fileExt}`
+              )
 
               const modFilesDir = path.join(app.getPath('userData'), 'mod-files')
               const possibleExtensions = ['.wad.client', '.wad', '.zip', '.fantome']
               let modFilePath: string | null = null
 
               // Try champion-specific paths first
-              for (const ext of possibleExtensions) {
+              // If we already know the extension, try that first
+              const extensionsToTry = fileExt
+                ? [fileExt, ...possibleExtensions.filter((e) => e !== fileExt)]
+                : possibleExtensions
+
+              for (const ext of extensionsToTry) {
                 const testPath = path.join(modFilesDir, `${champion}_${skinName}${ext}`)
+                console.log(`[SmartApply] Trying path: ${testPath}`)
                 try {
                   await fs.promises.access(testPath)
                   modFilePath = testPath
                   console.log(`[SmartApply] Found mod at champion-specific path: ${testPath}`)
                   break
-                } catch {
+                } catch (error) {
+                  console.log(`[SmartApply] Path not found: ${testPath}, error:`, error)
                   // Continue
                 }
               }
@@ -626,13 +709,15 @@ function setupIpcHandlers(): void {
                     modFilePath = customLegacyPath
                     console.log(`[SmartApply] Found mod at legacy custom path: ${customLegacyPath}`)
                   } catch {
-                    // Not found anywhere, use the expected path (will fail later but provides better error)
-                    modFilePath = path.join(modFilesDir, `${champion}_${skinName}.wad`)
-                    console.warn(
-                      `[SmartApply] Mod not found for ${champion}/${skinName}, using expected path: ${modFilePath}`
-                    )
+                    // Not found anywhere
+                    console.error(`[SmartApply] Mod file not found for ${champion}/${skinName}`)
+                    modFilePath = null
                   }
                 }
+              }
+
+              if (!modFilePath) {
+                throw new Error(`Custom mod file not found: ${champion}/${skinName}`)
               }
 
               return { localPath: modFilePath }
@@ -643,11 +728,45 @@ function setupIpcHandlers(): void {
           })
         )
 
+        // Process Promise.allSettled results
+        const successfulSkins = skinInfosToProcess
+          .filter(
+            (result): result is PromiseFulfilledResult<{ localPath: string }> =>
+              result.status === 'fulfilled'
+          )
+          .map((result) => result.value)
+
+        const failedSkins = skinInfosToProcess
+          .filter((result): result is PromiseRejectedResult => result.status === 'rejected')
+          .map((result, index) => ({
+            skin: skinKeys[index],
+            error: result.reason?.message || result.reason
+          }))
+
+        if (failedSkins.length > 0) {
+          failedSkins.forEach(({ skin, error }) => {
+            console.error(`[SmartApply] Failed to process ${skin}: ${error}`)
+            skinProcessingErrors.push(`${skin}: ${error}`)
+          })
+        }
+
+        console.log('[SmartApply] Successfully processed skins:', successfulSkins)
+        const validPaths = successfulSkins.map((s) => s.localPath).filter((path) => path != null)
+
+        if (validPaths.length === 0) {
+          console.error('[SmartApply] No valid skin paths found!')
+          const errorMessage =
+            skinProcessingErrors.length > 0
+              ? `Failed to find skin files:\n${skinProcessingErrors.join('\n')}`
+              : 'Failed to resolve skin file paths'
+          return { success: false, message: errorMessage }
+        }
+
         const preset = {
           id: 'temp_' + Date.now(),
           name: 'Temporary',
           description: 'Smart apply preset',
-          selectedSkins: skinInfosToProcess.map((s) => s.localPath),
+          selectedSkins: validPaths,
           gamePath,
           noTFT: true,
           ignoreConflict: false,

@@ -208,14 +208,31 @@ export function useSkinManagement() {
         )
       }
 
+      console.log('[useSkinManagement] Processing skins to apply:', skinsToApply)
+
       // Download any skins that aren't downloaded yet
       for (const selectedSkin of skinsToApply) {
-        if (selectedSkin.championKey === 'Custom') {
-          const userMod = downloadedSkins.find(
-            (ds) => ds.skinName.includes('[User]') && ds.skinName.includes(selectedSkin.skinName)
-          )
-          if (userMod) {
-            skinKeys.push(`${userMod.championName}/${userMod.skinName}`)
+        // Handle custom mods (both old and new format)
+        if (
+          selectedSkin.championKey === 'Custom' ||
+          selectedSkin.skinId.startsWith('custom_[User] ')
+        ) {
+          if (selectedSkin.championKey === 'Custom') {
+            // Old format: Custom champion
+            const userMod = downloadedSkins.find(
+              (ds) => ds.skinName.includes('[User]') && ds.skinName.includes(selectedSkin.skinName)
+            )
+            if (userMod) {
+              skinKeys.push(`${userMod.championName}/${userMod.skinName}`)
+            }
+          } else {
+            // New format: Custom mod with champion assigned
+            // Extract the filename from skinId after "custom_"
+            const modFileName = selectedSkin.skinId.replace('custom_', '')
+            console.log(
+              `[useSkinManagement] Adding custom mod: ${selectedSkin.championKey}/${modFileName}`
+            )
+            skinKeys.push(`${selectedSkin.championKey}/${modFileName}`)
           }
           continue
         }
@@ -274,6 +291,8 @@ export function useSkinManagement() {
         const championNameForPatcher = getChampionDisplayName(champion)
         skinKeys.push(`${championNameForPatcher}/${skinFileName}`)
       }
+
+      console.log('[useSkinManagement] Final skinKeys array:', skinKeys)
 
       // Reload downloaded skins list
       await loadDownloadedSkins()

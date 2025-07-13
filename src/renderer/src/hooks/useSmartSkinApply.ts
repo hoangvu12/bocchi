@@ -205,9 +205,20 @@ export function useSmartSkinApply({
         } else {
           // Fallback to regular apply
           const skinKeys = selectedSkins.map((skin) => {
+            // Handle custom mods without champion (old format)
             if (skin.championKey === 'Custom') {
               return `Custom/[User] ${skin.skinName}`
             }
+
+            // Handle custom mods with champion assigned (new format)
+            // These have skinId starting with "custom_[User] "
+            if (skin.skinId.startsWith('custom_[User] ')) {
+              // Extract the filename from skinId after "custom_"
+              const modFileName = skin.skinId.replace('custom_', '')
+              return `${skin.championKey}/${modFileName}`
+            }
+
+            // Regular skins from repository
             // Use proper name priority for downloading from repository: lolSkinsName -> nameEn -> name
             const skinNameToUse = (skin.lolSkinsName || skin.skinNameEn || skin.skinName).replace(
               /:/g,
