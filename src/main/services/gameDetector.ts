@@ -181,7 +181,13 @@ export class GameDetector {
 
   private async detectFromRiotClientInstalls(): Promise<string | null> {
     try {
-      const riotInstallsPath = 'C:\\ProgramData\\Riot Games\\RiotClientInstalls.json'
+      const systemDrive = process.env.SystemDrive || 'C:'
+      const riotInstallsPath = path.join(
+        systemDrive,
+        'ProgramData',
+        'Riot Games',
+        'RiotClientInstalls.json'
+      )
 
       // Check if file exists
       try {
