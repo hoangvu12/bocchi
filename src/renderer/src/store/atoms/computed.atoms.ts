@@ -154,6 +154,32 @@ export const displaySkinsAtom = atom((get) => {
         }
       }
     })
+
+    // Also include custom skins for this champion
+    downloadedSkins.forEach((downloadedSkin) => {
+      if (
+        downloadedSkin.skinName.includes('[User]') &&
+        downloadedSkin.championName &&
+        downloadedSkin.championName.toLowerCase() === selectedChampion.key.toLowerCase()
+      ) {
+        const customSkin: Skin = {
+          id: `custom_${downloadedSkin.skinName}`,
+          num: -1,
+          name: downloadedSkin.skinName.replace('[User] ', ''),
+          nameEn: downloadedSkin.skinName.replace('[User] ', ''),
+          chromas: false,
+          rarity: 'kNoRarity',
+          rarityGemPath: null,
+          isLegacy: false,
+          skinType: 'custom',
+          description: 'Custom imported mod'
+        }
+
+        if (!showFavoritesOnly || favorites.has(`${selectedChampion.key}_${customSkin.id}`)) {
+          allSkins.push({ champion: selectedChampion, skin: customSkin })
+        }
+      }
+    })
   } else if (selectedChampionKey === 'all') {
     // Show all skins
     championData.champions.forEach((champion) => {
@@ -164,6 +190,49 @@ export const displaySkinsAtom = atom((get) => {
           }
         }
       })
+    })
+
+    // Also include all custom skins when showing all
+    downloadedSkins.forEach((downloadedSkin) => {
+      if (downloadedSkin.skinName.includes('[User]')) {
+        let champion: Champion | undefined
+
+        if (downloadedSkin.championName && downloadedSkin.championName !== 'Custom') {
+          champion = championData.champions.find(
+            (c) => c.key.toLowerCase() === downloadedSkin.championName.toLowerCase()
+          )
+        }
+
+        if (!champion) {
+          champion = {
+            id: -1,
+            key: 'Custom',
+            name: 'Custom',
+            nameEn: 'Custom',
+            title: 'Imported Mods',
+            image: '',
+            skins: [],
+            tags: []
+          }
+        }
+
+        const customSkin: Skin = {
+          id: `custom_${downloadedSkin.skinName}`,
+          num: -1,
+          name: downloadedSkin.skinName.replace('[User] ', ''),
+          nameEn: downloadedSkin.skinName.replace('[User] ', ''),
+          chromas: false,
+          rarity: 'kNoRarity',
+          rarityGemPath: null,
+          isLegacy: false,
+          skinType: 'custom',
+          description: 'Custom imported mod'
+        }
+
+        if (!showFavoritesOnly || favorites.has(`${champion.key}_${customSkin.id}`)) {
+          allSkins.push({ champion, skin: customSkin })
+        }
+      }
     })
   } else if (selectedChampionKey === 'custom') {
     // Show custom mods
