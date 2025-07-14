@@ -294,6 +294,8 @@
     "skinNumAsc": "皮肤编号（升序）",
     "skinNumDesc": "皮肤编号（降序）",
     "championName": "英雄名称",
+    "rarityAsc": "稀有度 (低→高)",
+    "rarityDesc": "稀有度 (高→低)",
     "rarity": "稀有度",
     "rarities": {
       "epic": "史诗",

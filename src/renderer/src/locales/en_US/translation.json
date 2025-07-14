@@ -302,6 +302,8 @@
     "skinNumAsc": "Skin # (Low to High)",
     "skinNumDesc": "Skin # (High to Low)",
     "championName": "Champion Name",
+    "rarityAsc": "Rarity (Low to High)",
+    "rarityDesc": "Rarity (High to Low)",
     "rarity": "Rarity",
     "rarities": {
       "epic": "Epic",

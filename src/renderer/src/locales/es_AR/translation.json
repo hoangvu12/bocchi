@@ -311,6 +311,8 @@
     "skinNumAsc": "N° de skin (menor a mayor)",
     "skinNumDesc": "N° de skin (mayor a menor)",
     "championName": "Nombre del campeón",
+    "rarityAsc": "Rareza (Baja a Alta)",
+    "rarityDesc": "Rareza (Alta a Baja)",
     "rarity": "Rareza",
     "rarities": {
       "epic": "Épica",

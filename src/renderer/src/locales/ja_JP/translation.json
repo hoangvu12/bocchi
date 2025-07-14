@@ -311,6 +311,8 @@
     "skinNumAsc": "スキン番号 (昇順)",
     "skinNumDesc": "スキン番号 (降順)",
     "championName": "チャンピオン名",
+    "rarityAsc": "レアリティ (低→高)",
+    "rarityDesc": "レアリティ (高→低)",
     "rarity": "レアリティ",
     "rarities": {
       "epic": "エピック",

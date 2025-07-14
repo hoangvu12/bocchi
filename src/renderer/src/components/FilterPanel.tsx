@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
 import { filterPanelExpandedAtom } from '../store/atoms'
@@ -6,7 +6,14 @@ import { Button } from './ui/button'
 import { Badge } from './ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
-export type SortOption = 'name-asc' | 'name-desc' | 'skin-asc' | 'skin-desc' | 'champion'
+export type SortOption =
+  | 'name-asc'
+  | 'name-desc'
+  | 'skin-asc'
+  | 'skin-desc'
+  | 'champion'
+  | 'rarity-asc'
+  | 'rarity-desc'
 export type DownloadFilter = 'all' | 'downloaded' | 'not-downloaded'
 export type ChromaFilter = 'all' | 'has-chromas' | 'no-chromas'
 export type RarityFilter =
@@ -45,6 +52,13 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 }) => {
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useAtom(filterPanelExpandedAtom)
+  const [expandedSections, setExpandedSections] = useState({
+    downloadStatus: true,
+    chromaStatus: true,
+    rarity: true,
+    championTags: true,
+    sortBy: true
+  })
 
   const updateFilter = <K extends keyof FilterOptions>(key: K, value: FilterOptions[K]) => {
     onFiltersChange({ ...filters, [key]: value })
@@ -57,6 +71,38 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     updateFilter('championTags', newTags)
   }
 
+  const toggleSection = (sectionKey: keyof typeof expandedSections) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [sectionKey]: !prev[sectionKey]
+    }))
+  }
+
+  const SectionHeader: React.FC<{ title: string; isExpanded: boolean; onToggle: () => void }> = ({
+    title,
+    isExpanded,
+    onToggle
+  }) => (
+    <button
+      onClick={onToggle}
+      className="flex items-center justify-between w-full text-left focus:outline-none group"
+    >
+      <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
+        {title}
+      </h3>
+      <svg
+        className={`w-3 h-3 text-text-secondary transition-transform group-hover:text-text-primary ${
+          isExpanded ? 'rotate-180' : ''
+        }`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+  )
+
   const hasActiveFilters =
     filters.downloadStatus !== 'all' ||
     filters.chromaStatus !== 'all' ||
@@ -65,7 +111,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     filters.rarity !== 'all'
 
   return (
-    <div className="bg-surface border-b-2 border-border transition-all duration-300">
+    <div className="relative bg-surface border-b-2 border-border transition-all duration-300">
       <div className="px-8 py-4">
         <div className="flex items-center justify-between">
           <Button
@@ -111,163 +157,211 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
 
         {isExpanded && (
-          <div className="mt-6 space-y-6 animate-slide-down">
-            {/* Download Status */}
-            <div>
-              <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
-                {t('filters.downloadStatus')}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {(['all', 'downloaded', 'not-downloaded'] as DownloadFilter[]).map((status) => (
-                  <Button
-                    key={status}
-                    variant={filters.downloadStatus === status ? 'default' : 'secondary'}
-                    size="sm"
-                    onClick={() => updateFilter('downloadStatus', status)}
-                    className={
-                      filters.downloadStatus === status ? 'bg-primary-500 hover:bg-primary-600' : ''
-                    }
-                  >
-                    {status === 'all'
-                      ? t('filters.all')
-                      : status === 'downloaded'
-                        ? t('filters.downloaded')
-                        : t('filters.notDownloaded')}
-                  </Button>
-                ))}
+          <div className="absolute top-full left-0 right-0 z-10 bg-surface border-b-2 border-border shadow-lg max-h-[60vh] sm:max-h-[70vh] lg:max-h-[75vh] overflow-y-auto">
+            <div className="px-4 sm:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6 animate-slide-down">
+              {/* Download Status */}
+              <div>
+                <div className="mb-2 sm:mb-3">
+                  <SectionHeader
+                    title={t('filters.downloadStatus')}
+                    isExpanded={expandedSections.downloadStatus}
+                    onToggle={() => toggleSection('downloadStatus')}
+                  />
+                </div>
+                {expandedSections.downloadStatus && (
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    {(['all', 'downloaded', 'not-downloaded'] as DownloadFilter[]).map((status) => (
+                      <Button
+                        key={status}
+                        variant={filters.downloadStatus === status ? 'default' : 'secondary'}
+                        size="sm"
+                        onClick={() => updateFilter('downloadStatus', status)}
+                        className={
+                          filters.downloadStatus === status
+                            ? 'bg-primary-500 hover:bg-primary-600'
+                            : ''
+                        }
+                      >
+                        {status === 'all'
+                          ? t('filters.all')
+                          : status === 'downloaded'
+                            ? t('filters.downloaded')
+                            : t('filters.notDownloaded')}
+                      </Button>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
 
-            {/* Chroma Status */}
-            <div>
-              <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
-                {t('filters.chromas')}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {(['all', 'has-chromas', 'no-chromas'] as ChromaFilter[]).map((status) => (
-                  <Button
-                    key={status}
-                    variant={filters.chromaStatus === status ? 'default' : 'secondary'}
-                    size="sm"
-                    onClick={() => updateFilter('chromaStatus', status)}
-                    className={
-                      filters.chromaStatus === status ? 'bg-primary-500 hover:bg-primary-600' : ''
-                    }
-                  >
-                    {status === 'all'
-                      ? t('filters.all')
-                      : status === 'has-chromas'
-                        ? t('filters.hasChromas')
-                        : t('filters.noChromas')}
-                  </Button>
-                ))}
+              {/* Chroma Status */}
+              <div>
+                <div className="mb-2 sm:mb-3">
+                  <SectionHeader
+                    title={t('filters.chromas')}
+                    isExpanded={expandedSections.chromaStatus}
+                    onToggle={() => toggleSection('chromaStatus')}
+                  />
+                </div>
+                {expandedSections.chromaStatus && (
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    {(['all', 'has-chromas', 'no-chromas'] as ChromaFilter[]).map((status) => (
+                      <Button
+                        key={status}
+                        variant={filters.chromaStatus === status ? 'default' : 'secondary'}
+                        size="sm"
+                        onClick={() => updateFilter('chromaStatus', status)}
+                        className={
+                          filters.chromaStatus === status
+                            ? 'bg-primary-500 hover:bg-primary-600'
+                            : ''
+                        }
+                      >
+                        {status === 'all'
+                          ? t('filters.all')
+                          : status === 'has-chromas'
+                            ? t('filters.hasChromas')
+                            : t('filters.noChromas')}
+                      </Button>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
 
-            {/* Rarity Filter */}
-            <div>
-              <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
-                {t('filters.rarity')}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {(
-                  [
-                    'all',
-                    'kEpic',
-                    'kLegendary',
-                    'kUltimate',
-                    'kMythic',
-                    'kTranscendent',
-                    'kExalted'
-                  ] as RarityFilter[]
-                ).map((rarity) => (
-                  <Button
-                    key={rarity}
-                    variant={filters.rarity === rarity ? 'default' : 'secondary'}
-                    size="sm"
-                    onClick={() => updateFilter('rarity', rarity)}
-                    className={
-                      filters.rarity === rarity ? 'bg-primary-500 hover:bg-primary-600' : ''
-                    }
-                  >
-                    {rarity === 'all'
-                      ? t('filters.all')
-                      : t(`filters.rarities.${rarity.replace('k', '').toLowerCase()}`)}
-                  </Button>
-                ))}
+              {/* Rarity Filter */}
+              <div>
+                <div className="mb-2 sm:mb-3">
+                  <SectionHeader
+                    title={t('filters.rarity')}
+                    isExpanded={expandedSections.rarity}
+                    onToggle={() => toggleSection('rarity')}
+                  />
+                </div>
+                {expandedSections.rarity && (
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    {(
+                      [
+                        'all',
+                        'kEpic',
+                        'kLegendary',
+                        'kUltimate',
+                        'kMythic',
+                        'kTranscendent',
+                        'kExalted'
+                      ] as RarityFilter[]
+                    ).map((rarity) => (
+                      <Button
+                        key={rarity}
+                        variant={filters.rarity === rarity ? 'default' : 'secondary'}
+                        size="sm"
+                        onClick={() => updateFilter('rarity', rarity)}
+                        className={
+                          filters.rarity === rarity ? 'bg-primary-500 hover:bg-primary-600' : ''
+                        }
+                      >
+                        {rarity === 'all'
+                          ? t('filters.all')
+                          : t(`filters.rarities.${rarity.replace('k', '').toLowerCase()}`)}
+                      </Button>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
 
-            {/* Champion Tags */}
-            <div>
-              <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
-                {t('filters.championType')}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {availableTags.map((tag) => (
-                  <Button
-                    key={tag}
-                    variant={filters.championTags.includes(tag) ? 'default' : 'secondary'}
-                    size="sm"
-                    onClick={() => toggleTag(tag)}
-                    className={
-                      filters.championTags.includes(tag)
-                        ? 'bg-primary-500 hover:bg-primary-600'
-                        : ''
-                    }
-                  >
-                    {tag}
-                  </Button>
-                ))}
+              {/* Champion Tags */}
+              <div>
+                <div className="mb-2 sm:mb-3">
+                  <SectionHeader
+                    title={t('filters.championType')}
+                    isExpanded={expandedSections.championTags}
+                    onToggle={() => toggleSection('championTags')}
+                  />
+                </div>
+                {expandedSections.championTags && (
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    {availableTags.map((tag) => (
+                      <Button
+                        key={tag}
+                        variant={filters.championTags.includes(tag) ? 'default' : 'secondary'}
+                        size="sm"
+                        onClick={() => toggleTag(tag)}
+                        className={
+                          filters.championTags.includes(tag)
+                            ? 'bg-primary-500 hover:bg-primary-600'
+                            : ''
+                        }
+                      >
+                        {tag}
+                      </Button>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
 
-            {/* Sort Options */}
-            <div>
-              <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
-                {t('filters.sortBy')}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                <Select
-                  value={filters.sortBy}
-                  onValueChange={(value) => updateFilter('sortBy', value as SortOption)}
-                >
-                  <SelectTrigger className="w-[200px] bg-surface border-border text-text-primary">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-surface border-border">
-                    <SelectItem
-                      value="name-asc"
-                      className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+              {/* Sort Options */}
+              <div>
+                <div className="mb-2 sm:mb-3">
+                  <SectionHeader
+                    title={t('filters.sortBy')}
+                    isExpanded={expandedSections.sortBy}
+                    onToggle={() => toggleSection('sortBy')}
+                  />
+                </div>
+                {expandedSections.sortBy && (
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    <Select
+                      value={filters.sortBy}
+                      onValueChange={(value) => updateFilter('sortBy', value as SortOption)}
                     >
-                      {t('filters.nameAsc')}
-                    </SelectItem>
-                    <SelectItem
-                      value="name-desc"
-                      className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
-                    >
-                      {t('filters.nameDesc')}
-                    </SelectItem>
-                    <SelectItem
-                      value="skin-asc"
-                      className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
-                    >
-                      {t('filters.skinNumAsc')}
-                    </SelectItem>
-                    <SelectItem
-                      value="skin-desc"
-                      className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
-                    >
-                      {t('filters.skinNumDesc')}
-                    </SelectItem>
-                    <SelectItem
-                      value="champion"
-                      className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
-                    >
-                      {t('filters.championName')}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+                      <SelectTrigger className="w-[200px] bg-surface border-border text-text-primary">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-surface border-border">
+                        <SelectItem
+                          value="name-asc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.nameAsc')}
+                        </SelectItem>
+                        <SelectItem
+                          value="name-desc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.nameDesc')}
+                        </SelectItem>
+                        <SelectItem
+                          value="skin-asc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.skinNumAsc')}
+                        </SelectItem>
+                        <SelectItem
+                          value="skin-desc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.skinNumDesc')}
+                        </SelectItem>
+                        <SelectItem
+                          value="champion"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.championName')}
+                        </SelectItem>
+                        <SelectItem
+                          value="rarity-asc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.rarityAsc')}
+                        </SelectItem>
+                        <SelectItem
+                          value="rarity-desc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.rarityDesc')}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
               </div>
             </div>
           </div>

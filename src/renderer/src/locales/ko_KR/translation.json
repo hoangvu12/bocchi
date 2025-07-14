@@ -311,6 +311,8 @@
     "skinNumAsc": "스킨 번호 (오름차순)",
     "skinNumDesc": "스킨 번호 (내림차순)",
     "championName": "챔피언 이름",
+    "rarityAsc": "희귀도 (낮음→높음)",
+    "rarityDesc": "희귀도 (높음→낮음)",
     "rarity": "희귀도",
     "rarities": {
       "epic": "서사급",

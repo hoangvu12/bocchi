@@ -294,6 +294,8 @@
     "skinNumAsc": "Số trang phục (Thấp đến Cao)",
     "skinNumDesc": "Số trang phục (Cao đến Thấp)",
     "championName": "Tên tướng",
+    "rarityAsc": "Độ hiếm (Thấp đến Cao)",
+    "rarityDesc": "Độ hiếm (Cao đến Thấp)",
     "rarity": "Độ hiếm",
     "rarities": {
       "epic": "Sử thi",

@@ -66,6 +66,17 @@ export const allChampionTagsAtom = atom((get) => {
   return Array.from(tagSet).sort()
 })
 
+// Rarity hierarchy for sorting (lower index = less rare)
+const rarityOrder = [
+  'kNoRarity',
+  'kEpic',
+  'kLegendary',
+  'kUltimate',
+  'kMythic',
+  'kTranscendent',
+  'kExalted'
+]
+
 // Apply filters and sort to skins
 const applyFiltersAndSort = (
   skins: DisplaySkin[],
@@ -132,6 +143,16 @@ const applyFiltersAndSort = (
         return (a.champion.nameEn || a.champion.name).localeCompare(
           b.champion.nameEn || b.champion.name
         )
+      case 'rarity-asc': {
+        const aIndex = rarityOrder.indexOf(a.skin.rarity)
+        const bIndex = rarityOrder.indexOf(b.skin.rarity)
+        return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex)
+      }
+      case 'rarity-desc': {
+        const aIndex = rarityOrder.indexOf(a.skin.rarity)
+        const bIndex = rarityOrder.indexOf(b.skin.rarity)
+        return (bIndex === -1 ? 999 : bIndex) - (aIndex === -1 ? 999 : aIndex)
+      }
       default:
         return 0
     }
