@@ -3,6 +3,15 @@ import { lcuConnector } from './lcuConnector'
 import { gameflowMonitor } from './gameflowMonitor'
 import { settingsService } from './settingsService'
 
+// Queue IDs for modes with gameSelectPriority 40 - these modes let players preselect champions
+// and don't have a champion select phase where auto-apply would be relevant
+const PRESELECT_CHAMPION_QUEUE_IDS = [
+  430, // Normal (Blind Pick)
+  480, // Swiftplay
+  490, // Quickplay
+  830 // Intro
+]
+
 interface TeamMember {
   cellId: number
   championId: number
@@ -42,6 +51,7 @@ export class TeamCompositionMonitor extends EventEmitter {
   private lastTriggerTimeLeft: number = 0
   private triggerWindowTolerance: number = 1000 // 1 second tolerance
   private currentPhase: string = ''
+  private currentQueueId: number | null = null
 
   constructor() {
     super()
@@ -79,16 +89,27 @@ export class TeamCompositionMonitor extends EventEmitter {
     })
 
     // Listen for phase changes
-    gameflowMonitor.on('phase-changed', (phase: string, previousPhase: string) => {
+    gameflowMonitor.on('phase-changed', async (phase: string, previousPhase: string) => {
       console.log('phase-changed', phase, previousPhase)
 
       this.currentPhase = phase
+
+      // Fetch queue ID when phase changes
+      if (phase === 'ChampSelect' || phase === 'InProgress' || phase === 'GameStart') {
+        const gameflowSession = await lcuConnector.getGameflowSession()
+        if (gameflowSession?.gameData?.queue?.id) {
+          this.currentQueueId = gameflowSession.gameData.queue.id
+          console.log('Current queue ID:', this.currentQueueId)
+        }
+      }
+
       if (phase !== 'ChampSelect') {
         // Reset when leaving champ select
         this.currentSession = null
         this.lastEmittedComposition = ''
         this.hasTriggeredInWindow = false
         this.lastTriggerTimeLeft = 0
+        this.currentQueueId = null
         // Include the phase we're transitioning to in the event
         this.emit('team-reset', phase)
       } else if (previousPhase !== 'ChampSelect') {
@@ -203,6 +224,16 @@ export class TeamCompositionMonitor extends EventEmitter {
         console.log(`[TeamCompositionMonitor] Entering finalization phase, resetting trigger state`)
         this.currentPhase = session.timer?.phase || ''
         this.hasTriggeredInWindow = false
+      }
+
+      // Skip auto-apply for modes with preselected champions (no champion select phase)
+      const isPreselectChampionMode =
+        this.currentQueueId !== null && PRESELECT_CHAMPION_QUEUE_IDS.includes(this.currentQueueId)
+      if (isPreselectChampionMode) {
+        console.log(
+          `[TeamCompositionMonitor] Skipping auto-apply for queue ${this.currentQueueId} (preselect champion mode)`
+        )
+        return
       }
 
       // Multiple conditions for triggering auto-apply

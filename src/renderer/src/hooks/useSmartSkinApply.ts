@@ -144,7 +144,9 @@ export function useSmartSkinApply({
         'InProgress',
         'WaitingForStats',
         'PreEndOfGame',
-        'EndOfGame'
+        'EndOfGame',
+        'ReadyCheck',
+        'Matchmaking'
       ]
       if (newPhase && !gameAndPostGamePhases.includes(newPhase)) {
         // Only stop patcher if auto-apply is enabled (since it would have been started automatically)

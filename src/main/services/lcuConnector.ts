@@ -180,6 +180,15 @@ export class LCUConnector extends EventEmitter {
     }
   }
 
+  async getGameflowSession(): Promise<any> {
+    try {
+      const session = await this.request('GET', '/lol-gameflow/v1/session')
+      return session
+    } catch {
+      return null
+    }
+  }
+
   async getChampSelectSession(): Promise<any> {
     try {
       return await this.request('GET', '/lol-champ-select/v1/session')
@@ -369,6 +378,7 @@ export class LCUConnector extends EventEmitter {
             if (opcode === 8 && eventName) {
               // Log champion select events
               if (eventName.includes('lol-champ-select')) {
+                // Champion select event received
               }
 
               this.emit('event', eventName, eventData)

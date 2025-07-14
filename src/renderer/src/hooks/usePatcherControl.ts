@@ -62,9 +62,10 @@ export function usePatcherControl() {
         ['WaitingForStats', 'PreEndOfGame', 'EndOfGame'].includes(data.previousPhase)
 
       // Check if we're leaving champion select without entering game (dodge)
+      // Exclude ReadyCheck and Matchmaking as these are normal flow towards game
       const leavingChampSelect =
         data.previousPhase === 'ChampSelect' &&
-        !['InGame', 'GameStart', 'InProgress'].includes(data.phase)
+        !['InGame', 'GameStart', 'InProgress', 'ReadyCheck', 'Matchmaking'].includes(data.phase)
 
       if (postGamePhases.includes(data.phase) || isPostGameLobby || leavingChampSelect) {
         const autoApplyEnabled = await window.api.getSettings('autoApplyEnabled')

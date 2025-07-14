@@ -130,7 +130,7 @@ export class GameflowMonitor extends EventEmitter {
     }
   }
 
-  private handleChampSelectUpdate(session: ChampSelectSession): void {
+  private async handleChampSelectUpdate(session: ChampSelectSession): Promise<void> {
     if (!session || !session.myTeam) {
       return
     }
@@ -165,11 +165,23 @@ export class GameflowMonitor extends EventEmitter {
       if (isActuallyLocked && localPlayer.championId !== this.lastLockedChampionId) {
         this.lastLockedChampionId = localPlayer.championId
 
+        // Get queue ID
+        let queueId = null
+        try {
+          const gameflowSession = await lcuConnector.getGameflowSession()
+          if (gameflowSession?.gameData?.queue?.id) {
+            queueId = gameflowSession.gameData.queue.id
+          }
+        } catch (error) {
+          console.log('Failed to get queue ID:', error)
+        }
+
         this.emit('champion-selected', {
           championId: localPlayer.championId,
           isLocked: true,
           isHover: false,
-          session: session
+          session: session,
+          queueId: queueId
         })
       }
     }

@@ -18,10 +18,20 @@ import {
 } from '../store/atoms/settings.atoms'
 import type { Champion } from '../App'
 
+// Queue IDs for modes with gameSelectPriority 40 - these modes let players preselect champions
+// and don't have a champion select phase where auto-random would be relevant
+const PRESELECT_CHAMPION_QUEUE_IDS = [
+  430, // Normal (Blind Pick)
+  480, // Swiftplay
+  490, // Quickplay
+  830 // Intro
+]
+
 interface ChampionSelectData {
   championId: number
   isLocked: boolean
   isHover: boolean
+  queueId?: number | null
 }
 
 interface UseChampionSelectHandlerProps {
@@ -147,6 +157,18 @@ export function useChampionSelectHandler({
       // Set the selected champion data in atoms
       setLcuSelectedChampion(champion)
       setIsChampionLocked(data.isLocked)
+
+      // Skip auto random skin for modes with preselected champions (no champion select phase)
+      const isPreselectChampionMode =
+        data.queueId !== undefined &&
+        data.queueId !== null &&
+        PRESELECT_CHAMPION_QUEUE_IDS.includes(data.queueId)
+      if (isPreselectChampionMode) {
+        console.log(
+          `[ChampionSelectHandler] Skipping auto-random skin for queue ${data.queueId} (preselect champion mode)`
+        )
+        return
+      }
 
       // Handle auto random skin selection
       if (onAutoSelectSkin && (autoRandomRaritySkinEnabled || autoRandomFavoriteSkinEnabled)) {
