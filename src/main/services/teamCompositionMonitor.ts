@@ -80,6 +80,8 @@ export class TeamCompositionMonitor extends EventEmitter {
 
     // Listen for phase changes
     gameflowMonitor.on('phase-changed', (phase: string, previousPhase: string) => {
+      console.log('phase-changed', phase, previousPhase)
+
       this.currentPhase = phase
       if (phase !== 'ChampSelect') {
         // Reset when leaving champ select

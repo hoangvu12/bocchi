@@ -54,13 +54,19 @@ export function usePatcherControl() {
   useEffect(() => {
     const unsubscribePhase = window.api.onLcuPhaseChanged(async (data) => {
       // Post-game phases where we should stop the patcher
-      const postGamePhases = ['WaitingForStats', 'PreEndOfGame', 'EndOfGame', 'Lobby']
+      const postGamePhases = ['WaitingForStats', 'PreEndOfGame', 'EndOfGame']
 
-      // Check if we're leaving champion select without entering game
+      // Check if we're actually coming from a game to lobby (post-game)
+      const isPostGameLobby =
+        data.phase === 'Lobby' &&
+        ['WaitingForStats', 'PreEndOfGame', 'EndOfGame'].includes(data.previousPhase)
+
+      // Check if we're leaving champion select without entering game (dodge)
       const leavingChampSelect =
-        data.previousPhase === 'ChampSelect' && !['InGame', 'GameStart'].includes(data.phase)
+        data.previousPhase === 'ChampSelect' &&
+        !['InGame', 'GameStart', 'InProgress'].includes(data.phase)
 
-      if (postGamePhases.includes(data.phase) || leavingChampSelect) {
+      if (postGamePhases.includes(data.phase) || isPostGameLobby || leavingChampSelect) {
         const autoApplyEnabled = await window.api.getSettings('autoApplyEnabled')
 
         if (autoApplyEnabled !== false) {
@@ -76,7 +82,7 @@ export function usePatcherControl() {
         )
         if (
           autoRandomRaritySkinEnabled &&
-          (postGamePhases.includes(data.phase) || leavingChampSelect)
+          (postGamePhases.includes(data.phase) || isPostGameLobby || leavingChampSelect)
         ) {
           const autoSelectedSkins = selectedSkins.filter((skin) => skin.isAutoSelected)
 
