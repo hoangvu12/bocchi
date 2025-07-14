@@ -1725,6 +1725,13 @@ function setupLCUConnection(): void {
     // Note: Overlay display is now handled when renderer sends auto-selected skin data
   })
 
+  gameflowMonitor.on('queue-id-detected', (data) => {
+    // Forward early queue ID detection to all windows
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('lcu:queue-id-detected', data)
+    })
+  })
+
   gameflowMonitor.on('ready-check-accepted', () => {
     // Forward to all windows
     BrowserWindow.getAllWindows().forEach((window) => {

@@ -210,6 +210,11 @@ const api = {
     ipcRenderer.on('lcu:ready-check-accepted', callback)
     return () => ipcRenderer.removeListener('lcu:ready-check-accepted', callback)
   },
+  onLcuQueueIdDetected: (callback: (data: { queueId: number }) => void) => {
+    const handler = (_: any, data: any) => callback(data)
+    ipcRenderer.on('lcu:queue-id-detected', handler)
+    return () => ipcRenderer.removeListener('lcu:queue-id-detected', handler)
+  },
 
   // Team Composition APIs
   getTeamComposition: () => ipcRenderer.invoke('team:get-composition'),

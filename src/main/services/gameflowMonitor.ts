@@ -41,6 +41,9 @@ export class GameflowMonitor extends EventEmitter {
     // Subscribe to gameflow phase changes
     await lcuConnector.subscribe('OnJsonApiEvent_lol-gameflow_v1_gameflow-phase')
 
+    // Subscribe to lobby changes for early queue ID detection
+    await lcuConnector.subscribe('OnJsonApiEvent_lol-lobby_v2_lobby')
+
     // Check current phase
     const currentPhase = await lcuConnector.getGameflowPhase()
     this.handlePhaseChange(currentPhase)
@@ -53,6 +56,7 @@ export class GameflowMonitor extends EventEmitter {
     // Unsubscribe from LCU events
     lcuConnector.unsubscribe('OnJsonApiEvent_lol-gameflow_v1_gameflow-phase')
     lcuConnector.unsubscribe('OnJsonApiEvent_lol-champ-select_v1_session')
+    lcuConnector.unsubscribe('OnJsonApiEvent_lol-lobby_v2_lobby')
 
     // Reset state
     this.currentPhase = 'None'
@@ -68,6 +72,11 @@ export class GameflowMonitor extends EventEmitter {
     // Listen for champion select session updates
     lcuConnector.on('champ-select-session', (session: ChampSelectSession) => {
       this.handleChampSelectUpdate(session)
+    })
+
+    // Listen for lobby session updates (for early queue ID detection)
+    lcuConnector.on('lobby-session', (lobby: any) => {
+      this.handleLobbyUpdate(lobby)
     })
 
     // Handle connection events
@@ -185,6 +194,18 @@ export class GameflowMonitor extends EventEmitter {
         })
       }
     }
+  }
+
+  private handleLobbyUpdate(lobby: any): void {
+    if (!lobby?.gameConfig?.queueId) {
+      return
+    }
+
+    const queueId = lobby.gameConfig.queueId
+
+    // Emit lobby queue ID immediately when lobby is created/updated
+    // This happens much earlier than champion select, providing instant queue detection
+    this.emit('queue-id-detected', { queueId })
   }
 
   getCurrentPhase(): string {

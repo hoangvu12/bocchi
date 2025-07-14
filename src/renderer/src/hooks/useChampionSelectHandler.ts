@@ -115,10 +115,16 @@ export function useChampionSelectHandler({
       }
     })
 
+    const unsubscribeQueueIdDetected = window.api.onLcuQueueIdDetected((data) => {
+      // Set queue ID immediately when lobby is created (much earlier than champion select)
+      setCurrentQueueId(data.queueId)
+    })
+
     return () => {
       unsubscribeConnected()
       unsubscribeDisconnected()
       unsubscribePhaseChanged()
+      unsubscribeQueueIdDetected()
     }
   }, [
     enabled,

@@ -68,9 +68,9 @@ export function useSmartSkinApply({
           const isPreselectQueue =
             currentQueueId !== null && PRESELECT_CHAMPION_QUEUE_IDS.includes(currentQueueId)
 
-          // If currentQueueId is null, we don't know the queue type yet, so don't stop the patcher
-          // Only stop if we're certain it's NOT a preselect queue (currentQueueId is set and not in preselect list)
-          if (currentQueueId !== null && !isPreselectQueue) {
+          // Queue ID should be available immediately now thanks to lobby monitoring
+          // Only stop patcher if it's NOT a preselect queue
+          if (!isPreselectQueue) {
             window.api.isPatcherRunning().then((isRunning) => {
               if (isRunning) {
                 window.api.stopPatcher()
@@ -161,14 +161,13 @@ export function useSmartSkinApply({
         'Matchmaking'
       ]
       if (newPhase && !gameAndPostGamePhases.includes(newPhase)) {
-        // Only stop patcher if auto-apply is enabled AND we're confident it's not a preselect queue
+        // Only stop patcher if auto-apply is enabled AND it's not a preselect queue
         if (autoApplyEnabled) {
           const isPreselectQueue =
             currentQueueId !== null && PRESELECT_CHAMPION_QUEUE_IDS.includes(currentQueueId)
 
-          // If currentQueueId is null, we don't know the queue type yet, so don't stop the patcher
-          // Only stop if we're certain it's NOT a preselect queue (currentQueueId is set and not in preselect list)
-          if (currentQueueId !== null && !isPreselectQueue) {
+          // Queue ID should be available thanks to lobby monitoring
+          if (!isPreselectQueue) {
             window.api.isPatcherRunning().then((isRunning) => {
               if (isRunning) {
                 window.api.stopPatcher()
