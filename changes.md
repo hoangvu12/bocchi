@@ -1,7 +1,15 @@
+### New Features
+
+- Sort skins by rarity
+- Chromas can now be favorited
+- New random skins options based on:
+  - Highest win rate (from OP.GG data)
+  - Highest pick rate (from OP.GG data)
+  - Most played skins (from OP.GG data)
+- An option to minimize Bocchi to system tray instead of closing
+
 ### Fixes
 
-- Can't use in Swiftplay
-- Auto apply sometime doesn't work (still need more testing)
-- Shouldn't stop patcher when join new game
-- Custom skins with champion selected not working
-- Custom skins with champion not showing in that champion section
+- Fixed patcher incorrectly stopping when joining Swiftplay games
+- Fixed Riot Client detection to work on any system drive (not just C:)
+- Fixed queue ID handling in champion select
