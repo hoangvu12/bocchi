@@ -107,12 +107,10 @@ export function useChampionSelectHandler({
         setIsChampionLocked(false)
       }
 
-      // Clear queue ID when entering a new champion select from a non-game phase
+      // Clear queue ID when entering a new champion select from lobby or none
       // This ensures we don't carry over queue ID from previous games
-      if (
-        data.phase === 'ChampSelect' &&
-        !['InGame', 'GameStart', 'InProgress'].includes(data.previousPhase)
-      ) {
+      // But we keep it when coming from Matchmaking/ReadyCheck as that's the same game flow
+      if (data.phase === 'ChampSelect' && ['Lobby', 'None'].includes(data.previousPhase)) {
         setCurrentQueueId(null)
       }
     })

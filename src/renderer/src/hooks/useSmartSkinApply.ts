@@ -8,6 +8,8 @@ import {
   smartApplyEnabledAtom,
   autoApplyEnabledAtom
 } from '../store/atoms/settings.atoms'
+import { currentQueueIdAtom } from '../store/atoms/lcu.atoms'
+import { PRESELECT_CHAMPION_QUEUE_IDS } from '../constants/queues'
 
 interface TeamComposition {
   championIds: number[]
@@ -43,6 +45,7 @@ export function useSmartSkinApply({
   const [leagueClientEnabled] = useAtom(leagueClientEnabledAtom)
   const [smartApplyEnabled] = useAtom(smartApplyEnabledAtom)
   const [autoApplyEnabled] = useAtom(autoApplyEnabledAtom)
+  const [currentQueueId] = useAtom(currentQueueIdAtom)
   const [isApplying, setIsApplying] = useState(false)
   const lastAppliedTeamKey = useRef<string>('')
 
@@ -60,12 +63,19 @@ export function useSmartSkinApply({
       if (data.phase === 'ChampSelect' && data.previousPhase !== 'ChampSelect') {
         lastAppliedTeamKey.current = ''
 
-        // Also stop any running patcher from previous game
-        window.api.isPatcherRunning().then((isRunning) => {
-          if (isRunning) {
-            window.api.stopPatcher()
+        // Only stop patcher if auto-apply is enabled AND it's not a preselect queue
+        if (autoApplyEnabled) {
+          const isPreselectQueue =
+            currentQueueId !== null && PRESELECT_CHAMPION_QUEUE_IDS.includes(currentQueueId)
+
+          if (!isPreselectQueue) {
+            window.api.isPatcherRunning().then((isRunning) => {
+              if (isRunning) {
+                window.api.stopPatcher()
+              }
+            })
           }
-        })
+        }
       }
     })
 
@@ -149,13 +159,18 @@ export function useSmartSkinApply({
         'Matchmaking'
       ]
       if (newPhase && !gameAndPostGamePhases.includes(newPhase)) {
-        // Only stop patcher if auto-apply is enabled (since it would have been started automatically)
+        // Only stop patcher if auto-apply is enabled AND it's not a preselect queue
         if (autoApplyEnabled) {
-          window.api.isPatcherRunning().then((isRunning) => {
-            if (isRunning) {
-              window.api.stopPatcher()
-            }
-          })
+          const isPreselectQueue =
+            currentQueueId !== null && PRESELECT_CHAMPION_QUEUE_IDS.includes(currentQueueId)
+
+          if (!isPreselectQueue) {
+            window.api.isPatcherRunning().then((isRunning) => {
+              if (isRunning) {
+                window.api.stopPatcher()
+              }
+            })
+          }
         }
       }
     })
@@ -177,7 +192,8 @@ export function useSmartSkinApply({
     isApplying,
     t,
     parentApplyFunction,
-    autoSyncedSkins
+    autoSyncedSkins,
+    currentQueueId
   ])
 
   const applySkins = useCallback(
