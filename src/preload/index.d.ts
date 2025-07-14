@@ -232,6 +232,11 @@ export interface IApi {
   fixModIssues: (modPath: string) => Promise<{ success: boolean; error?: string; output?: string }>
   onMultiRitoFixDownloadProgress: (callback: (progress: number) => void) => () => void
   onFixModProgress: (callback: (message: string) => void) => () => void
+
+  // Settings change events from tray
+  onSettingsChanged: (callback: (key: string, value: any) => void) => () => void
+  onOpenSettings: (callback: () => void) => () => void
+  onLanguageChanged: (callback: (language: string) => void) => () => void
 }
 
 declare global {

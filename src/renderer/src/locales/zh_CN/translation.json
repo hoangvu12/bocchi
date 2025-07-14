@@ -95,6 +95,7 @@
     "theme": "主题",
     "notifications": "通知",
     "tabs": {
+      "general": "常规",
       "leagueClient": "英雄联盟客户端",
       "skinManagement": "皮肤管理"
     },
@@ -102,6 +103,18 @@
       "title": "随机皮肤选择",
       "none": "已禁用"
     },
+    "minimizeToTray": {
+      "title": "最小化到托盘",
+      "description": "点击关闭按钮时，将应用程序隐藏到系统托盘而不是关闭"
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "description": "配置应用程序首选项",
+    "gamePath": "游戏路径",
+    "language": "语言",
+    "theme": "主题",
+    "notifications": "通知",
     "leagueClient": {
       "title": "英雄联盟客户端集成",
       "description": "启用与英雄联盟客户端连接的功能"
@@ -162,6 +175,13 @@
       "title": "导入时自动修复模组问题",
       "description": "导入模组时自动修复缺失的血条、材质和VFX效果"
     }
+  },
+  "tray": {
+    "show": "显示 Bocchi",
+    "hide": "隐藏 Bocchi",
+    "language": "语言",
+    "openSettings": "打开设置",
+    "quit": "退出 Bocchi"
   },
   "errors": {
     "generic": "发生错误",

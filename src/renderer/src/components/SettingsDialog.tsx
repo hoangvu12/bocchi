@@ -1,5 +1,5 @@
 import { useSetAtom } from 'jotai'
-import { ChevronDown, Gamepad2, Package, Settings } from 'lucide-react'
+import { ChevronDown, Gamepad2, Package, Settings, Monitor } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -66,6 +66,7 @@ export function SettingsDialog({
   const [inGameOverlayEnabled, setInGameOverlayEnabled] = useState(false)
   const [autoAcceptEnabled, setAutoAcceptEnabled] = useState(false)
   const [autoFixModIssues, setAutoFixModIssues] = useState(false)
+  const [minimizeToTray, setMinimizeToTray] = useState(false)
   const [loading, setLoading] = useState(true)
 
   // Atom setters for immediate updates
@@ -92,6 +93,55 @@ export function SettingsDialog({
     }
   }, [isOpen])
 
+  // Listen for settings changes from tray menu
+  useEffect(() => {
+    const handleSettingsChanged = (key: string, value: any) => {
+      switch (key) {
+        case 'leagueClientEnabled':
+          setLeagueClientEnabled(value)
+          setLeagueClientEnabledAtom(value)
+          onLeagueClientChange?.(value)
+          break
+        case 'autoAcceptEnabled':
+          setAutoAcceptEnabled(value)
+          setAutoAcceptEnabledAtom(value)
+          break
+        case 'championDetection':
+          setChampionDetection(value)
+          setChampionDetectionEnabledAtom(value)
+          onChampionDetectionChange?.(value)
+          break
+        case 'autoViewSkinsEnabled':
+          setAutoViewSkinsEnabled(value)
+          setAutoViewSkinsEnabledAtom(value)
+          break
+        case 'smartApplyEnabled':
+          setSmartApplyEnabled(value)
+          setSmartApplyEnabledAtom(value)
+          break
+        case 'autoApplyEnabled':
+          setAutoApplyEnabled(value)
+          setAutoApplyEnabledAtom(value)
+          break
+        case 'minimizeToTray':
+          setMinimizeToTray(value)
+          break
+      }
+    }
+
+    const unsubscribe = window.api.onSettingsChanged(handleSettingsChanged)
+    return () => unsubscribe()
+  }, [
+    setLeagueClientEnabledAtom,
+    setChampionDetectionEnabledAtom,
+    setAutoViewSkinsEnabledAtom,
+    setAutoAcceptEnabledAtom,
+    setSmartApplyEnabledAtom,
+    setAutoApplyEnabledAtom,
+    onLeagueClientChange,
+    onChampionDetectionChange
+  ])
+
   const loadSettings = async () => {
     try {
       const settings = await window.api.getSettings()
@@ -114,6 +164,7 @@ export function SettingsDialog({
       setInGameOverlayEnabled(settings.inGameOverlayEnabled === true)
       setAutoAcceptEnabled(settings.autoAcceptEnabled === true)
       setAutoFixModIssues(settings.autoFixModIssues === true)
+      setMinimizeToTray(settings.minimizeToTray === true)
     } catch (error) {
       console.error('Failed to load settings:', error)
     } finally {
@@ -383,6 +434,15 @@ export function SettingsDialog({
     }
   }
 
+  const handleMinimizeToTrayChange = async (checked: boolean) => {
+    setMinimizeToTray(checked)
+    try {
+      await window.api.setSettings('minimizeToTray', checked)
+    } catch (error) {
+      console.error('Failed to save minimize to tray setting:', error)
+    }
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px]">
@@ -394,8 +454,12 @@ export function SettingsDialog({
           <DialogDescription>{t('settings.description')}</DialogDescription>
         </DialogHeader>
 
-        <Tabs defaultValue="league-client" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+        <Tabs defaultValue="general" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="general" className="flex items-center gap-2">
+              <Monitor className="w-4 h-4" />
+              {t('settings.tabs.general')}
+            </TabsTrigger>
             <TabsTrigger value="league-client" className="flex items-center gap-2">
               <Gamepad2 className="w-4 h-4" />
               {t('settings.tabs.leagueClient')}
@@ -405,6 +469,25 @@ export function SettingsDialog({
               {t('settings.tabs.skinManagement')}
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="general" className="space-y-6 mt-6">
+            {/* Minimize to Tray Setting */}
+            <div className="flex items-center justify-between space-x-4">
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.minimizeToTray.title')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.minimizeToTray.description')}
+                </p>
+              </div>
+              <Switch
+                checked={minimizeToTray}
+                onCheckedChange={handleMinimizeToTrayChange}
+                disabled={loading}
+              />
+            </div>
+          </TabsContent>
 
           <TabsContent value="league-client" className="space-y-6 mt-6">
             {/* League Client Master Toggle */}

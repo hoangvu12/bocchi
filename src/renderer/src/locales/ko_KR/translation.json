@@ -95,6 +95,7 @@
     "theme": "테마",
     "notifications": "알림",
     "tabs": {
+      "general": "일반",
       "leagueClient": "리그 클라이언트",
       "skinManagement": "스킨 관리"
     },
@@ -102,6 +103,18 @@
       "title": "무작위 스킨 선택",
       "none": "비활성화"
     },
+    "minimizeToTray": {
+      "title": "트레이로 최소화",
+      "description": "닫기 버튼을 클릭할 때 앱을 닫는 대신 시스템 트레이로 숨기기"
+    }
+  },
+  "settings": {
+    "title": "설정",
+    "description": "앱 설정 구성",
+    "gamePath": "게임 경로",
+    "language": "언어",
+    "theme": "테마",
+    "notifications": "알림",
     "leagueClient": {
       "title": "리그 클라이언트 통합",
       "description": "리그 오브 레전드 클라이언트와 연결되는 기능 활성화"
@@ -178,6 +191,13 @@
       "title": "가져오기 시 모드 문제 자동 해결",
       "description": "모드를 가져올 때 누락된 체력바, 재료, VFX 효과를 자동으로 수정합니다"
     }
+  },
+  "tray": {
+    "show": "Bocchi 보이기",
+    "hide": "Bocchi 숨기기",
+    "language": "언어",
+    "openSettings": "설정 열기",
+    "quit": "Bocchi 종료"
   },
   "errors": {
     "generic": "오류가 발생했습니다",

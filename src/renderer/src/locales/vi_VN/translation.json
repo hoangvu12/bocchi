@@ -174,13 +174,25 @@
       "description": "Tự động sửa lỗi thanh máu thiếu, vật liệu thiếu và hiệu ứng VFX khi nhập mod"
     },
     "tabs": {
+      "general": "Chung",
       "leagueClient": "League Client",
       "skinManagement": "Quản lý Trang phục"
     },
     "randomSkinSelection": {
       "title": "Chọn Trang phục Ngẫu nhiên",
       "none": "Tắt"
+    },
+    "minimizeToTray": {
+      "title": "Thu nhỏ vào khay hệ thống",
+      "description": "Ẩn ứng dụng vào khay hệ thống thay vì đóng khi nhấn nút đóng"
     }
+  },
+  "tray": {
+    "show": "Hiện Bocchi",
+    "hide": "Ẩn Bocchi",
+    "language": "Ngôn ngữ",
+    "openSettings": "Mở Cài đặt",
+    "quit": "Thoát Bocchi"
   },
   "fileUpload": {
     "uploadButton": "Tải Lên Mod Tùy Chỉnh",

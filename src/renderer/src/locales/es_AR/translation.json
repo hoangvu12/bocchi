@@ -95,6 +95,7 @@
     "theme": "Tema",
     "notifications": "Notificaciones",
     "tabs": {
+      "general": "General",
       "leagueClient": "Cliente de League",
       "skinManagement": "Gestión de Aspectos"
     },
@@ -102,6 +103,18 @@
       "title": "Selección Aleatoria de Aspectos",
       "none": "Deshabilitado"
     },
+    "minimizeToTray": {
+      "title": "Minimizar a la bandeja",
+      "description": "Ocultar la aplicación en la bandeja del sistema en lugar de cerrarla al hacer clic en el botón de cerrar"
+    }
+  },
+  "settings": {
+    "title": "Configuración",
+    "description": "Configura las preferencias de tu aplicación",
+    "gamePath": "Ruta del juego",
+    "language": "Idioma",
+    "theme": "Tema",
+    "notifications": "Notificaciones",
     "leagueClient": {
       "title": "Integración con el Cliente de League",
       "description": "Habilitar funciones que se conectan con el cliente de League of Legends"
@@ -178,6 +191,13 @@
       "title": "Auto-arreglar problemas del mod al importar",
       "description": "Automáticamente arregla barras de vida faltantes, materiales faltantes y efectos VFX al importar mods"
     }
+  },
+  "tray": {
+    "show": "Mostrar Bocchi",
+    "hide": "Ocultar Bocchi",
+    "language": "Idioma",
+    "openSettings": "Abrir Configuración",
+    "quit": "Salir de Bocchi"
   },
   "errors": {
     "generic": "Ocurrió un error",

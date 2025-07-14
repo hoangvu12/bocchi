@@ -179,13 +179,25 @@
       "description": "Automatically fix missing health bars, materials, and VFX when importing mods"
     },
     "tabs": {
+      "general": "General",
       "leagueClient": "League Client",
       "skinManagement": "Skin Management"
     },
     "randomSkinSelection": {
       "title": "Random Skin Selection",
       "none": "Disabled"
+    },
+    "minimizeToTray": {
+      "title": "Minimize to Tray",
+      "description": "Hide the app to system tray instead of closing when clicking the close button"
     }
+  },
+  "tray": {
+    "show": "Show Bocchi",
+    "hide": "Hide Bocchi",
+    "language": "Language",
+    "openSettings": "Open Settings",
+    "quit": "Quit Bocchi"
   },
   "fileUpload": {
     "uploadButton": "Upload Custom Mod",

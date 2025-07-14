@@ -282,6 +282,24 @@ const api = {
     const handler = (_: any, message: string) => callback(message)
     ipcRenderer.on('fix-mod-progress', handler)
     return () => ipcRenderer.removeListener('fix-mod-progress', handler)
+  },
+
+  // Settings change events from tray
+  onSettingsChanged: (callback: (key: string, value: any) => void) => {
+    const handler = (_: any, key: string, value: any) => callback(key, value)
+    ipcRenderer.on('settings-changed', handler)
+    return () => ipcRenderer.removeListener('settings-changed', handler)
+  },
+
+  onOpenSettings: (callback: () => void) => {
+    ipcRenderer.on('open-settings', callback)
+    return () => ipcRenderer.removeListener('open-settings', callback)
+  },
+
+  onLanguageChanged: (callback: (language: string) => void) => {
+    const handler = (_: any, language: string) => callback(language)
+    ipcRenderer.on('language-changed', handler)
+    return () => ipcRenderer.removeListener('language-changed', handler)
   }
 }
 

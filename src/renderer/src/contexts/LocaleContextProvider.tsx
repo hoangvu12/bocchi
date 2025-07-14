@@ -34,6 +34,20 @@ export const LocaleProvider: React.FC<LocaleProviderProps> = ({ children }) => {
     loadSavedLanguage()
   }, [i18n])
 
+  // Listen for language changes from tray
+  useEffect(() => {
+    const unsubscribe = window.api.onLanguageChanged?.((language: string) => {
+      if (supportedLanguages.some((lang) => lang.code === language)) {
+        setCurrentLanguage(language as LanguageCode)
+        i18n.changeLanguage(language)
+      }
+    })
+
+    return () => {
+      unsubscribe?.()
+    }
+  }, [i18n])
+
   const setLanguage = async (lang: LanguageCode) => {
     setCurrentLanguage(lang)
     await i18n.changeLanguage(lang)

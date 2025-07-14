@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog, Tray, Menu, nativeImage } from 'electron'
 import { join } from 'path'
 import path from 'path'
 import fs from 'fs'
@@ -22,6 +22,11 @@ import { overlayWindowManager } from './services/overlayWindowManager'
 import { autoBanPickService } from './services/autoBanPickService'
 import { multiRitoFixesService } from './services/multiRitoFixesService'
 import { skinMigrationService } from './services/skinMigrationService'
+import {
+  translationService,
+  supportedLanguages,
+  type LanguageCode
+} from './services/translationService'
 // Import SelectedSkin type from renderer atoms
 interface SelectedSkin {
   championKey: string
@@ -59,9 +64,13 @@ let rendererAutoSelectedSkin: {
 // Store the current champion ID for overlay display
 let currentChampionId: number | null = null
 
+// Global references to prevent garbage collection
+let mainWindow: BrowserWindow | null = null
+let tray: Tray | null = null
+
 function createWindow(): void {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     show: false,
@@ -78,9 +87,11 @@ function createWindow(): void {
   })
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
-    updaterService.setMainWindow(mainWindow)
-    modToolsWrapper.setMainWindow(mainWindow)
+    mainWindow?.show()
+    if (mainWindow) {
+      updaterService.setMainWindow(mainWindow)
+      modToolsWrapper.setMainWindow(mainWindow)
+    }
 
     // Check for updates after window is ready
     // Only in production mode
@@ -105,6 +116,211 @@ function createWindow(): void {
   }
 }
 
+function updateTrayMenu(): void {
+  if (!tray) return
+
+  // Get current settings
+  const minimizeToTray = settingsService.get('minimizeToTray') || false
+  const leagueClientEnabled = settingsService.get('leagueClientEnabled') !== false
+  const autoAcceptEnabled = settingsService.get('autoAcceptEnabled') || false
+  const championDetection = settingsService.get('championDetection') !== false
+  const autoViewSkinsEnabled = settingsService.get('autoViewSkinsEnabled') || false
+  const smartApplyEnabled = settingsService.get('smartApplyEnabled') !== false
+  const autoApplyEnabled = settingsService.get('autoApplyEnabled') !== false
+
+  const t = translationService.t.bind(translationService)
+
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: mainWindow?.isVisible()
+        ? t('tray.hide', 'Hide Bocchi')
+        : t('tray.show', 'Show Bocchi'),
+      click: () => {
+        if (mainWindow) {
+          if (mainWindow.isVisible()) {
+            mainWindow.hide()
+          } else {
+            mainWindow.show()
+            mainWindow.focus()
+          }
+        }
+      }
+    },
+    { type: 'separator' },
+    {
+      label: t('tray.language', 'Language'),
+      submenu: supportedLanguages.map((lang) => ({
+        label: `${lang.flag} ${lang.name}`,
+        type: 'radio' as const,
+        checked: translationService.getCurrentLanguage() === lang.code,
+        click: () => {
+          translationService.setLanguage(lang.code)
+          settingsService.set('language', lang.code)
+          updateTrayMenu()
+          // Notify renderer
+          mainWindow?.webContents.send('language-changed', lang.code)
+        }
+      }))
+    },
+    { type: 'separator' },
+    {
+      label: t('nav.settings', 'Settings'),
+      submenu: [
+        {
+          label: t('settings.minimizeToTray.title', 'Minimize to Tray'),
+          type: 'checkbox',
+          checked: minimizeToTray,
+          click: () => {
+            settingsService.set('minimizeToTray', !minimizeToTray)
+            updateTrayMenu()
+          }
+        },
+        { type: 'separator' },
+        {
+          label: t('settings.leagueClient.title', 'League Client Integration'),
+          type: 'checkbox',
+          checked: leagueClientEnabled,
+          click: async () => {
+            const newValue = !leagueClientEnabled
+            settingsService.set('leagueClientEnabled', newValue)
+            if (newValue) {
+              await lcuConnector.connect()
+            } else {
+              await lcuConnector.disconnect()
+            }
+            updateTrayMenu()
+            // Notify renderer
+            mainWindow?.webContents.send('settings-changed', 'leagueClientEnabled', newValue)
+          }
+        },
+        {
+          label: t('settings.autoAccept.title', 'Auto Accept Match'),
+          type: 'checkbox',
+          checked: autoAcceptEnabled,
+          enabled: leagueClientEnabled,
+          click: () => {
+            settingsService.set('autoAcceptEnabled', !autoAcceptEnabled)
+            updateTrayMenu()
+            // Notify renderer
+            mainWindow?.webContents.send(
+              'settings-changed',
+              'autoAcceptEnabled',
+              !autoAcceptEnabled
+            )
+          }
+        },
+        {
+          label: t('settings.championDetection.title', 'Champion Detection'),
+          type: 'checkbox',
+          checked: championDetection,
+          enabled: leagueClientEnabled,
+          click: () => {
+            settingsService.set('championDetection', !championDetection)
+            updateTrayMenu()
+            // Notify renderer
+            mainWindow?.webContents.send(
+              'settings-changed',
+              'championDetection',
+              !championDetection
+            )
+          }
+        },
+        {
+          label: t('settings.autoViewSkins.title', 'Auto View Skins'),
+          type: 'checkbox',
+          checked: autoViewSkinsEnabled,
+          enabled: leagueClientEnabled && championDetection,
+          click: () => {
+            settingsService.set('autoViewSkinsEnabled', !autoViewSkinsEnabled)
+            updateTrayMenu()
+            // Notify renderer
+            mainWindow?.webContents.send(
+              'settings-changed',
+              'autoViewSkinsEnabled',
+              !autoViewSkinsEnabled
+            )
+          }
+        },
+        { type: 'separator' },
+        {
+          label: t('settings.smartApply.title', 'Smart Apply'),
+          type: 'checkbox',
+          checked: smartApplyEnabled,
+          enabled: leagueClientEnabled,
+          click: () => {
+            settingsService.set('smartApplyEnabled', !smartApplyEnabled)
+            updateTrayMenu()
+            // Notify renderer
+            mainWindow?.webContents.send(
+              'settings-changed',
+              'smartApplyEnabled',
+              !smartApplyEnabled
+            )
+          }
+        },
+        {
+          label: t('settings.autoApply.title', 'Auto Apply'),
+          type: 'checkbox',
+          checked: autoApplyEnabled,
+          enabled: leagueClientEnabled && smartApplyEnabled,
+          click: () => {
+            settingsService.set('autoApplyEnabled', !autoApplyEnabled)
+            updateTrayMenu()
+            // Notify renderer
+            mainWindow?.webContents.send('settings-changed', 'autoApplyEnabled', !autoApplyEnabled)
+          }
+        }
+      ]
+    },
+    { type: 'separator' },
+    {
+      label: t('tray.openSettings', 'Open Settings'),
+      click: () => {
+        if (mainWindow) {
+          mainWindow.show()
+          mainWindow.focus()
+          // Send event to open settings dialog
+          mainWindow.webContents.send('open-settings')
+        }
+      }
+    },
+    { type: 'separator' },
+    {
+      label: t('tray.quit', 'Quit Bocchi'),
+      click: () => {
+        app.quit()
+      }
+    }
+  ])
+
+  tray.setContextMenu(contextMenu)
+}
+
+function createTray(): void {
+  const trayIcon = nativeImage.createFromPath(icon)
+  tray = new Tray(trayIcon)
+  tray.setToolTip('Bocchi')
+
+  // Initial menu
+  updateTrayMenu()
+
+  // Double click to show window
+  tray.on('double-click', () => {
+    if (mainWindow) {
+      if (mainWindow.isVisible()) {
+        mainWindow.hide()
+      } else {
+        mainWindow.show()
+        mainWindow.focus()
+      }
+    }
+  })
+
+  // Update menu when window visibility changes
+  mainWindow?.on('show', () => updateTrayMenu())
+  mainWindow?.on('hide', () => updateTrayMenu())
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -127,10 +343,15 @@ app.whenReady().then(async () => {
   await favoritesService.initialize()
   await fileImportService.initialize()
 
+  // Initialize translation service with saved language
+  const savedLanguage = settingsService.get('language') || 'en_US'
+  translationService.setLanguage(savedLanguage as LanguageCode)
+
   // Set up IPC handlers
   setupIpcHandlers()
 
   createWindow()
+  createTray()
 
   // Create overlay if enabled in settings
   const inGameOverlayEnabled = settingsService.get('inGameOverlayEnabled')
@@ -170,7 +391,8 @@ app.whenReady().then(async () => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  const minimizeToTray = settingsService.get('minimizeToTray')
+  if (!minimizeToTray && process.platform !== 'darwin') {
     app.quit()
   }
 })
@@ -930,7 +1152,14 @@ function setupIpcHandlers(): void {
 
   ipcMain.on('window-close', () => {
     const window = BrowserWindow.getFocusedWindow()
-    if (window) window.close()
+    if (window) {
+      const minimizeToTray = settingsService.get('minimizeToTray')
+      if (minimizeToTray && window === mainWindow) {
+        window.hide()
+      } else {
+        window.close()
+      }
+    }
   })
 
   ipcMain.handle('window-is-maximized', () => {
@@ -951,6 +1180,25 @@ function setupIpcHandlers(): void {
       const { GamePathService } = await import('./services/gamePathService')
       const gamePathService = GamePathService.getInstance()
       await gamePathService.setGamePath(value)
+    }
+
+    // Update tray menu when relevant settings change
+    const trayRelevantSettings = [
+      'minimizeToTray',
+      'leagueClientEnabled',
+      'autoAcceptEnabled',
+      'championDetection',
+      'autoViewSkinsEnabled',
+      'smartApplyEnabled',
+      'autoApplyEnabled',
+      'language'
+    ]
+    if (trayRelevantSettings.includes(key)) {
+      // Update translation service if language changed
+      if (key === 'language') {
+        translationService.setLanguage(value as LanguageCode)
+      }
+      updateTrayMenu()
     }
   })
 
@@ -1548,6 +1796,12 @@ function cleanup(): void {
   teamCompositionMonitor.removeAllListeners()
   overlayWindowManager.removeAllListeners()
   autoBanPickService.removeAllListeners()
+
+  // Clean up tray
+  if (tray) {
+    tray.destroy()
+    tray = null
+  }
 }
 
 // Handle app quit events
@@ -1556,9 +1810,12 @@ app.on('before-quit', () => {
 })
 
 app.on('window-all-closed', () => {
-  cleanup()
-  if (process.platform !== 'darwin') {
-    app.quit()
+  const minimizeToTray = settingsService.get('minimizeToTray')
+  if (!minimizeToTray) {
+    cleanup()
+    if (process.platform !== 'darwin') {
+      app.quit()
+    }
   }
 })
 

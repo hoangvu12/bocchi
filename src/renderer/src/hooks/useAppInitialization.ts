@@ -20,6 +20,7 @@ import {
   autoBanForceAtom,
   autoBanChampionsAtom
 } from '../store/atoms/lcu.atoms'
+import { showSettingsDialogAtom } from '../store/atoms/ui.atoms'
 
 // This hook initializes all app settings and state on mount
 export function useAppInitialization() {
@@ -41,6 +42,7 @@ export function useAppInitialization() {
   const setAutoBanEnabled = useSetAtom(autoBanEnabledAtom)
   const setAutoBanForce = useSetAtom(autoBanForceAtom)
   const setAutoBanChampions = useSetAtom(autoBanChampionsAtom)
+  const setShowSettingsDialog = useSetAtom(showSettingsDialogAtom)
 
   // Load app version
   useEffect(() => {
@@ -67,6 +69,17 @@ export function useAppInitialization() {
       unsubscribe()
     }
   }, [setShowUpdateDialog])
+
+  // Set up open settings event listener for tray menu
+  useEffect(() => {
+    const unsubscribe = window.api.onOpenSettings(() => {
+      setShowSettingsDialog(true)
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [setShowSettingsDialog])
 
   // Clear search queries on mount
   useEffect(() => {

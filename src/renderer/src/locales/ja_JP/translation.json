@@ -95,6 +95,7 @@
     "theme": "テーマ",
     "notifications": "通知",
     "tabs": {
+      "general": "一般",
       "leagueClient": "リーグクライアント",
       "skinManagement": "スキン管理"
     },
@@ -102,6 +103,18 @@
       "title": "ランダムスキン選択",
       "none": "無効"
     },
+    "minimizeToTray": {
+      "title": "トレイに最小化",
+      "description": "閉じるボタンをクリックしたとき、アプリを閉じる代わりにシステムトレイに非表示にする"
+    }
+  },
+  "settings": {
+    "title": "設定",
+    "description": "アプリの設定を構成する",
+    "gamePath": "ゲームパス",
+    "language": "言語",
+    "theme": "テーマ",
+    "notifications": "通知",
     "leagueClient": {
       "title": "リーグクライアント統合",
       "description": "League of Legendsクライアントと連携する機能を有効にする"
@@ -178,6 +191,13 @@
       "title": "インポート時にMODの問題を自動修正",
       "description": "MODをインポートする際に不足しているヘルスバー、マテリアル、VFXエフェクトを自動的に修正"
     }
+  },
+  "tray": {
+    "show": "Bocchiを表示",
+    "hide": "Bocchiを非表示",
+    "language": "言語",
+    "openSettings": "設定を開く",
+    "quit": "Bocchiを終了"
   },
   "errors": {
     "generic": "エラーが発生しました",

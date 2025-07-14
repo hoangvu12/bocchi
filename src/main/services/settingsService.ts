@@ -6,6 +6,7 @@ interface Settings {
   language?: string
   theme?: 'dark' | 'light'
   gamePath?: string
+  minimizeToTray?: boolean
   [key: string]: any
 }
 
