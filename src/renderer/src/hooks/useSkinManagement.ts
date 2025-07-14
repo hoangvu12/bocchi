@@ -40,7 +40,16 @@ export function useSkinManagement() {
   const loadFavorites = useCallback(async () => {
     const result = await window.api.getFavorites()
     if (result.success && result.favorites) {
-      const favoriteKeys = new Set(result.favorites.map((f) => `${f.championKey}_${f.skinId}`))
+      const favoriteKeys = new Set(
+        result.favorites.map((f) => {
+          // Handle both old format (no chromaId) and new format
+          if (f.chromaId) {
+            return `${f.championKey}_${f.skinId}_${f.chromaId}`
+          }
+          // Old format favorites are treated as base skin favorites
+          return `${f.championKey}_${f.skinId}_base`
+        })
+      )
       setFavorites(favoriteKeys)
     }
   }, [setFavorites])
@@ -54,7 +63,8 @@ export function useSkinManagement() {
 
   const toggleFavorite = useCallback(
     async (champion: Champion, skin: Skin) => {
-      const key = `${champion.key}_${skin.id}`
+      // For base skin favorites, we use 'base' as the chromaId
+      const key = `${champion.key}_${skin.id}_base`
       const isFav = favorites.has(key)
 
       if (isFav) {
@@ -66,6 +76,26 @@ export function useSkinManagement() {
         })
       } else {
         await window.api.addFavorite(champion.key, skin.id, skin.name)
+        setFavorites((prev) => new Set(prev).add(key))
+      }
+    },
+    [favorites, setFavorites]
+  )
+
+  const toggleChromaFavorite = useCallback(
+    async (champion: Champion, skin: Skin, chromaId: string, chromaName: string) => {
+      const key = `${champion.key}_${skin.id}_${chromaId}`
+      const isFav = favorites.has(key)
+
+      if (isFav) {
+        await window.api.removeFavorite(champion.key, skin.id, chromaId)
+        setFavorites((prev) => {
+          const newSet = new Set(prev)
+          newSet.delete(key)
+          return newSet
+        })
+      } else {
+        await window.api.addFavorite(champion.key, skin.id, skin.name, chromaId, chromaName)
         setFavorites((prev) => new Set(prev).add(key))
       }
     },
@@ -378,6 +408,7 @@ export function useSkinManagement() {
     loadDownloadedSkins,
     loadFavorites,
     toggleFavorite,
+    toggleChromaFavorite,
     deleteCustomSkin,
     deleteDownloadedSkin,
     applySelectedSkins,

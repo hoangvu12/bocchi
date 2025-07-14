@@ -48,8 +48,14 @@ export function SkinBrowserSection({
   const totalCount = useTotalCount()
   const styles = useStyles()
 
-  const { downloadedSkins, favorites, loadDownloadedSkins, toggleFavorite, deleteCustomSkin } =
-    useSkinManagement()
+  const {
+    downloadedSkins,
+    favorites,
+    loadDownloadedSkins,
+    toggleFavorite,
+    toggleChromaFavorite,
+    deleteCustomSkin
+  } = useSkinManagement()
 
   if (!championData) return null
 
@@ -115,6 +121,7 @@ export function SkinBrowserSection({
                     loading={loading}
                     onSkinClick={onSkinClick}
                     onToggleFavorite={toggleFavorite}
+                    onToggleChromaFavorite={toggleChromaFavorite}
                     onDeleteCustomSkin={deleteCustomSkin}
                     onEditCustomSkin={onEditCustomSkin}
                     containerWidth={width}

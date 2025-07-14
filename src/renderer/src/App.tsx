@@ -170,6 +170,9 @@ function AppContent(): React.JSX.Element {
 
       let availableSkins = champion.skins.filter((skin) => skin.num !== 0)
 
+      const favoriteChromaOptions: Array<{ skin: Skin; chromaId?: string; chromaName?: string }> =
+        []
+
       if (autoRandomFavoriteSkinEnabled) {
         // Get favorites for this champion
         const favoritesResult = await window.api.getFavoritesByChampion(champion.key)
@@ -187,18 +190,35 @@ function AppContent(): React.JSX.Element {
           return
         }
 
-        // Filter skins to only those that are favorited
-        // Convert both skinId (string) and skin.id (number) to strings for comparison
-        availableSkins = champion.skins.filter((skin) => {
-          const found = favoritesResult.favorites?.some((fav) => fav.skinId === String(skin.id))
-          console.log(
-            `[AutoFavorite] Checking skin ${skin.name} (id: ${skin.id}, type: ${typeof skin.id}) against favorites - found: ${found}`
-          )
-          return found || false
+        // Build list of favorited options (base skins and specific chromas)
+        favoritesResult.favorites.forEach((fav) => {
+          const skin = champion.skins.find((s) => String(s.id) === fav.skinId)
+          if (skin && skin.num !== 0) {
+            if (fav.chromaId) {
+              // This is a specific chroma favorite
+              favoriteChromaOptions.push({
+                skin,
+                chromaId: fav.chromaId,
+                chromaName: fav.chromaName
+              })
+            } else {
+              // This is a base skin favorite
+              favoriteChromaOptions.push({ skin })
+            }
+          }
         })
+
+        if (favoriteChromaOptions.length === 0) {
+          console.log(`[AutoFavorite] No valid favorite skins found`)
+          return
+        }
+
+        // For compatibility with existing code, we still need availableSkins
+        availableSkins = [...new Set(favoriteChromaOptions.map((opt) => opt.skin))]
+
         console.log(
-          `[AutoFavorite] Filtered available skins:`,
-          availableSkins.map((s) => ({ name: s.name, id: s.id }))
+          `[AutoFavorite] Found ${favoriteChromaOptions.length} favorite options (including chromas)`,
+          favoriteChromaOptions.map((opt) => ({ name: opt.skin.name, chromaId: opt.chromaId }))
         )
       } else if (autoRandomRaritySkinEnabled) {
         // Filter to only rarity skins
@@ -238,13 +258,30 @@ function AppContent(): React.JSX.Element {
         return
       }
 
-      // Select a random skin
-      const randomIndex = Math.floor(Math.random() * availableSkins.length)
-      const randomSkin = availableSkins[randomIndex]
-      console.log(`[AutoFavorite] Selected random skin:`, {
-        name: randomSkin.name,
-        id: randomSkin.id
-      })
+      // Select a random skin or chroma
+      let randomSkin: Skin
+      let selectedChromaId: string | undefined
+
+      if (autoRandomFavoriteSkinEnabled && favoriteChromaOptions.length > 0) {
+        // Select from favorite options (which may include specific chromas)
+        const randomOption =
+          favoriteChromaOptions[Math.floor(Math.random() * favoriteChromaOptions.length)]
+        randomSkin = randomOption.skin
+        selectedChromaId = randomOption.chromaId
+        console.log(`[AutoFavorite] Selected random favorite:`, {
+          name: randomSkin.name,
+          id: randomSkin.id,
+          chromaId: selectedChromaId
+        })
+      } else {
+        // Select from filtered skins (non-favorite modes)
+        const randomIndex = Math.floor(Math.random() * availableSkins.length)
+        randomSkin = availableSkins[randomIndex]
+        console.log(`[AutoFavorite] Selected random skin:`, {
+          name: randomSkin.name,
+          id: randomSkin.id
+        })
+      }
 
       // Add the auto-selected skin
       const newSelectedSkin = {
@@ -255,7 +292,7 @@ function AppContent(): React.JSX.Element {
         skinNameEn: randomSkin.nameEn,
         lolSkinsName: randomSkin.lolSkinsName,
         skinNum: randomSkin.num,
-        chromaId: undefined,
+        chromaId: selectedChromaId,
         isDownloaded: false,
         isAutoSelected: true
       }

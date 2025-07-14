@@ -12,6 +12,27 @@ import { favoritesAtom, downloadedSkinsAtom } from './skin.atoms'
 import type { Champion, Skin } from '../../App'
 import { getChampionDisplayName } from '../../utils/championUtils'
 
+// Helper function to check if a skin or any of its chromas are favorited
+function isSkinOrChromaFavorited(
+  favorites: Set<string>,
+  championKey: string,
+  skinId: string
+): boolean {
+  // Check if base skin is favorited
+  if (favorites.has(`${championKey}_${skinId}_base`)) {
+    return true
+  }
+
+  // Check if any chroma is favorited
+  for (const key of favorites) {
+    if (key.startsWith(`${championKey}_${skinId}_`) && !key.endsWith('_base')) {
+      return true
+    }
+  }
+
+  return false
+}
+
 interface DisplaySkin {
   champion: Champion
   skin: Skin
@@ -149,7 +170,10 @@ export const displaySkinsAtom = atom((get) => {
     // Show skins for selected champion
     selectedChampion.skins.forEach((skin) => {
       if (skin.num !== 0) {
-        if (!showFavoritesOnly || favorites.has(`${selectedChampion.key}_${skin.id}`)) {
+        if (
+          !showFavoritesOnly ||
+          isSkinOrChromaFavorited(favorites, selectedChampion.key, skin.id)
+        ) {
           allSkins.push({ champion: selectedChampion, skin })
         }
       }
@@ -175,7 +199,10 @@ export const displaySkinsAtom = atom((get) => {
           description: 'Custom imported mod'
         }
 
-        if (!showFavoritesOnly || favorites.has(`${selectedChampion.key}_${customSkin.id}`)) {
+        if (
+          !showFavoritesOnly ||
+          isSkinOrChromaFavorited(favorites, selectedChampion.key, customSkin.id)
+        ) {
           allSkins.push({ champion: selectedChampion, skin: customSkin })
         }
       }
@@ -185,7 +212,7 @@ export const displaySkinsAtom = atom((get) => {
     championData.champions.forEach((champion) => {
       champion.skins.forEach((skin) => {
         if (skin.num !== 0) {
-          if (!showFavoritesOnly || favorites.has(`${champion.key}_${skin.id}`)) {
+          if (!showFavoritesOnly || isSkinOrChromaFavorited(favorites, champion.key, skin.id)) {
             allSkins.push({ champion, skin })
           }
         }
@@ -229,7 +256,7 @@ export const displaySkinsAtom = atom((get) => {
           description: 'Custom imported mod'
         }
 
-        if (!showFavoritesOnly || favorites.has(`${champion.key}_${customSkin.id}`)) {
+        if (!showFavoritesOnly || isSkinOrChromaFavorited(favorites, champion.key, customSkin.id)) {
           allSkins.push({ champion, skin: customSkin })
         }
       }

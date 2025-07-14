@@ -832,9 +832,16 @@ function setupIpcHandlers(): void {
   // Favorites management
   ipcMain.handle(
     'add-favorite',
-    async (_, championKey: string, skinId: string, skinName: string) => {
+    async (
+      _,
+      championKey: string,
+      skinId: string,
+      skinName: string,
+      chromaId?: string,
+      chromaName?: string
+    ) => {
       try {
-        await favoritesService.addFavorite(championKey, skinId, skinName)
+        await favoritesService.addFavorite(championKey, skinId, skinName, chromaId, chromaName)
         return { success: true }
       } catch (error) {
         return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
@@ -842,18 +849,24 @@ function setupIpcHandlers(): void {
     }
   )
 
-  ipcMain.handle('remove-favorite', async (_, championKey: string, skinId: string) => {
-    try {
-      await favoritesService.removeFavorite(championKey, skinId)
-      return { success: true }
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+  ipcMain.handle(
+    'remove-favorite',
+    async (_, championKey: string, skinId: string, chromaId?: string) => {
+      try {
+        await favoritesService.removeFavorite(championKey, skinId, chromaId)
+        return { success: true }
+      } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+      }
     }
-  })
+  )
 
-  ipcMain.handle('is-favorite', async (_, championKey: string, skinId: string) => {
-    return favoritesService.isFavorite(championKey, skinId)
-  })
+  ipcMain.handle(
+    'is-favorite',
+    async (_, championKey: string, skinId: string, chromaId?: string) => {
+      return favoritesService.isFavorite(championKey, skinId, chromaId)
+    }
+  )
 
   ipcMain.handle('get-favorites', async () => {
     try {

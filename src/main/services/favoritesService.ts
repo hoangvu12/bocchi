@@ -6,6 +6,8 @@ export interface FavoriteItem {
   championKey: string
   skinId: string
   skinName: string
+  chromaId?: string
+  chromaName?: string
   addedAt: Date
 }
 
@@ -23,13 +25,27 @@ export class FavoritesService {
       const data = await fs.readFile(this.favoritesPath, 'utf-8')
       const favoritesArray = JSON.parse(data) as FavoriteItem[]
       this.favorites.clear()
+
+      // Migrate old favorites to new format if needed
+      let needsMigration = false
+
       favoritesArray.forEach((fav) => {
-        const key = this.getKey(fav.championKey, fav.skinId)
+        // Check if this is an old format favorite (no chromaId means it's a base skin favorite)
+        if (!fav.chromaId && !fav.chromaName) {
+          needsMigration = true
+        }
+
+        const key = this.getKey(fav.championKey, fav.skinId, fav.chromaId)
         this.favorites.set(key, {
           ...fav,
           addedAt: new Date(fav.addedAt)
         })
       })
+
+      // Save if migration was needed to persist the updated format
+      if (needsMigration) {
+        await this.save()
+      }
     } catch (e) {
       const error = e as NodeJS.ErrnoException
       if (error.code === 'ENOENT') {
@@ -43,29 +59,41 @@ export class FavoritesService {
     }
   }
 
-  private getKey(championKey: string, skinId: string): string {
-    return `${championKey}_${skinId}`
+  private getKey(championKey: string, skinId: string, chromaId?: string): string {
+    if (chromaId) {
+      return `${championKey}_${skinId}_${chromaId}`
+    }
+    // For base skins, use 'base' as the chromaId for consistency
+    return `${championKey}_${skinId}_base`
   }
 
-  async addFavorite(championKey: string, skinId: string, skinName: string): Promise<void> {
-    const key = this.getKey(championKey, skinId)
+  async addFavorite(
+    championKey: string,
+    skinId: string,
+    skinName: string,
+    chromaId?: string,
+    chromaName?: string
+  ): Promise<void> {
+    const key = this.getKey(championKey, skinId, chromaId)
     this.favorites.set(key, {
       championKey,
       skinId,
       skinName,
+      chromaId,
+      chromaName,
       addedAt: new Date()
     })
     await this.save()
   }
 
-  async removeFavorite(championKey: string, skinId: string): Promise<void> {
-    const key = this.getKey(championKey, skinId)
+  async removeFavorite(championKey: string, skinId: string, chromaId?: string): Promise<void> {
+    const key = this.getKey(championKey, skinId, chromaId)
     this.favorites.delete(key)
     await this.save()
   }
 
-  isFavorite(championKey: string, skinId: string): boolean {
-    const key = this.getKey(championKey, skinId)
+  isFavorite(championKey: string, skinId: string, chromaId?: string): boolean {
+    const key = this.getKey(championKey, skinId, chromaId)
     return this.favorites.has(key)
   }
 

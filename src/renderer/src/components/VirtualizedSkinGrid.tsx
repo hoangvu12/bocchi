@@ -17,6 +17,12 @@ interface VirtualizedSkinGridProps {
   loading: boolean
   onSkinClick: (champion: Champion, skin: Skin, chromaId?: string) => void
   onToggleFavorite: (champion: Champion, skin: Skin) => void
+  onToggleChromaFavorite?: (
+    champion: Champion,
+    skin: Skin,
+    chromaId: string,
+    chromaName: string
+  ) => void
   onDeleteCustomSkin?: (skinPath: string, skinName: string) => void
   onEditCustomSkin?: (skinPath: string, currentName: string) => void
   containerWidth: number
@@ -32,6 +38,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
   loading,
   onSkinClick,
   onToggleFavorite,
+  onToggleChromaFavorite,
   onDeleteCustomSkin,
   onEditCustomSkin,
   containerWidth,
@@ -175,7 +182,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       })
       const isDownloaded = !!downloadedSkin
       const isUserSkin = downloadedSkin?.skinName?.includes('[User]')
-      const isFavorite = favorites.has(`${champion.key}_${skin.id}`)
+      const isFavorite = favorites.has(`${champion.key}_${skin.id}_base`)
       const isSelected = selectedSkins.some((s) => {
         // Direct match
         if (s.championKey === champion.key && s.skinId === skin.id && !s.chromaId) {
@@ -572,7 +579,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
         {Cell}
       </Grid>
 
-      {chromaDialogState.champion && chromaDialogState.skin && (
+      {chromaDialogState.champion && chromaDialogState.skin && onToggleChromaFavorite && (
         <ChromaSelectionDialog
           open={chromaDialogState.open}
           onOpenChange={(open) => {
@@ -586,6 +593,8 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
           selectedSkins={selectedSkins}
           downloadedSkins={downloadedSkins}
           onChromaSelect={onSkinClick}
+          favorites={favorites}
+          onToggleChromaFavorite={onToggleChromaFavorite}
         />
       )}
     </>

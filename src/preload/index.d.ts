@@ -54,13 +54,16 @@ export interface IApi {
   addFavorite: (
     championKey: string,
     skinId: string,
-    skinName: string
+    skinName: string,
+    chromaId?: string,
+    chromaName?: string
   ) => Promise<{ success: boolean; error?: string }>
   removeFavorite: (
     championKey: string,
-    skinId: string
+    skinId: string,
+    chromaId?: string
   ) => Promise<{ success: boolean; error?: string }>
-  isFavorite: (championKey: string, skinId: string) => Promise<boolean>
+  isFavorite: (championKey: string, skinId: string, chromaId?: string) => Promise<boolean>
   getFavorites: () => Promise<{ success: boolean; favorites?: any[]; error?: string }>
   getFavoritesByChampion: (
     championKey: string

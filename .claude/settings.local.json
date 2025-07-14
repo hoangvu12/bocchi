@@ -8,7 +8,8 @@
       "Bash(npm run typecheck:*)",
       "Bash(npm run format:*)",
       "Bash(pnpm run:*)",
-      "Bash(npm run lint)"
+      "Bash(npm run lint)",
+      "Bash(npm run lint:*)"
     ],
     "deny": []
   }

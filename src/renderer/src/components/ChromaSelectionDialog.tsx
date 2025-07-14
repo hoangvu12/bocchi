@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Champion, Skin } from '../App'
 import { type Chroma, type SelectedSkin } from '../store/atoms'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
+import { Button } from './ui/button'
 
 interface ChromaSelectionDialogProps {
   open: boolean
@@ -13,6 +14,13 @@ interface ChromaSelectionDialogProps {
   selectedSkins: SelectedSkin[]
   downloadedSkins: Array<{ championName: string; skinName: string; localPath?: string }>
   onChromaSelect: (champion: Champion, skin: Skin, chromaId: string) => void
+  favorites: Set<string>
+  onToggleChromaFavorite: (
+    champion: Champion,
+    skin: Skin,
+    chromaId: string,
+    chromaName: string
+  ) => void
 }
 
 export const ChromaSelectionDialog: React.FC<ChromaSelectionDialogProps> = ({
@@ -23,7 +31,9 @@ export const ChromaSelectionDialog: React.FC<ChromaSelectionDialogProps> = ({
   chromas,
   selectedSkins,
   downloadedSkins,
-  onChromaSelect
+  onChromaSelect,
+  favorites,
+  onToggleChromaFavorite
 }) => {
   const { t } = useTranslation()
   const isChromaSelected = (chromaId: number) => {
@@ -39,6 +49,10 @@ export const ChromaSelectionDialog: React.FC<ChromaSelectionDialogProps> = ({
     return downloadedSkins.some(
       (ds) => ds.championName === champion.key && ds.skinName === chromaFileName
     )
+  }
+
+  const isChromaFavorite = (chromaId: number) => {
+    return favorites.has(`${champion.key}_${skin.id}_${chromaId}`)
   }
 
   return (
@@ -87,6 +101,20 @@ export const ChromaSelectionDialog: React.FC<ChromaSelectionDialogProps> = ({
                     <p className="text-sm font-medium text-text-primary">{chroma.name}</p>
                     <p className="text-xs text-text-muted mt-1">ID: {chroma.id}</p>
                   </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="w-8 h-8 mr-2"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onToggleChromaFavorite(champion, skin, chroma.id.toString(), chroma.name)
+                    }}
+                    title={
+                      isChromaFavorite(chroma.id) ? 'Remove from favorites' : 'Add to favorites'
+                    }
+                  >
+                    {isChromaFavorite(chroma.id) ? '❤️' : '🤍'}
+                  </Button>
                   {isSelected && (
                     <svg
                       className="w-5 h-5 text-primary-600"

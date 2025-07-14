@@ -55,12 +55,17 @@ const api = {
   getChromasForSkin: (skinId: string) => ipcRenderer.invoke('get-chromas-for-skin', skinId),
 
   // Favorites
-  addFavorite: (championKey: string, skinId: string, skinName: string) =>
-    ipcRenderer.invoke('add-favorite', championKey, skinId, skinName),
-  removeFavorite: (championKey: string, skinId: string) =>
-    ipcRenderer.invoke('remove-favorite', championKey, skinId),
-  isFavorite: (championKey: string, skinId: string) =>
-    ipcRenderer.invoke('is-favorite', championKey, skinId),
+  addFavorite: (
+    championKey: string,
+    skinId: string,
+    skinName: string,
+    chromaId?: string,
+    chromaName?: string
+  ) => ipcRenderer.invoke('add-favorite', championKey, skinId, skinName, chromaId, chromaName),
+  removeFavorite: (championKey: string, skinId: string, chromaId?: string) =>
+    ipcRenderer.invoke('remove-favorite', championKey, skinId, chromaId),
+  isFavorite: (championKey: string, skinId: string, chromaId?: string) =>
+    ipcRenderer.invoke('is-favorite', championKey, skinId, chromaId),
   getFavorites: () => ipcRenderer.invoke('get-favorites'),
   getFavoritesByChampion: (championKey: string) =>
     ipcRenderer.invoke('get-favorites-by-champion', championKey),
