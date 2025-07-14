@@ -24,3 +24,6 @@ export const autoPickChampionsAtom = atom<number[]>([])
 export const autoBanEnabledAtom = atom<boolean>(false)
 export const autoBanForceAtom = atom<boolean>(false)
 export const autoBanChampionsAtom = atom<number[]>([])
+
+// Current game queue ID - persists from champ select through the game
+export const currentQueueIdAtom = atom<number | null>(null)

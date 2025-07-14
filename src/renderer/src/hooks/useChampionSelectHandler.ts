@@ -13,22 +13,15 @@ import {
   autoRandomFavoriteSkinEnabledAtom,
   autoRandomHighestWinRateSkinEnabledAtom,
   autoRandomHighestPickRateSkinEnabledAtom,
-  autoRandomMostPlayedSkinEnabledAtom
+  autoRandomMostPlayedSkinEnabledAtom,
+  currentQueueIdAtom
 } from '../store/atoms/lcu.atoms'
 import {
   leagueClientEnabledAtom,
   championDetectionEnabledAtom
 } from '../store/atoms/settings.atoms'
+import { PRESELECT_CHAMPION_QUEUE_IDS } from '../constants/queues'
 import type { Champion } from '../App'
-
-// Queue IDs for modes with gameSelectPriority 40 - these modes let players preselect champions
-// and don't have a champion select phase where auto-random would be relevant
-const PRESELECT_CHAMPION_QUEUE_IDS = [
-  430, // Normal (Blind Pick)
-  480, // Swiftplay
-  490, // Quickplay
-  830 // Intro
-]
 
 interface ChampionSelectData {
   championId: number
@@ -66,6 +59,7 @@ export function useChampionSelectHandler({
   const [leagueClientEnabled] = useAtom(leagueClientEnabledAtom)
   const [championDetectionEnabled] = useAtom(championDetectionEnabledAtom)
   const setSelectedChampionKey = useSetAtom(selectedChampionKeyAtom)
+  const setCurrentQueueId = useSetAtom(currentQueueIdAtom)
 
   const lastSelectedChampionIdRef = useRef<number | null>(null)
   const gameflowPhaseRef = useRef<string>('None')
@@ -112,6 +106,15 @@ export function useChampionSelectHandler({
         setLcuSelectedChampion(null)
         setIsChampionLocked(false)
       }
+
+      // Clear queue ID when entering a new champion select from a non-game phase
+      // This ensures we don't carry over queue ID from previous games
+      if (
+        data.phase === 'ChampSelect' &&
+        !['InGame', 'GameStart', 'InProgress'].includes(data.previousPhase)
+      ) {
+        setCurrentQueueId(null)
+      }
     })
 
     return () => {
@@ -127,7 +130,8 @@ export function useChampionSelectHandler({
     setLcuConnected,
     setIsInChampSelect,
     setLcuSelectedChampion,
-    setIsChampionLocked
+    setIsChampionLocked,
+    setCurrentQueueId
   ])
 
   const handleChampionSelection = useCallback(
@@ -163,6 +167,11 @@ export function useChampionSelectHandler({
       // Set the selected champion data in atoms
       setLcuSelectedChampion(champion)
       setIsChampionLocked(data.isLocked)
+
+      // Update current queue ID if available
+      if (data.queueId !== undefined && data.queueId !== null) {
+        setCurrentQueueId(data.queueId)
+      }
 
       // Skip auto random skin for modes with preselected champions (no champion select phase)
       const isPreselectChampionMode =
@@ -200,7 +209,8 @@ export function useChampionSelectHandler({
       autoRandomMostPlayedSkinEnabled,
       onAutoSelectSkin,
       setLcuSelectedChampion,
-      setIsChampionLocked
+      setIsChampionLocked,
+      setCurrentQueueId
     ]
   )
 

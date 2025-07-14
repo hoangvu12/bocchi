@@ -8,6 +8,8 @@ import {
 } from '../store/atoms/game.atoms'
 import { selectedSkinsAtom } from '../store/atoms'
 import { downloadedSkinsAtom } from '../store/atoms/skin.atoms'
+import { currentQueueIdAtom } from '../store/atoms/lcu.atoms'
+import { PRESELECT_CHAMPION_QUEUE_IDS } from '../constants/queues'
 
 export function usePatcherControl() {
   const { t } = useTranslation()
@@ -16,6 +18,7 @@ export function usePatcherControl() {
   const [loadingStates, setLoadingStates] = useAtom(loadingStatesAtom)
   const [selectedSkins, setSelectedSkins] = useAtom(selectedSkinsAtom)
   const [downloadedSkins, setDownloadedSkins] = useAtom(downloadedSkinsAtom)
+  const [currentQueueId] = useAtom(currentQueueIdAtom)
 
   const checkPatcherStatus = useCallback(async () => {
     const isRunning = await window.api.isPatcherRunning()
@@ -70,10 +73,21 @@ export function usePatcherControl() {
       if (postGamePhases.includes(data.phase) || isPostGameLobby || leavingChampSelect) {
         const autoApplyEnabled = await window.api.getSettings('autoApplyEnabled')
 
+        // Only stop patcher if auto-apply is enabled AND we're not in a preselect champion queue
         if (autoApplyEnabled !== false) {
-          const isRunning = await window.api.isPatcherRunning()
-          if (isRunning) {
-            await stopPatcher()
+          // Check if this was a preselect champion queue
+          const isPreselectQueue =
+            currentQueueId !== null && PRESELECT_CHAMPION_QUEUE_IDS.includes(currentQueueId)
+
+          if (!isPreselectQueue) {
+            const isRunning = await window.api.isPatcherRunning()
+            if (isRunning) {
+              await stopPatcher()
+            }
+          } else {
+            console.log(
+              `[PatcherControl] Not stopping patcher for preselect queue ${currentQueueId}`
+            )
           }
         }
 
@@ -132,7 +146,8 @@ export function usePatcherControl() {
     downloadedSkins,
     setDownloadedSkins,
     setStatusMessage,
-    t
+    t,
+    currentQueueId
   ])
 
   return {
