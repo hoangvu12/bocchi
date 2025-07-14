@@ -1,12 +1,7 @@
-### Features
-
-- Auto apply trigger time
-- Add MultiRitoFixes support for custom mods
-- Auto ban/pick (not tested)
-- Auto accept match
-
 ### Fixes
 
-- Overlay not showing the right selected skin
-- Random skins from favourites not working
-- LCU Lockfile not detected like game path detection.
+- Can't use in Swiftplay
+- Auto apply sometime doesn't work (still need more testing)
+- Shouldn't stop patcher when join new game
+- Custom skins with champion selected not working
+- Custom skins with champion not showing in that champion section
