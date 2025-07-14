@@ -73,21 +73,25 @@ export function usePatcherControl() {
       if (postGamePhases.includes(data.phase) || isPostGameLobby || leavingChampSelect) {
         const autoApplyEnabled = await window.api.getSettings('autoApplyEnabled')
 
-        // Only stop patcher if auto-apply is enabled AND we're not in a preselect champion queue
+        // Only stop patcher if auto-apply is enabled AND we're confident it's not a preselect queue
         if (autoApplyEnabled !== false) {
           // Check if this was a preselect champion queue
           const isPreselectQueue =
             currentQueueId !== null && PRESELECT_CHAMPION_QUEUE_IDS.includes(currentQueueId)
 
-          if (!isPreselectQueue) {
+          // If currentQueueId is null, we don't know the queue type yet, so don't stop the patcher
+          // Only stop if we're certain it's NOT a preselect queue (currentQueueId is set and not in preselect list)
+          if (currentQueueId !== null && !isPreselectQueue) {
             const isRunning = await window.api.isPatcherRunning()
             if (isRunning) {
               await stopPatcher()
             }
-          } else {
+          } else if (currentQueueId !== null) {
             console.log(
               `[PatcherControl] Not stopping patcher for preselect queue ${currentQueueId}`
             )
+          } else {
+            console.log(`[PatcherControl] Not stopping patcher - queue ID not yet available`)
           }
         }
 

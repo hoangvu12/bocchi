@@ -63,12 +63,14 @@ export function useSmartSkinApply({
       if (data.phase === 'ChampSelect' && data.previousPhase !== 'ChampSelect') {
         lastAppliedTeamKey.current = ''
 
-        // Only stop patcher if auto-apply is enabled AND it's not a preselect queue
+        // Only stop patcher if auto-apply is enabled AND we're confident it's not a preselect queue
         if (autoApplyEnabled) {
           const isPreselectQueue =
             currentQueueId !== null && PRESELECT_CHAMPION_QUEUE_IDS.includes(currentQueueId)
 
-          if (!isPreselectQueue) {
+          // If currentQueueId is null, we don't know the queue type yet, so don't stop the patcher
+          // Only stop if we're certain it's NOT a preselect queue (currentQueueId is set and not in preselect list)
+          if (currentQueueId !== null && !isPreselectQueue) {
             window.api.isPatcherRunning().then((isRunning) => {
               if (isRunning) {
                 window.api.stopPatcher()
@@ -159,12 +161,14 @@ export function useSmartSkinApply({
         'Matchmaking'
       ]
       if (newPhase && !gameAndPostGamePhases.includes(newPhase)) {
-        // Only stop patcher if auto-apply is enabled AND it's not a preselect queue
+        // Only stop patcher if auto-apply is enabled AND we're confident it's not a preselect queue
         if (autoApplyEnabled) {
           const isPreselectQueue =
             currentQueueId !== null && PRESELECT_CHAMPION_QUEUE_IDS.includes(currentQueueId)
 
-          if (!isPreselectQueue) {
+          // If currentQueueId is null, we don't know the queue type yet, so don't stop the patcher
+          // Only stop if we're certain it's NOT a preselect queue (currentQueueId is set and not in preselect list)
+          if (currentQueueId !== null && !isPreselectQueue) {
             window.api.isPatcherRunning().then((isRunning) => {
               if (isRunning) {
                 window.api.stopPatcher()
