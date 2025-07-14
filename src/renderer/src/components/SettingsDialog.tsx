@@ -6,6 +6,9 @@ import {
   autoAcceptEnabledAtom,
   autoRandomFavoriteSkinEnabledAtom,
   autoRandomRaritySkinEnabledAtom,
+  autoRandomHighestWinRateSkinEnabledAtom,
+  autoRandomHighestPickRateSkinEnabledAtom,
+  autoRandomMostPlayedSkinEnabledAtom,
   autoViewSkinsEnabledAtom
 } from '../store/atoms/lcu.atoms'
 import {
@@ -54,6 +57,11 @@ export function SettingsDialog({
   const [autoRandomSkinEnabled, setAutoRandomSkinEnabled] = useState(false)
   const [autoRandomRaritySkinEnabled, setAutoRandomRaritySkinEnabled] = useState(false)
   const [autoRandomFavoriteSkinEnabled, setAutoRandomFavoriteSkinEnabled] = useState(false)
+  const [autoRandomHighestWinRateSkinEnabled, setAutoRandomHighestWinRateSkinEnabled] =
+    useState(false)
+  const [autoRandomHighestPickRateSkinEnabled, setAutoRandomHighestPickRateSkinEnabled] =
+    useState(false)
+  const [autoRandomMostPlayedSkinEnabled, setAutoRandomMostPlayedSkinEnabled] = useState(false)
   const [allowMultipleSkinsPerChampion, setAllowMultipleSkinsPerChampion] = useState(false)
   const [inGameOverlayEnabled, setInGameOverlayEnabled] = useState(false)
   const [autoAcceptEnabled, setAutoAcceptEnabled] = useState(false)
@@ -66,6 +74,13 @@ export function SettingsDialog({
   const setAutoViewSkinsEnabledAtom = useSetAtom(autoViewSkinsEnabledAtom)
   const setAutoRandomRaritySkinEnabledAtom = useSetAtom(autoRandomRaritySkinEnabledAtom)
   const setAutoRandomFavoriteSkinEnabledAtom = useSetAtom(autoRandomFavoriteSkinEnabledAtom)
+  const setAutoRandomHighestWinRateSkinEnabledAtom = useSetAtom(
+    autoRandomHighestWinRateSkinEnabledAtom
+  )
+  const setAutoRandomHighestPickRateSkinEnabledAtom = useSetAtom(
+    autoRandomHighestPickRateSkinEnabledAtom
+  )
+  const setAutoRandomMostPlayedSkinEnabledAtom = useSetAtom(autoRandomMostPlayedSkinEnabledAtom)
   const setSmartApplyEnabledAtom = useSetAtom(smartApplyEnabledAtom)
   const setAutoApplyEnabledAtom = useSetAtom(autoApplyEnabledAtom)
   const setAutoApplyTriggerTimeAtom = useSetAtom(autoApplyTriggerTimeAtom)
@@ -90,6 +105,11 @@ export function SettingsDialog({
       setAutoRandomSkinEnabled(settings.autoRandomSkinEnabled === true)
       setAutoRandomRaritySkinEnabled(settings.autoRandomRaritySkinEnabled === true)
       setAutoRandomFavoriteSkinEnabled(settings.autoRandomFavoriteSkinEnabled === true)
+      setAutoRandomHighestWinRateSkinEnabled(settings.autoRandomHighestWinRateSkinEnabled === true)
+      setAutoRandomHighestPickRateSkinEnabled(
+        settings.autoRandomHighestPickRateSkinEnabled === true
+      )
+      setAutoRandomMostPlayedSkinEnabled(settings.autoRandomMostPlayedSkinEnabled === true)
       setAllowMultipleSkinsPerChampion(settings.allowMultipleSkinsPerChampion === true)
       setInGameOverlayEnabled(settings.inGameOverlayEnabled === true)
       setAutoAcceptEnabled(settings.autoAcceptEnabled === true)
@@ -116,6 +136,9 @@ export function SettingsDialog({
         setAutoRandomSkinEnabled(false)
         setAutoRandomRaritySkinEnabled(false)
         setAutoRandomFavoriteSkinEnabled(false)
+        setAutoRandomHighestWinRateSkinEnabled(false)
+        setAutoRandomHighestPickRateSkinEnabled(false)
+        setAutoRandomMostPlayedSkinEnabled(false)
         setInGameOverlayEnabled(false)
         setAutoAcceptEnabled(false)
 
@@ -124,6 +147,9 @@ export function SettingsDialog({
         setAutoViewSkinsEnabledAtom(false)
         setAutoRandomRaritySkinEnabledAtom(false)
         setAutoRandomFavoriteSkinEnabledAtom(false)
+        setAutoRandomHighestWinRateSkinEnabledAtom(false)
+        setAutoRandomHighestPickRateSkinEnabledAtom(false)
+        setAutoRandomMostPlayedSkinEnabledAtom(false)
         setAutoAcceptEnabledAtom(false)
 
         await window.api.setSettings('championDetection', false)
@@ -133,6 +159,9 @@ export function SettingsDialog({
         await window.api.setSettings('autoRandomSkinEnabled', false)
         await window.api.setSettings('autoRandomRaritySkinEnabled', false)
         await window.api.setSettings('autoRandomFavoriteSkinEnabled', false)
+        await window.api.setSettings('autoRandomHighestWinRateSkinEnabled', false)
+        await window.api.setSettings('autoRandomHighestPickRateSkinEnabled', false)
+        await window.api.setSettings('autoRandomMostPlayedSkinEnabled', false)
         await window.api.setSettings('inGameOverlayEnabled', false)
         await window.api.setSettings('autoAcceptEnabled', false)
 
@@ -277,6 +306,9 @@ export function SettingsDialog({
   const getRandomSkinValue = () => {
     if (autoRandomFavoriteSkinEnabled) return 'favorite'
     if (autoRandomRaritySkinEnabled) return 'rarity'
+    if (autoRandomHighestWinRateSkinEnabled) return 'winrate'
+    if (autoRandomHighestPickRateSkinEnabled) return 'pickrate'
+    if (autoRandomMostPlayedSkinEnabled) return 'mostplayed'
     if (autoRandomSkinEnabled) return 'random'
     return 'none'
   }
@@ -286,12 +318,21 @@ export function SettingsDialog({
     setAutoRandomSkinEnabled(false)
     setAutoRandomRaritySkinEnabled(false)
     setAutoRandomFavoriteSkinEnabled(false)
+    setAutoRandomHighestWinRateSkinEnabled(false)
+    setAutoRandomHighestPickRateSkinEnabled(false)
+    setAutoRandomMostPlayedSkinEnabled(false)
     setAutoRandomRaritySkinEnabledAtom(false)
     setAutoRandomFavoriteSkinEnabledAtom(false)
+    setAutoRandomHighestWinRateSkinEnabledAtom(false)
+    setAutoRandomHighestPickRateSkinEnabledAtom(false)
+    setAutoRandomMostPlayedSkinEnabledAtom(false)
 
     await window.api.setSettings('autoRandomSkinEnabled', false)
     await window.api.setSettings('autoRandomRaritySkinEnabled', false)
     await window.api.setSettings('autoRandomFavoriteSkinEnabled', false)
+    await window.api.setSettings('autoRandomHighestWinRateSkinEnabled', false)
+    await window.api.setSettings('autoRandomHighestPickRateSkinEnabled', false)
+    await window.api.setSettings('autoRandomMostPlayedSkinEnabled', false)
 
     // Then enable the selected option
     switch (value) {
@@ -308,6 +349,21 @@ export function SettingsDialog({
         setAutoRandomFavoriteSkinEnabled(true)
         setAutoRandomFavoriteSkinEnabledAtom(true)
         await window.api.setSettings('autoRandomFavoriteSkinEnabled', true)
+        break
+      case 'winrate':
+        setAutoRandomHighestWinRateSkinEnabled(true)
+        setAutoRandomHighestWinRateSkinEnabledAtom(true)
+        await window.api.setSettings('autoRandomHighestWinRateSkinEnabled', true)
+        break
+      case 'pickrate':
+        setAutoRandomHighestPickRateSkinEnabled(true)
+        setAutoRandomHighestPickRateSkinEnabledAtom(true)
+        await window.api.setSettings('autoRandomHighestPickRateSkinEnabled', true)
+        break
+      case 'mostplayed':
+        setAutoRandomMostPlayedSkinEnabled(true)
+        setAutoRandomMostPlayedSkinEnabledAtom(true)
+        await window.api.setSettings('autoRandomMostPlayedSkinEnabled', true)
         break
       case 'none':
         // Check if we should disable the overlay
@@ -495,6 +551,57 @@ export function SettingsDialog({
                                 <div>{t('settings.autoRandomFavoriteSkin.title')}</div>
                                 <div className="text-xs text-text-secondary">
                                   {t('settings.autoRandomFavoriteSkin.description')}
+                                </div>
+                              </div>
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem
+                              value="winrate"
+                              id="winrate"
+                              disabled={loading || !championDetection}
+                            />
+                            <Label htmlFor="winrate" className="text-sm font-normal cursor-pointer">
+                              <div>
+                                <div>{t('settings.autoRandomHighestWinRateSkin.title')}</div>
+                                <div className="text-xs text-text-secondary">
+                                  {t('settings.autoRandomHighestWinRateSkin.description')}
+                                </div>
+                              </div>
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem
+                              value="pickrate"
+                              id="pickrate"
+                              disabled={loading || !championDetection}
+                            />
+                            <Label
+                              htmlFor="pickrate"
+                              className="text-sm font-normal cursor-pointer"
+                            >
+                              <div>
+                                <div>{t('settings.autoRandomHighestPickRateSkin.title')}</div>
+                                <div className="text-xs text-text-secondary">
+                                  {t('settings.autoRandomHighestPickRateSkin.description')}
+                                </div>
+                              </div>
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem
+                              value="mostplayed"
+                              id="mostplayed"
+                              disabled={loading || !championDetection}
+                            />
+                            <Label
+                              htmlFor="mostplayed"
+                              className="text-sm font-normal cursor-pointer"
+                            >
+                              <div>
+                                <div>{t('settings.autoRandomMostPlayedSkin.title')}</div>
+                                <div className="text-xs text-text-secondary">
+                                  {t('settings.autoRandomMostPlayedSkin.description')}
                                 </div>
                               </div>
                             </Label>

@@ -11,6 +11,9 @@ export const isChampionLockedAtom = atom<boolean>(false)
 export const autoViewSkinsEnabledAtom = atom<boolean>(false)
 export const autoRandomRaritySkinEnabledAtom = atom<boolean>(false)
 export const autoRandomFavoriteSkinEnabledAtom = atom<boolean>(false)
+export const autoRandomHighestWinRateSkinEnabledAtom = atom<boolean>(false)
+export const autoRandomHighestPickRateSkinEnabledAtom = atom<boolean>(false)
+export const autoRandomMostPlayedSkinEnabledAtom = atom<boolean>(false)
 export const autoAcceptEnabledAtom = atom<boolean>(false)
 
 // Auto Ban/Pick atoms

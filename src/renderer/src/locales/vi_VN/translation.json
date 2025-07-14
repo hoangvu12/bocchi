@@ -153,6 +153,18 @@
       "title": "Tự động chọn skin yêu thích ngẫu nhiên",
       "description": "Tự động chọn một skin ngẫu nhiên từ danh sách yêu thích của bạn khi phát hiện tướng"
     },
+    "autoRandomHighestWinRateSkin": {
+      "title": "Tự động chọn ngẫu nhiên skin tỷ lệ thắng cao",
+      "description": "Tự động chọn ngẫu nhiên một skin từ top 3 skin có tỷ lệ thắng cao nhất"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "Tự động chọn ngẫu nhiên skin phổ biến nhất",
+      "description": "Tự động chọn ngẫu nhiên một skin từ top 3 skin được chọn nhiều nhất"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "Tự động chọn ngẫu nhiên skin được chơi nhiều nhất",
+      "description": "Tự động chọn ngẫu nhiên một skin từ top 3 skin được chơi nhiều nhất"
+    },
     "allowMultipleSkinsPerChampion": {
       "title": "Cho phép nhiều skin cho mỗi tướng",
       "description": "Bật để sử dụng nhiều skin cho cùng một tướng đồng thời"

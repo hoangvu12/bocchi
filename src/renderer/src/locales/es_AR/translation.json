@@ -158,6 +158,18 @@
       "title": "Skin favorito aleatorio automático",
       "description": "Seleccionar automáticamente un skin aleatorio de tus favoritos cuando se detecta un campeón"
     },
+    "autoRandomHighestWinRateSkin": {
+      "title": "Auto Skin Aleatorio con Mayor Tasa de Victoria",
+      "description": "Selecciona automáticamente un skin aleatorio de los 3 con mayor tasa de victoria"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "Auto Skin Aleatorio Más Popular",
+      "description": "Selecciona automáticamente un skin aleatorio de los 3 más populares"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "Auto Skin Aleatorio Más Jugado",
+      "description": "Selecciona automáticamente un skin aleatorio de los 3 más jugados"
+    },
     "allowMultipleSkinsPerChampion": {
       "title": "Permitir múltiples skins por campeón",
       "description": "Habilitar para usar múltiples skins para el mismo campeón simultáneamente"

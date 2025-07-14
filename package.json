@@ -18,7 +18,8 @@
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
     "fetch-champion-data": "bun run scripts/fetch-champion-data.ts",
-    "fetch-champion-data:force": "bun run scripts/fetch-champion-data.ts --force"
+    "fetch-champion-data:force": "bun run scripts/fetch-champion-data.ts --force",
+    "fetch-champion-data:no-winrates": "bun run scripts/fetch-champion-data.ts --skip-winrates"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
@@ -73,6 +74,7 @@
     "@types/ws": "^8.18.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.21",
+    "cheerio": "^1.1.0",
     "electron": "^35.1.5",
     "electron-builder": "^25.1.8",
     "electron-vite": "^3.1.0",

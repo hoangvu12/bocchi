@@ -77,6 +77,9 @@ export interface Skin {
   skinType: string
   skinLines?: Array<{ id: number }>
   description?: string
+  winRate?: number
+  pickRate?: number
+  totalGames?: number
 }
 
 function AppContent(): React.JSX.Element {
@@ -155,6 +158,15 @@ function AppContent(): React.JSX.Element {
       const autoRandomRaritySkinEnabled = await window.api.getSettings(
         'autoRandomRaritySkinEnabled'
       )
+      const autoRandomHighestWinRateSkinEnabled = await window.api.getSettings(
+        'autoRandomHighestWinRateSkinEnabled'
+      )
+      const autoRandomHighestPickRateSkinEnabled = await window.api.getSettings(
+        'autoRandomHighestPickRateSkinEnabled'
+      )
+      const autoRandomMostPlayedSkinEnabled = await window.api.getSettings(
+        'autoRandomMostPlayedSkinEnabled'
+      )
 
       let availableSkins = champion.skins.filter((skin) => skin.num !== 0)
 
@@ -191,6 +203,34 @@ function AppContent(): React.JSX.Element {
       } else if (autoRandomRaritySkinEnabled) {
         // Filter to only rarity skins
         availableSkins = availableSkins.filter((skin) => skin.rarity && skin.rarity !== 'kNoRarity')
+      } else if (autoRandomHighestWinRateSkinEnabled) {
+        // Filter to skins with win rate data and sort by highest win rate
+        const skinsWithWinRate = availableSkins.filter((skin) => skin.winRate && skin.winRate > 0)
+        if (skinsWithWinRate.length > 0) {
+          // Sort by win rate descending and take top 3
+          skinsWithWinRate.sort((a, b) => (b.winRate || 0) - (a.winRate || 0))
+          availableSkins = skinsWithWinRate.slice(0, 3)
+        }
+      } else if (autoRandomHighestPickRateSkinEnabled) {
+        // Filter to skins with pick rate data and sort by highest pick rate
+        const skinsWithPickRate = availableSkins.filter(
+          (skin) => skin.pickRate && skin.pickRate > 0
+        )
+        if (skinsWithPickRate.length > 0) {
+          // Sort by pick rate descending and take top 3
+          skinsWithPickRate.sort((a, b) => (b.pickRate || 0) - (a.pickRate || 0))
+          availableSkins = skinsWithPickRate.slice(0, 3)
+        }
+      } else if (autoRandomMostPlayedSkinEnabled) {
+        // Filter to skins with total games data and sort by most played
+        const skinsWithGames = availableSkins.filter(
+          (skin) => skin.totalGames && skin.totalGames > 0
+        )
+        if (skinsWithGames.length > 0) {
+          // Sort by total games descending and take top 3
+          skinsWithGames.sort((a, b) => (b.totalGames || 0) - (a.totalGames || 0))
+          availableSkins = skinsWithGames.slice(0, 3)
+        }
       }
 
       if (availableSkins.length === 0) {

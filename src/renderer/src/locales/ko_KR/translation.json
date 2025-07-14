@@ -158,6 +158,18 @@
       "title": "자동 랜덤 즐겨찾기 스킨",
       "description": "챔피언이 감지될 때 즐겨찾기에서 랜덤 스킨을 자동으로 선택"
     },
+    "autoRandomHighestWinRateSkin": {
+      "title": "자동 랜덤 높은 승률 스킨",
+      "description": "승률이 높은 상위 3개 스킨 중에서 무작위로 선택합니다"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "자동 랜덤 높은 픽률 스킨",
+      "description": "가장 인기 있는 상위 3개 스킨 중에서 무작위로 선택합니다"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "자동 랜덤 최다 플레이 스킨",
+      "description": "가장 많이 플레이된 상위 3개 스킨 중에서 무작위로 선택합니다"
+    },
     "allowMultipleSkinsPerChampion": {
       "title": "챔피언당 여러 스킨 허용",
       "description": "활성화하면 동일한 챔피언에 여러 스킨을 동시에 사용할 수 있습니다"

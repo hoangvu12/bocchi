@@ -158,6 +158,18 @@
       "title": "自動ランダムお気に入りスキン",
       "description": "チャンピオンが検出された時にお気に入りからランダムなスキンを自動的に選択"
     },
+    "autoRandomHighestWinRateSkin": {
+      "title": "自動ランダム高勝率スキン",
+      "description": "勝率の高い上位3つのスキンからランダムに選択します"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "自動ランダム高ピック率スキン",
+      "description": "最も人気のある上位3つのスキンからランダムに選択します"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "自動ランダム最多使用スキン",
+      "description": "最も使用されている上位3つのスキンからランダムに選択します"
+    },
     "allowMultipleSkinsPerChampion": {
       "title": "複数のスキンを同じチャンピオンに許可",
       "description": "有効にすると、同じチャンピオンに複数のスキンを同時に使用できます"

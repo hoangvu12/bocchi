@@ -10,7 +10,10 @@ import {
   isChampionLockedAtom,
   autoViewSkinsEnabledAtom,
   autoRandomRaritySkinEnabledAtom,
-  autoRandomFavoriteSkinEnabledAtom
+  autoRandomFavoriteSkinEnabledAtom,
+  autoRandomHighestWinRateSkinEnabledAtom,
+  autoRandomHighestPickRateSkinEnabledAtom,
+  autoRandomMostPlayedSkinEnabledAtom
 } from '../store/atoms/lcu.atoms'
 import {
   leagueClientEnabledAtom,
@@ -57,6 +60,9 @@ export function useChampionSelectHandler({
   const [autoViewSkinsEnabled] = useAtom(autoViewSkinsEnabledAtom)
   const [autoRandomRaritySkinEnabled] = useAtom(autoRandomRaritySkinEnabledAtom)
   const [autoRandomFavoriteSkinEnabled] = useAtom(autoRandomFavoriteSkinEnabledAtom)
+  const [autoRandomHighestWinRateSkinEnabled] = useAtom(autoRandomHighestWinRateSkinEnabledAtom)
+  const [autoRandomHighestPickRateSkinEnabled] = useAtom(autoRandomHighestPickRateSkinEnabledAtom)
+  const [autoRandomMostPlayedSkinEnabled] = useAtom(autoRandomMostPlayedSkinEnabledAtom)
   const [leagueClientEnabled] = useAtom(leagueClientEnabledAtom)
   const [championDetectionEnabled] = useAtom(championDetectionEnabledAtom)
   const setSelectedChampionKey = useSetAtom(selectedChampionKeyAtom)
@@ -171,7 +177,14 @@ export function useChampionSelectHandler({
       }
 
       // Handle auto random skin selection
-      if (onAutoSelectSkin && (autoRandomRaritySkinEnabled || autoRandomFavoriteSkinEnabled)) {
+      if (
+        onAutoSelectSkin &&
+        (autoRandomRaritySkinEnabled ||
+          autoRandomFavoriteSkinEnabled ||
+          autoRandomHighestWinRateSkinEnabled ||
+          autoRandomHighestPickRateSkinEnabled ||
+          autoRandomMostPlayedSkinEnabled)
+      ) {
         onAutoSelectSkin(champion)
       }
     },
@@ -182,6 +195,9 @@ export function useChampionSelectHandler({
       championDetectionEnabled,
       autoRandomRaritySkinEnabled,
       autoRandomFavoriteSkinEnabled,
+      autoRandomHighestWinRateSkinEnabled,
+      autoRandomHighestPickRateSkinEnabled,
+      autoRandomMostPlayedSkinEnabled,
       onAutoSelectSkin,
       setLcuSelectedChampion,
       setIsChampionLocked

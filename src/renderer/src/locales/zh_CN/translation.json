@@ -142,6 +142,18 @@
       "title": "自动随机收藏皮肤",
       "description": "检测到英雄时自动从收藏中选择随机皮肤"
     },
+    "autoRandomHighestWinRateSkin": {
+      "title": "自动随机高胜率皮肤",
+      "description": "自动从胜率最高的前3个皮肤中随机选择"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "自动随机高选取率皮肤",
+      "description": "自动从最受欢迎的前3个皮肤中随机选择"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "自动随机最常用皮肤",
+      "description": "自动从使用次数最多的前3个皮肤中随机选择"
+    },
     "allowMultipleSkinsPerChampion": {
       "title": "允许每个英雄使用多个皮肤",
       "description": "启用后可同时为同一英雄使用多个皮肤"

@@ -154,6 +154,18 @@
       "title": "Auto Random Favorite Skin",
       "description": "Automatically select a random skin from your favorites when a champion is detected"
     },
+    "autoRandomHighestWinRateSkin": {
+      "title": "Auto Random Highest Win Rate Skin",
+      "description": "Automatically select a random skin from the top 3 highest win rate skins"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "Auto Random Highest Pick Rate Skin",
+      "description": "Automatically select a random skin from the top 3 most popular skins"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "Auto Random Most Played Skin",
+      "description": "Automatically select a random skin from the top 3 most played skins"
+    },
     "inGameOverlay": {
       "title": "In-Game Overlay",
       "description": "Pre-attach overlay to League client for faster skin notifications (requires any Auto Random feature)"
