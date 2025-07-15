@@ -3,6 +3,7 @@ export interface SkinNameInfo {
   nameEn?: string
   name: string
   chromaId?: string
+  variantId?: string
 }
 
 /**
@@ -17,6 +18,10 @@ export function generateSkinFilename(skin: SkinNameInfo): string {
     return `${baseName} ${skin.chromaId}.zip`
   }
 
+  if (skin.variantId) {
+    return `${baseName} (${skin.variantId}).zip`
+  }
+
   return `${baseName}.zip`
 }
 
@@ -29,6 +34,9 @@ export function extractBaseSkinName(filename: string): string {
 
   // Remove chroma ID (numbers at the end after a space)
   baseName = baseName.replace(/\s+\d+$/, '')
+
+  // Remove variant ID (text in parentheses at the end)
+  baseName = baseName.replace(/\s+\([^)]+\)$/, '')
 
   return baseName
 }

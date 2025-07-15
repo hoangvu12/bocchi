@@ -33,6 +33,7 @@ export interface SelectedSkin {
   lolSkinsName?: string
   skinNum: number
   chromaId?: string
+  variantId?: string
   isDownloaded?: boolean
   isAutoSelected?: boolean
   downloadedFilename?: string // Stores the actual filename used when downloading

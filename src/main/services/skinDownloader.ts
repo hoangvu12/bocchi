@@ -1,5 +1,6 @@
 import axios from 'axios'
 import fs from 'fs/promises'
+import { existsSync } from 'fs'
 import path from 'path'
 import { createWriteStream } from 'fs'
 import { pipeline } from 'stream/promises'
@@ -28,8 +29,9 @@ export class SkinDownloader {
     // Parse GitHub URL to extract champion and skin name
     const skinInfo = this.parseGitHubUrl(url)
 
-    // Create champion folders
-    const championCacheDir = path.join(this.cacheDir, skinInfo.championName)
+    // Create champion folders (ensure champion name is properly decoded)
+    const decodedChampionName = decodeURIComponent(skinInfo.championName)
+    const championCacheDir = path.join(this.cacheDir, decodedChampionName)
     await fs.mkdir(championCacheDir, { recursive: true })
 
     // Define paths
@@ -45,8 +47,10 @@ export class SkinDownloader {
       // Skin not downloaded, proceed
     }
 
-    // Convert blob URL to raw URL for direct download
-    const rawUrl = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/')
+    // Convert blob URL to raw URL for direct download, unless it's already a raw URL
+    const rawUrl = url.includes('raw.githubusercontent.com')
+      ? url
+      : url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/')
 
     console.log(`Downloading skin from: ${rawUrl}`)
 
@@ -80,16 +84,30 @@ export class SkinDownloader {
   private parseGitHubUrl(url: string): SkinInfo {
     // Example regular skin: https://github.com/darkseal-org/lol-skins/blob/main/skins/Aatrox/DRX%20Aatrox.zip
     // Example chroma: https://github.com/darkseal-org/lol-skins/blob/main/skins/Aatrox/chromas/DRX%20Aatrox/DRX%20Aatrox%20266032.zip
+    // Example variant: https://github.com/darkseal-org/lol-skins/blob/main/skins/Jinx/Exalted/Arcane%20Fractured%20Jinx%20%E2%80%94%20Hero.zip
+    // Raw URLs: https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/...
 
-    // First try to match chroma URL pattern
+    // Check if it's already a raw URL
+    const isRawUrl = url.includes('raw.githubusercontent.com')
+
+    // For raw URLs, convert the pattern to match
+    let urlToMatch = url
+    if (isRawUrl) {
+      // Convert raw URL pattern to match our existing patterns
+      urlToMatch = url
+        .replace('raw.githubusercontent.com', 'github.com')
+        .replace('/main/', '/raw/main/')
+    }
+
+    // First try to match chroma URL pattern (supports both blob and raw)
     const chromaPattern =
-      /github\.com\/darkseal-org\/lol-skins\/blob\/main\/skins\/([^\\/]+)\/chromas\/([^\\/]+)\/([^\\/]+)$/
-    const chromaMatch = url.match(chromaPattern)
+      /github\.com\/darkseal-org\/lol-skins\/(blob|raw)\/main\/skins\/([^\\/]+)\/chromas\/([^\\/]+)\/([^\\/]+)$/
+    const chromaMatch = urlToMatch.match(chromaPattern)
 
     if (chromaMatch) {
-      const championName = chromaMatch[1]
-      // const skinName = decodeURIComponent(chromaMatch[2]) // Not needed, we use the full chroma filename
-      const chromaFileName = decodeURIComponent(chromaMatch[3])
+      const championName = decodeURIComponent(chromaMatch[2]) // Skip the blob/raw group and decode
+      // const skinName = decodeURIComponent(chromaMatch[3]) // Not needed, we use the full chroma filename
+      const chromaFileName = decodeURIComponent(chromaMatch[4])
 
       return {
         championName,
@@ -99,19 +117,79 @@ export class SkinDownloader {
       }
     }
 
+    // Try to match variant patterns with nested subdirectories (like forms/SkinName/FileName.zip)
+    const nestedVariantPattern =
+      /github\.com\/darkseal-org\/lol-skins\/(blob|raw)\/main\/skins\/([^\\/]+)\/([^\\/]+)\/([^\\/]+)\/([^\\/]+)$/
+    const nestedVariantMatch = urlToMatch.match(nestedVariantPattern)
+
+    if (nestedVariantMatch) {
+      const championName = decodeURIComponent(nestedVariantMatch[2]) // Skip the blob/raw group and decode
+      const variantDir = decodeURIComponent(nestedVariantMatch[3]) // e.g., "forms"
+      const skinSubDir = decodeURIComponent(nestedVariantMatch[4]) // e.g., "Elementalist Lux"
+      const variantFileName = decodeURIComponent(nestedVariantMatch[5])
+
+      // If the last part has an extension, it's a nested variant
+      const hasFileExtension = /\.(zip|wad|fantome)$/i.test(variantFileName)
+
+      if (hasFileExtension) {
+        console.log(
+          `Detected nested variant URL: champion=${championName}, dir=${variantDir}, subdir=${skinSubDir}, file=${variantFileName}`
+        )
+        return {
+          championName,
+          skinName: variantFileName, // Use the variant filename directly
+          url,
+          source: 'repository' as const
+        }
+      }
+    }
+
+    // Try to match variant patterns (subdirectories like Exalted, forms, etc.)
+    const variantPattern =
+      /github\.com\/darkseal-org\/lol-skins\/(blob|raw)\/main\/skins\/([^\\/]+)\/([^\\/]+)\/([^\\/]+)$/
+    const variantMatch = urlToMatch.match(variantPattern)
+
+    if (variantMatch) {
+      const championName = decodeURIComponent(variantMatch[2]) // Skip the blob/raw group and decode
+      const variantDir = decodeURIComponent(variantMatch[3])
+      const variantFileName = decodeURIComponent(variantMatch[4])
+
+      // For variant URLs, the middle part is a subdirectory, not the skin file
+      // If the last part has an extension, it's likely a variant in a subdirectory
+      const hasFileExtension = /\.(zip|wad|fantome)$/i.test(variantFileName)
+
+      if (hasFileExtension) {
+        console.log(
+          `Detected variant URL: champion=${championName}, dir=${variantDir}, file=${variantFileName}`
+        )
+        return {
+          championName,
+          skinName: variantFileName, // Use the variant filename directly
+          url,
+          source: 'repository' as const
+        }
+      }
+    }
+
     // Otherwise try regular skin pattern
     const skinPattern =
-      /github\.com\/darkseal-org\/lol-skins\/blob\/main\/skins\/([^\\/]+)\/([^\\/]+)$/
-    const skinMatch = url.match(skinPattern)
+      /github\.com\/darkseal-org\/lol-skins\/(blob|raw)\/main\/skins\/([^\\/]+)\/([^\\/]+)$/
+    const skinMatch = urlToMatch.match(skinPattern)
 
     if (!skinMatch) {
+      // Log the URL that failed to match for debugging
+      console.error(`Failed to parse GitHub URL: ${url}`)
       throw new Error(
-        'Invalid GitHub URL format. Expected format: https://github.com/darkseal-org/lol-skins/blob/main/skins/[Champion]/[SkinName].zip or .../chromas/[SkinName]/[ChromaFile].zip'
+        'Invalid GitHub URL format. Expected formats:\n' +
+          '- Regular skin: https://github.com/darkseal-org/lol-skins/(blob|raw)/main/skins/[Champion]/[SkinName].zip\n' +
+          '- Chroma: .../skins/[Champion]/chromas/[SkinName]/[ChromaFile].zip\n' +
+          '- Variant: .../skins/[Champion]/[VariantDir]/[VariantFile].zip\n' +
+          '- Nested Variant: .../skins/[Champion]/[VariantDir]/[SkinName]/[VariantFile].zip'
       )
     }
 
-    const championName = skinMatch[1]
-    const skinName = decodeURIComponent(skinMatch[2])
+    const championName = decodeURIComponent(skinMatch[2]) // Skip the blob/raw group and decode
+    const skinName = decodeURIComponent(skinMatch[3])
 
     return {
       championName,
@@ -129,9 +207,29 @@ export class SkinDownloader {
     try {
       const championFolders = await fs.readdir(this.cacheDir)
       for (const championFolder of championFolders) {
+        // Check if champion folder name needs decoding and migration
+        const decodedChampionName = decodeURIComponent(championFolder)
         const championPath = path.join(this.cacheDir, championFolder)
         const stat = await fs.stat(championPath)
         if (stat.isDirectory()) {
+          // If the folder name is URL-encoded, rename it to decoded version
+          if (championFolder !== decodedChampionName) {
+            const decodedChampionPath = path.join(this.cacheDir, decodedChampionName)
+            try {
+              // Check if decoded folder already exists
+              const decodedExists = existsSync(decodedChampionPath)
+              if (!decodedExists) {
+                await fs.rename(championPath, decodedChampionPath)
+                console.log(`Migrated folder: ${championFolder} -> ${decodedChampionName}`)
+              } else {
+                console.warn(
+                  `Cannot migrate ${championFolder}: ${decodedChampionName} already exists`
+                )
+              }
+            } catch (error) {
+              console.error(`Failed to migrate folder ${championFolder}:`, error)
+            }
+          }
           const skinFiles = await fs.readdir(championPath)
           for (const skinFile of skinFiles) {
             const skinPath = path.join(championPath, skinFile)
@@ -139,7 +237,7 @@ export class SkinDownloader {
             seenPaths.add(skinPath)
 
             const skinName = path.basename(skinFile)
-            const championName = path.basename(championFolder)
+            const championName = decodedChampionName // Use decoded champion name
             // Check if this is a chroma file (contains a number ID at the end)
             const chromaMatch = skinName.match(/^(.+)\s+(\d{6})\.zip$/)
             let reconstructedUrl: string

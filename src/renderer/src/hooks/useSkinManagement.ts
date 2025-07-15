@@ -273,20 +273,40 @@ export function useSkinManagement() {
         const skin = champion.skins.find((s) => s.id === selectedSkin.skinId)
         if (!skin) continue
 
-        // Use centralized filename generation
-        const skinFileName = generateSkinFilename({
-          ...skin,
-          chromaId: selectedSkin.chromaId
-        })
-        const downloadName = skinFileName.replace(/\.zip$/i, '').replace(/\s+\d+$/, '')
-        let githubUrl: string
+        let skinFileName: string
+        let githubUrl: string | undefined
 
-        console.log(`[Download] Generating filename for ${skin.name}:`)
-        console.log(`  lolSkinsName: ${skin.lolSkinsName}`)
-        console.log(`  nameEn: ${skin.nameEn}`)
-        console.log(`  name: ${skin.name}`)
-        console.log(`  chromaId: ${selectedSkin.chromaId}`)
-        console.log(`  Generated filename: ${skinFileName}`)
+        // Check if this is a variant selection
+        if (selectedSkin.variantId && skin.variants) {
+          const variant = skin.variants.items.find((v) => v.id === selectedSkin.variantId)
+          if (!variant) continue
+
+          // Use the variant's download URL if available, otherwise use GitHub URL
+          githubUrl = variant.downloadUrl || variant.githubUrl
+          // Extract filename from the URL for consistency
+          const urlParts = githubUrl.split('/')
+          skinFileName = decodeURIComponent(urlParts[urlParts.length - 1])
+
+          console.log(`[Download] Using variant ${variant.name}:`)
+          console.log(`  variantId: ${selectedSkin.variantId}`)
+          console.log(`  githubUrl: ${variant.githubUrl}`)
+          console.log(`  downloadUrl: ${variant.downloadUrl}`)
+          console.log(`  using URL: ${githubUrl}`)
+          console.log(`  filename: ${skinFileName}`)
+        } else {
+          // Use centralized filename generation for regular skins and chromas
+          skinFileName = generateSkinFilename({
+            ...skin,
+            chromaId: selectedSkin.chromaId
+          })
+
+          console.log(`[Download] Generating filename for ${skin.name}:`)
+          console.log(`  lolSkinsName: ${skin.lolSkinsName}`)
+          console.log(`  nameEn: ${skin.nameEn}`)
+          console.log(`  name: ${skin.name}`)
+          console.log(`  chromaId: ${selectedSkin.chromaId}`)
+          console.log(`  Generated filename: ${skinFileName}`)
+        }
 
         // Check if skin is already downloaded
         const isSkinDownloaded = downloadedSkins.some(
@@ -294,21 +314,35 @@ export function useSkinManagement() {
         )
 
         if (!isSkinDownloaded) {
-          const championNameForUrl = getChampionDisplayName(champion)
+          // Only generate GitHub URL if we haven't already (variants have it pre-set)
+          if (!githubUrl) {
+            const championNameForUrl = getChampionDisplayName(champion)
 
-          if (selectedSkin.chromaId) {
-            githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/chromas/${encodeURIComponent(downloadName)}/${encodeURIComponent(skinFileName)}`
+            if (selectedSkin.chromaId) {
+              const downloadName = skinFileName.replace(/\.zip$/i, '').replace(/\s+\d+$/, '')
+              githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/chromas/${encodeURIComponent(downloadName)}/${encodeURIComponent(skinFileName)}`
 
-            const displayMessage = isUsingSmartApply
-              ? t('status.downloading', { name: `${skin.name} (Chroma) for your team` })
-              : t('status.downloading', { name: `${skin.name} (Chroma)` })
-            setStatusMessage(displayMessage)
+              const displayMessage = isUsingSmartApply
+                ? t('status.downloading', { name: `${skin.name} (Chroma) for your team` })
+                : t('status.downloading', { name: `${skin.name} (Chroma)` })
+              setStatusMessage(displayMessage)
+            } else {
+              githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(skinFileName)}`
+
+              const displayMessage = isUsingSmartApply
+                ? t('status.downloading', { name: `${skin.name} for your team` })
+                : t('status.downloading', { name: skin.name })
+              setStatusMessage(displayMessage)
+            }
           } else {
-            githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(skinFileName)}`
-
+            // For variants, use a more specific message
+            const variantName = selectedSkin.variantId
+              ? skin.variants?.items.find((v) => v.id === selectedSkin.variantId)?.displayName ||
+                skin.name
+              : skin.name
             const displayMessage = isUsingSmartApply
-              ? t('status.downloading', { name: `${skin.name} for your team` })
-              : t('status.downloading', { name: skin.name })
+              ? t('status.downloading', { name: `${variantName} for your team` })
+              : t('status.downloading', { name: variantName })
             setStatusMessage(displayMessage)
           }
 

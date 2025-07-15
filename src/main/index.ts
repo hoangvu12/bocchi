@@ -716,9 +716,41 @@ function setupIpcHandlers(): void {
           }
 
           // Handle remote skins
+          // First check if the skin is already downloaded
+          const downloadedSkins = await skinDownloader.listDownloadedSkins()
+          // Try both the original champion name and URL-decoded version (for champions with spaces)
+          const existingSkin = downloadedSkins.find(
+            (ds) =>
+              (ds.championName === champion || decodeURIComponent(ds.championName) === champion) &&
+              ds.skinName === skinFile
+          )
+
+          if (existingSkin && existingSkin.localPath) {
+            console.log(`[Patcher] Skin already downloaded: ${champion}/${skinFile}`)
+            return { localPath: existingSkin.localPath }
+          }
+
+          // If not downloaded, check if this might be a variant (has special naming patterns)
+          const isLikelyVariant =
+            skinFile.includes('Arcane Fractured') ||
+            skinFile.includes('Elementalist') ||
+            skinFile.includes('GunGoddess') ||
+            skinFile.includes('Gun Goddess') ||
+            skinFile.includes('form') ||
+            skinFile.includes('Hero') ||
+            skinFile.includes('Exalted')
+
+          if (isLikelyVariant) {
+            throw new Error(
+              `Variant skin not found in downloads: ${champion}/${skinFile}. Variants must be downloaded through the UI first.`
+            )
+          }
+
+          // For regular skins, try to download
           const url = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion}/${encodeURIComponent(
             skinFile
           )}`
+          console.log(`[Patcher] Downloading skin: ${url}`)
           return skinDownloader.downloadSkin(url)
         })
       )
@@ -945,7 +977,40 @@ function setupIpcHandlers(): void {
               return { localPath: modFilePath }
             }
 
+            // First check if the skin is already downloaded
+            const downloadedSkins = await skinDownloader.listDownloadedSkins()
+            // Try both the original champion name and URL-decoded version (for champions with spaces)
+            const existingSkin = downloadedSkins.find(
+              (ds) =>
+                (ds.championName === champion ||
+                  decodeURIComponent(ds.championName) === champion) &&
+                ds.skinName === skinFile
+            )
+
+            if (existingSkin && existingSkin.localPath) {
+              console.log(`[SmartApply] Skin already downloaded: ${champion}/${skinFile}`)
+              return { localPath: existingSkin.localPath }
+            }
+
+            // If not downloaded, check if this might be a variant (has special naming patterns)
+            const isLikelyVariant =
+              skinFile.includes('Arcane Fractured') ||
+              skinFile.includes('Elementalist') ||
+              skinFile.includes('GunGoddess') ||
+              skinFile.includes('Gun Goddess') ||
+              skinFile.includes('form') ||
+              skinFile.includes('Hero') ||
+              skinFile.includes('Exalted')
+
+            if (isLikelyVariant) {
+              throw new Error(
+                `Variant skin not found in downloads: ${champion}/${skinFile}. Variants must be downloaded through the UI first.`
+              )
+            }
+
+            // For regular skins, try to download
             const url = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion}/${encodeURIComponent(skinFile)}`
+            console.log(`[SmartApply] Downloading skin: ${url}`)
             return skinDownloader.downloadSkin(url)
           })
         )

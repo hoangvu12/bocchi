@@ -71,6 +71,17 @@ export interface Skin {
     chromaPath: string
     colors: string[]
   }>
+  variants?: {
+    type: string // "exalted", "form", etc.
+    items: Array<{
+      id: string
+      name: string
+      displayName?: string
+      githubUrl: string
+      downloadUrl?: string
+      imageUrl?: string
+    }>
+  }
   rarity: string
   rarityGemPath: string | null
   isLegacy: boolean
@@ -453,7 +464,7 @@ function AppContent(): React.JSX.Element {
 
   // Handle skin click
   const handleSkinClick = useCallback(
-    (champion: Champion, skin: Skin, chromaId?: string) => {
+    (champion: Champion, skin: Skin, chromaId?: string, variantId?: string) => {
       if (!gamePath) {
         setStatusMessage(t('status.pleaseSetGamePath'))
         return
@@ -464,7 +475,8 @@ function AppContent(): React.JSX.Element {
         return (
           s.championKey === champion.key &&
           s.skinId === skin.id &&
-          s.chromaId === (chromaId || undefined)
+          s.chromaId === (chromaId || undefined) &&
+          s.variantId === (variantId || undefined)
         )
       })
 
@@ -482,6 +494,7 @@ function AppContent(): React.JSX.Element {
           lolSkinsName: skin.lolSkinsName,
           skinNum: skin.num,
           chromaId: chromaId,
+          variantId: variantId,
           isDownloaded: false,
           isAutoSelected: false
         }
