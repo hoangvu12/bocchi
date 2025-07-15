@@ -3229,71 +3229,75 @@ Directory structure:
     │   ├── Star Guardian Jinx.zip
     │   ├── T1 Jinx.zip
     │   ├── Zombie Slayer Jinx.zip
-    │   └── chromas/
-    │       ├── Battle Cat Jinx/
-    │       │   ├── README.md
-    │       │   ├── Battle Cat Jinx 222041.zip
-    │       │   ├── Battle Cat Jinx 222042.zip
-    │       │   ├── Battle Cat Jinx 222043.zip
-    │       │   ├── Battle Cat Jinx 222044.zip
-    │       │   ├── Battle Cat Jinx 222045.zip
-    │       │   ├── Battle Cat Jinx 222046.zip
-    │       │   ├── Battle Cat Jinx 222047.zip
-    │       │   ├── Battle Cat Jinx 222048.zip
-    │       │   └── Battle Cat Jinx 222049.zip
-    │       ├── Cafe Cuties Jinx/
-    │       │   ├── README.md
-    │       │   ├── Cafe Cuties Jinx 222052.zip
-    │       │   ├── Cafe Cuties Jinx 222053.zip
-    │       │   ├── Cafe Cuties Jinx 222054.zip
-    │       │   ├── Cafe Cuties Jinx 222055.zip
-    │       │   ├── Cafe Cuties Jinx 222056.zip
-    │       │   ├── Cafe Cuties Jinx 222057.zip
-    │       │   ├── Cafe Cuties Jinx 222058.zip
-    │       │   └── Cafe Cuties Jinx 222059.zip
-    │       ├── Firecracker Jinx/
-    │       │   ├── README.md
-    │       │   ├── Firecracker Jinx 222005.zip
-    │       │   ├── Firecracker Jinx 222006.zip
-    │       │   ├── Firecracker Jinx 222007.zip
-    │       │   ├── Firecracker Jinx 222008.zip
-    │       │   ├── Firecracker Jinx 222009.zip
-    │       │   ├── Firecracker Jinx 222010.zip
-    │       │   ├── Firecracker Jinx 222011.zip
-    │       │   └── Firecracker Jinx 222039.zip
-    │       ├── Heartseeker Jinx/
-    │       │   ├── README.md
-    │       │   ├── Heartseeker Jinx 222030.zip
-    │       │   ├── Heartseeker Jinx 222031.zip
-    │       │   ├── Heartseeker Jinx 222032.zip
-    │       │   ├── Heartseeker Jinx 222033.zip
-    │       │   ├── Heartseeker Jinx 222034.zip
-    │       │   ├── Heartseeker Jinx 222035.zip
-    │       │   └── Heartseeker Jinx 222036.zip
-    │       ├── Odyssey Jinx/
-    │       │   ├── README.md
-    │       │   ├── Odyssey Jinx 222014.zip
-    │       │   ├── Odyssey Jinx 222015.zip
-    │       │   ├── Odyssey Jinx 222016.zip
-    │       │   ├── Odyssey Jinx 222017.zip
-    │       │   ├── Odyssey Jinx 222018.zip
-    │       │   └── Odyssey Jinx 222019.zip
-    │       ├── PROJECT Jinx/
-    │       │   ├── README.md
-    │       │   ├── PROJECT Jinx 222021.zip
-    │       │   ├── PROJECT Jinx 222022.zip
-    │       │   ├── PROJECT Jinx 222023.zip
-    │       │   ├── PROJECT Jinx 222024.zip
-    │       │   ├── PROJECT Jinx 222025.zip
-    │       │   ├── PROJECT Jinx 222026.zip
-    │       │   ├── PROJECT Jinx 222027.zip
-    │       │   └── PROJECT Jinx 222028.zip
-    │       ├── Star Guardian Jinx/
-    │       │   ├── README.md
-    │       │   └── Star Guardian Jinx 222050.zip
-    │       └── T1 Jinx/
-    │           ├── README.md
-    │           └── T1 Jinx 222063.zip
+    │   ├── chromas/
+    │   │   ├── Battle Cat Jinx/
+    │   │   │   ├── README.md
+    │   │   │   ├── Battle Cat Jinx 222041.zip
+    │   │   │   ├── Battle Cat Jinx 222042.zip
+    │   │   │   ├── Battle Cat Jinx 222043.zip
+    │   │   │   ├── Battle Cat Jinx 222044.zip
+    │   │   │   ├── Battle Cat Jinx 222045.zip
+    │   │   │   ├── Battle Cat Jinx 222046.zip
+    │   │   │   ├── Battle Cat Jinx 222047.zip
+    │   │   │   ├── Battle Cat Jinx 222048.zip
+    │   │   │   └── Battle Cat Jinx 222049.zip
+    │   │   ├── Cafe Cuties Jinx/
+    │   │   │   ├── README.md
+    │   │   │   ├── Cafe Cuties Jinx 222052.zip
+    │   │   │   ├── Cafe Cuties Jinx 222053.zip
+    │   │   │   ├── Cafe Cuties Jinx 222054.zip
+    │   │   │   ├── Cafe Cuties Jinx 222055.zip
+    │   │   │   ├── Cafe Cuties Jinx 222056.zip
+    │   │   │   ├── Cafe Cuties Jinx 222057.zip
+    │   │   │   ├── Cafe Cuties Jinx 222058.zip
+    │   │   │   └── Cafe Cuties Jinx 222059.zip
+    │   │   ├── Firecracker Jinx/
+    │   │   │   ├── README.md
+    │   │   │   ├── Firecracker Jinx 222005.zip
+    │   │   │   ├── Firecracker Jinx 222006.zip
+    │   │   │   ├── Firecracker Jinx 222007.zip
+    │   │   │   ├── Firecracker Jinx 222008.zip
+    │   │   │   ├── Firecracker Jinx 222009.zip
+    │   │   │   ├── Firecracker Jinx 222010.zip
+    │   │   │   ├── Firecracker Jinx 222011.zip
+    │   │   │   └── Firecracker Jinx 222039.zip
+    │   │   ├── Heartseeker Jinx/
+    │   │   │   ├── README.md
+    │   │   │   ├── Heartseeker Jinx 222030.zip
+    │   │   │   ├── Heartseeker Jinx 222031.zip
+    │   │   │   ├── Heartseeker Jinx 222032.zip
+    │   │   │   ├── Heartseeker Jinx 222033.zip
+    │   │   │   ├── Heartseeker Jinx 222034.zip
+    │   │   │   ├── Heartseeker Jinx 222035.zip
+    │   │   │   └── Heartseeker Jinx 222036.zip
+    │   │   ├── Odyssey Jinx/
+    │   │   │   ├── README.md
+    │   │   │   ├── Odyssey Jinx 222014.zip
+    │   │   │   ├── Odyssey Jinx 222015.zip
+    │   │   │   ├── Odyssey Jinx 222016.zip
+    │   │   │   ├── Odyssey Jinx 222017.zip
+    │   │   │   ├── Odyssey Jinx 222018.zip
+    │   │   │   └── Odyssey Jinx 222019.zip
+    │   │   ├── PROJECT Jinx/
+    │   │   │   ├── README.md
+    │   │   │   ├── PROJECT Jinx 222021.zip
+    │   │   │   ├── PROJECT Jinx 222022.zip
+    │   │   │   ├── PROJECT Jinx 222023.zip
+    │   │   │   ├── PROJECT Jinx 222024.zip
+    │   │   │   ├── PROJECT Jinx 222025.zip
+    │   │   │   ├── PROJECT Jinx 222026.zip
+    │   │   │   ├── PROJECT Jinx 222027.zip
+    │   │   │   └── PROJECT Jinx 222028.zip
+    │   │   ├── Star Guardian Jinx/
+    │   │   │   ├── README.md
+    │   │   │   └── Star Guardian Jinx 222050.zip
+    │   │   └── T1 Jinx/
+    │   │       ├── README.md
+    │   │       └── T1 Jinx 222063.zip
+    │   └── Exalted/
+    │       ├── Arcane Fractured Jinx — Hero.zip
+    │       ├── Arcane Fractured Jinx — Menace.zip
+    │       └── Arcane Fractured Jinx — Powder.zip
     ├── K'Sante/
     │   ├── Empyrean K'Sante.zip
     │   ├── HEARTSTEEL K'Sante.zip
