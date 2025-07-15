@@ -299,7 +299,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Jinx/Exalted/Arcane%20Fractured%20Jinx%20%E2%80%94%20Hero.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Jinx/Exalted/Arcane%20Fractured%20Jinx%20%E2%80%94%20Hero.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Jinx/Exalted/Arcane%20Fractured%20Jinx%20%E2%80%94%20Hero.zip'
         },
         {
           id: 'arcane_fractured_menace',
@@ -308,7 +308,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Jinx/Exalted/Arcane%20Fractured%20Jinx%20%E2%80%94%20Menace.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Jinx/Exalted/Arcane%20Fractured%20Jinx%20%E2%80%94%20Menace.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Jinx/Exalted/Arcane%20Fractured%20Jinx%20%E2%80%94%20Menace.zip'
         },
         {
           id: 'arcane_fractured_powder',
@@ -317,7 +317,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Jinx/Exalted/Arcane%20Fractured%20Jinx%20%E2%80%94%20Powder.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Jinx/Exalted/Arcane%20Fractured%20Jinx%20%E2%80%94%20Powder.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Jinx/Exalted/Arcane%20Fractured%20Jinx%20%E2%80%94%20Powder.zip'
         }
       ]
     }
@@ -333,7 +333,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Air.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Air.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Air.zip'
         },
         {
           id: 'elementalist_dark',
@@ -342,7 +342,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Dark.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Dark.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Dark.zip'
         },
         {
           id: 'elementalist_fire',
@@ -351,7 +351,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Fire.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Fire.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Fire.zip'
         },
         {
           id: 'elementalist_ice',
@@ -360,7 +360,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Ice.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Ice.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Ice.zip'
         },
         {
           id: 'elementalist_magma',
@@ -369,7 +369,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Magma.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Magma.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Magma.zip'
         },
         {
           id: 'elementalist_mystic',
@@ -378,7 +378,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Mystic.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Mystic.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Mystic.zip'
         },
         {
           id: 'elementalist_nature',
@@ -387,7 +387,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Nature.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Nature.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Nature.zip'
         },
         {
           id: 'elementalist_storm',
@@ -396,7 +396,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Storm.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Storm.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Storm.zip'
         },
         {
           id: 'elementalist_water',
@@ -405,7 +405,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Water.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Water.zip'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Lux/forms/Elementalist%20Lux/Lux%20Elementalist%20Water.zip'
         }
       ]
     }
@@ -421,7 +421,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%202.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%202.zip',
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%202.zip',
           imageUrl:
             'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/Model%20Image/form_2.png'
         },
@@ -432,7 +432,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%203.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%203.zip',
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%203.zip',
           imageUrl:
             'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/Model%20Image/form_3.png'
         },
@@ -443,7 +443,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           githubUrl:
             'https://github.com/darkseal-org/lol-skins/blob/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%204.zip',
           downloadUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%204.zip',
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%204.zip',
           imageUrl:
             'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/Model%20Image/form_4.png'
         }
