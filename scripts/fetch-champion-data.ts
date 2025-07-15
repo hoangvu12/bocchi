@@ -423,7 +423,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           downloadUrl:
             'https://github.com/darkseal-org/lol-skins/raw/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%202.zip',
           imageUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/Model%20Image/form_2.png'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/Model%20Image/form_2.png'
         },
         {
           id: 'gun_goddess_form3',
@@ -434,7 +434,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           downloadUrl:
             'https://github.com/darkseal-org/lol-skins/raw/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%203.zip',
           imageUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/Model%20Image/form_3.png'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/Model%20Image/form_3.png'
         },
         {
           id: 'gun_goddess_form4',
@@ -445,7 +445,7 @@ const SPECIAL_SKIN_VARIANTS: Record<
           downloadUrl:
             'https://github.com/darkseal-org/lol-skins/raw/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/GunGoddess%20MF%20form%204.zip',
           imageUrl:
-            'https://github.com/darkseal-org/lol-skins/raw/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/Model%20Image/form_4.png'
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Miss%20Fortune/Gun%20Goddess%20Miss%20Fortune%20forms/Model%20Image/form_4.png'
         }
       ]
     }
@@ -643,7 +643,8 @@ async function fetchChampionDetail(
   version: string,
   language: string,
   lolSkinsData: Map<string, any[]>,
-  championNameLookup: Map<string, string>
+  championNameLookup: Map<string, string>,
+  englishSkinNames?: Map<string, string> // Map of skinId to English name
 ): Promise<{ champion: Champion; chromaData: Record<string, Chroma[]> }> {
   const championId = parseInt(championBasic.key)
   const locale = normalizeLocale(language)
@@ -710,7 +711,10 @@ async function fetchChampionDetail(
 
       // Check for special skin variants
       const championKey = detailData.alias
-      const variants = SPECIAL_SKIN_VARIANTS[championKey]?.[skinName]
+      // For non-English languages, use English name if available
+      const englishName = englishSkinNames?.get(skinId)
+      const variantLookupName = englishName || skinName
+      const variants = SPECIAL_SKIN_VARIANTS[championKey]?.[variantLookupName]
 
       return {
         id: skinId,
@@ -809,7 +813,10 @@ async function fetchChampionDetail(
 
         // Check for special skin variants
         const championKey = detailData.alias
-        const variants = SPECIAL_SKIN_VARIANTS[championKey]?.[skinName]
+        // For non-English languages, use English name if available
+        const englishName = englishSkinNames?.get(skinId)
+        const variantLookupName = englishName || skinName
+        const variants = SPECIAL_SKIN_VARIANTS[championKey]?.[variantLookupName]
 
         return {
           id: skinId,
@@ -850,7 +857,8 @@ async function fetchAllChampionData(
   version: string,
   language: string,
   lolSkinsData: Map<string, any[]>,
-  championFolders: string[]
+  championFolders: string[],
+  englishSkinNames?: Map<string, string>
 ): Promise<{ champions: Champion[]; allChromaData: Record<string, Chroma[]> }> {
   console.log(`Fetching champion data for ${language}...`)
 
@@ -882,7 +890,8 @@ async function fetchAllChampionData(
             version,
             language,
             lolSkinsData,
-            championNameLookup
+            championNameLookup,
+            englishSkinNames
           )
 
           updateProgress('Fetching Champions', index + 1, championKeys.length)
@@ -1230,6 +1239,44 @@ async function main() {
       const allData: Record<string, ChampionData> = { ...existingData }
       const allChromaData: Record<string, Chroma[]> = {}
 
+      // Build English skin names map for variant matching
+      let englishSkinNames: Map<string, string> | undefined
+
+      // Ensure English is fetched first
+      if (!allData['en_US']) {
+        updateProgress(`Fetching en_US data`)
+        const { champions, allChromaData: chromaData } = await fetchAllChampionData(
+          version,
+          'en_US',
+          lolSkinsData,
+          championFolders
+        )
+
+        // Build English skin names map
+        englishSkinNames = new Map()
+        champions.forEach((champion) => {
+          champion.skins.forEach((skin) => {
+            englishSkinNames!.set(skin.id, skin.name)
+          })
+        })
+
+        Object.assign(allChromaData, chromaData)
+        allData['en_US'] = {
+          version,
+          lastUpdated: new Date().toISOString(),
+          champions
+        }
+      } else {
+        // If English data already exists, build the map from it
+        englishSkinNames = new Map()
+        allData['en_US'].champions.forEach((champion) => {
+          champion.skins.forEach((skin) => {
+            englishSkinNames!.set(skin.id, skin.name)
+          })
+        })
+      }
+
+      // Fetch other languages
       for (const language of SUPPORTED_LANGUAGES) {
         if (allData[language]) continue // Skip if already loaded
 
@@ -1238,7 +1285,8 @@ async function main() {
           version,
           language,
           lolSkinsData,
-          championFolders
+          championFolders,
+          englishSkinNames
         )
 
         // Merge chroma data
