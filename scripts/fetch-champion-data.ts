@@ -449,6 +449,35 @@ const SPECIAL_SKIN_VARIANTS: Record<
         }
       ]
     }
+  },
+  Sona: {
+    'DJ Sona': {
+      type: 'form',
+      items: [
+        {
+          id: 'dj_sona_2nd_form',
+          name: '2nd Form',
+          displayName: 'DJ Sona 2nd form',
+          githubUrl:
+            'https://github.com/darkseal-org/lol-skins/blob/main/skins/Sona/DJ%20Sona%20form/DJ%20Sona%202nd%20form.zip',
+          downloadUrl:
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Sona/DJ%20Sona%20form/DJ%20Sona%202nd%20form.zip',
+          imageUrl:
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Sona/DJ%20Sona%20form/Preview%20Image/DJ%20Sona%202nd%20form.png'
+        },
+        {
+          id: 'dj_sona_3rd_form',
+          name: '3rd Form',
+          displayName: 'DJ Sona 3rd form',
+          githubUrl:
+            'https://github.com/darkseal-org/lol-skins/blob/main/skins/Sona/DJ%20Sona%20form/DJ%20Sona%203nd%20form.zip',
+          downloadUrl:
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Sona/DJ%20Sona%20form/DJ%20Sona%203nd%20form.zip',
+          imageUrl:
+            'https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/Sona/DJ%20Sona%20form/Preview%20Image/DJ%20Sona%203nd%20form.png'
+        }
+      ]
+    }
   }
 }
 
