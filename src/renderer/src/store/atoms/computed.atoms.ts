@@ -153,6 +153,18 @@ const applyFiltersAndSort = (
         const bIndex = rarityOrder.indexOf(b.skin.rarity)
         return (bIndex === -1 ? 999 : bIndex) - (aIndex === -1 ? 999 : aIndex)
       }
+      case 'winrate-desc':
+        return (b.skin.winRate || 0) - (a.skin.winRate || 0)
+      case 'winrate-asc':
+        return (a.skin.winRate || 0) - (b.skin.winRate || 0)
+      case 'pickrate-desc':
+        return (b.skin.pickRate || 0) - (a.skin.pickRate || 0)
+      case 'pickrate-asc':
+        return (a.skin.pickRate || 0) - (b.skin.pickRate || 0)
+      case 'totalgames-desc':
+        return (b.skin.totalGames || 0) - (a.skin.totalGames || 0)
+      case 'totalgames-asc':
+        return (a.skin.totalGames || 0) - (b.skin.totalGames || 0)
       default:
         return 0
     }

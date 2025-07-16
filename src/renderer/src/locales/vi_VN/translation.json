@@ -300,6 +300,12 @@
     "championName": "Tên tướng",
     "rarityAsc": "Độ hiếm (Thấp đến Cao)",
     "rarityDesc": "Độ hiếm (Cao đến Thấp)",
+    "winRateDesc": "Tỷ lệ thắng (Cao đến Thấp)",
+    "winRateAsc": "Tỷ lệ thắng (Thấp đến Cao)",
+    "pickRateDesc": "Tỷ lệ chọn (Cao đến Thấp)",
+    "pickRateAsc": "Tỷ lệ chọn (Thấp đến Cao)",
+    "totalGamesDesc": "Được chơi nhiều nhất",
+    "totalGamesAsc": "Được chơi ít nhất",
     "rarity": "Độ hiếm",
     "rarities": {
       "epic": "Sử thi",

@@ -308,6 +308,12 @@
     "championName": "Champion Name",
     "rarityAsc": "Rarity (Low to High)",
     "rarityDesc": "Rarity (High to Low)",
+    "winRateDesc": "Win Rate (High to Low)",
+    "winRateAsc": "Win Rate (Low to High)",
+    "pickRateDesc": "Pick Rate (High to Low)",
+    "pickRateAsc": "Pick Rate (Low to High)",
+    "totalGamesDesc": "Most Played",
+    "totalGamesAsc": "Least Played",
     "rarity": "Rarity",
     "rarities": {
       "epic": "Epic",

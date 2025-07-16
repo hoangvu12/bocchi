@@ -317,6 +317,12 @@
     "championName": "チャンピオン名",
     "rarityAsc": "レアリティ (低→高)",
     "rarityDesc": "レアリティ (高→低)",
+    "winRateDesc": "勝率 (高→低)",
+    "winRateAsc": "勝率 (低→高)",
+    "pickRateDesc": "ピック率 (高→低)",
+    "pickRateAsc": "ピック率 (低→高)",
+    "totalGamesDesc": "プレイ回数 (多→少)",
+    "totalGamesAsc": "プレイ回数 (少→多)",
     "rarity": "レアリティ",
     "rarities": {
       "epic": "エピック",

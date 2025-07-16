@@ -317,6 +317,12 @@
     "championName": "챔피언 이름",
     "rarityAsc": "희귀도 (낮음→높음)",
     "rarityDesc": "희귀도 (높음→낮음)",
+    "winRateDesc": "승률 (높음→낮음)",
+    "winRateAsc": "승률 (낮음→높음)",
+    "pickRateDesc": "픽률 (높음→낮음)",
+    "pickRateAsc": "픽률 (낮음→높음)",
+    "totalGamesDesc": "플레이 횟수 (많음→적음)",
+    "totalGamesAsc": "플레이 횟수 (적음→많음)",
     "rarity": "희귀도",
     "rarities": {
       "epic": "서사급",

@@ -14,6 +14,12 @@ export type SortOption =
   | 'champion'
   | 'rarity-asc'
   | 'rarity-desc'
+  | 'winrate-asc'
+  | 'winrate-desc'
+  | 'pickrate-asc'
+  | 'pickrate-desc'
+  | 'totalgames-asc'
+  | 'totalgames-desc'
 export type DownloadFilter = 'all' | 'downloaded' | 'not-downloaded'
 export type ChromaFilter = 'all' | 'has-chromas' | 'no-chromas'
 export type RarityFilter =
@@ -357,6 +363,42 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                           className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
                         >
                           {t('filters.rarityDesc')}
+                        </SelectItem>
+                        <SelectItem
+                          value="winrate-desc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.winRateDesc')}
+                        </SelectItem>
+                        <SelectItem
+                          value="winrate-asc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.winRateAsc')}
+                        </SelectItem>
+                        <SelectItem
+                          value="pickrate-desc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.pickRateDesc')}
+                        </SelectItem>
+                        <SelectItem
+                          value="pickrate-asc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.pickRateAsc')}
+                        </SelectItem>
+                        <SelectItem
+                          value="totalgames-desc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.totalGamesDesc')}
+                        </SelectItem>
+                        <SelectItem
+                          value="totalgames-asc"
+                          className="text-text-primary focus:bg-secondary-100 dark:focus:bg-secondary-800"
+                        >
+                          {t('filters.totalGamesAsc')}
                         </SelectItem>
                       </SelectContent>
                     </Select>

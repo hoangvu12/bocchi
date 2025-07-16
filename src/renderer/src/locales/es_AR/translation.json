@@ -317,6 +317,12 @@
     "championName": "Nombre del campeón",
     "rarityAsc": "Rareza (Baja a Alta)",
     "rarityDesc": "Rareza (Alta a Baja)",
+    "winRateDesc": "Tasa de victoria (Alta a Baja)",
+    "winRateAsc": "Tasa de victoria (Baja a Alta)",
+    "pickRateDesc": "Tasa de selección (Alta a Baja)",
+    "pickRateAsc": "Tasa de selección (Baja a Alta)",
+    "totalGamesDesc": "Más jugado",
+    "totalGamesAsc": "Menos jugado",
     "rarity": "Rareza",
     "rarities": {
       "epic": "Épica",
