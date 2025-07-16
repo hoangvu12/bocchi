@@ -68,6 +68,28 @@ let currentChampionId: number | null = null
 let mainWindow: BrowserWindow | null = null
 let tray: Tray | null = null
 
+// Request single instance lock
+const gotTheLock = app.requestSingleInstanceLock()
+
+if (!gotTheLock) {
+  // Another instance is already running, quit this one
+  app.quit()
+} else {
+  // Handle second instance attempt
+  app.on('second-instance', () => {
+    // Someone tried to run a second instance, focus our window instead
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore()
+      }
+      if (!mainWindow.isVisible()) {
+        mainWindow.show()
+      }
+      mainWindow.focus()
+    }
+  })
+}
+
 function createWindow(): void {
   // Get saved window bounds from settings
   const savedBounds = settingsService.get('windowBounds')
@@ -361,92 +383,97 @@ function createTray(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(async () => {
-  // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron')
+if (gotTheLock) {
+  app.whenReady().then(async () => {
+    // Set app user model id for windows
+    electronApp.setAppUserModelId('com.electron')
 
-  // Initialize migration service
-  await skinMigrationService.initialize()
+    // Initialize migration service
+    await skinMigrationService.initialize()
 
-  // Default open or close DevTools by F12 in development
-  // and ignore CommandOrControl + R in production.
-  // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
-  app.on('browser-window-created', (_, window) => {
-    optimizer.watchWindowShortcuts(window)
-  })
+    // Default open or close DevTools by F12 in development
+    // and ignore CommandOrControl + R in production.
+    // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
+    app.on('browser-window-created', (_, window) => {
+      optimizer.watchWindowShortcuts(window)
+    })
 
-  // Initialize services
-  await skinDownloader.initialize()
-  await favoritesService.initialize()
-  await fileImportService.initialize()
+    // Initialize services
+    await skinDownloader.initialize()
+    await favoritesService.initialize()
+    await fileImportService.initialize()
 
-  // Initialize translation service with saved language
-  const savedLanguage = settingsService.get('language') || 'en_US'
-  translationService.setLanguage(savedLanguage as LanguageCode)
+    // Initialize translation service with saved language
+    const savedLanguage = settingsService.get('language') || 'en_US'
+    translationService.setLanguage(savedLanguage as LanguageCode)
 
-  // Set up IPC handlers
-  setupIpcHandlers()
+    // Set up IPC handlers
+    setupIpcHandlers()
 
-  createWindow()
-  createTray()
+    createWindow()
+    createTray()
 
-  // Create overlay if enabled in settings
-  const inGameOverlayEnabled = settingsService.get('inGameOverlayEnabled')
-  const autoRandomSkinEnabled = settingsService.get('autoRandomSkinEnabled')
-  const autoRandomRaritySkinEnabled = settingsService.get('autoRandomRaritySkinEnabled')
-  const autoRandomFavoriteSkinEnabled = settingsService.get('autoRandomFavoriteSkinEnabled')
-  const championDetectionEnabled = settingsService.get('championDetectionEnabled')
-  const leagueClientEnabled = settingsService.get('leagueClientEnabled')
+    // Create overlay if enabled in settings
+    const inGameOverlayEnabled = settingsService.get('inGameOverlayEnabled')
+    const autoRandomSkinEnabled = settingsService.get('autoRandomSkinEnabled')
+    const autoRandomRaritySkinEnabled = settingsService.get('autoRandomRaritySkinEnabled')
+    const autoRandomFavoriteSkinEnabled = settingsService.get('autoRandomFavoriteSkinEnabled')
+    const championDetectionEnabled = settingsService.get('championDetectionEnabled')
+    const leagueClientEnabled = settingsService.get('leagueClientEnabled')
 
-  const anyAutoRandomEnabled =
-    autoRandomSkinEnabled || autoRandomRaritySkinEnabled || autoRandomFavoriteSkinEnabled
+    const anyAutoRandomEnabled =
+      autoRandomSkinEnabled || autoRandomRaritySkinEnabled || autoRandomFavoriteSkinEnabled
 
-  if (
-    inGameOverlayEnabled &&
-    anyAutoRandomEnabled &&
-    championDetectionEnabled &&
-    leagueClientEnabled
-  ) {
-    try {
-      await overlayWindowManager.create()
-    } catch (error) {
-      console.error('[Main] Failed to create overlay on startup:', error)
+    if (
+      inGameOverlayEnabled &&
+      anyAutoRandomEnabled &&
+      championDetectionEnabled &&
+      leagueClientEnabled
+    ) {
+      try {
+        await overlayWindowManager.create()
+      } catch (error) {
+        console.error('[Main] Failed to create overlay on startup:', error)
+      }
     }
-  }
 
-  // Initialize LCU connection
-  setupLCUConnection()
+    // Initialize LCU connection
+    setupLCUConnection()
 
-  app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    app.on('activate', function () {
+      // On macOS it's common to re-create a window in the app when the
+      // dock icon is clicked and there are no other windows open.
+      if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    })
   })
-})
+}
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  const minimizeToTray = settingsService.get('minimizeToTray')
-  if (!minimizeToTray && process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+// Only set up these handlers for the primary instance
+if (gotTheLock) {
+  // Quit when all windows are closed, except on macOS. There, it's common
+  // for applications and their menu bar to stay active until the user quits
+  // explicitly with Cmd + Q.
+  app.on('window-all-closed', () => {
+    const minimizeToTray = settingsService.get('minimizeToTray')
+    if (!minimizeToTray && process.platform !== 'darwin') {
+      app.quit()
+    }
+  })
 
-// Cleanup temp transfers on exit
-app.on('before-quit', async () => {
-  // Stop LCU auto-connect
-  lcuConnector.stopAutoConnect()
-  lcuConnector.disconnect()
+  // Cleanup temp transfers on exit
+  app.on('before-quit', async () => {
+    // Stop LCU auto-connect
+    lcuConnector.stopAutoConnect()
+    lcuConnector.disconnect()
 
-  const tempTransfersDir = path.join(app.getPath('userData'), 'temp-transfers')
-  try {
-    await fs.promises.rm(tempTransfersDir, { recursive: true, force: true })
-  } catch {
-    // Ignore errors during cleanup
-  }
-})
+    const tempTransfersDir = path.join(app.getPath('userData'), 'temp-transfers')
+    try {
+      await fs.promises.rm(tempTransfersDir, { recursive: true, force: true })
+    } catch {
+      // Ignore errors during cleanup
+    }
+  })
+}
 
 // Set up IPC handlers for communication with renderer
 function setupIpcHandlers(): void {
@@ -1913,27 +1940,29 @@ function cleanup(): void {
   }
 }
 
-// Handle app quit events
-app.on('before-quit', () => {
-  cleanup()
-})
-
-app.on('window-all-closed', () => {
-  const minimizeToTray = settingsService.get('minimizeToTray')
-  if (!minimizeToTray) {
+// Handle app quit events - only for primary instance
+if (gotTheLock) {
+  app.on('before-quit', () => {
     cleanup()
-    if (process.platform !== 'darwin') {
-      app.quit()
-    }
-  }
-})
+  })
 
-app.on('will-quit', (event) => {
-  // Prevent quit until cleanup is done
-  event.preventDefault()
-  cleanup()
-  // Allow quit after cleanup
-  setTimeout(() => {
-    app.exit(0)
-  }, 100)
-})
+  app.on('window-all-closed', () => {
+    const minimizeToTray = settingsService.get('minimizeToTray')
+    if (!minimizeToTray) {
+      cleanup()
+      if (process.platform !== 'darwin') {
+        app.quit()
+      }
+    }
+  })
+
+  app.on('will-quit', (event) => {
+    // Prevent quit until cleanup is done
+    event.preventDefault()
+    cleanup()
+    // Allow quit after cleanup
+    setTimeout(() => {
+      app.exit(0)
+    }, 100)
+  })
+}
