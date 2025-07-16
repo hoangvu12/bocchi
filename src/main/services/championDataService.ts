@@ -32,6 +32,9 @@ interface Skin {
   skinType: string
   skinLines?: Array<{ id: number }>
   description?: string
+  winRate?: number
+  pickRate?: number
+  totalGames?: number
 }
 
 interface SkinMapping {
@@ -98,6 +101,25 @@ export class ChampionDataService {
       try {
         const response = await axios.get(githubUrl)
         const data = response.data
+
+        // Log sample data to verify stats are present
+        if (data.champions && data.champions.length > 0) {
+          const firstChampion = data.champions[0]
+          const firstSkinWithStats = firstChampion.skins.find((s: Skin) => s.winRate !== undefined)
+          if (firstSkinWithStats) {
+            console.log(`[ChampionData] Loaded data with OP.GG stats for ${language}:`, {
+              champion: firstChampion.name,
+              skin: firstSkinWithStats.name,
+              winRate: firstSkinWithStats.winRate,
+              pickRate: firstSkinWithStats.pickRate,
+              totalGames: firstSkinWithStats.totalGames
+            })
+          } else {
+            console.log(
+              `[ChampionData] WARNING: No OP.GG stats found in loaded data for ${language}`
+            )
+          }
+        }
 
         // Add lol-skins skin names from pre-generated mappings
         data.champions.forEach((champion: Champion) => {
@@ -275,6 +297,26 @@ export class ChampionDataService {
     const champion = data.champions.find(
       (c) => c.id.toString() === championId || c.key === championId
     )
+
+    if (champion) {
+      // Log if this champion has skins with stats
+      const skinsWithStats = champion.skins.filter((s) => s.winRate !== undefined).length
+      console.log(
+        `[ChampionData] Retrieved champion ${champion.name} (${championId}) with ${skinsWithStats}/${champion.skins.length} skins having OP.GG stats`
+      )
+
+      // Log a sample skin with stats if available
+      const sampleSkin = champion.skins.find((s) => s.winRate !== undefined)
+      if (sampleSkin) {
+        console.log(`[ChampionData] Sample skin with stats:`, {
+          name: sampleSkin.name,
+          winRate: sampleSkin.winRate,
+          pickRate: sampleSkin.pickRate,
+          totalGames: sampleSkin.totalGames
+        })
+      }
+    }
+
     return champion || null
   }
 

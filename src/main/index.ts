@@ -1755,13 +1755,35 @@ async function showOverlayWithAutoSelectedSkin(championKey: string): Promise<voi
     const autoRandomRaritySkinEnabled = settingsService.get('autoRandomRaritySkinEnabled') || false
     const autoRandomFavoriteSkinEnabled =
       settingsService.get('autoRandomFavoriteSkinEnabled') || false
+    const autoRandomHighestWinRateSkinEnabled =
+      settingsService.get('autoRandomHighestWinRateSkinEnabled') || false
+    const autoRandomHighestPickRateSkinEnabled =
+      settingsService.get('autoRandomHighestPickRateSkinEnabled') || false
+    const autoRandomMostPlayedSkinEnabled =
+      settingsService.get('autoRandomMostPlayedSkinEnabled') || false
     const championDetectionEnabled = settingsService.get('championDetectionEnabled') !== false
+    const inGameOverlayEnabled = settingsService.get('inGameOverlayEnabled') || false
 
     // Check if any auto-random feature is enabled
     const autoRandomEnabled =
-      autoRandomSkinEnabled || autoRandomRaritySkinEnabled || autoRandomFavoriteSkinEnabled
+      autoRandomSkinEnabled ||
+      autoRandomRaritySkinEnabled ||
+      autoRandomFavoriteSkinEnabled ||
+      autoRandomHighestWinRateSkinEnabled ||
+      autoRandomHighestPickRateSkinEnabled ||
+      autoRandomMostPlayedSkinEnabled
 
-    if (!championDetectionEnabled || !autoRandomEnabled) {
+    console.log('[Overlay] Settings check:', {
+      championDetectionEnabled,
+      inGameOverlayEnabled,
+      autoRandomEnabled,
+      autoRandomHighestWinRateSkinEnabled,
+      autoRandomHighestPickRateSkinEnabled,
+      autoRandomMostPlayedSkinEnabled
+    })
+
+    if (!championDetectionEnabled || !autoRandomEnabled || !inGameOverlayEnabled) {
+      console.log('[Overlay] Not showing overlay - missing required settings')
       return
     }
 

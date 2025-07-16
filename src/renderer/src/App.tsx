@@ -236,31 +236,58 @@ function AppContent(): React.JSX.Element {
         availableSkins = availableSkins.filter((skin) => skin.rarity && skin.rarity !== 'kNoRarity')
       } else if (autoRandomHighestWinRateSkinEnabled) {
         // Filter to skins with win rate data and sort by highest win rate
+        console.log(
+          `[AutoSelect] Checking skins for win rate selection:`,
+          availableSkins.map((s) => ({ name: s.name, winRate: s.winRate }))
+        )
         const skinsWithWinRate = availableSkins.filter((skin) => skin.winRate && skin.winRate > 0)
+        console.log(`[AutoSelect] Found ${skinsWithWinRate.length} skins with win rate data`)
         if (skinsWithWinRate.length > 0) {
           // Sort by win rate descending and take top 3
           skinsWithWinRate.sort((a, b) => (b.winRate || 0) - (a.winRate || 0))
           availableSkins = skinsWithWinRate.slice(0, 3)
+          console.log(
+            `[AutoSelect] Top 3 by win rate:`,
+            availableSkins.map((s) => ({ name: s.name, winRate: s.winRate }))
+          )
         }
       } else if (autoRandomHighestPickRateSkinEnabled) {
         // Filter to skins with pick rate data and sort by highest pick rate
+        console.log(
+          `[AutoSelect] Checking skins for pick rate selection:`,
+          availableSkins.map((s) => ({ name: s.name, pickRate: s.pickRate }))
+        )
         const skinsWithPickRate = availableSkins.filter(
           (skin) => skin.pickRate && skin.pickRate > 0
         )
+        console.log(`[AutoSelect] Found ${skinsWithPickRate.length} skins with pick rate data`)
         if (skinsWithPickRate.length > 0) {
           // Sort by pick rate descending and take top 3
           skinsWithPickRate.sort((a, b) => (b.pickRate || 0) - (a.pickRate || 0))
           availableSkins = skinsWithPickRate.slice(0, 3)
+          console.log(
+            `[AutoSelect] Top 3 by pick rate:`,
+            availableSkins.map((s) => ({ name: s.name, pickRate: s.pickRate }))
+          )
         }
       } else if (autoRandomMostPlayedSkinEnabled) {
         // Filter to skins with total games data and sort by most played
+        console.log(
+          `[AutoSelect] Checking skins for most played selection:`,
+          availableSkins.map((s) => ({ name: s.name, totalGames: s.totalGames }))
+        )
         const skinsWithGames = availableSkins.filter(
           (skin) => skin.totalGames && skin.totalGames > 0
         )
+        console.log(`[AutoSelect] Found ${skinsWithGames.length} skins with total games data`)
         if (skinsWithGames.length > 0) {
           // Sort by total games descending and take top 3
           skinsWithGames.sort((a, b) => (b.totalGames || 0) - (a.totalGames || 0))
           availableSkins = skinsWithGames.slice(0, 3)
+          console.log(
+            `[AutoSelect] Top 3 by total games:`,
+            availableSkins.map((s) => ({ name: s.name, totalGames: s.totalGames }))
+          )
         }
       }
 
@@ -311,6 +338,11 @@ function AppContent(): React.JSX.Element {
 
       // Send the auto-selected skin to main process for overlay display
       try {
+        console.log(`[AutoSelect] Sending skin to overlay:`, {
+          championKey: champion.key,
+          skinName: randomSkin.name,
+          skinNum: randomSkin.num
+        })
         await window.api.setOverlayAutoSelectedSkin({
           championKey: champion.key,
           championName: champion.name,
@@ -319,6 +351,7 @@ function AppContent(): React.JSX.Element {
           skinNum: randomSkin.num,
           rarity: randomSkin.rarity
         })
+        console.log(`[AutoSelect] Successfully sent skin to overlay`)
       } catch (error) {
         console.error('[AutoSelect] Failed to send auto-selected skin to main process:', error)
       }
