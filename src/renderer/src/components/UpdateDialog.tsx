@@ -101,40 +101,46 @@ export function UpdateDialog({ isOpen, onClose }: UpdateDialogProps) {
 
         <div className="space-y-6">
           <div className="flex items-center gap-2">
-            <RefreshCw className="w-5 h-5 text-blue-500" />
-            <span className="text-lg font-medium text-charcoal-900 dark:text-charcoal-100">
+            <RefreshCw className="w-5 h-5 text-info" />
+            <span className="text-lg font-medium text-text-primary">
               Version {updateInfo.version}
             </span>
           </div>
 
           {changelog && (
             <div>
-              <h3 className="text-sm font-semibold text-charcoal-700 dark:text-charcoal-300 mb-3">
-                What&apos;s New
-              </h3>
-              <div className="bg-charcoal-50 dark:bg-charcoal-800 rounded p-4 max-h-96 overflow-y-auto">
+              <h3 className="text-sm font-semibold text-text-secondary mb-3">What&apos;s New</h3>
+              <div className="bg-surface rounded p-4 max-h-96 overflow-y-auto">
                 <div
-                  className="prose prose-sm dark:prose-invert max-w-none 
-                  prose-headings:text-charcoal-900 dark:prose-headings:text-charcoal-100
+                  className="prose prose-sm max-w-none
+                  prose-headings:text-text-primary
                   prose-h1:text-2xl prose-h1:mb-4
                   prose-h2:text-xl prose-h2:mb-3 prose-h2:mt-6
                   prose-h3:text-lg prose-h3:mb-2 prose-h3:mt-4
                   prose-h4:text-base prose-h4:mb-2 prose-h4:mt-3
-                  prose-p:text-charcoal-700 dark:prose-p:text-charcoal-300
+                  prose-p:text-text-secondary
                   prose-p:mb-3 prose-p:leading-relaxed
                   prose-ul:my-3 prose-ul:space-y-2
-                  prose-li:text-charcoal-700 dark:prose-li:text-charcoal-300
-                  prose-li:marker:text-terracotta-500 dark:prose-li:marker:text-terracotta-400
-                  prose-strong:text-charcoal-900 dark:prose-strong:text-charcoal-100
+                  prose-ol:my-3 prose-ol:space-y-2
+                  prose-li:text-text-secondary
+                  prose-li:marker:text-primary-500
+                  prose-strong:text-text-primary
                   prose-strong:font-semibold
-                  prose-code:text-terracotta-600 dark:prose-code:text-terracotta-400
-                  prose-code:bg-charcoal-100 dark:prose-code:bg-charcoal-900
+                  prose-em:text-text-secondary
+                  prose-code:text-primary-600
+                  prose-code:bg-elevated
                   prose-code:px-1 prose-code:py-0.5 prose-code:rounded
                   prose-code:before:content-[''] prose-code:after:content-['']
-                  prose-pre:bg-charcoal-900 dark:prose-pre:bg-charcoal-950
-                  prose-pre:text-charcoal-100
-                  prose-a:text-terracotta-600 dark:prose-a:text-terracotta-400
-                  prose-a:no-underline hover:prose-a:underline"
+                  prose-pre:bg-background
+                  prose-pre:text-text-primary
+                  prose-a:text-primary-600
+                  prose-a:no-underline hover:prose-a:underline
+                  prose-blockquote:text-text-secondary
+                  prose-blockquote:border-l-primary-500
+                  prose-hr:border-border
+                  prose-table:text-text-secondary
+                  prose-thead:border-border-strong
+                  prose-tbody:border-border"
                 >
                   <ReactMarkdown>{changelog}</ReactMarkdown>
                 </div>
@@ -143,16 +149,16 @@ export function UpdateDialog({ isOpen, onClose }: UpdateDialogProps) {
           )}
 
           {error && (
-            <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded">
-              <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
+            <div className="p-3 bg-error/10 border border-error/20 rounded">
+              <p className="text-sm text-error">{error}</p>
             </div>
           )}
 
           {isDownloading && (
             <div>
               <div className="flex items-center justify-between text-sm mb-1">
-                <span className="text-charcoal-600 dark:text-charcoal-400">Downloading...</span>
-                <span className="text-charcoal-900 dark:text-charcoal-100 font-medium">
+                <span className="text-text-muted">Downloading...</span>
+                <span className="text-text-primary font-medium">
                   {downloadProgress.toFixed(0)}%
                 </span>
               </div>
@@ -168,7 +174,7 @@ export function UpdateDialog({ isOpen, onClose }: UpdateDialogProps) {
           <Button
             onClick={handleDownload}
             disabled={isDownloading}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400"
+            className="bg-info hover:bg-info/90 disabled:bg-info/50"
           >
             <Download className="w-4 h-4 mr-2" />
             {isDownloading ? 'Downloading...' : 'Download and Install'}
