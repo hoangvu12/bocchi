@@ -69,10 +69,24 @@ let mainWindow: BrowserWindow | null = null
 let tray: Tray | null = null
 
 function createWindow(): void {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
+  // Get saved window bounds from settings
+  const savedBounds = settingsService.get('windowBounds')
+  const defaultBounds = {
     width: 1200,
     height: 800,
+    x: undefined,
+    y: undefined
+  }
+
+  // Use saved bounds if available, otherwise use defaults
+  const windowBounds = savedBounds || defaultBounds
+
+  // Create the browser window.
+  mainWindow = new BrowserWindow({
+    width: windowBounds.width,
+    height: windowBounds.height,
+    x: windowBounds.x,
+    y: windowBounds.y,
     show: false,
     frame: false,
     titleBarStyle: 'hidden',
@@ -101,6 +115,29 @@ function createWindow(): void {
       }, 3000) // Delay 3 seconds to let the app fully load
     }
   })
+
+  // Save window bounds when moved or resized
+  let saveWindowBoundsTimeout: NodeJS.Timeout | null = null
+
+  const saveWindowBounds = () => {
+    if (!mainWindow) return
+
+    // Clear existing timeout
+    if (saveWindowBoundsTimeout) {
+      clearTimeout(saveWindowBoundsTimeout)
+    }
+
+    // Debounce saves to avoid excessive writes
+    saveWindowBoundsTimeout = setTimeout(() => {
+      if (mainWindow && !mainWindow.isMinimized() && !mainWindow.isFullScreen()) {
+        const bounds = mainWindow.getBounds()
+        settingsService.set('windowBounds', bounds)
+      }
+    }, 500)
+  }
+
+  mainWindow.on('resize', saveWindowBounds)
+  mainWindow.on('move', saveWindowBounds)
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
