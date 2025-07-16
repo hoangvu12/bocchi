@@ -553,163 +553,174 @@ export function SettingsDialog({
                         </div>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="space-y-4 pt-4">
-                      {/* Auto View Skins Setting */}
-                      <div className="flex items-center justify-between space-x-4">
-                        <div className="flex-1">
-                          <h3 className="text-sm font-medium text-text-primary">
-                            {t('settings.autoViewSkins.title')}
-                          </h3>
-                          <p className="text-xs text-text-secondary mt-1">
-                            {t('settings.autoViewSkins.description')}
-                          </p>
-                        </div>
-                        <Switch
-                          checked={autoViewSkinsEnabled}
-                          onCheckedChange={handleAutoViewSkinsChange}
-                          disabled={loading || !championDetection}
-                        />
-                      </div>
-
-                      {/* Random Skin Selection */}
-                      <div className="space-y-3">
-                        <h3 className="text-sm font-medium text-text-primary">
-                          {t('settings.randomSkinSelection.title')}
-                        </h3>
-                        <RadioGroup
-                          value={getRandomSkinValue()}
-                          onValueChange={handleRandomSkinChange}
-                        >
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem
-                              value="none"
-                              id="none"
-                              disabled={loading || !championDetection}
-                            />
-                            <Label htmlFor="none" className="text-sm font-normal cursor-pointer">
-                              {t('settings.randomSkinSelection.none')}
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem
-                              value="random"
-                              id="random"
-                              disabled={loading || !championDetection}
-                            />
-                            <Label htmlFor="random" className="text-sm font-normal cursor-pointer">
-                              <div>
-                                <div>{t('settings.autoRandomSkin.title')}</div>
-                                <div className="text-xs text-text-secondary">
-                                  {t('settings.autoRandomSkin.description')}
-                                </div>
-                              </div>
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem
-                              value="rarity"
-                              id="rarity"
-                              disabled={loading || !championDetection}
-                            />
-                            <Label htmlFor="rarity" className="text-sm font-normal cursor-pointer">
-                              <div>
-                                <div>{t('settings.autoRandomRaritySkin.title')}</div>
-                                <div className="text-xs text-text-secondary">
-                                  {t('settings.autoRandomRaritySkin.description')}
-                                </div>
-                              </div>
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem
-                              value="favorite"
-                              id="favorite"
-                              disabled={loading || !championDetection}
-                            />
-                            <Label
-                              htmlFor="favorite"
-                              className="text-sm font-normal cursor-pointer"
-                            >
-                              <div>
-                                <div>{t('settings.autoRandomFavoriteSkin.title')}</div>
-                                <div className="text-xs text-text-secondary">
-                                  {t('settings.autoRandomFavoriteSkin.description')}
-                                </div>
-                              </div>
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem
-                              value="winrate"
-                              id="winrate"
-                              disabled={loading || !championDetection}
-                            />
-                            <Label htmlFor="winrate" className="text-sm font-normal cursor-pointer">
-                              <div>
-                                <div>{t('settings.autoRandomHighestWinRateSkin.title')}</div>
-                                <div className="text-xs text-text-secondary">
-                                  {t('settings.autoRandomHighestWinRateSkin.description')}
-                                </div>
-                              </div>
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem
-                              value="pickrate"
-                              id="pickrate"
-                              disabled={loading || !championDetection}
-                            />
-                            <Label
-                              htmlFor="pickrate"
-                              className="text-sm font-normal cursor-pointer"
-                            >
-                              <div>
-                                <div>{t('settings.autoRandomHighestPickRateSkin.title')}</div>
-                                <div className="text-xs text-text-secondary">
-                                  {t('settings.autoRandomHighestPickRateSkin.description')}
-                                </div>
-                              </div>
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem
-                              value="mostplayed"
-                              id="mostplayed"
-                              disabled={loading || !championDetection}
-                            />
-                            <Label
-                              htmlFor="mostplayed"
-                              className="text-sm font-normal cursor-pointer"
-                            >
-                              <div>
-                                <div>{t('settings.autoRandomMostPlayedSkin.title')}</div>
-                                <div className="text-xs text-text-secondary">
-                                  {t('settings.autoRandomMostPlayedSkin.description')}
-                                </div>
-                              </div>
-                            </Label>
-                          </div>
-                        </RadioGroup>
-                      </div>
-
-                      {/* In-Game Overlay Setting */}
-                      {getRandomSkinValue() !== 'none' && (
+                    <AccordionContent className="pt-4">
+                      <div className="space-y-4 p-4 rounded-lg border border-border bg-surface/30">
+                        {/* Auto View Skins Setting */}
                         <div className="flex items-center justify-between space-x-4">
                           <div className="flex-1">
                             <h3 className="text-sm font-medium text-text-primary">
-                              {t('settings.inGameOverlay.title')}
+                              {t('settings.autoViewSkins.title')}
                             </h3>
                             <p className="text-xs text-text-secondary mt-1">
-                              {t('settings.inGameOverlay.description')}
+                              {t('settings.autoViewSkins.description')}
                             </p>
                           </div>
                           <Switch
-                            checked={inGameOverlayEnabled}
-                            onCheckedChange={handleInGameOverlayChange}
-                            disabled={loading}
+                            checked={autoViewSkinsEnabled}
+                            onCheckedChange={handleAutoViewSkinsChange}
+                            disabled={loading || !championDetection}
                           />
                         </div>
-                      )}
+
+                        {/* Random Skin Selection */}
+                        <div className="space-y-3">
+                          <h3 className="text-sm font-medium text-text-primary">
+                            {t('settings.randomSkinSelection.title')}
+                          </h3>
+                          <RadioGroup
+                            value={getRandomSkinValue()}
+                            onValueChange={handleRandomSkinChange}
+                          >
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem
+                                value="none"
+                                id="none"
+                                disabled={loading || !championDetection}
+                              />
+                              <Label htmlFor="none" className="text-sm font-normal cursor-pointer">
+                                {t('settings.randomSkinSelection.none')}
+                              </Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem
+                                value="random"
+                                id="random"
+                                disabled={loading || !championDetection}
+                              />
+                              <Label
+                                htmlFor="random"
+                                className="text-sm font-normal cursor-pointer"
+                              >
+                                <div>
+                                  <div>{t('settings.autoRandomSkin.title')}</div>
+                                  <div className="text-xs text-text-secondary">
+                                    {t('settings.autoRandomSkin.description')}
+                                  </div>
+                                </div>
+                              </Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem
+                                value="rarity"
+                                id="rarity"
+                                disabled={loading || !championDetection}
+                              />
+                              <Label
+                                htmlFor="rarity"
+                                className="text-sm font-normal cursor-pointer"
+                              >
+                                <div>
+                                  <div>{t('settings.autoRandomRaritySkin.title')}</div>
+                                  <div className="text-xs text-text-secondary">
+                                    {t('settings.autoRandomRaritySkin.description')}
+                                  </div>
+                                </div>
+                              </Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem
+                                value="favorite"
+                                id="favorite"
+                                disabled={loading || !championDetection}
+                              />
+                              <Label
+                                htmlFor="favorite"
+                                className="text-sm font-normal cursor-pointer"
+                              >
+                                <div>
+                                  <div>{t('settings.autoRandomFavoriteSkin.title')}</div>
+                                  <div className="text-xs text-text-secondary">
+                                    {t('settings.autoRandomFavoriteSkin.description')}
+                                  </div>
+                                </div>
+                              </Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem
+                                value="winrate"
+                                id="winrate"
+                                disabled={loading || !championDetection}
+                              />
+                              <Label
+                                htmlFor="winrate"
+                                className="text-sm font-normal cursor-pointer"
+                              >
+                                <div>
+                                  <div>{t('settings.autoRandomHighestWinRateSkin.title')}</div>
+                                  <div className="text-xs text-text-secondary">
+                                    {t('settings.autoRandomHighestWinRateSkin.description')}
+                                  </div>
+                                </div>
+                              </Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem
+                                value="pickrate"
+                                id="pickrate"
+                                disabled={loading || !championDetection}
+                              />
+                              <Label
+                                htmlFor="pickrate"
+                                className="text-sm font-normal cursor-pointer"
+                              >
+                                <div>
+                                  <div>{t('settings.autoRandomHighestPickRateSkin.title')}</div>
+                                  <div className="text-xs text-text-secondary">
+                                    {t('settings.autoRandomHighestPickRateSkin.description')}
+                                  </div>
+                                </div>
+                              </Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem
+                                value="mostplayed"
+                                id="mostplayed"
+                                disabled={loading || !championDetection}
+                              />
+                              <Label
+                                htmlFor="mostplayed"
+                                className="text-sm font-normal cursor-pointer"
+                              >
+                                <div>
+                                  <div>{t('settings.autoRandomMostPlayedSkin.title')}</div>
+                                  <div className="text-xs text-text-secondary">
+                                    {t('settings.autoRandomMostPlayedSkin.description')}
+                                  </div>
+                                </div>
+                              </Label>
+                            </div>
+                          </RadioGroup>
+                        </div>
+
+                        {/* In-Game Overlay Setting */}
+                        {getRandomSkinValue() !== 'none' && (
+                          <div className="flex items-center justify-between space-x-4">
+                            <div className="flex-1">
+                              <h3 className="text-sm font-medium text-text-primary">
+                                {t('settings.inGameOverlay.title')}
+                              </h3>
+                              <p className="text-xs text-text-secondary mt-1">
+                                {t('settings.inGameOverlay.description')}
+                              </p>
+                            </div>
+                            <Switch
+                              checked={inGameOverlayEnabled}
+                              onCheckedChange={handleInGameOverlayChange}
+                              disabled={loading}
+                            />
+                          </div>
+                        )}
+                      </div>
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
