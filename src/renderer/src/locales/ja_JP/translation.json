@@ -183,6 +183,10 @@
       "title": "自動ランダム最多使用スキン",
       "description": "最も使用されている上位3つのスキンからランダムに選択します"
     },
+    "inGameOverlay": {
+      "title": "ゲーム内オーバーレイ",
+      "description": "スキン通知を高速化するためにLeagueクライアントにオーバーレイを事前アタッチ（自動ランダム機能が必要）"
+    },
     "allowMultipleSkinsPerChampion": {
       "title": "複数のスキンを同じチャンピオンに許可",
       "description": "有効にすると、同じチャンピオンに複数のスキンを同時に使用できます"

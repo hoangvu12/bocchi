@@ -183,6 +183,10 @@
       "title": "Auto Skin Aleatorio Más Jugado",
       "description": "Selecciona automáticamente un skin aleatorio de los 3 más jugados"
     },
+    "inGameOverlay": {
+      "title": "Superposición en el juego",
+      "description": "Adjuntar superposición al cliente de League para notificaciones de skins más rápidas (requiere cualquier función de selección aleatoria automática)"
+    },
     "allowMultipleSkinsPerChampion": {
       "title": "Permitir múltiples skins por campeón",
       "description": "Habilitar para usar múltiples skins para el mismo campeón simultáneamente"

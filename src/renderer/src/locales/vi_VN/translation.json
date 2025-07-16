@@ -165,6 +165,10 @@
       "title": "Tự động chọn ngẫu nhiên skin được chơi nhiều nhất",
       "description": "Tự động chọn ngẫu nhiên một skin từ top 3 skin được chơi nhiều nhất"
     },
+    "inGameOverlay": {
+      "title": "Hiển thị trong game",
+      "description": "Gắn sẵn overlay vào League client để hiển thị thông báo skin nhanh hơn (yêu cầu bật tính năng Tự động chọn ngẫu nhiên)"
+    },
     "allowMultipleSkinsPerChampion": {
       "title": "Cho phép nhiều skin cho mỗi tướng",
       "description": "Bật để sử dụng nhiều skin cho cùng một tướng đồng thời"

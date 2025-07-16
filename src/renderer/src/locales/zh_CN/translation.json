@@ -167,6 +167,10 @@
       "title": "自动随机最常用皮肤",
       "description": "自动从使用次数最多的前3个皮肤中随机选择"
     },
+    "inGameOverlay": {
+      "title": "游戏内覆盖层",
+      "description": "预先将覆盖层附加到英雄联盟客户端以更快显示皮肤通知（需要启用任意自动随机功能）"
+    },
     "allowMultipleSkinsPerChampion": {
       "title": "允许每个英雄使用多个皮肤",
       "description": "启用后可同时为同一英雄使用多个皮肤"
