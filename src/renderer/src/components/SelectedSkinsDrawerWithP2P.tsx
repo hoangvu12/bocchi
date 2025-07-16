@@ -165,9 +165,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
         } else if (skin.skinId.startsWith('custom_[User] ')) {
           // New format: Custom mod with champion assigned
           const modFileName = skin.skinId.replace('custom_', '')
-          modPath = downloadedSkins.find(
-            (ds) => ds.championName === skin.championKey && ds.skinName === modFileName
-          )?.localPath
+          modPath = downloadedSkins.find((ds) => ds.skinName === modFileName)?.localPath
         }
 
         if (modPath && !customImages[modPath]) {
@@ -249,9 +247,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
       } else {
         // New format: Custom mod with champion assigned
         const modFileName = skin.skinId.replace('custom_', '')
-        modPath = downloadedSkins.find(
-          (ds) => ds.championName === skin.championKey && ds.skinName === modFileName
-        )?.localPath
+        modPath = downloadedSkins.find((ds) => ds.skinName === modFileName)?.localPath
       }
 
       if (modPath && customImages[modPath]) {
@@ -298,182 +294,53 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
     return skin.skinName
   }
 
-  const isSkinDownloaded = (skin: SelectedSkin) => {
-    // Custom skins WITHOUT a champion are always "downloaded" since they're user imports
-    if (skin.championKey === 'Custom') {
+  const isSkinDownloaded = (skin: SelectedSkin): boolean => {
+    // Handle custom skins
+    if (skin.championKey === 'Custom' || skin.skinId.startsWith('custom_[User] ')) {
       return true
     }
 
-    // Check if this is a custom mod WITH a champion assigned
-    // These have skinId starting with "custom_[User] "
-    if (skin.skinId.startsWith('custom_[User] ')) {
-      // For custom mods with champion, they're always considered downloaded
-      return true
-    }
-
-    // If skin has a stored filename, use it for consistency
+    // Use stored filename if available
     if (skin.downloadedFilename) {
-      const found = downloadedSkins.some(
-        (ds) => ds.championName === skin.championKey && ds.skinName === skin.downloadedFilename
-      )
-
-      return found
+      return downloadedSkins.some((ds) => ds.skinName === skin.downloadedFilename)
     }
 
-    // Debug logging for variant skins
-    if (skin.variantId) {
-      console.log('Checking variant skin:', {
-        championKey: skin.championKey,
-        skinId: skin.skinId,
-        variantId: skin.variantId,
-        skinName: skin.skinName,
-        downloadedSkins: downloadedSkins.filter((ds) => ds.championName === skin.championKey),
-        allDownloadedSkins: downloadedSkins.map((ds) => ({
-          championName: ds.championName,
-          skinName: ds.skinName
-        }))
-      })
-    }
+    // Generate filename for comparison
+    const skinFileName = getSkinFileName(skin)
 
-    // Look up the actual skin data to get the correct name
-    let skinFileName: string
-    if (championData) {
-      const champion = championData.champions.find((c) => c.key === skin.championKey)
-      if (champion) {
-        const actualSkin = champion.skins.find((s) => s.id === skin.skinId)
-        if (actualSkin) {
-          // Check if this is a variant
-          if (skin.variantId && actualSkin.variants) {
-            const variant = actualSkin.variants.items.find((v) => v.id === skin.variantId)
-            if (variant && (variant.downloadUrl || variant.githubUrl)) {
-              // Extract filename from variant URL (use downloadUrl if available, otherwise githubUrl)
-              const urlToCheck = variant.downloadUrl || variant.githubUrl
-              const urlParts = urlToCheck.split('/')
-              skinFileName = decodeURIComponent(urlParts[urlParts.length - 1])
-            } else {
-              // Fallback for variant without URL - use generateSkinFilename with variantId
-              skinFileName = generateSkinFilename({
-                ...actualSkin,
-                variantId: skin.variantId
-              })
-            }
-          } else {
-            // Use centralized filename generation for regular skins and chromas
-            skinFileName = generateSkinFilename({
-              ...actualSkin,
-              chromaId: skin.chromaId
-            })
-          }
-        } else {
-          // Fallback if skin not found in champion data
-          skinFileName = generateSkinFilename({
-            name: skin.skinName,
-            chromaId: skin.chromaId
-          })
-        }
-      } else {
-        // Fallback if champion not found
-        skinFileName = generateSkinFilename({
-          name: skin.skinName,
-          chromaId: skin.chromaId
-        })
-      }
-    } else {
-      // Fallback if no champion data available
-      skinFileName = generateSkinFilename({
-        name: skin.skinName,
-        chromaId: skin.chromaId
-      })
-    }
+    // Check if skin is downloaded
+    return downloadedSkins.some((ds) => ds.skinName === skinFileName)
+  }
 
-    // First try exact match
-    let found = downloadedSkins.some(
-      (ds) => ds.championName === skin.championKey && ds.skinName === skinFileName
-    )
+  const getSkinFileName = (skin: SelectedSkin): string => {
+    // Try to find actual skin data from championData
+    const actualSkinData = findActualSkinData(skin)
 
-    // If not found, try with champion name variations (with/without spaces)
-    if (!found) {
-      // Try with spaces (e.g., "Miss Fortune" instead of "MissFortune")
-      const championKeyWithSpaces = skin.championKey.replace(/([A-Z])/g, ' $1').trim()
-      found = downloadedSkins.some(
-        (ds) => ds.championName === championKeyWithSpaces && ds.skinName === skinFileName
-      )
-    }
-
-    // If still not found, try without spaces
-    if (!found) {
-      const championKeyWithoutSpaces = skin.championKey.replace(/\s+/g, '')
-      found = downloadedSkins.some(
-        (ds) =>
-          ds.championName.replace(/\s+/g, '') === championKeyWithoutSpaces &&
-          ds.skinName === skinFileName
-      )
-    }
-
-    // Debug logging for variant skins
-    if (skin.variantId) {
-      console.log('Generated filename for variant:', {
-        championKey: skin.championKey,
-        skinId: skin.skinId,
-        variantId: skin.variantId,
-        skinName: skin.skinName,
-        generatedFilename: skinFileName,
-        found,
-        availableFiles: downloadedSkins
-          .filter((ds) => ds.championName === skin.championKey)
-          .map((ds) => ds.skinName)
-      })
-    }
-
-    // For variants, if exact match fails, try alternative filename patterns with champion name variations
-    if (!found && skin.variantId && championData) {
-      const champion = championData.champions.find((c) => c.key === skin.championKey)
-      if (champion) {
-        const actualSkin = champion.skins.find((s) => s.id === skin.skinId)
-        if (actualSkin?.variants) {
-          const variant = actualSkin.variants.items.find((v) => v.id === skin.variantId)
-          if (variant && (variant.downloadUrl || variant.githubUrl)) {
-            // Try different filename patterns that might have been used during download
-            const urlToCheck = variant.downloadUrl || variant.githubUrl
-            const urlParts = urlToCheck.split('/')
-            const exactUrlFilename = decodeURIComponent(urlParts[urlParts.length - 1])
-
-            // Try exact filename from URL with champion name variations
-            const championKeyWithSpaces = skin.championKey.replace(/([A-Z])/g, ' $1').trim()
-            const championKeyWithoutSpaces = skin.championKey.replace(/\s+/g, '')
-
-            found = downloadedSkins.some((ds) => {
-              const championNameWithoutSpaces = ds.championName.replace(/\s+/g, '')
-              return (
-                (ds.championName === skin.championKey ||
-                  ds.championName === championKeyWithSpaces ||
-                  championNameWithoutSpaces === championKeyWithoutSpaces) &&
-                ds.skinName === exactUrlFilename
-              )
-            })
-
-            // Try generated filename pattern as fallback
-            if (!found) {
-              const generatedFilename = generateSkinFilename({
-                ...actualSkin,
-                variantId: skin.variantId
-              })
-              found = downloadedSkins.some((ds) => {
-                const championNameWithoutSpaces = ds.championName.replace(/\s+/g, '')
-                return (
-                  (ds.championName === skin.championKey ||
-                    ds.championName === championKeyWithSpaces ||
-                    championNameWithoutSpaces === championKeyWithoutSpaces) &&
-                  ds.skinName === generatedFilename
-                )
-              })
-            }
-          }
-        }
+    if (actualSkinData && skin.variantId && actualSkinData.variants) {
+      // Handle variant skins
+      const variant = actualSkinData.variants.items.find((v) => v.id === skin.variantId)
+      if (variant && (variant.downloadUrl || variant.githubUrl)) {
+        const url = variant.downloadUrl || variant.githubUrl
+        const urlParts = url.split('/')
+        return decodeURIComponent(urlParts[urlParts.length - 1])
       }
     }
 
-    return found
+    // Use centralized filename generation
+    return generateSkinFilename({
+      ...(actualSkinData || { name: skin.skinName }),
+      chromaId: skin.chromaId,
+      variantId: skin.variantId
+    })
+  }
+
+  const findActualSkinData = (skin: SelectedSkin) => {
+    if (!championData) return null
+
+    const champion = championData.champions.find((c) => c.key === skin.championKey)
+    if (!champion) return null
+
+    return champion.skins.find((s) => s.id === skin.skinId)
   }
 
   const applySkinFromPeer = async (skin: ExtendedSelectedSkin, peerId: string) => {
@@ -499,9 +366,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
       } else {
         // Custom mod with champion
         const modFileName = skin.skinId.replace('custom_', '')
-        localMod = downloadedSkins.find(
-          (ds) => ds.championName === skin.championKey && ds.skinName === modFileName
-        )
+        localMod = downloadedSkins.find((ds) => ds.skinName === modFileName)
       }
 
       if (!localMod) {
