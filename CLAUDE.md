@@ -9,29 +9,29 @@ Bocchi is an Electron-based desktop application for managing League of Legends s
 ## Common Development Commands
 
 ```bash
-# Install dependencies (use pnpm, npm, or bun)
+# Install dependencies (always use pnpm)
 pnpm install
 
 # Run in development mode
-pnpm run dev
+npm run dev
 
 # Type checking (runs both node and web checks)
-pnpm run typecheck
+npm run typecheck
 
 # Linting
-pnpm run lint
+npm run lint
 
 # Format code with Prettier
-pnpm run format
+npm run format
 
 # Build for Windows
-pnpm run build:win
+npm run build:win
 
 # Build without packaging (for testing)
-pnpm run build:unpack
+npm run build:unpack
 
 # Fetch champion data from Riot API
-pnpm run fetch-champion-data
+npm run fetch-champion-data
 ```
 
 ## Architecture Overview
