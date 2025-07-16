@@ -1,9 +1,15 @@
 ### Features
 
-- Support special skins such as Arcane Fractured Jinx or skins with forms such as Elementalist Lux
-
-NOTE: For Arcane Fractured Jinx, you must choose the variant skins. Not the base skin.
+- Save app's window bounds and restore them when open
+- Sort skins by OP.gg data (highest win rate, most played, etc)
 
 ### Fixes
 
-- Tray icon not using Bocchi's icon (hope that it is actually fixed)
+- Only allow one instance of Bocchi
+- Random skins from OP.gg data doesn't work
+- Some skins still not showing downloaded
+
+### Other
+
+- Improved logging when run patcher
+- Added translations for in-game overlay
