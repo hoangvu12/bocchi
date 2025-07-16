@@ -285,19 +285,41 @@ export class ModToolsWrapper {
       this.activeProcesses.push(this.runningProcess)
 
       this.runningProcess.stdout?.on('data', (data) => {
-        const output = data.toString().trim()
-        console.log(`[MOD-TOOLS]: ${output}`)
-        if (this.mainWindow && !this.mainWindow.isDestroyed()) {
-          this.mainWindow.webContents.send('patcher-status', output)
-        }
+        const output = data.toString()
+        const lines = output.split('\n').filter((line) => line.trim())
+
+        lines.forEach((line) => {
+          const trimmedLine = line.trim()
+          console.log(`[MOD-TOOLS]: ${trimmedLine}`)
+
+          // Only send to renderer if it's not a DLL log
+          if (
+            this.mainWindow &&
+            !this.mainWindow.isDestroyed() &&
+            !trimmedLine.startsWith('[DLL]')
+          ) {
+            this.mainWindow.webContents.send('patcher-status', trimmedLine)
+          }
+        })
       })
 
       this.runningProcess.stderr?.on('data', (data) => {
-        const error = data.toString().trim()
-        console.error(`[MOD-TOOLS ERROR]: ${error}`)
-        if (this.mainWindow && !this.mainWindow.isDestroyed()) {
-          this.mainWindow.webContents.send('patcher-error', error)
-        }
+        const output = data.toString()
+        const lines = output.split('\n').filter((line) => line.trim())
+
+        lines.forEach((line) => {
+          const trimmedLine = line.trim()
+          console.error(`[MOD-TOOLS ERROR]: ${trimmedLine}`)
+
+          // Only send to renderer if it's not a DLL log
+          if (
+            this.mainWindow &&
+            !this.mainWindow.isDestroyed() &&
+            !trimmedLine.startsWith('[DLL]')
+          ) {
+            this.mainWindow.webContents.send('patcher-error', trimmedLine)
+          }
+        })
       })
 
       this.runningProcess.on('exit', (code) => {
