@@ -12,6 +12,10 @@ import {
 import {
   autoViewSkinsEnabledAtom,
   autoRandomRaritySkinEnabledAtom,
+  autoRandomFavoriteSkinEnabledAtom,
+  autoRandomHighestWinRateSkinEnabledAtom,
+  autoRandomHighestPickRateSkinEnabledAtom,
+  autoRandomMostPlayedSkinEnabledAtom,
   autoAcceptEnabledAtom,
   autoPickEnabledAtom,
   autoPickForceAtom,
@@ -32,6 +36,12 @@ export function useAppInitialization() {
   const setChampionDetectionEnabled = useSetAtom(championDetectionEnabledAtom)
   const setAutoViewSkinsEnabled = useSetAtom(autoViewSkinsEnabledAtom)
   const setAutoRandomRaritySkinEnabled = useSetAtom(autoRandomRaritySkinEnabledAtom)
+  const setAutoRandomFavoriteSkinEnabled = useSetAtom(autoRandomFavoriteSkinEnabledAtom)
+  const setAutoRandomHighestWinRateSkinEnabled = useSetAtom(autoRandomHighestWinRateSkinEnabledAtom)
+  const setAutoRandomHighestPickRateSkinEnabled = useSetAtom(
+    autoRandomHighestPickRateSkinEnabledAtom
+  )
+  const setAutoRandomMostPlayedSkinEnabled = useSetAtom(autoRandomMostPlayedSkinEnabledAtom)
   const setSmartApplyEnabled = useSetAtom(smartApplyEnabledAtom)
   const setAutoApplyEnabled = useSetAtom(autoApplyEnabledAtom)
   const setAutoApplyTriggerTime = useSetAtom(autoApplyTriggerTimeAtom)
@@ -94,6 +104,10 @@ export function useAppInitialization() {
       window.api.getSettings('championDetection'),
       window.api.getSettings('autoViewSkinsEnabled'),
       window.api.getSettings('autoRandomRaritySkinEnabled'),
+      window.api.getSettings('autoRandomFavoriteSkinEnabled'),
+      window.api.getSettings('autoRandomHighestWinRateSkinEnabled'),
+      window.api.getSettings('autoRandomHighestPickRateSkinEnabled'),
+      window.api.getSettings('autoRandomMostPlayedSkinEnabled'),
       window.api.getSettings('smartApplyEnabled'),
       window.api.getSettings('autoApplyEnabled'),
       window.api.getSettings('autoApplyTriggerTime'),
@@ -110,6 +124,10 @@ export function useAppInitialization() {
         championDetection,
         autoViewSkins,
         autoRandomRaritySkin,
+        autoRandomFavoriteSkin,
+        autoRandomHighestWinRateSkin,
+        autoRandomHighestPickRateSkin,
+        autoRandomMostPlayedSkin,
         smartApply,
         autoApply,
         autoApplyTriggerTime,
@@ -125,6 +143,10 @@ export function useAppInitialization() {
         setChampionDetectionEnabled(championDetection !== false)
         setAutoViewSkinsEnabled(autoViewSkins === true)
         setAutoRandomRaritySkinEnabled(autoRandomRaritySkin === true)
+        setAutoRandomFavoriteSkinEnabled(autoRandomFavoriteSkin === true)
+        setAutoRandomHighestWinRateSkinEnabled(autoRandomHighestWinRateSkin === true)
+        setAutoRandomHighestPickRateSkinEnabled(autoRandomHighestPickRateSkin === true)
+        setAutoRandomMostPlayedSkinEnabled(autoRandomMostPlayedSkin === true)
         setSmartApplyEnabled(smartApply !== false) // Default to true
         setAutoApplyEnabled(autoApply !== false) // Default to true
         setAutoApplyTriggerTime(autoApplyTriggerTime || 15) // Default to 15 seconds
@@ -142,6 +164,10 @@ export function useAppInitialization() {
     setChampionDetectionEnabled,
     setAutoViewSkinsEnabled,
     setAutoRandomRaritySkinEnabled,
+    setAutoRandomFavoriteSkinEnabled,
+    setAutoRandomHighestWinRateSkinEnabled,
+    setAutoRandomHighestPickRateSkinEnabled,
+    setAutoRandomMostPlayedSkinEnabled,
     setSmartApplyEnabled,
     setAutoApplyEnabled,
     setAutoApplyTriggerTime,
