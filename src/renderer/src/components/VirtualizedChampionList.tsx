@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useImperativeHandle, forwardRef, useRef, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { VariableSizeList as List } from 'react-window'
 import type { Champion } from '../App'
@@ -21,64 +21,87 @@ interface VirtualizedChampionListProps {
   isCollapsed?: boolean
 }
 
-const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> = ({
-  champions,
-  selectedChampion,
-  selectedChampionKey,
-  onChampionSelect,
-  height,
-  width,
-  isCollapsed = false
-}) => {
-  const { t } = useTranslation()
-  // Group champions by first letter
-  const groupedChampions = React.useMemo(() => {
-    const items: Array<{ type: 'all' | 'custom' | 'divider' | 'letter' | 'champion'; data?: any }> =
-      []
+export interface VirtualizedChampionListRef {
+  scrollToLetter: (letter: string) => void
+  getAvailableLetters: () => Set<string>
+}
 
-    // Add "All Champions" option
-    items.push({ type: 'all' })
-    items.push({ type: 'custom' })
-    items.push({ type: 'divider' })
+const VirtualizedChampionListComponent = forwardRef<
+  VirtualizedChampionListRef,
+  VirtualizedChampionListProps
+>(
+  (
+    { champions, selectedChampion, selectedChampionKey, onChampionSelect, height, width, isCollapsed = false },
+    ref
+  ) => {
+    const { t } = useTranslation()
+    const listRef = useRef<List>(null)
+    
+    // Group champions by first letter and create letter indices
+    const { groupedChampions, letterIndices, availableLetters } = React.useMemo(() => {
+      const items: Array<{ type: 'all' | 'custom' | 'divider' | 'letter' | 'champion'; data?: any }> =
+        []
+      const indices: Record<string, number> = {}
+      const letters = new Set<string>()
 
-    if (isCollapsed) {
-      // In collapsed mode, just add all champions without letter headers
-      champions.forEach((champion) => {
-        items.push({ type: 'champion', data: champion })
-      })
-    } else {
-      // In expanded mode, group by letter
-      let lastLetter = ''
-      champions.forEach((champion) => {
-        const displayName = getChampionDisplayName(champion)
-        const firstLetter = displayName[0].toUpperCase()
-        if (firstLetter !== lastLetter) {
-          items.push({ type: 'letter', data: firstLetter })
-          lastLetter = firstLetter
+      // Add "All Champions" option
+      items.push({ type: 'all' })
+      items.push({ type: 'custom' })
+      items.push({ type: 'divider' })
+
+      if (isCollapsed) {
+        // In collapsed mode, just add all champions without letter headers
+        champions.forEach((champion) => {
+          items.push({ type: 'champion', data: champion })
+          const displayName = getChampionDisplayName(champion)
+          const firstLetter = displayName[0].toUpperCase()
+          letters.add(firstLetter)
+        })
+      } else {
+        // In expanded mode, group by letter
+        let lastLetter = ''
+        champions.forEach((champion) => {
+          const displayName = getChampionDisplayName(champion)
+          const firstLetter = displayName[0].toUpperCase()
+          if (firstLetter !== lastLetter) {
+            indices[firstLetter] = items.length
+            items.push({ type: 'letter', data: firstLetter })
+            lastLetter = firstLetter
+            letters.add(firstLetter)
+          }
+          items.push({ type: 'champion', data: champion })
+        })
+      }
+
+      return { groupedChampions: items, letterIndices: indices, availableLetters: letters }
+    }, [champions, isCollapsed])
+
+    // Expose methods via ref
+    useImperativeHandle(ref, () => ({
+      scrollToLetter: (letter: string) => {
+        if (!isCollapsed && letterIndices[letter] !== undefined && listRef.current) {
+          listRef.current.scrollToItem(letterIndices[letter], 'start')
         }
-        items.push({ type: 'champion', data: champion })
-      })
-    }
+      },
+      getAvailableLetters: () => availableLetters
+    }), [letterIndices, availableLetters, isCollapsed])
 
-    return items
-  }, [champions, isCollapsed])
-
-  const getItemHeight = (index: number) => {
-    const item = groupedChampions[index]
-    switch (item.type) {
-      case 'all':
-      case 'custom':
-        return 64 // Same height for both modes
-      case 'divider':
-        return 17 // Height for divider
-      case 'letter':
-        return 36 // Height for letter header (not shown in collapsed)
-      case 'champion':
-        return 64 // Same height for both modes
-      default:
-        return 0
+    const getItemHeight = (index: number) => {
+      const item = groupedChampions[index]
+      switch (item.type) {
+        case 'all':
+        case 'custom':
+          return 64 // Same height for both modes
+        case 'divider':
+          return 17 // Height for divider
+        case 'letter':
+          return 36 // Height for letter header (not shown in collapsed)
+        case 'champion':
+          return 64 // Same height for both modes
+        default:
+          return 0
+      }
     }
-  }
 
   const Row = useCallback(
     ({ index, style }) => {
@@ -261,22 +284,24 @@ const VirtualizedChampionListComponent: React.FC<VirtualizedChampionListProps> =
   // Calculate total height based on dynamic item heights
   const totalHeight = groupedChampions.reduce((sum, _, index) => sum + getItemHeight(index), 0)
 
-  return (
-    <List
-      height={Math.min(height, totalHeight)}
-      itemCount={groupedChampions.length}
-      itemSize={getItemHeight}
-      width={width}
-      className="scrollbar-thin scrollbar-thumb-charcoal-300 dark:scrollbar-thumb-charcoal-700 scrollbar-track-transparent"
-      style={{ overflow: 'auto' }}
-    >
-      {Row}
-    </List>
-  )
-}
+    return (
+      <List
+        ref={listRef}
+        height={Math.min(height, totalHeight)}
+        itemCount={groupedChampions.length}
+        itemSize={getItemHeight}
+        width={width}
+        className="scrollbar-thin scrollbar-thumb-charcoal-300 dark:scrollbar-thumb-charcoal-700 scrollbar-track-transparent"
+        style={{ overflow: 'auto' }}
+      >
+        {Row}
+      </List>
+    )
+  }
+)
 
 // Add display name for debugging
 VirtualizedChampionListComponent.displayName = 'VirtualizedChampionList'
 
-// Export memoized component
-export const VirtualizedChampionList = React.memo(VirtualizedChampionListComponent)
+// Export the component
+export const VirtualizedChampionList = VirtualizedChampionListComponent
