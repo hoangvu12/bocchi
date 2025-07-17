@@ -6,6 +6,8 @@ import { VirtualizedSkinGrid } from '../VirtualizedSkinGrid'
 import { FilterPanel } from '../FilterPanel'
 import { GridViewToggle } from '../GridViewToggle'
 import { FileUploadButton } from '../FileUploadButton'
+import { DownloadAllSkinsDialog } from '../DownloadAllSkinsDialog'
+import { DownloadAllSkinsOptionsDialog } from '../DownloadAllSkinsOptionsDialog'
 import { filtersAtom, skinSearchQueryAtom, viewModeAtom } from '../../store/atoms'
 import { showDownloadedSkinsDialogAtom } from '../../store/atoms/ui.atoms'
 import {
@@ -18,6 +20,7 @@ import {
 } from '../../hooks/useOptimizedState'
 import { useChampionData } from '../../hooks/useChampionData'
 import { useSkinManagement } from '../../hooks/useSkinManagement'
+import { useDownloadAllSkins } from '../../hooks/useDownloadAllSkins'
 import type { Champion, Skin } from '../../App'
 
 interface SkinBrowserSectionProps {
@@ -57,6 +60,28 @@ export function SkinBrowserSection({
     deleteCustomSkin
   } = useSkinManagement()
 
+  const {
+    // Options dialog
+    isOptionsDialogOpen,
+    showOptionsDialog,
+    closeOptionsDialog,
+
+    // Progress dialog
+    isProgressDialogOpen,
+    progress,
+    closeProgressDialog,
+
+    // Download actions
+    startDownloadWithOptions,
+    pauseDownload,
+    resumeDownload,
+    cancelDownload,
+    retryFailedDownloads,
+
+    // Utility
+    skinStats
+  } = useDownloadAllSkins()
+
   if (!championData) return null
 
   return (
@@ -83,6 +108,21 @@ export function SkinBrowserSection({
             champions={championData.champions}
             onSkinImported={loadDownloadedSkins}
           />
+          <button
+            onClick={showOptionsDialog}
+            className={styles.manageButton.className}
+            title={t('downloadAll.title')}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+              />
+            </svg>
+            {t('downloadAll.button')}
+          </button>
           <button
             onClick={() => setShowDownloadedSkinsDialog(true)}
             className={styles.manageButton.className}
@@ -160,6 +200,26 @@ export function SkinBrowserSection({
           </div>
         )}
       </div>
+
+      {/* Download All Skins Options Dialog */}
+      <DownloadAllSkinsOptionsDialog
+        isOpen={isOptionsDialogOpen}
+        onClose={closeOptionsDialog}
+        onStartDownload={startDownloadWithOptions}
+        totalSkinsCount={skinStats.totalCount}
+        estimatedSize={skinStats.estimatedSize}
+      />
+
+      {/* Download All Skins Progress Dialog */}
+      <DownloadAllSkinsDialog
+        isOpen={isProgressDialogOpen}
+        progress={progress}
+        onPause={pauseDownload}
+        onResume={resumeDownload}
+        onCancel={cancelDownload}
+        onRetry={retryFailedDownloads}
+        onClose={closeProgressDialog}
+      />
     </div>
   )
 }

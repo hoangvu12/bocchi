@@ -89,6 +89,37 @@
     "downloading": "도구 다운로드 중... {{progress}}%",
     "downloadTools": "도구 다운로드"
   },
+  "downloadAll": {
+    "title": "Download All Skins",
+    "button": "Download All",
+    "optionsTitle": "Download All Skins",
+    "optionsDescription": "Choose which skins to download and configure download settings.",
+    "infoTitle": "Download Information",
+    "infoDescription": "Approximately {{count}} skins will be downloaded (~{{size}}).",
+    "filterOptions": "Filter Options",
+    "excludeChromas": "Exclude Chromas",
+    "excludeChromasDesc": "Skip chroma variants to reduce download size",
+    "excludeVariants": "Exclude Variants",
+    "excludeVariantsDesc": "Skip prestige editions and special variants",
+    "excludeLegacy": "Exclude Legacy Skins",
+    "excludeLegacyDesc": "Skip legacy and limited-time skins",
+    "excludeEsports": "Exclude Esports Skins",
+    "excludeEsportsDesc": "Skip championship and professional team skins",
+    "onlyFavorites": "Only Favorites",
+    "onlyFavoritesDesc": "Download only your favorited skins",
+    "performanceOptions": "Performance Options",
+    "concurrency": "Concurrent Downloads",
+    "concurrencyDesc": "Number of simultaneous downloads (higher = faster but more resource intensive)",
+    "startDownload": "Start Download",
+    "progress": "{{completed}} of {{total}} skins",
+    "speed": "Speed",
+    "timeRemaining": "Time remaining",
+    "failedDownloads": "{{count}} failed downloads",
+    "pause": "Pause",
+    "resume": "Resume",
+    "cancel": "Cancel",
+    "completed": "Download Complete"
+  },
   "settings": {
     "gamePath": "게임 경로",
     "language": "언어",
@@ -256,6 +287,10 @@
     "fixFailed": "수정에 실패했습니다: {{error}}",
     "fixError": "모드를 수정하는 중 오류가 발생했습니다",
     "saveChanges": "변경사항 저장"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "close": "Close"
   },
   "cancel": "취소",
   "success": "성공",

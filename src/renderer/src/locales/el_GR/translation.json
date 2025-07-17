@@ -91,6 +91,37 @@
     "downloading": "Λήψη εργαλείων... {{progress}}%",
     "downloadTools": "Λήψη εργαλείων"
   },
+  "downloadAll": {
+    "title": "Download All Skins",
+    "button": "Download All",
+    "optionsTitle": "Download All Skins",
+    "optionsDescription": "Choose which skins to download and configure download settings.",
+    "infoTitle": "Download Information",
+    "infoDescription": "Approximately {{count}} skins will be downloaded (~{{size}}).",
+    "filterOptions": "Filter Options",
+    "excludeChromas": "Exclude Chromas",
+    "excludeChromasDesc": "Skip chroma variants to reduce download size",
+    "excludeVariants": "Exclude Variants",
+    "excludeVariantsDesc": "Skip prestige editions and special variants",
+    "excludeLegacy": "Exclude Legacy Skins",
+    "excludeLegacyDesc": "Skip legacy and limited-time skins",
+    "excludeEsports": "Exclude Esports Skins",
+    "excludeEsportsDesc": "Skip championship and professional team skins",
+    "onlyFavorites": "Only Favorites",
+    "onlyFavoritesDesc": "Download only your favorited skins",
+    "performanceOptions": "Performance Options",
+    "concurrency": "Concurrent Downloads",
+    "concurrencyDesc": "Number of simultaneous downloads (higher = faster but more resource intensive)",
+    "startDownload": "Start Download",
+    "progress": "{{completed}} of {{total}} skins",
+    "speed": "Speed",
+    "timeRemaining": "Time remaining",
+    "failedDownloads": "{{count}} failed downloads",
+    "pause": "Pause",
+    "resume": "Resume",
+    "cancel": "Cancel",
+    "completed": "Download Complete"
+  },
   "settings": {
     "title": "Ρυθμίσεις",
     "description": "Διαμόρφωση προτιμήσεων εφαρμογής",
@@ -243,6 +274,10 @@
     "fixFailed": "Η διόρθωση απέτυχε: {{error}}",
     "fixError": "Παρουσιάστηκε σφάλμα κατά τη διόρθωση του mod",
     "saveChanges": "Αποθήκευση αλλαγών"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "close": "Close"
   },
   "cancel": "Ακύρωση",
   "success": "Επιτυχία",

@@ -11,6 +11,44 @@ export interface IApi {
     skinName: string
   ) => Promise<{ success: boolean; error?: string }>
 
+  // Batch download management
+  downloadAllSkins: (
+    skinUrls: string[],
+    options?: { excludeChromas?: boolean; concurrency?: number }
+  ) => Promise<{ success: boolean; error?: string }>
+  pauseBatchDownload: () => Promise<{ success: boolean; error?: string }>
+  resumeBatchDownload: () => Promise<{ success: boolean; error?: string }>
+  cancelBatchDownload: () => Promise<{ success: boolean; error?: string }>
+  getBatchDownloadState: () => Promise<{
+    success: boolean
+    data?: {
+      totalSkins: number
+      completedSkins: number
+      currentSkin: string | null
+      currentProgress: number
+      downloadSpeed: number
+      timeRemaining: number
+      failedSkins: string[]
+      isRunning: boolean
+      isPaused: boolean
+    } | null
+    error?: string
+  }>
+  onDownloadAllSkinsProgress: (
+    callback: (progress: {
+      totalSkins: number
+      completedSkins: number
+      currentSkin: string | null
+      currentProgress: number
+      downloadSpeed: number
+      timeRemaining: number
+      failedSkins: string[]
+      isRunning: boolean
+      isPaused: boolean
+    }) => void
+  ) => () => void
+  retryFailedDownloads: () => Promise<{ success: boolean; error?: string }>
+
   // File import
   importSkinFile: (
     filePath: string,

@@ -13,6 +13,22 @@ const api = {
   deleteSkin: (championName: string, skinName: string) =>
     ipcRenderer.invoke('delete-skin', championName, skinName),
 
+  // Batch download management
+  downloadAllSkins: (
+    skinUrls: string[],
+    options?: { excludeChromas?: boolean; concurrency?: number }
+  ) => ipcRenderer.invoke('download-all-skins', skinUrls, options),
+  pauseBatchDownload: () => ipcRenderer.invoke('pause-batch-download'),
+  resumeBatchDownload: () => ipcRenderer.invoke('resume-batch-download'),
+  cancelBatchDownload: () => ipcRenderer.invoke('cancel-batch-download'),
+  getBatchDownloadState: () => ipcRenderer.invoke('get-batch-download-state'),
+  onDownloadAllSkinsProgress: (callback: (progress: any) => void) => {
+    const handler = (_: any, progress: any) => callback(progress)
+    ipcRenderer.on('download-all-skins-progress', handler)
+    return () => ipcRenderer.removeListener('download-all-skins-progress', handler)
+  },
+  retryFailedDownloads: () => ipcRenderer.invoke('retry-failed-downloads'),
+
   // File import
   importSkinFile: (
     filePath: string,

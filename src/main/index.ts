@@ -610,6 +610,94 @@ function setupIpcHandlers(): void {
     return { success: false }
   })
 
+  // Batch download handlers
+  ipcMain.handle(
+    'download-all-skins',
+    async (
+      event,
+      skinUrls: string[],
+      options?: { excludeChromas?: boolean; concurrency?: number }
+    ) => {
+      try {
+        await skinDownloader.downloadAllSkins(
+          skinUrls,
+          (progress) => {
+            event.sender.send('download-all-skins-progress', progress)
+          },
+          options
+        )
+        return { success: true }
+      } catch (error) {
+        return {
+          success: false,
+          error: error instanceof Error ? error.message : 'Unknown error'
+        }
+      }
+    }
+  )
+
+  ipcMain.handle('pause-batch-download', async () => {
+    try {
+      skinDownloader.pauseBatchDownload()
+      return { success: true }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      }
+    }
+  })
+
+  ipcMain.handle('resume-batch-download', async () => {
+    try {
+      skinDownloader.resumeBatchDownload()
+      return { success: true }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      }
+    }
+  })
+
+  ipcMain.handle('cancel-batch-download', async () => {
+    try {
+      skinDownloader.cancelBatchDownload()
+      return { success: true }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      }
+    }
+  })
+
+  ipcMain.handle('get-batch-download-state', async () => {
+    try {
+      const state = skinDownloader.getBatchDownloadState()
+      return { success: true, data: state }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      }
+    }
+  })
+
+  ipcMain.handle('retry-failed-downloads', async (event) => {
+    try {
+      await skinDownloader.retryFailedDownloads((progress) => {
+        event.sender.send('download-all-skins-progress', progress)
+      })
+      return { success: true }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      }
+    }
+  })
+
   ipcMain.handle('browse-image-file', async () => {
     const result = await dialog.showOpenDialog({
       properties: ['openFile'],

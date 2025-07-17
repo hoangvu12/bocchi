@@ -9,7 +9,8 @@
       "Bash(npm run format:*)",
       "Bash(pnpm run:*)",
       "Bash(npm run lint)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(find:*)"
     ],
     "deny": []
   }
