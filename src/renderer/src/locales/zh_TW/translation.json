@@ -1,0 +1,417 @@
+{
+  "app": {
+    "title": "CSLOL 面板啟動器",
+    "loading": "載入中...",
+    "ready": "準備就緒"
+  },
+  "actions": {
+    "browse": "瀏覽",
+    "download": "下載",
+    "update": "更新",
+    "apply": "套用",
+    "stop": "停止",
+    "close": "關閉",
+    "minimize": "最小化",
+    "maximize": "最大化",
+    "restore": "還原",
+    "search": "搜尋",
+    "filter": "篩選",
+    "sort": "排序",
+    "clearAll": "清除全部",
+    "clearFilters": "清除篩選",
+    "save": "儲存",
+    "saveChanges": "儲存變更",
+    "delete": "刪除",
+    "deleteAll": "刪除所有面板",
+    "deleteAllForChampion": "刪除 {{champion}} 的所有面板",
+    "decline": "拒絕",
+    "accept": "接受",
+    "join": "加入",
+    "cancel": "取消",
+    "leave": "離開",
+    "create": "建立",
+    "copy": "複製",
+    "later": "稍後",
+    "skipForNow": "暫時跳過",
+    "downloadAndInstall": "下載並安裝"
+  },
+  "nav": {
+    "favorites": "我的最愛",
+    "settings": "設定",
+    "about": "關於"
+  },
+  "champion": {
+    "searchPlaceholder": "搜尋英雄",
+    "noData": "未找到英雄資料",
+    "downloadData": "下載英雄資料",
+    "updateData": "更新資料",
+    "version": "版本",
+    "allChampions": "所有英雄",
+    "customMods": "自訂模組"
+  },
+  "skin": {
+    "searchPlaceholder": "搜尋所有英雄的面板...",
+    "apply": "套用面板",
+    "applied": "已套用",
+    "downloaded": "已下載",
+    "favorite": "加入最愛",
+    "unfavorite": "從最愛移除",
+    "clickToApply": "點擊任何面板即可立即套用",
+    "showing_one": "顯示 {{count}} 個面板",
+    "showing_other": "顯示 {{count}} 個面板"
+  },
+  "status": {
+    "detectingGame": "偵測遊戲路徑中...",
+    "gameDetected": "自動偵測到遊戲路徑",
+    "gameNotFound": "找不到遊戲路徑。請手動瀏覽。",
+    "downloading": "正在下載 {{name}}...",
+    "applying": "正在套用 {{name}}...",
+    "applied": "成功套用 {{name}}！",
+    "stopping": "正在停止修補程式...",
+    "stopped": "修補程式已停止",
+    "error": "錯誤：{{message}}",
+    "fetchingData": "正在取得英雄資料...",
+    "autoAcceptedMatch": "自動接受對戰！",
+    "dataFetched": "成功取得 {{count}} 個英雄的資料！",
+    "gamePathSet": "遊戲路徑設定成功！",
+    "pleaseSetGamePath": "請先設定遊戲路徑",
+    "downloadingTools": "正在下載 cslol-tools",
+    "toolsDownloaded": "工具下載成功！",
+    "stoppingCurrentPatcher": "正在停止目前的修補程式",
+    "failedToStopPatcher": "無法停止修補程式：{{error}}",
+    "deletedCustomMod": "已刪除自訂模組：{{name}}",
+    "deletedSkin": "已刪除面板：{{name}}",
+    "failedToDeleteMod": "無法刪除模組：{{error}}",
+    "failedToDeleteSkin": "無法刪除面板：{{error}}",
+    "autoSelectedSkinsCleanedUp": "清理了 {{count}} 個自動選擇的面板"
+  },
+  "tools": {
+    "required": "需要 CS:LOL 工具",
+    "description": "需要 CS:LOL 模組工具來套用面板。您想要現在下載嗎？",
+    "downloading": "正在下載工具... {{progress}}%",
+    "downloadTools": "下載工具"
+  },
+  "settings": {
+    "title": "設定",
+    "description": "設定您的應用程式偏好",
+    "gamePath": "遊戲路徑",
+    "language": "語言",
+    "theme": "主題",
+    "notifications": "通知",
+    "leagueClient": {
+      "title": "聯盟戰棋客戶端整合",
+      "description": "啟用與英雄聯盟客戶端連接的功能"
+    },
+    "championDetection": {
+      "title": "英雄偵測",
+      "description": "在聯盟客戶端中選擇英雄時自動顯示通知"
+    },
+    "autoViewSkins": {
+      "title": "自動檢視面板",
+      "description": "偵測到英雄時自動檢視面板（跳過確認對話框）"
+    },
+    "smartApply": {
+      "title": "智慧套用",
+      "description": "僅載入您隊伍中英雄的面板（減少載入時間）"
+    },
+    "autoApply": {
+      "title": "自動套用",
+      "description": "當所有英雄都已鎖定時自動套用面板"
+    },
+    "autoApplyTriggerTime": {
+      "title": "自動套用觸發時間",
+      "description": "遊戲開始前自動套用面板的秒數（5-30秒）"
+    },
+    "autoAccept": {
+      "title": "自動接受對戰",
+      "description": "找到對戰時自動接受準備確認"
+    },
+    "autoPick": {
+      "title": "自動選擇",
+      "description": "在英雄選擇期間自動選擇英雄",
+      "force": "強制選擇",
+      "forceDescription": "覆寫隊伍選擇，即使已被選擇也要選擇",
+      "championPriority": "選擇優先順序清單"
+    },
+    "autoBan": {
+      "title": "自動禁用",
+      "description": "在英雄選擇期間自動禁用英雄",
+      "force": "強制禁用",
+      "forceDescription": "覆寫隊伍意圖，即使隊友想要使用也要禁用",
+      "championPriority": "禁用優先順序清單"
+    },
+    "selectChampion": "選擇英雄",
+    "addChampion": "加入英雄",
+    "autoRandomSkin": {
+      "title": "自動隨機面板",
+      "description": "偵測到英雄時自動選擇隨機面板"
+    },
+    "autoRandomRaritySkin": {
+      "title": "自動隨機稀有面板",
+      "description": "偵測到英雄時自動選擇具有稀有度的隨機面板（史詩、傳奇等）"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "自動隨機最愛面板",
+      "description": "偵測到英雄時自動從您的最愛中選擇隨機面板"
+    },
+    "autoRandomHighestWinRateSkin": {
+      "title": "自動隨機最高勝率面板",
+      "description": "自動從前3個最高勝率面板中選擇隨機面板"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "自動隨機最高選擇率面板",
+      "description": "自動從前3個最受歡迎的面板中選擇隨機面板"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "自動隨機最多遊玩面板",
+      "description": "自動從前3個最多遊玩的面板中選擇隨機面板"
+    },
+    "inGameOverlay": {
+      "title": "遊戲內疊加",
+      "description": "預先附加疊加到聯盟客戶端以獲得更快的面板通知（需要任何自動隨機功能）"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "允許每個英雄多個面板",
+      "description": "啟用以同時為同一英雄使用多個面板"
+    },
+    "autoFixModIssues": {
+      "title": "匯入時自動修復模組問題",
+      "description": "匯入模組時自動修復缺少的血條、材質和視覺效果"
+    },
+    "tabs": {
+      "general": "一般",
+      "leagueClient": "聯盟客戶端",
+      "skinManagement": "面板管理"
+    },
+    "randomSkinSelection": {
+      "title": "隨機面板選擇",
+      "none": "已停用"
+    },
+    "minimizeToTray": {
+      "title": "最小化到系統匣",
+      "description": "點擊關閉按鈕時將應用程式隱藏到系統匣而不是關閉"
+    }
+  },
+  "tray": {
+    "show": "顯示 Bocchi",
+    "hide": "隱藏 Bocchi",
+    "language": "語言",
+    "openSettings": "開啟設定",
+    "quit": "結束 Bocchi"
+  },
+  "fileUpload": {
+    "uploadButton": "上傳自訂模組",
+    "importTitle": "匯入自訂模組",
+    "importDescription": "可選擇英雄並為您的模組設定自訂名稱。",
+    "selectedFile": "選擇的檔案",
+    "selectChampion": "選擇英雄",
+    "championPlaceholder": "沒有特定英雄",
+    "customName": "自訂名稱",
+    "customNamePlaceholder": "輸入面板名稱...",
+    "importing": "正在匯入...",
+    "import": "匯入",
+    "noFileSelected": "未選擇檔案",
+    "invalidFile": "無效的檔案格式",
+    "importSuccess": "面板匯入成功！",
+    "importFailed": "面板匯入失敗",
+    "previewImage": "預覽圖片",
+    "browseImage": "瀏覽",
+    "noImageSelected": "未選擇圖片",
+    "batchImportTitle": "正在匯入多個檔案",
+    "importingProgress": "正在匯入 {{current}} / {{total}} 個檔案...",
+    "batchComplete": "匯入完成！",
+    "succeeded": "成功",
+    "failed": "失敗",
+    "failedFiles": "失敗的檔案：",
+    "close": "關閉",
+    "fixModIssues": "修復模組問題",
+    "fixModIssuesDescription": "修復缺少的血條、材質和視覺效果"
+  },
+  "editCustomSkin": {
+    "title": "編輯自訂模組",
+    "modName": "模組名稱",
+    "modNamePlaceholder": "輸入模組名稱",
+    "previewImage": "預覽圖片（可選）",
+    "selectImage": "選擇圖片",
+    "newImageSelected": "已選擇新圖片",
+    "modMaintenance": "模組維護",
+    "fixModIssues": "修復模組問題",
+    "fixing": "正在修復...",
+    "fixDescription": "修復缺少的血條、材質和視覺效果問題",
+    "startingFix": "開始修復程序...",
+    "fixCompleted": "修復成功完成！",
+    "fixFailed": "修復失敗：{{error}}",
+    "fixError": "修復模組時發生錯誤",
+    "saveChanges": "儲存變更"
+  },
+  "cancel": "取消",
+  "success": "成功",
+  "error": "錯誤",
+  "update": {
+    "available": "有可用更新",
+    "description": "有新版本的 Bocchi 可供下載。",
+    "whatsNew": "更新內容",
+    "downloading": "正在下載...",
+    "updateNow": "立即更新",
+    "championDataAvailable": "英雄資料更新可用",
+    "championDataDescription": "有新版本的英雄資料可用。此更新包含最新的英雄、面板和其他遊戲內容。",
+    "currentVersion": "目前版本：",
+    "updating": "正在更新..."
+  },
+  "skins": {
+    "selected_one": "已選擇 {{count}} 個面板",
+    "selected_other": "已選擇 {{count}} 個面板",
+    "toDownload": "（{{count}} 個待下載）",
+    "downloaded": "已下載的面板",
+    "notDownloaded": "未下載",
+    "repository": "儲存庫面板",
+    "customImports": "自訂匯入",
+    "total": "總計：{{count}} 個面板",
+    "searchPlaceholder": "依英雄或面板名稱搜尋...",
+    "noSkinsFound": "找不到面板",
+    "userImport": "使用者匯入",
+    "custom": "自訂",
+    "deleting": "正在刪除...",
+    "chromas_one": "有 {{count}} 個彩度可用",
+    "chromas_other": "有 {{count}} 個彩度可用",
+    "selectChroma": "為 {{skinName}} 選擇彩度",
+    "chooseChroma_one": "從 {{count}} 個可用彩度中選擇",
+    "chooseChroma_other": "從 {{count}} 個可用彩度中選擇",
+    "selectVariant": "為 {{skinName}} 選擇變體",
+    "chooseVariant": "從 {{count}} 個可用 {{type}} 中選擇",
+    "exaltedVariant": "昇華變體",
+    "formVariant": "形態變體",
+    "mySkins": "我的面板",
+    "roomSkins": "房間面板",
+    "manage": "管理",
+    "manageDownloaded": "管理已下載的面板",
+    "downloadedCount": "已下載的面板（{{count}}）",
+    "allSkins": "所有面板",
+    "autoSelected": "自動"
+  },
+  "filters": {
+    "title": "篩選器和排序",
+    "active": "啟用",
+    "downloadStatus": "下載狀態",
+    "all": "全部",
+    "downloaded": "已下載",
+    "notDownloaded": "未下載",
+    "chromas": "彩度",
+    "hasChromas": "有彩度",
+    "noChromas": "無彩度",
+    "championType": "英雄類型",
+    "sortBy": "排序方式",
+    "nameAsc": "名稱（A-Z）",
+    "nameDesc": "名稱（Z-A）",
+    "skinNumAsc": "面板編號（低到高）",
+    "skinNumDesc": "面板編號（高到低）",
+    "championName": "英雄名稱",
+    "rarityAsc": "稀有度（低到高）",
+    "rarityDesc": "稀有度（高到低）",
+    "winRateDesc": "勝率（高到低）",
+    "winRateAsc": "勝率（低到高）",
+    "pickRateDesc": "選擇率（高到低）",
+    "pickRateAsc": "選擇率（低到高）",
+    "totalGamesDesc": "最多遊玩",
+    "totalGamesAsc": "最少遊玩",
+    "rarity": "稀有度",
+    "rarities": {
+      "epic": "史詩",
+      "legendary": "傳奇",
+      "ultimate": "終極",
+      "mythic": "神話",
+      "transcendent": "超凡",
+      "exalted": "昇華"
+    }
+  },
+  "patcher": {
+    "applying": "正在套用...",
+    "stopping": "正在停止...",
+    "stopPatcher": "停止修補程式",
+    "apply_one": "套用 {{count}} 個面板",
+    "apply_other": "套用 {{count}} 個面板",
+    "messages": "修補程式訊息："
+  },
+  "room": {
+    "joinCreate": "加入/建立房間",
+    "p2pRoom": "P2P 房間",
+    "description": "建立新房間或加入現有房間以與他人分享面板。",
+    "displayName": "顯示名稱",
+    "displayNamePlaceholder": "輸入您的名稱",
+    "createNew": "建立新房間",
+    "creating": "正在建立...",
+    "createRoom": "建立房間",
+    "joinExisting": "加入現有房間",
+    "roomIdPlaceholder": "輸入房間 ID（例如：ABC123）",
+    "joining": "正在加入...",
+    "joinRoom": "加入房間",
+    "roomId": "房間：{{id}}",
+    "copyRoomId": "複製房間 ID",
+    "members_one": "{{count}} 名成員",
+    "members_other": "{{count}} 名成員"
+  },
+  "fileTransfer": {
+    "incoming": "檔案傳輸",
+    "description": "對方想要與您分享自訂模組",
+    "file": "檔案：",
+    "size": "大小：",
+    "champion": "英雄：",
+    "skin": "面板：",
+    "transferring": "正在傳輸檔案...",
+    "completed": "傳輸完成！"
+  },
+  "customMod": {
+    "edit": "編輯自訂模組",
+    "modName": "模組名稱",
+    "modNamePlaceholder": "輸入模組名稱",
+    "previewImage": "預覽圖片（可選）",
+    "selectImage": "選擇圖片",
+    "newImageSelected": "已選擇新圖片"
+  },
+  "social": {
+    "joinDiscord": "加入 Discord",
+    "viewGithub": "在 GitHub 上檢視",
+    "donate": "捐贈"
+  },
+  "lcu": {
+    "connected": "已連接到聯盟客戶端",
+    "disconnected": "與聯盟客戶端斷開連接",
+    "championHovered": "英雄已選擇",
+    "championLocked": "英雄已鎖定",
+    "viewSkins": "檢視面板",
+    "connecting": "正在連接到聯盟客戶端...",
+    "connectionFailed": "無法連接到聯盟客戶端",
+    "status": "LCU 狀態",
+    "notConnected": "未連接",
+    "inChampSelect": "在英雄選擇中",
+    "disabled": "已停用",
+    "tooltipNotConnected": "啟動英雄聯盟客戶端以在英雄選擇期間啟用自動英雄偵測",
+    "tooltipConnected": "已連接到聯盟客戶端。當您選擇英雄時將顯示通知",
+    "tooltipInChampSelect": "目前在英雄選擇中。選擇英雄以查看通知",
+    "tooltipDisabled": "英雄偵測已停用。在設定中啟用以在選擇英雄時接收通知",
+    "championLockedDescription": "您已鎖定 {{champion}}。您想要瀏覽可用的面板嗎？",
+    "championHoveredDescription": "您正在選擇 {{champion}}。您想要瀏覽可用的面板嗎？",
+    "randomSkin": "隨機面板",
+    "randomRaritySkin": "隨機稀有面板"
+  },
+  "smartApply": {
+    "willApply": "智慧：{{count}}/{{total}}",
+    "applying": "正在為以下英雄套用 {{count}} 個面板：{{champions}}",
+    "success": "已套用 {{applied}} / {{total}} 個面板",
+    "failed": "無法套用面板",
+    "noSkinsToApply": "沒有面板可為您的隊伍套用",
+    "noSkinsForTeam": "沒有為您的隊伍英雄選擇面板"
+  },
+  "errors": {
+    "generic": "發生錯誤",
+    "downloadFailed": "下載失敗",
+    "connectionError": "連接錯誤",
+    "pathNotSet": "請先設定遊戲路徑",
+    "operationTimeout": "操作逾時。請重試。",
+    "skinNotAvailable": "面板在 lol-skins 儲存庫中不可用或對應錯誤"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "您確定要刪除所有面板嗎？此操作無法復原。",
+    "confirmDeleteChampion": "您確定要刪除 {{champion}} 的所有面板嗎？此操作無法復原。"
+  }
+}

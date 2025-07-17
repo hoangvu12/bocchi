@@ -1,0 +1,417 @@
+{
+  "app": {
+    "title": "CSLOL Skin Launcher",
+    "loading": "Yükleniyor...",
+    "ready": "Hazır"
+  },
+  "actions": {
+    "browse": "Gözat",
+    "download": "İndir",
+    "update": "Güncelle",
+    "apply": "Uygula",
+    "stop": "Durdur",
+    "close": "Kapat",
+    "minimize": "Simge durumuna küçült",
+    "maximize": "Büyüt",
+    "restore": "Geri yükle",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "sort": "Sırala",
+    "clearAll": "Tümünü temizle",
+    "clearFilters": "Filtreleri temizle",
+    "save": "Kaydet",
+    "saveChanges": "Değişiklikleri kaydet",
+    "delete": "Sil",
+    "deleteAll": "Tüm skinleri sil",
+    "deleteAllForChampion": "{{champion}} için tüm skinleri sil",
+    "decline": "Reddet",
+    "accept": "Kabul et",
+    "join": "Katıl",
+    "cancel": "İptal",
+    "leave": "Ayrıl",
+    "create": "Oluştur",
+    "copy": "Kopyala",
+    "later": "Sonra",
+    "skipForNow": "Şimdilik atla",
+    "downloadAndInstall": "İndir ve kur"
+  },
+  "nav": {
+    "favorites": "Favoriler",
+    "settings": "Ayarlar",
+    "about": "Hakkında"
+  },
+  "champion": {
+    "searchPlaceholder": "Şampiyonları ara",
+    "noData": "Şampiyon verisi bulunamadı",
+    "downloadData": "Şampiyon verilerini indir",
+    "updateData": "Verileri güncelle",
+    "version": "Sürüm",
+    "allChampions": "Tüm şampiyonlar",
+    "customMods": "Özel modlar"
+  },
+  "skin": {
+    "searchPlaceholder": "Tüm şampiyonlar arasında skin ara...",
+    "apply": "Skin uygula",
+    "applied": "Uygulandı",
+    "downloaded": "İndirildi",
+    "favorite": "Favorilere ekle",
+    "unfavorite": "Favorilerden kaldır",
+    "clickToApply": "Anında uygulamak için herhangi bir skine tıklayın",
+    "showing_one": "{{count}} skin gösteriliyor",
+    "showing_other": "{{count}} skin gösteriliyor"
+  },
+  "status": {
+    "detectingGame": "Oyun yolu tespit ediliyor...",
+    "gameDetected": "Oyun yolu otomatik olarak tespit edildi",
+    "gameNotFound": "Oyun yolu bulunamadı. Lütfen manuel olarak gözatın.",
+    "downloading": "{{name}} indiriliyor...",
+    "applying": "{{name}} uygulanıyor...",
+    "applied": "{{name}} başarıyla uygulandı!",
+    "stopping": "Yama programı durduruluyor...",
+    "stopped": "Yama programı durduruldu",
+    "error": "Hata: {{message}}",
+    "fetchingData": "Şampiyon verileri alınıyor...",
+    "autoAcceptedMatch": "Maç otomatik olarak kabul edildi!",
+    "dataFetched": "{{count}} şampiyon için veriler başarıyla alındı!",
+    "gamePathSet": "Oyun yolu başarıyla ayarlandı!",
+    "pleaseSetGamePath": "Lütfen önce oyun yolunu ayarlayın",
+    "downloadingTools": "cslol-tools indiriliyor",
+    "toolsDownloaded": "Araçlar başarıyla indirildi!",
+    "stoppingCurrentPatcher": "Mevcut yama programı durduruluyor",
+    "failedToStopPatcher": "Yama programı durdurulamadı: {{error}}",
+    "deletedCustomMod": "Özel mod silindi: {{name}}",
+    "deletedSkin": "Skin silindi: {{name}}",
+    "failedToDeleteMod": "Mod silinemedi: {{error}}",
+    "failedToDeleteSkin": "Skin silinemedi: {{error}}",
+    "autoSelectedSkinsCleanedUp": "{{count}} otomatik seçilmiş skin temizlendi"
+  },
+  "tools": {
+    "required": "CS:LOL Tools gerekli",
+    "description": "CS:LOL mod araçları skinleri uygulamak için gereklidir. Şimdi indirmek istiyor musunuz?",
+    "downloading": "Araçlar indiriliyor... {{progress}}%",
+    "downloadTools": "Araçları indir"
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "description": "Uygulama tercihlerini yapılandır",
+    "gamePath": "Oyun yolu",
+    "language": "Dil",
+    "theme": "Tema",
+    "notifications": "Bildirimler",
+    "leagueClient": {
+      "title": "League Client entegrasyonu",
+      "description": "League of Legends istemcisine bağlanan özellikleri etkinleştir"
+    },
+    "championDetection": {
+      "title": "Şampiyon tespiti",
+      "description": "League istemcisinde şampiyon seçtiğinizde otomatik olarak bildirimler göster"
+    },
+    "autoViewSkins": {
+      "title": "Skinleri otomatik görüntüle",
+      "description": "Şampiyon tespit edildiğinde skinleri otomatik olarak görüntüle (onay iletişim kutusunu atlar)"
+    },
+    "smartApply": {
+      "title": "Akıllı uygulama",
+      "description": "Sadece takımınızdaki şampiyonlar için skinleri yükle (yükleme süresini azaltır)"
+    },
+    "autoApply": {
+      "title": "Otomatik uygulama",
+      "description": "Tüm şampiyonlar kilitlendiğinde skinleri otomatik olarak uygula"
+    },
+    "autoApplyTriggerTime": {
+      "title": "Otomatik uygulama tetikleme süresi",
+      "description": "Oyun başlamadan önce skinleri otomatik olarak uygulamak için saniye (5-30 saniye)"
+    },
+    "autoAccept": {
+      "title": "Maçı otomatik kabul et",
+      "description": "Maç bulunduğunda hazırlık kontrolünü otomatik olarak kabul et"
+    },
+    "autoPick": {
+      "title": "Otomatik seçim",
+      "description": "Şampiyon seçimi sırasında şampiyonları otomatik olarak seç",
+      "force": "Zorla seçim",
+      "forceDescription": "Takım seçimlerini geçersiz kıl ve zaten seçilmiş olsa bile seç",
+      "championPriority": "Seçim öncelik listesi"
+    },
+    "autoBan": {
+      "title": "Otomatik yasaklama",
+      "description": "Şampiyon seçimi sırasında şampiyonları otomatik olarak yasakla",
+      "force": "Zorla yasaklama",
+      "forceDescription": "Takım niyetini geçersiz kıl ve takım arkadaşı oynamak istese bile yasakla",
+      "championPriority": "Yasaklama öncelik listesi"
+    },
+    "selectChampion": "Şampiyon seç",
+    "addChampion": "Şampiyon ekle",
+    "autoRandomSkin": {
+      "title": "Otomatik rastgele skin",
+      "description": "Şampiyon tespit edildiğinde otomatik olarak rastgele skin seç"
+    },
+    "autoRandomRaritySkin": {
+      "title": "Otomatik rastgele nadir skin",
+      "description": "Şampiyon tespit edildiğinde otomatik olarak nadir (Epic, Legendary, vb.) rastgele skin seç"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "Otomatik rastgele favori skin",
+      "description": "Şampiyon tespit edildiğinde otomatik olarak favorilerden rastgele skin seç"
+    },
+    "autoRandomHighestWinRateSkin": {
+      "title": "Otomatik rastgele en yüksek kazanma oranı skin",
+      "description": "Otomatik olarak en yüksek kazanma oranına sahip ilk 3 skinden rastgele skin seç"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "Otomatik rastgele en yüksek seçim oranı skin",
+      "description": "Otomatik olarak en popüler ilk 3 skinden rastgele skin seç"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "Otomatik rastgele en çok oynanan skin",
+      "description": "Otomatik olarak en çok oynanan ilk 3 skinden rastgele skin seç"
+    },
+    "inGameOverlay": {
+      "title": "Oyun içi katman",
+      "description": "Daha hızlı skin bildirimleri için katmanı League istemcisine önceden ekle (herhangi bir Otomatik Rastgele özellik gerektirir)"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "Şampiyon başına birden fazla skine izin ver",
+      "description": "Aynı şampiyon için aynı anda birden fazla skin kullanmayı etkinleştir"
+    },
+    "autoFixModIssues": {
+      "title": "İçe aktarımda mod sorunlarını otomatik düzelt",
+      "description": "Modları içe aktarırken eksik sağlık çubuklarını, malzemeleri ve VFX'leri otomatik olarak düzelt"
+    },
+    "tabs": {
+      "general": "Genel",
+      "leagueClient": "League İstemcisi",
+      "skinManagement": "Skin Yönetimi"
+    },
+    "randomSkinSelection": {
+      "title": "Rastgele skin seçimi",
+      "none": "Devre dışı"
+    },
+    "minimizeToTray": {
+      "title": "Sistem tepsisine küçült",
+      "description": "Kapatma düğmesine tıklandığında uygulamayı kapatmak yerine sistem tepsisine gizle"
+    }
+  },
+  "tray": {
+    "show": "Bocchi'yi göster",
+    "hide": "Bocchi'yi gizle",
+    "language": "Dil",
+    "openSettings": "Ayarları aç",
+    "quit": "Bocchi'den çık"
+  },
+  "fileUpload": {
+    "uploadButton": "Özel mod yükle",
+    "importTitle": "Özel mod içe aktar",
+    "importDescription": "İsteğe bağlı olarak bir şampiyon seçin ve modunuz için özel bir ad belirleyin.",
+    "selectedFile": "Seçili dosya",
+    "selectChampion": "Şampiyon seç",
+    "championPlaceholder": "Belirli bir şampiyon yok",
+    "customName": "Özel ad",
+    "customNamePlaceholder": "Skin adını girin...",
+    "importing": "İçe aktarılıyor...",
+    "import": "İçe aktar",
+    "noFileSelected": "Seçili dosya yok",
+    "invalidFile": "Geçersiz dosya formatı",
+    "importSuccess": "Skin başarıyla içe aktarıldı!",
+    "importFailed": "Skin içe aktarılamadı",
+    "previewImage": "Önizleme resmi",
+    "browseImage": "Gözat",
+    "noImageSelected": "Seçili resim yok",
+    "batchImportTitle": "Birden çok dosya içe aktarılıyor",
+    "importingProgress": "{{current}} / {{total}} dosya içe aktarılıyor...",
+    "batchComplete": "İçe aktarma tamamlandı!",
+    "succeeded": "başarılı",
+    "failed": "başarısız",
+    "failedFiles": "Başarısız dosyalar:",
+    "close": "Kapat",
+    "fixModIssues": "Mod sorunlarını düzelt",
+    "fixModIssuesDescription": "Eksik sağlık çubuklarını, malzemeleri ve VFX'leri düzeltir"
+  },
+  "editCustomSkin": {
+    "title": "Özel modu düzenle",
+    "modName": "Mod adı",
+    "modNamePlaceholder": "Mod adını girin",
+    "previewImage": "Önizleme resmi (isteğe bağlı)",
+    "selectImage": "Resim seç",
+    "newImageSelected": "Yeni resim seçildi",
+    "modMaintenance": "Mod bakımı",
+    "fixModIssues": "Mod sorunlarını düzelt",
+    "fixing": "Düzeltiliyor...",
+    "fixDescription": "Eksik sağlık çubuklarını, malzemeleri ve VFX sorunlarını düzeltir",
+    "startingFix": "Düzeltme işlemi başlatılıyor...",
+    "fixCompleted": "Düzeltme başarıyla tamamlandı!",
+    "fixFailed": "Düzeltme başarısız: {{error}}",
+    "fixError": "Mod düzeltilirken bir hata oluştu",
+    "saveChanges": "Değişiklikleri kaydet"
+  },
+  "cancel": "İptal",
+  "success": "Başarılı",
+  "error": "Hata",
+  "update": {
+    "available": "Güncelleme mevcut",
+    "description": "Bocchi'nin yeni sürümü indirme için mevcut.",
+    "whatsNew": "Yeni neler var",
+    "downloading": "İndiriliyor...",
+    "updateNow": "Şimdi güncelle",
+    "championDataAvailable": "Şampiyon verisi güncellemesi mevcut",
+    "championDataDescription": "Şampiyon verilerinin yeni sürümü mevcut. Bu güncelleme en son şampiyonları, skinleri ve diğer oyun içeriğini içerir.",
+    "currentVersion": "Mevcut sürüm: ",
+    "updating": "Güncelleniyor..."
+  },
+  "skins": {
+    "selected_one": "{{count}} skin seçildi",
+    "selected_other": "{{count}} skin seçildi",
+    "toDownload": "({{count}} indirilecek)",
+    "downloaded": "İndirilmiş skinler",
+    "notDownloaded": "İndirilmemiş",
+    "repository": "Depo skinleri",
+    "customImports": "Özel içe aktarımlar",
+    "total": "Toplam: {{count}} skin",
+    "searchPlaceholder": "Şampiyon veya skin adına göre ara...",
+    "noSkinsFound": "Skin bulunamadı",
+    "userImport": "Kullanıcı içe aktarımı",
+    "custom": "Özel",
+    "deleting": "Siliniyor...",
+    "chromas_one": "{{count}} chroma mevcut",
+    "chromas_other": "{{count}} chroma mevcut",
+    "selectChroma": "{{skinName}} için chroma seç",
+    "chooseChroma_one": "{{count}} mevcut chromadan seç",
+    "chooseChroma_other": "{{count}} mevcut chromadan seç",
+    "selectVariant": "{{skinName}} için varyant seç",
+    "chooseVariant": "{{count}} mevcut {{type}} arasından seç",
+    "exaltedVariant": "Yükseltilmiş varyantlar",
+    "formVariant": "Form varyantları",
+    "mySkins": "Skinlerim",
+    "roomSkins": "Oda skinleri",
+    "manage": "Yönet",
+    "manageDownloaded": "İndirilmiş skinleri yönet",
+    "downloadedCount": "İndirilmiş skinler ({{count}})",
+    "allSkins": "Tüm skinler",
+    "autoSelected": "Otomatik"
+  },
+  "filters": {
+    "title": "Filtreler ve sıralama",
+    "active": "Aktif",
+    "downloadStatus": "İndirme durumu",
+    "all": "Tümü",
+    "downloaded": "İndirilmiş",
+    "notDownloaded": "İndirilmemiş",
+    "chromas": "Chromalar",
+    "hasChromas": "Chroması var",
+    "noChromas": "Chroması yok",
+    "championType": "Şampiyon tipi",
+    "sortBy": "Sıralama ölçütü",
+    "nameAsc": "Ad (A-Z)",
+    "nameDesc": "Ad (Z-A)",
+    "skinNumAsc": "Skin No (Düşükten Yükseğe)",
+    "skinNumDesc": "Skin No (Yüksekten Düşüğe)",
+    "championName": "Şampiyon adı",
+    "rarityAsc": "Nadir (Düşükten Yükseğe)",
+    "rarityDesc": "Nadir (Yüksekten Düşüğe)",
+    "winRateDesc": "Kazanma oranı (Yüksekten Düşüğe)",
+    "winRateAsc": "Kazanma oranı (Düşükten Yükseğe)",
+    "pickRateDesc": "Seçim oranı (Yüksekten Düşüğe)",
+    "pickRateAsc": "Seçim oranı (Düşükten Yükseğe)",
+    "totalGamesDesc": "En çok oynanan",
+    "totalGamesAsc": "En az oynanan",
+    "rarity": "Nadir",
+    "rarities": {
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "ultimate": "Ultimate",
+      "mythic": "Mythic",
+      "transcendent": "Transcendent",
+      "exalted": "Exalted"
+    }
+  },
+  "patcher": {
+    "applying": "Uygulanıyor...",
+    "stopping": "Durduruluyor...",
+    "stopPatcher": "Yama programını durdur",
+    "apply_one": "{{count}} skin uygula",
+    "apply_other": "{{count}} skin uygula",
+    "messages": "Yama programı mesajları:"
+  },
+  "room": {
+    "joinCreate": "Odaya katıl/oluştur",
+    "p2pRoom": "P2P odası",
+    "description": "Başkalarıyla skinleri paylaşmak için yeni bir oda oluşturun veya mevcut bir odaya katılın.",
+    "displayName": "Görünen ad",
+    "displayNamePlaceholder": "Adınızı girin",
+    "createNew": "Yeni oda oluştur",
+    "creating": "Oluşturuluyor...",
+    "createRoom": "Oda oluştur",
+    "joinExisting": "Mevcut odaya katıl",
+    "roomIdPlaceholder": "Oda ID'sini girin (örn. ABC123)",
+    "joining": "Katılıyor...",
+    "joinRoom": "Odaya katıl",
+    "roomId": "Oda: {{id}}",
+    "copyRoomId": "Oda ID'sini kopyala",
+    "members_one": "{{count}} üye",
+    "members_other": "{{count}} üye"
+  },
+  "fileTransfer": {
+    "incoming": "Gelen dosya transferi",
+    "description": "Bir eş sizinle özel mod paylaşmak istiyor",
+    "file": "Dosya:",
+    "size": "Boyut:",
+    "champion": "Şampiyon:",
+    "skin": "Skin:",
+    "transferring": "Dosya aktarılıyor...",
+    "completed": "Transfer tamamlandı!"
+  },
+  "customMod": {
+    "edit": "Özel modu düzenle",
+    "modName": "Mod adı",
+    "modNamePlaceholder": "Mod adını girin",
+    "previewImage": "Önizleme resmi (isteğe bağlı)",
+    "selectImage": "Resim seç",
+    "newImageSelected": "Yeni resim seçildi"
+  },
+  "social": {
+    "joinDiscord": "Discord'a katıl",
+    "viewGithub": "GitHub'da görüntüle",
+    "donate": "Bağış yap"
+  },
+  "lcu": {
+    "connected": "League istemcisine bağlandı",
+    "disconnected": "League istemcisinden bağlantı kesildi",
+    "championHovered": "Şampiyon seçildi",
+    "championLocked": "Şampiyon kilitlendi",
+    "viewSkins": "Skinleri görüntüle",
+    "connecting": "League istemcisine bağlanıyor...",
+    "connectionFailed": "League istemcisine bağlanılamadı",
+    "status": "LCU durumu",
+    "notConnected": "Bağlı değil",
+    "inChampSelect": "Şampiyon seçiminde",
+    "disabled": "Devre dışı",
+    "tooltipNotConnected": "Şampiyon seçimi sırasında otomatik şampiyon tespitini etkinleştirmek için League of Legends istemcisini başlatın",
+    "tooltipConnected": "League istemcisine bağlandı. Şampiyon seçtiğinizde bildirimler gösterecek",
+    "tooltipInChampSelect": "Şu anda şampiyon seçiminde. Bildirim görmek için bir şampiyon seçin",
+    "tooltipDisabled": "Şampiyon tespiti devre dışı. Şampiyon seçerken bildirimler almak için ayarlardan etkinleştirin",
+    "championLockedDescription": "{{champion}} şampiyonunu kilitlemişsiniz. Mevcut skinlere göz atmak ister misiniz?",
+    "championHoveredDescription": "{{champion}} şampiyonunun üzerine geldiniz. Mevcut skinlere göz atmak ister misiniz?",
+    "randomSkin": "Rastgele skin",
+    "randomRaritySkin": "Rastgele nadir skin"
+  },
+  "smartApply": {
+    "willApply": "Akıllı: {{count}}/{{total}}",
+    "applying": "Şunlar için {{count}} skin uygulanıyor: {{champions}}",
+    "success": "{{total}} skinden {{applied}} tanesi uygulandı",
+    "failed": "Skinler uygulanamadı",
+    "noSkinsToApply": "Takımınız için uygulanacak skin yok",
+    "noSkinsForTeam": "Takım şampiyonlarınız için seçilmiş skin yok"
+  },
+  "errors": {
+    "generic": "Bir hata oluştu",
+    "downloadFailed": "İndirme başarısız",
+    "connectionError": "Bağlantı hatası",
+    "pathNotSet": "Lütfen önce oyun yolunu ayarlayın",
+    "operationTimeout": "İşlem zaman aşımına uğradı. Lütfen tekrar deneyin.",
+    "skinNotAvailable": "Skin lol-skins deposunda mevcut değil veya eşleştirme yanlış"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "Tüm skinleri silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "confirmDeleteChampion": "{{champion}} için tüm skinleri silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+  }
+}

@@ -1,0 +1,417 @@
+{
+  "app": {
+    "title": "CSLOL Skin Launcher",
+    "loading": "Betöltés...",
+    "ready": "Kész"
+  },
+  "actions": {
+    "browse": "Tallózás",
+    "download": "Letöltés",
+    "update": "Frissítés",
+    "apply": "Alkalmazás",
+    "stop": "Leállítás",
+    "close": "Bezárás",
+    "minimize": "Kis méret",
+    "maximize": "Nagy méret",
+    "restore": "Visszaállítás",
+    "search": "Keresés",
+    "filter": "Szűrő",
+    "sort": "Rendezés",
+    "clearAll": "Összes törlése",
+    "clearFilters": "Szűrők törlése",
+    "save": "Mentés",
+    "saveChanges": "Változások mentése",
+    "delete": "Törlés",
+    "deleteAll": "Összes skin törlése",
+    "deleteAllForChampion": "Összes skin törlése {{champion}} számára",
+    "decline": "Elutasítás",
+    "accept": "Elfogadás",
+    "join": "Csatlakozás",
+    "cancel": "Mégse",
+    "leave": "Kilépés",
+    "create": "Létrehozás",
+    "copy": "Másolás",
+    "later": "Később",
+    "skipForNow": "Átugrom most",
+    "downloadAndInstall": "Letöltés és telepítés"
+  },
+  "nav": {
+    "favorites": "Kedvencek",
+    "settings": "Beállítások",
+    "about": "Névjegy"
+  },
+  "champion": {
+    "searchPlaceholder": "Bajnokok keresése",
+    "noData": "Nem található bajnok adat",
+    "downloadData": "Bajnok adatok letöltése",
+    "updateData": "Adatok frissítése",
+    "version": "Verzió",
+    "allChampions": "Összes bajnok",
+    "customMods": "Egyéni modok"
+  },
+  "skin": {
+    "searchPlaceholder": "Skinek keresése az összes bajnok között...",
+    "apply": "Skin alkalmazása",
+    "applied": "Alkalmazva",
+    "downloaded": "Letöltve",
+    "favorite": "Kedvencekhez adás",
+    "unfavorite": "Eltávolítás a kedvencekből",
+    "clickToApply": "Kattintson bármelyik skinre az azonnali alkalmazáshoz",
+    "showing_one": "{{count}} skin megjelenítése",
+    "showing_other": "{{count}} skin megjelenítése"
+  },
+  "status": {
+    "detectingGame": "Játék elérési út keresése...",
+    "gameDetected": "Játék elérési út automatikusan észlelve",
+    "gameNotFound": "Játék elérési út nem található. Kérjük, tallózzon manuálisan.",
+    "downloading": "{{name}} letöltése...",
+    "applying": "{{name}} alkalmazása...",
+    "applied": "{{name}} sikeresen alkalmazva!",
+    "stopping": "Patcher leállítása...",
+    "stopped": "Patcher leállítva",
+    "error": "Hiba: {{message}}",
+    "fetchingData": "Bajnok adatok lekérése...",
+    "autoAcceptedMatch": "Meccs automatikusan elfogadva!",
+    "dataFetched": "Sikeresen lekérve az adatok {{count}} bajnokhoz!",
+    "gamePathSet": "Játék elérési út sikeresen beállítva!",
+    "pleaseSetGamePath": "Kérjük, először állítsa be a játék elérési útvonalát",
+    "downloadingTools": "cslol-tools letöltése",
+    "toolsDownloaded": "Eszközök sikeresen letöltve!",
+    "stoppingCurrentPatcher": "Jelenlegi patcher leállítása",
+    "failedToStopPatcher": "Nem sikerült leállítani a patchert: {{error}}",
+    "deletedCustomMod": "Egyéni mod törölve: {{name}}",
+    "deletedSkin": "Skin törölve: {{name}}",
+    "failedToDeleteMod": "Nem sikerült törölni a modot: {{error}}",
+    "failedToDeleteSkin": "Nem sikerült törölni a skint: {{error}}",
+    "autoSelectedSkinsCleanedUp": "{{count}} automatikusan kiválasztott skin törölve"
+  },
+  "tools": {
+    "required": "CS:LOL Tools szükséges",
+    "description": "A CS:LOL mod eszközök szükségesek a skinek alkalmazásához. Szeretné most letölteni őket?",
+    "downloading": "Eszközök letöltése... {{progress}}%",
+    "downloadTools": "Eszközök letöltése"
+  },
+  "settings": {
+    "title": "Beállítások",
+    "description": "Alkalmazás beállítások konfigurálása",
+    "gamePath": "Játék elérési út",
+    "language": "Nyelv",
+    "theme": "Téma",
+    "notifications": "Értesítések",
+    "leagueClient": {
+      "title": "League Client integráció",
+      "description": "Funkciók engedélyezése, amelyek a League of Legends klienshez csatlakoznak"
+    },
+    "championDetection": {
+      "title": "Bajnok észlelés",
+      "description": "Automatikus értesítések megjelenítése, amikor bajnokokat választ a League kliensben"
+    },
+    "autoViewSkins": {
+      "title": "Skinek automatikus megtekintése",
+      "description": "Skinek automatikus megtekintése, amikor bajnokot észlel (kihagyja a megerősítő párbeszédablakot)"
+    },
+    "smartApply": {
+      "title": "Okos alkalmazás",
+      "description": "Csak a csapatában lévő bajnokok skinjeit tölti be (csökkenti a betöltési időt)"
+    },
+    "autoApply": {
+      "title": "Automatikus alkalmazás",
+      "description": "Skinek automatikus alkalmazása, amikor minden bajnok lezárva"
+    },
+    "autoApplyTriggerTime": {
+      "title": "Automatikus alkalmazás kiváltási ideje",
+      "description": "Másodpercek a játék kezdete előtt a skinek automatikus alkalmazásához (5-30 másodperc)"
+    },
+    "autoAccept": {
+      "title": "Meccs automatikus elfogadása",
+      "description": "Készenlét ellenőrzés automatikus elfogadása, amikor meccs található"
+    },
+    "autoPick": {
+      "title": "Automatikus választás",
+      "description": "Bajnokok automatikus választása a bajnokválasztás során",
+      "force": "Kényszerített választás",
+      "forceDescription": "Csapat választások felülbírálása és választás, még ha már kiválasztották is",
+      "championPriority": "Választási prioritás lista"
+    },
+    "autoBan": {
+      "title": "Automatikus tiltás",
+      "description": "Bajnokok automatikus tiltása a bajnokválasztás során",
+      "force": "Kényszerített tiltás",
+      "forceDescription": "Csapat szándék felülbírálása és tiltás, még ha csapattárs játszani akar is",
+      "championPriority": "Tiltási prioritás lista"
+    },
+    "selectChampion": "Bajnok kiválasztása",
+    "addChampion": "Bajnok hozzáadása",
+    "autoRandomSkin": {
+      "title": "Automatikus véletlenszerű skin",
+      "description": "Automatikusan véletlenszerű skin kiválasztása, amikor bajnokot észlel"
+    },
+    "autoRandomRaritySkin": {
+      "title": "Automatikus véletlenszerű ritka skin",
+      "description": "Automatikusan véletlenszerű skin kiválasztása ritkaságokkal (Epic, Legendary, stb.), amikor bajnokot észlel"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "Automatikus véletlenszerű kedvenc skin",
+      "description": "Automatikusan véletlenszerű skin kiválasztása a kedvenceiből, amikor bajnokot észlel"
+    },
+    "autoRandomHighestWinRateSkin": {
+      "title": "Automatikus véletlenszerű legmagasabb győzelmi arányú skin",
+      "description": "Automatikusan véletlenszerű skin kiválasztása a top 3 legmagasabb győzelmi arányú skinből"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "Automatikus véletlenszerű legmagasabb választási arányú skin",
+      "description": "Automatikusan véletlenszerű skin kiválasztása a top 3 legnépszerűbb skinből"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "Automatikus véletlenszerű legjátszottabb skin",
+      "description": "Automatikusan véletlenszerű skin kiválasztása a top 3 legjátszottabb skinből"
+    },
+    "inGameOverlay": {
+      "title": "Játékbeli overlay",
+      "description": "Overlay előzetes csatolása a League klienshez a gyorsabb skin értesítésekért (bármelyik Auto Random funkcióhoz szükséges)"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "Több skin engedélyezése bajnokonként",
+      "description": "Több skin használatának engedélyezése ugyanazon bajnokhoz egyidejűleg"
+    },
+    "autoFixModIssues": {
+      "title": "Mod problémák automatikus javítása importáláskor",
+      "description": "Automatikusan javítja a hiányzó életcsíkokat, anyagokat és VFX-eket modok importálásakor"
+    },
+    "tabs": {
+      "general": "Általános",
+      "leagueClient": "League kliens",
+      "skinManagement": "Skin kezelés"
+    },
+    "randomSkinSelection": {
+      "title": "Véletlenszerű skin kiválasztás",
+      "none": "Letiltva"
+    },
+    "minimizeToTray": {
+      "title": "Minimalizálás a tálcára",
+      "description": "Alkalmazás elrejtése a rendszertálcán a bezárás helyett a bezárás gombra kattintáskor"
+    }
+  },
+  "tray": {
+    "show": "Bocchi megjelenítése",
+    "hide": "Bocchi elrejtése",
+    "language": "Nyelv",
+    "openSettings": "Beállítások megnyitása",
+    "quit": "Bocchi kilépés"
+  },
+  "fileUpload": {
+    "uploadButton": "Egyéni mod feltöltése",
+    "importTitle": "Egyéni mod importálása",
+    "importDescription": "Opcionálisan válasszon egy bajnokot és állítson be egyéni nevet a modjához.",
+    "selectedFile": "Kiválasztott fájl",
+    "selectChampion": "Bajnok kiválasztása",
+    "championPlaceholder": "Nincs meghatározott bajnok",
+    "customName": "Egyéni név",
+    "customNamePlaceholder": "Adja meg a skin nevét...",
+    "importing": "Importálás...",
+    "import": "Importálás",
+    "noFileSelected": "Nincs kiválasztott fájl",
+    "invalidFile": "Érvénytelen fájlformátum",
+    "importSuccess": "Skin sikeresen importálva!",
+    "importFailed": "Skin importálása sikertelen",
+    "previewImage": "Előnézeti kép",
+    "browseImage": "Tallózás",
+    "noImageSelected": "Nincs kiválasztott kép",
+    "batchImportTitle": "Több fájl importálása",
+    "importingProgress": "{{current}} / {{total}} fájl importálása...",
+    "batchComplete": "Importálás befejezve!",
+    "succeeded": "sikeres",
+    "failed": "sikertelen",
+    "failedFiles": "Sikertelen fájlok:",
+    "close": "Bezárás",
+    "fixModIssues": "Mod problémák javítása",
+    "fixModIssuesDescription": "Javítja a hiányzó életcsíkokat, anyagokat és VFX-eket"
+  },
+  "editCustomSkin": {
+    "title": "Egyéni mod szerkesztése",
+    "modName": "Mod neve",
+    "modNamePlaceholder": "Adja meg a mod nevét",
+    "previewImage": "Előnézeti kép (opcionális)",
+    "selectImage": "Kép kiválasztása",
+    "newImageSelected": "Új kép kiválasztva",
+    "modMaintenance": "Mod karbantartás",
+    "fixModIssues": "Mod problémák javítása",
+    "fixing": "Javítás...",
+    "fixDescription": "Javítja a hiányzó életcsíkokat, anyagokat és VFX problémákat",
+    "startingFix": "Javítási folyamat indítása...",
+    "fixCompleted": "Javítás sikeresen befejezve!",
+    "fixFailed": "Javítás sikertelen: {{error}}",
+    "fixError": "Hiba történt a mod javítása során",
+    "saveChanges": "Változások mentése"
+  },
+  "cancel": "Mégse",
+  "success": "Siker",
+  "error": "Hiba",
+  "update": {
+    "available": "Frissítés elérhető",
+    "description": "A Bocchi új verziója letölthető.",
+    "whatsNew": "Mi újság",
+    "downloading": "Letöltés...",
+    "updateNow": "Frissítés most",
+    "championDataAvailable": "Bajnok adat frissítés elérhető",
+    "championDataDescription": "A bajnok adatok új verziója elérhető. Ez a frissítés tartalmazza a legújabb bajnokokat, skineket és egyéb játék tartalmat.",
+    "currentVersion": "Jelenlegi verzió: ",
+    "updating": "Frissítés..."
+  },
+  "skins": {
+    "selected_one": "{{count}} skin kiválasztva",
+    "selected_other": "{{count}} skin kiválasztva",
+    "toDownload": "({{count}} letöltésre)",
+    "downloaded": "Letöltött skinek",
+    "notDownloaded": "Nincs letöltve",
+    "repository": "Tárhely skinek",
+    "customImports": "Egyéni importálások",
+    "total": "Összesen: {{count}} skin",
+    "searchPlaceholder": "Keresés bajnok vagy skin név szerint...",
+    "noSkinsFound": "Nem találhatók skinek",
+    "userImport": "Felhasználói importálás",
+    "custom": "Egyéni",
+    "deleting": "Törlés...",
+    "chromas_one": "{{count}} chroma elérhető",
+    "chromas_other": "{{count}} chroma elérhető",
+    "selectChroma": "Chroma kiválasztása {{skinName}} számára",
+    "chooseChroma_one": "Válasszon {{count}} elérhető chroma közül",
+    "chooseChroma_other": "Válasszon {{count}} elérhető chroma közül",
+    "selectVariant": "Variáns kiválasztása {{skinName}} számára",
+    "chooseVariant": "Válasszon {{count}} elérhető {{type}} közül",
+    "exaltedVariant": "Magasztos variánsok",
+    "formVariant": "Forma variánsok",
+    "mySkins": "Saját skinek",
+    "roomSkins": "Szoba skinek",
+    "manage": "Kezelés",
+    "manageDownloaded": "Letöltött skinek kezelése",
+    "downloadedCount": "Letöltött skinek ({{count}})",
+    "allSkins": "Összes skin",
+    "autoSelected": "Automatikus"
+  },
+  "filters": {
+    "title": "Szűrők és rendezés",
+    "active": "Aktív",
+    "downloadStatus": "Letöltési állapot",
+    "all": "Összes",
+    "downloaded": "Letöltve",
+    "notDownloaded": "Nincs letöltve",
+    "chromas": "Chromák",
+    "hasChromas": "Van chromája",
+    "noChromas": "Nincs chromája",
+    "championType": "Bajnok típusa",
+    "sortBy": "Rendezés",
+    "nameAsc": "Név (A-Z)",
+    "nameDesc": "Név (Z-A)",
+    "skinNumAsc": "Skin sz. (Alacsony-Magas)",
+    "skinNumDesc": "Skin sz. (Magas-Alacsony)",
+    "championName": "Bajnok neve",
+    "rarityAsc": "Ritkaság (Alacsony-Magas)",
+    "rarityDesc": "Ritkaság (Magas-Alacsony)",
+    "winRateDesc": "Győzelmi arány (Magas-Alacsony)",
+    "winRateAsc": "Győzelmi arány (Alacsony-Magas)",
+    "pickRateDesc": "Választási arány (Magas-Alacsony)",
+    "pickRateAsc": "Választási arány (Alacsony-Magas)",
+    "totalGamesDesc": "Legjátszottabb",
+    "totalGamesAsc": "Legkevésbé játszott",
+    "rarity": "Ritkaság",
+    "rarities": {
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "ultimate": "Ultimate",
+      "mythic": "Mythic",
+      "transcendent": "Transcendent",
+      "exalted": "Exalted"
+    }
+  },
+  "patcher": {
+    "applying": "Alkalmazás...",
+    "stopping": "Leállítás...",
+    "stopPatcher": "Patcher leállítása",
+    "apply_one": "{{count}} skin alkalmazása",
+    "apply_other": "{{count}} skin alkalmazása",
+    "messages": "Patcher üzenetek:"
+  },
+  "room": {
+    "joinCreate": "Szoba csatlakozás/létrehozás",
+    "p2pRoom": "P2P szoba",
+    "description": "Hozzon létre új szobát vagy csatlakozzon meglévőhöz, hogy skineket osszon meg másokkal.",
+    "displayName": "Megjelenítendő név",
+    "displayNamePlaceholder": "Adja meg a nevét",
+    "createNew": "Új szoba létrehozása",
+    "creating": "Létrehozás...",
+    "createRoom": "Szoba létrehozása",
+    "joinExisting": "Meglévő szobához csatlakozás",
+    "roomIdPlaceholder": "Adja meg a szoba azonosítót (pl. ABC123)",
+    "joining": "Csatlakozás...",
+    "joinRoom": "Szobához csatlakozás",
+    "roomId": "Szoba: {{id}}",
+    "copyRoomId": "Szoba azonosító másolása",
+    "members_one": "{{count}} tag",
+    "members_other": "{{count}} tag"
+  },
+  "fileTransfer": {
+    "incoming": "Bejövő fájlátvitel",
+    "description": "Egy partner egyéni modot szeretne megosztani Önnel",
+    "file": "Fájl:",
+    "size": "Méret:",
+    "champion": "Bajnok:",
+    "skin": "Skin:",
+    "transferring": "Fájl átvitele...",
+    "completed": "Átvitel befejezve!"
+  },
+  "customMod": {
+    "edit": "Egyéni mod szerkesztése",
+    "modName": "Mod neve",
+    "modNamePlaceholder": "Adja meg a mod nevét",
+    "previewImage": "Előnézeti kép (opcionális)",
+    "selectImage": "Kép kiválasztása",
+    "newImageSelected": "Új kép kiválasztva"
+  },
+  "social": {
+    "joinDiscord": "Discord csatlakozás",
+    "viewGithub": "Megtekintés GitHubon",
+    "donate": "Adományozás"
+  },
+  "lcu": {
+    "connected": "Csatlakozva a League klienshez",
+    "disconnected": "Leválasztva a League kliensről",
+    "championHovered": "Bajnok kiválasztva",
+    "championLocked": "Bajnok lezárva",
+    "viewSkins": "Skinek megtekintése",
+    "connecting": "Csatlakozás a League klienshez...",
+    "connectionFailed": "Nem sikerült csatlakozni a League klienshez",
+    "status": "LCU állapot",
+    "notConnected": "Nincs csatlakozva",
+    "inChampSelect": "Bajnokválasztásban",
+    "disabled": "Letiltva",
+    "tooltipNotConnected": "Indítsa el a League of Legends klienst az automatikus bajnok észlelés engedélyezéséhez a bajnokválasztás során",
+    "tooltipConnected": "Csatlakozva a League klienshez. Értesítéseket jelenít meg, amikor bajnokokat választ",
+    "tooltipInChampSelect": "Jelenleg bajnokválasztásban. Válasszon bajnokot az értesítés megtekintéséhez",
+    "tooltipDisabled": "A bajnok észlelés le van tiltva. Engedélyezze a beállításokban, hogy értesítéseket kapjon bajnokok kiválasztásakor",
+    "championLockedDescription": "Lezárta {{champion}} bajnokot. Szeretné megtekinteni az elérhető skineket?",
+    "championHoveredDescription": "{{champion}} bajnok fölött lebeg. Szeretné megtekinteni az elérhető skineket?",
+    "randomSkin": "Véletlenszerű skin",
+    "randomRaritySkin": "Véletlenszerű ritka skin"
+  },
+  "smartApply": {
+    "willApply": "Okos: {{count}}/{{total}}",
+    "applying": "{{count}} skin alkalmazása ehhez: {{champions}}",
+    "success": "{{applied}} / {{total}} skin alkalmazva",
+    "failed": "Nem sikerült alkalmazni a skineket",
+    "noSkinsToApply": "Nincs alkalmazandó skin a csapatához",
+    "noSkinsForTeam": "Nincs kiválasztott skin a csapat bajnokaihoz"
+  },
+  "errors": {
+    "generic": "Hiba történt",
+    "downloadFailed": "Letöltés sikertelen",
+    "connectionError": "Kapcsolati hiba",
+    "pathNotSet": "Kérjük, először állítsa be a játék elérési útvonalát",
+    "operationTimeout": "A művelet túllépte az időkorlátot. Kérjük, próbálja újra.",
+    "skinNotAvailable": "A skin nem elérhető a lol-skins tárolóban vagy a leképezés hibás"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "Biztosan törölni szeretné az összes skint? Ez a művelet nem visszavonható.",
+    "confirmDeleteChampion": "Biztosan törölni szeretné az összes skint {{champion}} számára? Ez a művelet nem visszavonható."
+  }
+}

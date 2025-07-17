@@ -1331,6 +1331,18 @@ function setupIpcHandlers(): void {
     }
   })
 
+  // System locale detection
+  ipcMain.handle('get-system-locale', async () => {
+    try {
+      // Get Windows system locale
+      const systemLocale = app.getLocale()
+      return { success: true, locale: systemLocale }
+    } catch (error) {
+      console.error('Failed to get system locale:', error)
+      return { success: false, locale: 'en-US' }
+    }
+  })
+
   // Auto-updater handlers
   ipcMain.handle('check-for-updates', async () => {
     try {

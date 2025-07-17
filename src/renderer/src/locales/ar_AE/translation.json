@@ -1,0 +1,417 @@
+{
+  "app": {
+    "title": "CSLOL Skin Launcher",
+    "loading": "جاري التحميل...",
+    "ready": "جاهز"
+  },
+  "actions": {
+    "browse": "استعراض",
+    "download": "تحميل",
+    "update": "تحديث",
+    "apply": "تطبيق",
+    "stop": "إيقاف",
+    "close": "إغلاق",
+    "minimize": "تصغير",
+    "maximize": "تكبير",
+    "restore": "استعادة",
+    "search": "بحث",
+    "filter": "تصفية",
+    "sort": "ترتيب",
+    "clearAll": "مسح الكل",
+    "clearFilters": "مسح المرشحات",
+    "save": "حفظ",
+    "saveChanges": "حفظ التغييرات",
+    "delete": "حذف",
+    "deleteAll": "حذف جميع الأشكال",
+    "deleteAllForChampion": "حذف جميع الأشكال لـ {{champion}}",
+    "decline": "رفض",
+    "accept": "موافقة",
+    "join": "انضمام",
+    "cancel": "إلغاء",
+    "leave": "مغادرة",
+    "create": "إنشاء",
+    "copy": "نسخ",
+    "later": "لاحقاً",
+    "skipForNow": "تخطي الآن",
+    "downloadAndInstall": "تحميل وتثبيت"
+  },
+  "nav": {
+    "favorites": "المفضلة",
+    "settings": "الإعدادات",
+    "about": "حول"
+  },
+  "champion": {
+    "searchPlaceholder": "البحث عن الأبطال",
+    "noData": "لم يتم العثور على بيانات الأبطال",
+    "downloadData": "تحميل بيانات الأبطال",
+    "updateData": "تحديث البيانات",
+    "version": "الإصدار",
+    "allChampions": "جميع الأبطال",
+    "customMods": "التعديلات المخصصة"
+  },
+  "skin": {
+    "searchPlaceholder": "البحث عن الأشكال في جميع الأبطال...",
+    "apply": "تطبيق الشكل",
+    "applied": "مطبق",
+    "downloaded": "تم التحميل",
+    "favorite": "إضافة إلى المفضلة",
+    "unfavorite": "إزالة من المفضلة",
+    "clickToApply": "انقر على أي شكل لتطبيقه فوراً",
+    "showing_one": "عرض {{count}} شكل",
+    "showing_other": "عرض {{count}} أشكال"
+  },
+  "status": {
+    "detectingGame": "جاري اكتشاف مسار اللعبة...",
+    "gameDetected": "تم اكتشاف مسار اللعبة تلقائياً",
+    "gameNotFound": "لم يتم العثور على مسار اللعبة. يرجى التصفح يدوياً.",
+    "downloading": "جاري تحميل {{name}}...",
+    "applying": "جاري تطبيق {{name}}...",
+    "applied": "تم تطبيق {{name}} بنجاح!",
+    "stopping": "جاري إيقاف المطبق...",
+    "stopped": "تم إيقاف المطبق",
+    "error": "خطأ: {{message}}",
+    "fetchingData": "جاري جلب بيانات الأبطال...",
+    "autoAcceptedMatch": "تم قبول المباراة تلقائياً!",
+    "dataFetched": "تم جلب البيانات بنجاح لـ {{count}} بطل!",
+    "gamePathSet": "تم تعيين مسار اللعبة بنجاح!",
+    "pleaseSetGamePath": "يرجى تعيين مسار اللعبة أولاً",
+    "downloadingTools": "جاري تحميل cslol-tools",
+    "toolsDownloaded": "تم تحميل الأدوات بنجاح!",
+    "stoppingCurrentPatcher": "جاري إيقاف المطبق الحالي",
+    "failedToStopPatcher": "فشل إيقاف المطبق: {{error}}",
+    "deletedCustomMod": "تم حذف التعديل المخصص: {{name}}",
+    "deletedSkin": "تم حذف الشكل: {{name}}",
+    "failedToDeleteMod": "فشل حذف التعديل: {{error}}",
+    "failedToDeleteSkin": "فشل حذف الشكل: {{error}}",
+    "autoSelectedSkinsCleanedUp": "تم تنظيف {{count}} أشكال مختارة تلقائياً"
+  },
+  "tools": {
+    "required": "أدوات CS:LOL مطلوبة",
+    "description": "أدوات تعديل CS:LOL مطلوبة لتطبيق الأشكال. هل تريد تحميلها الآن؟",
+    "downloading": "جاري تحميل الأدوات... {{progress}}%",
+    "downloadTools": "تحميل الأدوات"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "description": "تكوين تفضيلات التطبيق",
+    "gamePath": "مسار اللعبة",
+    "language": "اللغة",
+    "theme": "المظهر",
+    "notifications": "الإشعارات",
+    "leagueClient": {
+      "title": "تكامل عميل League",
+      "description": "تمكين الميزات التي تتصل بعميل League of Legends"
+    },
+    "championDetection": {
+      "title": "اكتشاف الأبطال",
+      "description": "إظهار الإشعارات تلقائياً عند اختيار الأبطال في عميل League"
+    },
+    "autoViewSkins": {
+      "title": "عرض الأشكال تلقائياً",
+      "description": "عرض الأشكال تلقائياً عند اكتشاف بطل (تخطي مربع التأكيد)"
+    },
+    "smartApply": {
+      "title": "التطبيق الذكي",
+      "description": "تحميل الأشكال للأبطال في فريقك فقط (يقلل وقت التحميل)"
+    },
+    "autoApply": {
+      "title": "التطبيق التلقائي",
+      "description": "تطبيق الأشكال تلقائياً عند قفل جميع الأبطال"
+    },
+    "autoApplyTriggerTime": {
+      "title": "وقت تشغيل التطبيق التلقائي",
+      "description": "ثوانٍ قبل بدء اللعبة لتطبيق الأشكال تلقائياً (5-30 ثانية)"
+    },
+    "autoAccept": {
+      "title": "قبول المباراة تلقائياً",
+      "description": "قبول فحص الجاهزية تلقائياً عند العثور على مباراة"
+    },
+    "autoPick": {
+      "title": "الاختيار التلقائي",
+      "description": "اختيار الأبطال تلقائياً خلال اختيار الأبطال",
+      "force": "إجبار الاختيار",
+      "forceDescription": "تجاوز اختيارات الفريق والاختيار حتى لو كان مختاراً مسبقاً",
+      "championPriority": "قائمة أولوية الاختيار"
+    },
+    "autoBan": {
+      "title": "الحظر التلقائي",
+      "description": "حظر الأبطال تلقائياً خلال اختيار الأبطال",
+      "force": "إجبار الحظر",
+      "forceDescription": "تجاوز نية الفريق والحظر حتى لو كان زميل يريد اللعب",
+      "championPriority": "قائمة أولوية الحظر"
+    },
+    "selectChampion": "اختر بطل",
+    "addChampion": "إضافة بطل",
+    "autoRandomSkin": {
+      "title": "شكل عشوائي تلقائي",
+      "description": "اختيار شكل عشوائي تلقائياً عند اكتشاف بطل"
+    },
+    "autoRandomRaritySkin": {
+      "title": "شكل نادر عشوائي تلقائي",
+      "description": "اختيار شكل عشوائي بندرة (ملحمي، أسطوري، إلخ) تلقائياً عند اكتشاف بطل"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "شكل مفضل عشوائي تلقائي",
+      "description": "اختيار شكل عشوائي من المفضلة تلقائياً عند اكتشاف بطل"
+    },
+    "autoRandomHighestWinRateSkin": {
+      "title": "شكل أعلى معدل فوز عشوائي تلقائي",
+      "description": "اختيار شكل عشوائي من أعلى 3 أشكال بمعدل فوز"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "شكل أعلى معدل اختيار عشوائي تلقائي",
+      "description": "اختيار شكل عشوائي من أعلى 3 أشكال شعبية"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "شكل أكثر لعب عشوائي تلقائي",
+      "description": "اختيار شكل عشوائي من أعلى 3 أشكال لعباً"
+    },
+    "inGameOverlay": {
+      "title": "تراكب داخل اللعبة",
+      "description": "ربط التراكب مسبقاً بعميل League للحصول على إشعارات أسرع للأشكال (يتطلب أي ميزة عشوائية تلقائية)"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "السماح بأشكال متعددة لكل بطل",
+      "description": "تمكين استخدام أشكال متعددة لنفس البطل في نفس الوقت"
+    },
+    "autoFixModIssues": {
+      "title": "إصلاح مشاكل التعديل تلقائياً عند الاستيراد",
+      "description": "إصلاح أشرطة الصحة المفقودة والمواد والمؤثرات البصرية تلقائياً عند استيراد التعديلات"
+    },
+    "tabs": {
+      "general": "عام",
+      "leagueClient": "عميل League",
+      "skinManagement": "إدارة الأشكال"
+    },
+    "randomSkinSelection": {
+      "title": "اختيار شكل عشوائي",
+      "none": "معطل"
+    },
+    "minimizeToTray": {
+      "title": "تصغير إلى صينية النظام",
+      "description": "إخفاء التطبيق في صينية النظام بدلاً من الإغلاق عند النقر على زر الإغلاق"
+    }
+  },
+  "tray": {
+    "show": "إظهار Bocchi",
+    "hide": "إخفاء Bocchi",
+    "language": "اللغة",
+    "openSettings": "فتح الإعدادات",
+    "quit": "إنهاء Bocchi"
+  },
+  "fileUpload": {
+    "uploadButton": "رفع تعديل مخصص",
+    "importTitle": "استيراد تعديل مخصص",
+    "importDescription": "اختر بطل وضع اسم مخصص لتعديلك اختيارياً.",
+    "selectedFile": "الملف المختار",
+    "selectChampion": "اختر بطل",
+    "championPlaceholder": "لا يوجد بطل محدد",
+    "customName": "اسم مخصص",
+    "customNamePlaceholder": "أدخل اسم الشكل...",
+    "importing": "جاري الاستيراد...",
+    "import": "استيراد",
+    "noFileSelected": "لم يتم اختيار ملف",
+    "invalidFile": "تنسيق ملف غير صالح",
+    "importSuccess": "تم استيراد الشكل بنجاح!",
+    "importFailed": "فشل استيراد الشكل",
+    "previewImage": "صورة المعاينة",
+    "browseImage": "استعراض",
+    "noImageSelected": "لم يتم اختيار صورة",
+    "batchImportTitle": "استيراد ملفات متعددة",
+    "importingProgress": "جاري الاستيراد {{current}} من {{total}} ملف...",
+    "batchComplete": "اكتمل الاستيراد!",
+    "succeeded": "نجح",
+    "failed": "فشل",
+    "failedFiles": "الملفات الفاشلة:",
+    "close": "إغلاق",
+    "fixModIssues": "إصلاح مشاكل التعديل",
+    "fixModIssuesDescription": "إصلاح أشرطة الصحة المفقودة والمواد والمؤثرات البصرية"
+  },
+  "editCustomSkin": {
+    "title": "تعديل التعديل المخصص",
+    "modName": "اسم التعديل",
+    "modNamePlaceholder": "أدخل اسم التعديل",
+    "previewImage": "صورة المعاينة (اختياري)",
+    "selectImage": "اختر صورة",
+    "newImageSelected": "تم اختيار صورة جديدة",
+    "modMaintenance": "صيانة التعديل",
+    "fixModIssues": "إصلاح مشاكل التعديل",
+    "fixing": "جاري الإصلاح...",
+    "fixDescription": "إصلاح مشاكل أشرطة الصحة المفقودة والمواد والمؤثرات البصرية",
+    "startingFix": "بدء عملية الإصلاح...",
+    "fixCompleted": "اكتمل الإصلاح بنجاح!",
+    "fixFailed": "فشل الإصلاح: {{error}}",
+    "fixError": "حدث خطأ أثناء إصلاح التعديل",
+    "saveChanges": "حفظ التغييرات"
+  },
+  "cancel": "إلغاء",
+  "success": "نجح",
+  "error": "خطأ",
+  "update": {
+    "available": "تحديث متاح",
+    "description": "إصدار جديد من Bocchi متاح للتحميل.",
+    "whatsNew": "ما الجديد",
+    "downloading": "جاري التحميل...",
+    "updateNow": "تحديث الآن",
+    "championDataAvailable": "تحديث بيانات الأبطال متاح",
+    "championDataDescription": "إصدار جديد من بيانات الأبطال متاح. هذا التحديث يتضمن أحدث الأبطال والأشكال ومحتوى اللعبة الآخر.",
+    "currentVersion": "الإصدار الحالي: ",
+    "updating": "جاري التحديث..."
+  },
+  "skins": {
+    "selected_one": "تم اختيار {{count}} شكل",
+    "selected_other": "تم اختيار {{count}} أشكال",
+    "toDownload": "({{count}} للتحميل)",
+    "downloaded": "الأشكال المحملة",
+    "notDownloaded": "غير محمل",
+    "repository": "أشكال المستودع",
+    "customImports": "الاستيرادات المخصصة",
+    "total": "المجموع: {{count}} شكل",
+    "searchPlaceholder": "البحث بالبطل أو اسم الشكل...",
+    "noSkinsFound": "لم يتم العثور على أشكال",
+    "userImport": "استيراد المستخدم",
+    "custom": "مخصص",
+    "deleting": "جاري الحذف...",
+    "chromas_one": "{{count}} لون متاح",
+    "chromas_other": "{{count}} ألوان متاحة",
+    "selectChroma": "اختر لون لـ {{skinName}}",
+    "chooseChroma_one": "اختر من {{count}} لون متاح",
+    "chooseChroma_other": "اختر من {{count}} ألوان متاحة",
+    "selectVariant": "اختر متغير لـ {{skinName}}",
+    "chooseVariant": "اختر من {{count}} {{type}} متاح",
+    "exaltedVariant": "متغيرات عالية",
+    "formVariant": "متغيرات الشكل",
+    "mySkins": "أشكالي",
+    "roomSkins": "أشكال الغرفة",
+    "manage": "إدارة",
+    "manageDownloaded": "إدارة الأشكال المحملة",
+    "downloadedCount": "الأشكال المحملة ({{count}})",
+    "allSkins": "جميع الأشكال",
+    "autoSelected": "تلقائي"
+  },
+  "filters": {
+    "title": "المرشحات والترتيب",
+    "active": "نشط",
+    "downloadStatus": "حالة التحميل",
+    "all": "الكل",
+    "downloaded": "محمل",
+    "notDownloaded": "غير محمل",
+    "chromas": "الألوان",
+    "hasChromas": "لديه ألوان",
+    "noChromas": "لا يوجد ألوان",
+    "championType": "نوع البطل",
+    "sortBy": "ترتيب حسب",
+    "nameAsc": "الاسم (أ-ي)",
+    "nameDesc": "الاسم (ي-أ)",
+    "skinNumAsc": "رقم الشكل (منخفض إلى مرتفع)",
+    "skinNumDesc": "رقم الشكل (مرتفع إلى منخفض)",
+    "championName": "اسم البطل",
+    "rarityAsc": "الندرة (منخفض إلى مرتفع)",
+    "rarityDesc": "الندرة (مرتفع إلى منخفض)",
+    "winRateDesc": "معدل الفوز (مرتفع إلى منخفض)",
+    "winRateAsc": "معدل الفوز (منخفض إلى مرتفع)",
+    "pickRateDesc": "معدل الاختيار (مرتفع إلى منخفض)",
+    "pickRateAsc": "معدل الاختيار (منخفض إلى مرتفع)",
+    "totalGamesDesc": "الأكثر لعباً",
+    "totalGamesAsc": "الأقل لعباً",
+    "rarity": "الندرة",
+    "rarities": {
+      "epic": "ملحمي",
+      "legendary": "أسطوري",
+      "ultimate": "نهائي",
+      "mythic": "أسطوري",
+      "transcendent": "متسامي",
+      "exalted": "عالي"
+    }
+  },
+  "patcher": {
+    "applying": "جاري التطبيق...",
+    "stopping": "جاري الإيقاف...",
+    "stopPatcher": "إيقاف المطبق",
+    "apply_one": "تطبيق {{count}} شكل",
+    "apply_other": "تطبيق {{count}} أشكال",
+    "messages": "رسائل المطبق:"
+  },
+  "room": {
+    "joinCreate": "انضمام/إنشاء غرفة",
+    "p2pRoom": "غرفة P2P",
+    "description": "أنشئ غرفة جديدة أو انضم إلى موجودة لمشاركة الأشكال مع الآخرين.",
+    "displayName": "اسم العرض",
+    "displayNamePlaceholder": "أدخل اسمك",
+    "createNew": "إنشاء غرفة جديدة",
+    "creating": "جاري الإنشاء...",
+    "createRoom": "إنشاء غرفة",
+    "joinExisting": "انضمام لغرفة موجودة",
+    "roomIdPlaceholder": "أدخل معرف الغرفة (مثل ABC123)",
+    "joining": "جاري الانضمام...",
+    "joinRoom": "انضمام للغرفة",
+    "roomId": "الغرفة: {{id}}",
+    "copyRoomId": "نسخ معرف الغرفة",
+    "members_one": "{{count}} عضو",
+    "members_other": "{{count}} أعضاء"
+  },
+  "fileTransfer": {
+    "incoming": "نقل ملف وارد",
+    "description": "نظير يريد مشاركة تعديل مخصص معك",
+    "file": "الملف:",
+    "size": "الحجم:",
+    "champion": "البطل:",
+    "skin": "الشكل:",
+    "transferring": "جاري نقل الملف...",
+    "completed": "اكتمل النقل!"
+  },
+  "customMod": {
+    "edit": "تعديل التعديل المخصص",
+    "modName": "اسم التعديل",
+    "modNamePlaceholder": "أدخل اسم التعديل",
+    "previewImage": "صورة المعاينة (اختياري)",
+    "selectImage": "اختر صورة",
+    "newImageSelected": "تم اختيار صورة جديدة"
+  },
+  "social": {
+    "joinDiscord": "انضمام لـ Discord",
+    "viewGithub": "عرض على GitHub",
+    "donate": "تبرع"
+  },
+  "lcu": {
+    "connected": "متصل بعميل League",
+    "disconnected": "منقطع عن عميل League",
+    "championHovered": "تم اختيار البطل",
+    "championLocked": "تم قفل البطل",
+    "viewSkins": "عرض الأشكال",
+    "connecting": "جاري الاتصال بعميل League...",
+    "connectionFailed": "فشل الاتصال بعميل League",
+    "status": "حالة LCU",
+    "notConnected": "غير متصل",
+    "inChampSelect": "في اختيار الأبطال",
+    "disabled": "معطل",
+    "tooltipNotConnected": "ابدأ عميل League of Legends لتمكين اكتشاف الأبطال التلقائي خلال اختيار الأبطال",
+    "tooltipConnected": "متصل بعميل League. سيظهر إشعارات عند اختيار الأبطال",
+    "tooltipInChampSelect": "حالياً في اختيار الأبطال. اختر بطل لرؤية إشعار",
+    "tooltipDisabled": "اكتشاف الأبطال معطل. فعله في الإعدادات لتلقي إشعارات عند اختيار الأبطال",
+    "championLockedDescription": "لقد قفلت {{champion}}. هل تريد تصفح الأشكال المتاحة؟",
+    "championHoveredDescription": "تحوم فوق {{champion}}. هل تريد تصفح الأشكال المتاحة؟",
+    "randomSkin": "شكل عشوائي",
+    "randomRaritySkin": "شكل نادر عشوائي"
+  },
+  "smartApply": {
+    "willApply": "ذكي: {{count}}/{{total}}",
+    "applying": "تطبيق {{count}} أشكال لـ: {{champions}}",
+    "success": "تم تطبيق {{applied}} من {{total}} أشكال",
+    "failed": "فشل تطبيق الأشكال",
+    "noSkinsToApply": "لا توجد أشكال لتطبيقها لفريقك",
+    "noSkinsForTeam": "لا توجد أشكال مختارة لأبطال فريقك"
+  },
+  "errors": {
+    "generic": "حدث خطأ",
+    "downloadFailed": "فشل التحميل",
+    "connectionError": "خطأ في الاتصال",
+    "pathNotSet": "يرجى تعيين مسار اللعبة أولاً",
+    "operationTimeout": "انتهت مهلة العملية. يرجى المحاولة مرة أخرى.",
+    "skinNotAvailable": "الشكل غير متاح في مستودع lol-skins أو التطابق خاطئ"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "هل أنت متأكد من حذف جميع الأشكال؟ هذا الإجراء لا يمكن التراجع عنه.",
+    "confirmDeleteChampion": "هل أنت متأكد من حذف جميع الأشكال لـ {{champion}}؟ هذا الإجراء لا يمكن التراجع عنه."
+  }
+}

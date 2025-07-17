@@ -1,0 +1,417 @@
+{
+  "app": {
+    "title": "CSLOL Skin Launcher",
+    "loading": "Načítání...",
+    "ready": "Připraveno"
+  },
+  "actions": {
+    "browse": "Procházet",
+    "download": "Stáhnout",
+    "update": "Aktualizovat",
+    "apply": "Použít",
+    "stop": "Zastavit",
+    "close": "Zavřít",
+    "minimize": "Minimalizovat",
+    "maximize": "Maximalizovat",
+    "restore": "Obnovit",
+    "search": "Hledat",
+    "filter": "Filtrovat",
+    "sort": "Seřadit",
+    "clearAll": "Vymazat vše",
+    "clearFilters": "Vymazat filtry",
+    "save": "Uložit",
+    "saveChanges": "Uložit změny",
+    "delete": "Smazat",
+    "deleteAll": "Smazat všechny skiny",
+    "deleteAllForChampion": "Smazat všechny skiny pro {{champion}}",
+    "decline": "Odmítnout",
+    "accept": "Přijmout",
+    "join": "Připojit se",
+    "cancel": "Zrušit",
+    "leave": "Opustit",
+    "create": "Vytvořit",
+    "copy": "Kopírovat",
+    "later": "Později",
+    "skipForNow": "Přeskočit prozatím",
+    "downloadAndInstall": "Stáhnout a nainstalovat"
+  },
+  "nav": {
+    "favorites": "Oblíbené",
+    "settings": "Nastavení",
+    "about": "O aplikaci"
+  },
+  "champion": {
+    "searchPlaceholder": "Hledat šampiony",
+    "noData": "Nebyla nalezena žádná data šampionů",
+    "downloadData": "Stáhnout data šampionů",
+    "updateData": "Aktualizovat data",
+    "version": "Verze",
+    "allChampions": "Všichni šampioni",
+    "customMods": "Vlastní módy"
+  },
+  "skin": {
+    "searchPlaceholder": "Hledat skiny ve všech šampionech...",
+    "apply": "Použít skin",
+    "applied": "Použito",
+    "downloaded": "Staženo",
+    "favorite": "Přidat do oblíbených",
+    "unfavorite": "Odebrat z oblíbených",
+    "clickToApply": "Klikněte na jakýkoli skin pro okamžité použití",
+    "showing_one": "Zobrazuje se {{count}} skin",
+    "showing_other": "Zobrazuje se {{count}} skinů"
+  },
+  "status": {
+    "detectingGame": "Detekuje se cesta ke hře...",
+    "gameDetected": "Cesta ke hře byla automaticky detekována",
+    "gameNotFound": "Cesta ke hře nebyla nalezena. Prosím vyberte ji ručně.",
+    "downloading": "Stahuje se {{name}}...",
+    "applying": "Aplikuje se {{name}}...",
+    "applied": "{{name}} byl úspěšně aplikován!",
+    "stopping": "Zastavuje se patcher...",
+    "stopped": "Patcher zastaven",
+    "error": "Chyba: {{message}}",
+    "fetchingData": "Načítají se data šampionů...",
+    "autoAcceptedMatch": "Zápas byl automaticky přijat!",
+    "dataFetched": "Úspěšně načtena data pro {{count}} šampionů!",
+    "gamePathSet": "Cesta ke hře úspěšně nastavena!",
+    "pleaseSetGamePath": "Prosím nejprve nastavte cestu ke hře",
+    "downloadingTools": "Stahuje se cslol-tools",
+    "toolsDownloaded": "Nástroje úspěšně staženy!",
+    "stoppingCurrentPatcher": "Zastavuje se současný patcher",
+    "failedToStopPatcher": "Nepodařilo se zastavit patcher: {{error}}",
+    "deletedCustomMod": "Smazán vlastní mód: {{name}}",
+    "deletedSkin": "Smazán skin: {{name}}",
+    "failedToDeleteMod": "Nepodařilo se smazat mód: {{error}}",
+    "failedToDeleteSkin": "Nepodařilo se smazat skin: {{error}}",
+    "autoSelectedSkinsCleanedUp": "Vyčištěno {{count}} automaticky vybraných skinů"
+  },
+  "tools": {
+    "required": "Vyžaduje se CS:LOL Tools",
+    "description": "Nástroje CS:LOL mod jsou potřebné pro aplikaci skinů. Chcete je nyní stáhnout?",
+    "downloading": "Stahuje se nástroje... {{progress}}%",
+    "downloadTools": "Stáhnout nástroje"
+  },
+  "settings": {
+    "title": "Nastavení",
+    "description": "Konfigurovat předvolby aplikace",
+    "gamePath": "Cesta ke hře",
+    "language": "Jazyk",
+    "theme": "Téma",
+    "notifications": "Oznámení",
+    "leagueClient": {
+      "title": "Integrace s League klientem",
+      "description": "Povolit funkce, které se připojují k League of Legends klientu"
+    },
+    "championDetection": {
+      "title": "Detekce šampiona",
+      "description": "Automaticky zobrazit oznámení při výběru šampionů v League klientu"
+    },
+    "autoViewSkins": {
+      "title": "Automatické zobrazení skinů",
+      "description": "Automaticky zobrazit skiny při detekci šampiona (přeskočí potvrzovací dialog)"
+    },
+    "smartApply": {
+      "title": "Chytré použití",
+      "description": "Načíst pouze skiny pro šampiony ve vašem týmu (zkrátí dobu načítání)"
+    },
+    "autoApply": {
+      "title": "Automatické použití",
+      "description": "Automaticky aplikovat skiny když jsou všichni šampioni uzamčeni"
+    },
+    "autoApplyTriggerTime": {
+      "title": "Čas spuštění automatického použití",
+      "description": "Sekundy před začátkem hry pro automatické použití skinů (5-30 sekund)"
+    },
+    "autoAccept": {
+      "title": "Automatické přijetí zápasu",
+      "description": "Automaticky přijmout kontrolu připravenosti když je nalezen zápas"
+    },
+    "autoPick": {
+      "title": "Automatický výběr",
+      "description": "Automaticky vybrat šampiony během výběru šampionů",
+      "force": "Vynucený výběr",
+      "forceDescription": "Přepsat týmové výběry a vybrat i když je již vybrán",
+      "championPriority": "Seznam priorit výběru"
+    },
+    "autoBan": {
+      "title": "Automatický ban",
+      "description": "Automaticky banovat šampiony během výběru šampionů",
+      "force": "Vynucený ban",
+      "forceDescription": "Přepsat týmový záměr a banovat i když spoluhráč chce hrát",
+      "championPriority": "Seznam priorit banování"
+    },
+    "selectChampion": "Vybrat šampiona",
+    "addChampion": "Přidat šampiona",
+    "autoRandomSkin": {
+      "title": "Automatický náhodný skin",
+      "description": "Automaticky vybrat náhodný skin při detekci šampiona"
+    },
+    "autoRandomRaritySkin": {
+      "title": "Automatický náhodný vzácný skin",
+      "description": "Automaticky vybrat náhodný skin se vzácností (Epic, Legendary, atd.) při detekci šampiona"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "Automatický náhodný oblíbený skin",
+      "description": "Automaticky vybrat náhodný skin z vašich oblíbených při detekci šampiona"
+    },
+    "autoRandomHighestWinRateSkin": {
+      "title": "Automatický náhodný skin s nejvyšší win rate",
+      "description": "Automaticky vybrat náhodný skin z top 3 skinů s nejvyšší win rate"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "Automatický náhodný skin s nejvyšší pick rate",
+      "description": "Automaticky vybrat náhodný skin z top 3 nejpopulárnějších skinů"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "Automatický náhodný nejhranější skin",
+      "description": "Automaticky vybrat náhodný skin z top 3 nejhranějších skinů"
+    },
+    "inGameOverlay": {
+      "title": "Overlay ve hře",
+      "description": "Předpřipojit overlay k League klientu pro rychlejší oznámení o skinech (vyžaduje jakoukoliv funkci Auto Random)"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "Povolit více skinů na šampiona",
+      "description": "Povolit použití více skinů pro stejného šampiona současně"
+    },
+    "autoFixModIssues": {
+      "title": "Automaticky opravit problémy s módy při importu",
+      "description": "Automaticky opravit chybějící health bary, materiály a VFX při importu módů"
+    },
+    "tabs": {
+      "general": "Obecné",
+      "leagueClient": "League klient",
+      "skinManagement": "Správa skinů"
+    },
+    "randomSkinSelection": {
+      "title": "Náhodný výběr skinu",
+      "none": "Zakázáno"
+    },
+    "minimizeToTray": {
+      "title": "Minimalizovat do systray",
+      "description": "Skrýt aplikaci do systémové lišty místo zavření při kliknutí na zavřít"
+    }
+  },
+  "tray": {
+    "show": "Zobrazit Bocchi",
+    "hide": "Skrýt Bocchi",
+    "language": "Jazyk",
+    "openSettings": "Otevřít nastavení",
+    "quit": "Ukončit Bocchi"
+  },
+  "fileUpload": {
+    "uploadButton": "Nahrát vlastní mód",
+    "importTitle": "Importovat vlastní mód",
+    "importDescription": "Volitelně vyberte šampiona a nastavte vlastní název pro váš mód.",
+    "selectedFile": "Vybraný soubor",
+    "selectChampion": "Vybrat šampiona",
+    "championPlaceholder": "Žádný specifický šampion",
+    "customName": "Vlastní název",
+    "customNamePlaceholder": "Zadejte název skinu...",
+    "importing": "Importuje se...",
+    "import": "Importovat",
+    "noFileSelected": "Nebyl vybrán žádný soubor",
+    "invalidFile": "Neplatný formát souboru",
+    "importSuccess": "Skin úspěšně importován!",
+    "importFailed": "Nepodařilo se importovat skin",
+    "previewImage": "Náhled obrázku",
+    "browseImage": "Procházet",
+    "noImageSelected": "Nebyl vybrán žádný obrázek",
+    "batchImportTitle": "Importování více souborů",
+    "importingProgress": "Importuje se {{current}} z {{total}} souborů...",
+    "batchComplete": "Import dokončen!",
+    "succeeded": "úspěšně",
+    "failed": "neúspěšně",
+    "failedFiles": "Neúspěšné soubory:",
+    "close": "Zavřít",
+    "fixModIssues": "Opravit problémy s módy",
+    "fixModIssuesDescription": "Opravuje chybějící health bary, materiály a VFX"
+  },
+  "editCustomSkin": {
+    "title": "Upravit vlastní mód",
+    "modName": "Název módu",
+    "modNamePlaceholder": "Zadejte název módu",
+    "previewImage": "Náhled obrázku (volitelné)",
+    "selectImage": "Vybrat obrázek",
+    "newImageSelected": "Vybrán nový obrázek",
+    "modMaintenance": "Údržba módu",
+    "fixModIssues": "Opravit problémy s módy",
+    "fixing": "Opravuje se...",
+    "fixDescription": "Opravuje chybějící health bary, materiály a VFX problémy",
+    "startingFix": "Spouští se proces opravy...",
+    "fixCompleted": "Oprava úspěšně dokončena!",
+    "fixFailed": "Oprava selhala: {{error}}",
+    "fixError": "Došlo k chybě při opravě módu",
+    "saveChanges": "Uložit změny"
+  },
+  "cancel": "Zrušit",
+  "success": "Úspěch",
+  "error": "Chyba",
+  "update": {
+    "available": "Dostupná aktualizace",
+    "description": "Nová verze Bocchi je k dispozici ke stažení.",
+    "whatsNew": "Co je nového",
+    "downloading": "Stahuje se...",
+    "updateNow": "Aktualizovat nyní",
+    "championDataAvailable": "Dostupná aktualizace dat šampionů",
+    "championDataDescription": "Nová verze dat šampionů je k dispozici. Tato aktualizace obsahuje nejnovější šampiony, skiny a další herní obsah.",
+    "currentVersion": "Aktuální verze: ",
+    "updating": "Aktualizuje se..."
+  },
+  "skins": {
+    "selected_one": "{{count}} skin vybrán",
+    "selected_other": "{{count}} skinů vybráno",
+    "toDownload": "({{count}} ke stažení)",
+    "downloaded": "Stažené skiny",
+    "notDownloaded": "Nestaženo",
+    "repository": "Skiny z repozitáře",
+    "customImports": "Vlastní importy",
+    "total": "Celkem: {{count}} skinů",
+    "searchPlaceholder": "Hledat podle šampiona nebo názvu skinu...",
+    "noSkinsFound": "Nebyly nalezeny žádné skiny",
+    "userImport": "Uživatelský import",
+    "custom": "Vlastní",
+    "deleting": "Maže se...",
+    "chromas_one": "{{count}} chroma k dispozici",
+    "chromas_other": "{{count}} chrom k dispozici",
+    "selectChroma": "Vybrat chroma pro {{skinName}}",
+    "chooseChroma_one": "Vybrat z {{count}} dostupné chromy",
+    "chooseChroma_other": "Vybrat z {{count}} dostupných chrom",
+    "selectVariant": "Vybrat variantu pro {{skinName}}",
+    "chooseVariant": "Vybrat z {{count}} dostupných {{type}}",
+    "exaltedVariant": "Vyvýšené varianty",
+    "formVariant": "Varianty forem",
+    "mySkins": "Moje skiny",
+    "roomSkins": "Skiny místnosti",
+    "manage": "Spravovat",
+    "manageDownloaded": "Spravovat stažené skiny",
+    "downloadedCount": "Stažené skiny ({{count}})",
+    "allSkins": "Všechny skiny",
+    "autoSelected": "Auto"
+  },
+  "filters": {
+    "title": "Filtry a řazení",
+    "active": "Aktivní",
+    "downloadStatus": "Stav stažení",
+    "all": "Vše",
+    "downloaded": "Staženo",
+    "notDownloaded": "Nestaženo",
+    "chromas": "Chromas",
+    "hasChromas": "Má chromas",
+    "noChromas": "Bez chrom",
+    "championType": "Typ šampiona",
+    "sortBy": "Seřadit podle",
+    "nameAsc": "Název (A-Z)",
+    "nameDesc": "Název (Z-A)",
+    "skinNumAsc": "Číslo skinu (nízké k vysokému)",
+    "skinNumDesc": "Číslo skinu (vysoké k nízkému)",
+    "championName": "Název šampiona",
+    "rarityAsc": "Vzácnost (nízká k vysoké)",
+    "rarityDesc": "Vzácnost (vysoká k nízké)",
+    "winRateDesc": "Win Rate (vysoká k nízké)",
+    "winRateAsc": "Win Rate (nízká k vysoké)",
+    "pickRateDesc": "Pick Rate (vysoká k nízké)",
+    "pickRateAsc": "Pick Rate (nízká k vysoké)",
+    "totalGamesDesc": "Nejhranější",
+    "totalGamesAsc": "Nejméně hrané",
+    "rarity": "Vzácnost",
+    "rarities": {
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "ultimate": "Ultimate",
+      "mythic": "Mythic",
+      "transcendent": "Transcendent",
+      "exalted": "Exalted"
+    }
+  },
+  "patcher": {
+    "applying": "Aplikuje se...",
+    "stopping": "Zastavuje se...",
+    "stopPatcher": "Zastavit patcher",
+    "apply_one": "Aplikovat {{count}} skin",
+    "apply_other": "Aplikovat {{count}} skinů",
+    "messages": "Zprávy patcheru:"
+  },
+  "room": {
+    "joinCreate": "Připojit se/Vytvořit místnost",
+    "p2pRoom": "P2P místnost",
+    "description": "Vytvořte novou místnost nebo se připojte k existující pro sdílení skinů s ostatními.",
+    "displayName": "Zobrazované jméno",
+    "displayNamePlaceholder": "Zadejte své jméno",
+    "createNew": "Vytvořit novou místnost",
+    "creating": "Vytváří se...",
+    "createRoom": "Vytvořit místnost",
+    "joinExisting": "Připojit se k existující místnosti",
+    "roomIdPlaceholder": "Zadejte ID místnosti (např. ABC123)",
+    "joining": "Připojuje se...",
+    "joinRoom": "Připojit se k místnosti",
+    "roomId": "Místnost: {{id}}",
+    "copyRoomId": "Kopírovat ID místnosti",
+    "members_one": "{{count}} člen",
+    "members_other": "{{count}} členů"
+  },
+  "fileTransfer": {
+    "incoming": "Příchozí přenos souboru",
+    "description": "Peer chce s vámi sdílet vlastní mód",
+    "file": "Soubor:",
+    "size": "Velikost:",
+    "champion": "Šampion:",
+    "skin": "Skin:",
+    "transferring": "Přenáší se soubor...",
+    "completed": "Přenos dokončen!"
+  },
+  "customMod": {
+    "edit": "Upravit vlastní mód",
+    "modName": "Název módu",
+    "modNamePlaceholder": "Zadejte název módu",
+    "previewImage": "Náhled obrázku (volitelné)",
+    "selectImage": "Vybrat obrázek",
+    "newImageSelected": "Vybrán nový obrázek"
+  },
+  "social": {
+    "joinDiscord": "Připojit se k Discordu",
+    "viewGithub": "Zobrazit na GitHubu",
+    "donate": "Darovat"
+  },
+  "lcu": {
+    "connected": "Připojeno k League klientu",
+    "disconnected": "Odpojeno od League klienta",
+    "championHovered": "Šampion vybrán",
+    "championLocked": "Šampion uzamčen",
+    "viewSkins": "Zobrazit skiny",
+    "connecting": "Připojuje se k League klientu...",
+    "connectionFailed": "Nepodařilo se připojit k League klientu",
+    "status": "LCU stav",
+    "notConnected": "Nepřipojeno",
+    "inChampSelect": "Ve výběru šampionů",
+    "disabled": "Zakázáno",
+    "tooltipNotConnected": "Spusťte League of Legends klienta pro povolení automatické detekce šampionů během výběru šampionů",
+    "tooltipConnected": "Připojeno k League klientu. Zobrazí oznámení když vyberete šampiony",
+    "tooltipInChampSelect": "Momentálně ve výběru šampionů. Vyberte šampiona pro zobrazení oznámení",
+    "tooltipDisabled": "Detekce šampionů je zakázána. Povolte ji v nastavení pro přijímání oznámení při výběru šampionů",
+    "championLockedDescription": "Uzamkli jste {{champion}}. Chcete procházet dostupné skiny?",
+    "championHoveredDescription": "Držíte kurzor nad {{champion}}. Chcete procházet dostupné skiny?",
+    "randomSkin": "Náhodný skin",
+    "randomRaritySkin": "Náhodný vzácný skin"
+  },
+  "smartApply": {
+    "willApply": "Chytře: {{count}}/{{total}}",
+    "applying": "Aplikuje se {{count}} skinů pro: {{champions}}",
+    "success": "Aplikováno {{applied}} z {{total}} skinů",
+    "failed": "Nepodařilo se aplikovat skiny",
+    "noSkinsToApply": "Žádné skiny k aplikaci pro váš tým",
+    "noSkinsForTeam": "Žádné skiny vybrány pro šampiony vašeho týmu"
+  },
+  "errors": {
+    "generic": "Došlo k chybě",
+    "downloadFailed": "Nepodařilo se stáhnout",
+    "connectionError": "Chyba připojení",
+    "pathNotSet": "Prosím nejprve nastavte cestu ke hře",
+    "operationTimeout": "Operace vypršela. Prosím zkuste to znovu.",
+    "skinNotAvailable": "Skin není dostupný v lol-skins repozitáři nebo je mapování nesprávné"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "Jste si jisti, že chcete smazat všechny skiny? Tuto akci nelze vrátit zpět.",
+    "confirmDeleteChampion": "Jste si jisti, že chcete smazat všechny skiny pro {{champion}}? Tuto akci nelze vrátit zpět."
+  }
+}

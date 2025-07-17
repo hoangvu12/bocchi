@@ -1,0 +1,417 @@
+{
+  "app": {
+    "title": "CSLOL Skin Launcher",
+    "loading": "Se încarcă...",
+    "ready": "Gata"
+  },
+  "actions": {
+    "browse": "Navighează",
+    "download": "Descarcă",
+    "update": "Actualizează",
+    "apply": "Aplică",
+    "stop": "Oprește",
+    "close": "Închide",
+    "minimize": "Minimizează",
+    "maximize": "Maximizează",
+    "restore": "Restaurează",
+    "search": "Caută",
+    "filter": "Filtrează",
+    "sort": "Sortează",
+    "clearAll": "Șterge tot",
+    "clearFilters": "Șterge filtrele",
+    "save": "Salvează",
+    "saveChanges": "Salvează modificările",
+    "delete": "Șterge",
+    "deleteAll": "Șterge toate skin-urile",
+    "deleteAllForChampion": "Șterge toate skin-urile pentru {{champion}}",
+    "decline": "Refuză",
+    "accept": "Acceptă",
+    "join": "Alătură-te",
+    "cancel": "Anulează",
+    "leave": "Părăsește",
+    "create": "Creează",
+    "copy": "Copiază",
+    "later": "Mai târziu",
+    "skipForNow": "Omite pentru acum",
+    "downloadAndInstall": "Descarcă și instalează"
+  },
+  "nav": {
+    "favorites": "Favorite",
+    "settings": "Setări",
+    "about": "Despre"
+  },
+  "champion": {
+    "searchPlaceholder": "Caută campioni",
+    "noData": "Nu s-au găsit date despre campioni",
+    "downloadData": "Descarcă datele campionilor",
+    "updateData": "Actualizează datele",
+    "version": "Versiune",
+    "allChampions": "Toți campionii",
+    "customMods": "Mod-uri personalizate"
+  },
+  "skin": {
+    "searchPlaceholder": "Caută skin-uri printre toți campionii...",
+    "apply": "Aplică skin-ul",
+    "applied": "Aplicat",
+    "downloaded": "Descărcat",
+    "favorite": "Adaugă la favorite",
+    "unfavorite": "Elimină din favorite",
+    "clickToApply": "Faceți clic pe orice skin pentru a-l aplica imediat",
+    "showing_one": "Se afișează {{count}} skin",
+    "showing_other": "Se afișează {{count}} skin-uri"
+  },
+  "status": {
+    "detectingGame": "Se detectează calea jocului...",
+    "gameDetected": "Calea jocului a fost detectată automat",
+    "gameNotFound": "Calea jocului nu a fost găsită. Vă rugăm să navigați manual.",
+    "downloading": "Se descarcă {{name}}...",
+    "applying": "Se aplică {{name}}...",
+    "applied": "{{name}} a fost aplicat cu succes!",
+    "stopping": "Se oprește patcher-ul...",
+    "stopped": "Patcher-ul a fost oprit",
+    "error": "Eroare: {{message}}",
+    "fetchingData": "Se preiau datele campionilor...",
+    "autoAcceptedMatch": "Meciul a fost acceptat automat!",
+    "dataFetched": "Date preluate cu succes pentru {{count}} campioni!",
+    "gamePathSet": "Calea jocului a fost setată cu succes!",
+    "pleaseSetGamePath": "Vă rugăm să setați mai întâi calea jocului",
+    "downloadingTools": "Se descarcă cslol-tools",
+    "toolsDownloaded": "Instrumentele au fost descărcate cu succes!",
+    "stoppingCurrentPatcher": "Se oprește patcher-ul curent",
+    "failedToStopPatcher": "Nu s-a putut opri patcher-ul: {{error}}",
+    "deletedCustomMod": "Mod personalizat șters: {{name}}",
+    "deletedSkin": "Skin șters: {{name}}",
+    "failedToDeleteMod": "Nu s-a putut șterge mod-ul: {{error}}",
+    "failedToDeleteSkin": "Nu s-a putut șterge skin-ul: {{error}}",
+    "autoSelectedSkinsCleanedUp": "{{count}} skin-uri selectate automat au fost curățate"
+  },
+  "tools": {
+    "required": "CS:LOL Tools necesare",
+    "description": "Instrumentele CS:LOL mod sunt necesare pentru a aplica skin-uri. Doriți să le descărcați acum?",
+    "downloading": "Se descarcă instrumentele... {{progress}}%",
+    "downloadTools": "Descarcă instrumentele"
+  },
+  "settings": {
+    "title": "Setări",
+    "description": "Configurați preferințele aplicației",
+    "gamePath": "Calea jocului",
+    "language": "Limba",
+    "theme": "Tema",
+    "notifications": "Notificări",
+    "leagueClient": {
+      "title": "Integrarea cu League Client",
+      "description": "Activează funcții care se conectează la clientul League of Legends"
+    },
+    "championDetection": {
+      "title": "Detectarea campionului",
+      "description": "Afișează automat notificări când selectați campioni în clientul League"
+    },
+    "autoViewSkins": {
+      "title": "Vizualizarea automată a skin-urilor",
+      "description": "Vizualizează automat skin-urile când un campion este detectat (omite dialogul de confirmare)"
+    },
+    "smartApply": {
+      "title": "Aplicare inteligentă",
+      "description": "Încarcă doar skin-urile pentru campionii din echipa ta (reduce timpul de încărcare)"
+    },
+    "autoApply": {
+      "title": "Aplicare automată",
+      "description": "Aplică automat skin-urile când toți campionii sunt blocați"
+    },
+    "autoApplyTriggerTime": {
+      "title": "Timpul de declanșare pentru aplicarea automată",
+      "description": "Secunde înainte de începerea jocului pentru a aplica automat skin-urile (5-30 secunde)"
+    },
+    "autoAccept": {
+      "title": "Acceptare automată a meciului",
+      "description": "Acceptă automat verificarea pregătirii când se găsește un meci"
+    },
+    "autoPick": {
+      "title": "Selectare automată",
+      "description": "Selectează automat campionii în timpul selectării campionului",
+      "force": "Selectare forțată",
+      "forceDescription": "Suprascrie selecțiile echipei și selectează chiar dacă este deja selectat",
+      "championPriority": "Lista de priorități pentru selectare"
+    },
+    "autoBan": {
+      "title": "Ban automat",
+      "description": "Interzice automat campionii în timpul selectării campionului",
+      "force": "Ban forțat",
+      "forceDescription": "Suprascrie intenția echipei și interzice chiar dacă coechipierul vrea să joace",
+      "championPriority": "Lista de priorități pentru ban"
+    },
+    "selectChampion": "Selectează campionul",
+    "addChampion": "Adaugă campion",
+    "autoRandomSkin": {
+      "title": "Skin aleatoriu automat",
+      "description": "Selectează automat un skin aleatoriu când un campion este detectat"
+    },
+    "autoRandomRaritySkin": {
+      "title": "Skin aleatoriu rar automat",
+      "description": "Selectează automat un skin aleatoriu cu raritate (Epic, Legendary, etc.) când un campion este detectat"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "Skin favorit aleatoriu automat",
+      "description": "Selectează automat un skin aleatoriu din favoritele tale când un campion este detectat"
+    },
+    "autoRandomHighestWinRateSkin": {
+      "title": "Skin aleatoriu cu cea mai mare rată de câștig automat",
+      "description": "Selectează automat un skin aleatoriu din top 3 skin-uri cu cea mai mare rată de câștig"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "Skin aleatoriu cu cea mai mare rată de selectare automat",
+      "description": "Selectează automat un skin aleatoriu din top 3 skin-uri cele mai populare"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "Skin aleatoriu cel mai jucat automat",
+      "description": "Selectează automat un skin aleatoriu din top 3 skin-uri cele mai jucate"
+    },
+    "inGameOverlay": {
+      "title": "Overlay în joc",
+      "description": "Pre-atașează overlay-ul la clientul League pentru notificări mai rapide despre skin-uri (necesită orice funcție Auto Random)"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "Permite mai multe skin-uri per campion",
+      "description": "Permite utilizarea mai multor skin-uri pentru același campion simultan"
+    },
+    "autoFixModIssues": {
+      "title": "Remediază automat problemele mod-urilor la import",
+      "description": "Remediază automat barele de viață lipsă, materialele și VFX-urile când importă mod-uri"
+    },
+    "tabs": {
+      "general": "General",
+      "leagueClient": "Clientul League",
+      "skinManagement": "Gestionarea skin-urilor"
+    },
+    "randomSkinSelection": {
+      "title": "Selectarea aleatorie a skin-ului",
+      "none": "Dezactivat"
+    },
+    "minimizeToTray": {
+      "title": "Minimizează în tray",
+      "description": "Ascunde aplicația în system tray în loc să o închidă când faceți clic pe butonul de închidere"
+    }
+  },
+  "tray": {
+    "show": "Arată Bocchi",
+    "hide": "Ascunde Bocchi",
+    "language": "Limba",
+    "openSettings": "Deschide setările",
+    "quit": "Ieși din Bocchi"
+  },
+  "fileUpload": {
+    "uploadButton": "Încarcă mod personalizat",
+    "importTitle": "Importă mod personalizat",
+    "importDescription": "Opțional, selectați un campion și setați un nume personalizat pentru mod-ul dumneavoastră.",
+    "selectedFile": "Fișier selectat",
+    "selectChampion": "Selectează campionul",
+    "championPlaceholder": "Niciun campion specific",
+    "customName": "Nume personalizat",
+    "customNamePlaceholder": "Introduceți numele skin-ului...",
+    "importing": "Se importă...",
+    "import": "Importă",
+    "noFileSelected": "Niciun fișier selectat",
+    "invalidFile": "Format de fișier invalid",
+    "importSuccess": "Skin-ul a fost importat cu succes!",
+    "importFailed": "Nu s-a putut importa skin-ul",
+    "previewImage": "Imagine de previzualizare",
+    "browseImage": "Navighează",
+    "noImageSelected": "Nicio imagine selectată",
+    "batchImportTitle": "Importarea mai multor fișiere",
+    "importingProgress": "Se importă {{current}} din {{total}} fișiere...",
+    "batchComplete": "Importul a fost finalizat!",
+    "succeeded": "reușit",
+    "failed": "eșuat",
+    "failedFiles": "Fișiere eșuate:",
+    "close": "Închide",
+    "fixModIssues": "Remediază problemele mod-urilor",
+    "fixModIssuesDescription": "Remediază barele de viață lipsă, materialele și VFX-urile"
+  },
+  "editCustomSkin": {
+    "title": "Editează mod-ul personalizat",
+    "modName": "Numele mod-ului",
+    "modNamePlaceholder": "Introduceți numele mod-ului",
+    "previewImage": "Imagine de previzualizare (opțional)",
+    "selectImage": "Selectează imaginea",
+    "newImageSelected": "Imagine nouă selectată",
+    "modMaintenance": "Întreținerea mod-ului",
+    "fixModIssues": "Remediază problemele mod-urilor",
+    "fixing": "Se remediază...",
+    "fixDescription": "Remediază barele de viață lipsă, materialele și problemele VFX",
+    "startingFix": "Se pornește procesul de remediere...",
+    "fixCompleted": "Remedierea a fost finalizată cu succes!",
+    "fixFailed": "Remedierea a eșuat: {{error}}",
+    "fixError": "A apărut o eroare în timpul remedierii mod-ului",
+    "saveChanges": "Salvează modificările"
+  },
+  "cancel": "Anulează",
+  "success": "Succes",
+  "error": "Eroare",
+  "update": {
+    "available": "Actualizare disponibilă",
+    "description": "O nouă versiune a lui Bocchi este disponibilă pentru descărcare.",
+    "whatsNew": "Ce este nou",
+    "downloading": "Se descarcă...",
+    "updateNow": "Actualizează acum",
+    "championDataAvailable": "Actualizare pentru datele campionilor disponibilă",
+    "championDataDescription": "O nouă versiune a datelor campionilor este disponibilă. Această actualizare include cei mai recenți campioni, skin-uri și alt conținut al jocului.",
+    "currentVersion": "Versiunea curentă: ",
+    "updating": "Se actualizează..."
+  },
+  "skins": {
+    "selected_one": "{{count}} skin selectat",
+    "selected_other": "{{count}} skin-uri selectate",
+    "toDownload": "({{count}} de descărcat)",
+    "downloaded": "Skin-uri descărcate",
+    "notDownloaded": "Nedescărcat",
+    "repository": "Skin-uri din depozit",
+    "customImports": "Importuri personalizate",
+    "total": "Total: {{count}} skin-uri",
+    "searchPlaceholder": "Caută după campion sau numele skin-ului...",
+    "noSkinsFound": "Nu s-au găsit skin-uri",
+    "userImport": "Import utilizator",
+    "custom": "Personalizat",
+    "deleting": "Se șterge...",
+    "chromas_one": "{{count}} chroma disponibilă",
+    "chromas_other": "{{count}} chroma disponibile",
+    "selectChroma": "Selectează chroma pentru {{skinName}}",
+    "chooseChroma_one": "Alege din {{count}} chroma disponibilă",
+    "chooseChroma_other": "Alege din {{count}} chroma disponibile",
+    "selectVariant": "Selectează varianta pentru {{skinName}}",
+    "chooseVariant": "Alege din {{count}} {{type}} disponibile",
+    "exaltedVariant": "Variante înălțate",
+    "formVariant": "Variante de formă",
+    "mySkins": "Skin-urile mele",
+    "roomSkins": "Skin-urile camerei",
+    "manage": "Gestionează",
+    "manageDownloaded": "Gestionează skin-urile descărcate",
+    "downloadedCount": "Skin-uri descărcate ({{count}})",
+    "allSkins": "Toate skin-urile",
+    "autoSelected": "Auto"
+  },
+  "filters": {
+    "title": "Filtre și sortare",
+    "active": "Activ",
+    "downloadStatus": "Starea descărcării",
+    "all": "Toate",
+    "downloaded": "Descărcate",
+    "notDownloaded": "Nedescărcate",
+    "chromas": "Chroma",
+    "hasChromas": "Are chroma",
+    "noChromas": "Fără chroma",
+    "championType": "Tipul campionului",
+    "sortBy": "Sortează după",
+    "nameAsc": "Nume (A-Z)",
+    "nameDesc": "Nume (Z-A)",
+    "skinNumAsc": "Nr. skin (Scăzut către Ridicat)",
+    "skinNumDesc": "Nr. skin (Ridicat către Scăzut)",
+    "championName": "Numele campionului",
+    "rarityAsc": "Raritate (Scăzut către Ridicat)",
+    "rarityDesc": "Raritate (Ridicat către Scăzut)",
+    "winRateDesc": "Rata de câștig (Ridicat către Scăzut)",
+    "winRateAsc": "Rata de câștig (Scăzut către Ridicat)",
+    "pickRateDesc": "Rata de selectare (Ridicat către Scăzut)",
+    "pickRateAsc": "Rata de selectare (Scăzut către Ridicat)",
+    "totalGamesDesc": "Cel mai jucat",
+    "totalGamesAsc": "Cel mai puțin jucat",
+    "rarity": "Raritate",
+    "rarities": {
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "ultimate": "Ultimate",
+      "mythic": "Mythic",
+      "transcendent": "Transcendent",
+      "exalted": "Exalted"
+    }
+  },
+  "patcher": {
+    "applying": "Se aplică...",
+    "stopping": "Se oprește...",
+    "stopPatcher": "Oprește patcher-ul",
+    "apply_one": "Aplică {{count}} skin",
+    "apply_other": "Aplică {{count}} skin-uri",
+    "messages": "Mesajele patcher-ului:"
+  },
+  "room": {
+    "joinCreate": "Alătură-te/Creează cameră",
+    "p2pRoom": "Cameră P2P",
+    "description": "Creează o cameră nouă sau alătură-te unei existente pentru a împărtăși skin-uri cu alții.",
+    "displayName": "Numele afișat",
+    "displayNamePlaceholder": "Introduceți numele dumneavoastră",
+    "createNew": "Creează o cameră nouă",
+    "creating": "Se creează...",
+    "createRoom": "Creează camera",
+    "joinExisting": "Alătură-te la o cameră existentă",
+    "roomIdPlaceholder": "Introduceți ID-ul camerei (ex. ABC123)",
+    "joining": "Se alătură...",
+    "joinRoom": "Alătură-te la cameră",
+    "roomId": "Camera: {{id}}",
+    "copyRoomId": "Copiază ID-ul camerei",
+    "members_one": "{{count}} membru",
+    "members_other": "{{count}} membri"
+  },
+  "fileTransfer": {
+    "incoming": "Transfer de fișier în curs",
+    "description": "Un peer vrea să împărtășească un mod personalizat cu tine",
+    "file": "Fișier:",
+    "size": "Dimensiune:",
+    "champion": "Campion:",
+    "skin": "Skin:",
+    "transferring": "Se transferă fișierul...",
+    "completed": "Transferul a fost finalizat!"
+  },
+  "customMod": {
+    "edit": "Editează mod-ul personalizat",
+    "modName": "Numele mod-ului",
+    "modNamePlaceholder": "Introduceți numele mod-ului",
+    "previewImage": "Imagine de previzualizare (opțional)",
+    "selectImage": "Selectează imaginea",
+    "newImageSelected": "Imagine nouă selectată"
+  },
+  "social": {
+    "joinDiscord": "Alătură-te la Discord",
+    "viewGithub": "Vezi pe GitHub",
+    "donate": "Donează"
+  },
+  "lcu": {
+    "connected": "Conectat la clientul League",
+    "disconnected": "Deconectat de la clientul League",
+    "championHovered": "Campion selectat",
+    "championLocked": "Campion blocat",
+    "viewSkins": "Vezi skin-urile",
+    "connecting": "Se conectează la clientul League...",
+    "connectionFailed": "Nu s-a putut conecta la clientul League",
+    "status": "Starea LCU",
+    "notConnected": "Neconectat",
+    "inChampSelect": "În selectarea campionului",
+    "disabled": "Dezactivat",
+    "tooltipNotConnected": "Pornește clientul League of Legends pentru a activa detectarea automată a campionului în timpul selectării campionului",
+    "tooltipConnected": "Conectat la clientul League. Va afișa notificări când selectați campioni",
+    "tooltipInChampSelect": "În prezent în selectarea campionului. Selectați un campion pentru a vedea o notificare",
+    "tooltipDisabled": "Detectarea campionului este dezactivată. Activați-o în setări pentru a primi notificări când selectați campioni",
+    "championLockedDescription": "Ați blocat {{champion}}. Doriți să navigați prin skin-urile disponibile?",
+    "championHoveredDescription": "Treceți cu cursorul peste {{champion}}. Doriți să navigați prin skin-urile disponibile?",
+    "randomSkin": "Skin aleatoriu",
+    "randomRaritySkin": "Skin aleatoriu rar"
+  },
+  "smartApply": {
+    "willApply": "Inteligent: {{count}}/{{total}}",
+    "applying": "Se aplică {{count}} skin-uri pentru: {{champions}}",
+    "success": "Aplicate {{applied}} din {{total}} skin-uri",
+    "failed": "Nu s-au putut aplica skin-urile",
+    "noSkinsToApply": "Niciun skin de aplicat pentru echipa ta",
+    "noSkinsForTeam": "Niciun skin selectat pentru campionii echipei tale"
+  },
+  "errors": {
+    "generic": "A apărut o eroare",
+    "downloadFailed": "Descărcarea a eșuat",
+    "connectionError": "Eroare de conexiune",
+    "pathNotSet": "Vă rugăm să setați mai întâi calea jocului",
+    "operationTimeout": "Operația a expirat. Vă rugăm să încercați din nou.",
+    "skinNotAvailable": "Skin-ul nu este disponibil în depozitul lol-skins sau maparea este incorectă"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "Sunteți sigur că doriți să ștergeți toate skin-urile? Această acțiune nu poate fi anulată.",
+    "confirmDeleteChampion": "Sunteți sigur că doriți să ștergeți toate skin-urile pentru {{champion}}? Această acțiune nu poate fi anulată."
+  }
+}

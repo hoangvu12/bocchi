@@ -1,0 +1,417 @@
+{
+  "app": {
+    "title": "CSLOL Skin Launcher",
+    "loading": "กำลังโหลด...",
+    "ready": "พร้อม"
+  },
+  "actions": {
+    "browse": "เรียกดู",
+    "download": "ดาวน์โหลด",
+    "update": "อัปเดต",
+    "apply": "ใช้งาน",
+    "stop": "หยุด",
+    "close": "ปิด",
+    "minimize": "ย่อเล็กสุด",
+    "maximize": "ขยายใหญ่สุด",
+    "restore": "คืนค่า",
+    "search": "ค้นหา",
+    "filter": "กรอง",
+    "sort": "เรียงลำดับ",
+    "clearAll": "ล้างทั้งหมด",
+    "clearFilters": "ล้างตัวกรอง",
+    "save": "บันทึก",
+    "saveChanges": "บันทึกการเปลี่ยนแปลง",
+    "delete": "ลบ",
+    "deleteAll": "ลบสกินทั้งหมด",
+    "deleteAllForChampion": "ลบสกินทั้งหมดสำหรับ {{champion}}",
+    "decline": "ปฏิเสธ",
+    "accept": "ยอมรับ",
+    "join": "เข้าร่วม",
+    "cancel": "ยกเลิก",
+    "leave": "ออก",
+    "create": "สร้าง",
+    "copy": "คัดลอก",
+    "later": "ภายหลัง",
+    "skipForNow": "ข้ามไปก่อน",
+    "downloadAndInstall": "ดาวน์โหลดและติดตั้ง"
+  },
+  "nav": {
+    "favorites": "รายการโปรด",
+    "settings": "การตั้งค่า",
+    "about": "เกี่ยวกับ"
+  },
+  "champion": {
+    "searchPlaceholder": "ค้นหาแชมเปี้ยน",
+    "noData": "ไม่พบข้อมูลแชมเปี้ยน",
+    "downloadData": "ดาวน์โหลดข้อมูลแชมเปี้ยน",
+    "updateData": "อัปเดตข้อมูล",
+    "version": "เวอร์ชัน",
+    "allChampions": "แชมเปี้ยนทั้งหมด",
+    "customMods": "มอดแบบกำหนดเอง"
+  },
+  "skin": {
+    "searchPlaceholder": "ค้นหาสกินในทุกแชมเปี้ยน...",
+    "apply": "ใช้สกิน",
+    "applied": "ใช้แล้ว",
+    "downloaded": "ดาวน์โหลดแล้ว",
+    "favorite": "เพิ่มเข้ารายการโปรด",
+    "unfavorite": "ลบออกจากรายการโปรด",
+    "clickToApply": "คลิกที่สกินใดก็ได้เพื่อใช้งานทันที",
+    "showing_one": "กำลังแสดง {{count}} สกิน",
+    "showing_other": "กำลังแสดง {{count}} สกิน"
+  },
+  "status": {
+    "detectingGame": "กำลังตรวจจับเส้นทางเกม...",
+    "gameDetected": "ตรวจพบเส้นทางเกมโดยอัตโนมัติ",
+    "gameNotFound": "ไม่พบเส้นทางเกม กรุณาเรียกดูด้วยตนเอง",
+    "downloading": "กำลังดาวน์โหลด {{name}}...",
+    "applying": "กำลังใช้ {{name}}...",
+    "applied": "ใช้ {{name}} สำเร็จ!",
+    "stopping": "กำลังหยุด patcher...",
+    "stopped": "หยุด patcher แล้ว",
+    "error": "ข้อผิดพลาด: {{message}}",
+    "fetchingData": "กำลังดึงข้อมูลแชมเปี้ยน...",
+    "autoAcceptedMatch": "ยอมรับแมตช์โดยอัตโนมัติ!",
+    "dataFetched": "ดึงข้อมูลสำเร็จสำหรับ {{count}} แชมเปี้ยน!",
+    "gamePathSet": "ตั้งเส้นทางเกมสำเร็จ!",
+    "pleaseSetGamePath": "กรุณาตั้งเส้นทางเกมก่อน",
+    "downloadingTools": "กำลังดาวน์โหลด cslol-tools",
+    "toolsDownloaded": "ดาวน์โหลดเครื่องมือสำเร็จ!",
+    "stoppingCurrentPatcher": "กำลังหยุด patcher ปัจจุบัน",
+    "failedToStopPatcher": "ไม่สามารถหยุด patcher: {{error}}",
+    "deletedCustomMod": "ลบมอดแบบกำหนดเอง: {{name}}",
+    "deletedSkin": "ลบสกิน: {{name}}",
+    "failedToDeleteMod": "ไม่สามารถลบมอด: {{error}}",
+    "failedToDeleteSkin": "ไม่สามารถลบสกิน: {{error}}",
+    "autoSelectedSkinsCleanedUp": "ล้างสกินที่เลือกอัตโนมัติ {{count}} สกิน"
+  },
+  "tools": {
+    "required": "จำเป็นต้องใช้ CS:LOL Tools",
+    "description": "จำเป็นต้องใช้ CS:LOL mod tools เพื่อใช้สกิน คุณต้องการดาวน์โหลดตอนนี้หรือไม่?",
+    "downloading": "กำลังดาวน์โหลดเครื่องมือ... {{progress}}%",
+    "downloadTools": "ดาวน์โหลดเครื่องมือ"
+  },
+  "settings": {
+    "title": "การตั้งค่า",
+    "description": "กำหนดค่าการตั้งค่าแอปของคุณ",
+    "gamePath": "เส้นทางเกม",
+    "language": "ภาษา",
+    "theme": "ธีม",
+    "notifications": "การแจ้งเตือน",
+    "leagueClient": {
+      "title": "การรวม League Client",
+      "description": "เปิดใช้งานฟีเจอร์ที่เชื่อมต่อกับ League of Legends client"
+    },
+    "championDetection": {
+      "title": "การตรวจจับแชมเปี้ยน",
+      "description": "แสดงการแจ้งเตือนอัตโนมัติเมื่อคุณเลือกแชมเปี้ยนใน League client"
+    },
+    "autoViewSkins": {
+      "title": "ดูสกินอัตโนมัติ",
+      "description": "ดูสกินโดยอัตโนมัติเมื่อตรวจพบแชมเปี้ยน (ข้ามไดอะล็อกยืนยัน)"
+    },
+    "smartApply": {
+      "title": "การใช้งานอัจฉริยะ",
+      "description": "โหลดสกินเฉพาะสำหรับแชมเปี้ยนในทีมของคุณ (ลดเวลาโหลด)"
+    },
+    "autoApply": {
+      "title": "ใช้งานอัตโนมัติ",
+      "description": "ใช้สกินโดยอัตโนมัติเมื่อแชมเปี้ยนทั้งหมดถูกล็อค"
+    },
+    "autoApplyTriggerTime": {
+      "title": "เวลาเรียกใช้งานอัตโนมัติ",
+      "description": "วินาทีก่อนเกมเริ่มต้นเพื่อใช้สกินอัตโนมัติ (5-30 วินาที)"
+    },
+    "autoAccept": {
+      "title": "ยอมรับแมตช์อัตโนมัติ",
+      "description": "ยอมรับ ready check โดยอัตโนมัติเมื่อพบแมตช์"
+    },
+    "autoPick": {
+      "title": "เลือกอัตโนมัติ",
+      "description": "เลือกแชมเปี้ยนโดยอัตโนมัติระหว่าง champion select",
+      "force": "บังคับเลือก",
+      "forceDescription": "แทนที่การเลือกของทีมและเลือกแม้จะถูกเลือกแล้ว",
+      "championPriority": "รายการลำดับความสำคัญในการเลือก"
+    },
+    "autoBan": {
+      "title": "แบนอัตโนมัติ",
+      "description": "แบนแชมเปี้ยนโดยอัตโนมัติระหว่าง champion select",
+      "force": "บังคับแบน",
+      "forceDescription": "แทนที่เจตนาของทีมและแบนแม้ว่าเพื่อนทีมต้องการเล่น",
+      "championPriority": "รายการลำดับความสำคัญในการแบน"
+    },
+    "selectChampion": "เลือกแชมเปี้ยน",
+    "addChampion": "เพิ่มแชมเปี้ยน",
+    "autoRandomSkin": {
+      "title": "สกินสุ่มอัตโนมัติ",
+      "description": "เลือกสกินสุ่มอัตโนมัติเมื่อตรวจพบแชมเปี้ยน"
+    },
+    "autoRandomRaritySkin": {
+      "title": "สกินความหายากสุ่มอัตโนมัติ",
+      "description": "เลือกสกินสุ่มที่มีความหายาก (Epic, Legendary, ฯลฯ) อัตโนมัติเมื่อตรวจพบแชมเปี้ยน"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "สกินโปรดสุ่มอัตโนมัติ",
+      "description": "เลือกสกินสุ่มจากรายการโปรดของคุณอัตโนมัติเมื่อตรวจพบแชมเปี้ยน"
+    },
+    "autoRandomHighestWinRateSkin": {
+      "title": "สกินอัตราชนะสูงสุดสุ่มอัตโนมัติ",
+      "description": "เลือกสกินสุ่มจาก 3 สกินที่มีอัตราชนะสูงสุดอัตโนมัติ"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "สกินอัตราการเลือกสูงสุดสุ่มอัตโนมัติ",
+      "description": "เลือกสกินสุ่มจาก 3 สกินที่ได้รับความนิยมสูงสุดอัตโนมัติ"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "สกินที่เล่นมากที่สุดสุ่มอัตโนมัติ",
+      "description": "เลือกสกินสุ่มจาก 3 สกินที่เล่นมากที่สุดอัตโนมัติ"
+    },
+    "inGameOverlay": {
+      "title": "Overlay ในเกม",
+      "description": "แนบ overlay ล่วงหน้าเข้ากับ League client สำหรับการแจ้งเตือนสกินที่เร็วกว่า (ต้องใช้ฟีเจอร์ Auto Random ใดก็ได้)"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "อนุญาตหลายสกินต่อแชมเปี้ยน",
+      "description": "เปิดใช้งานเพื่อใช้หลายสกินสำหรับแชมเปี้ยนตัวเดียวกันพร้อมกัน"
+    },
+    "autoFixModIssues": {
+      "title": "แก้ไขปัญหามอดอัตโนมัติเมื่อนำเข้า",
+      "description": "แก้ไข health bar, วัสดุ, และ VFX ที่หายไปโดยอัตโนมัติเมื่อนำเข้ามอด"
+    },
+    "tabs": {
+      "general": "ทั่วไป",
+      "leagueClient": "League Client",
+      "skinManagement": "การจัดการสกิน"
+    },
+    "randomSkinSelection": {
+      "title": "การเลือกสกินสุ่ม",
+      "none": "ปิดใช้งาน"
+    },
+    "minimizeToTray": {
+      "title": "ย่อเล็กสุดไปที่ Tray",
+      "description": "ซ่อนแอปไปที่ system tray แทนการปิดเมื่อคลิกปุ่มปิด"
+    }
+  },
+  "tray": {
+    "show": "แสดง Bocchi",
+    "hide": "ซ่อน Bocchi",
+    "language": "ภาษา",
+    "openSettings": "เปิดการตั้งค่า",
+    "quit": "ออกจาก Bocchi"
+  },
+  "fileUpload": {
+    "uploadButton": "อัปโหลดมอดแบบกำหนดเอง",
+    "importTitle": "นำเข้ามอดแบบกำหนดเอง",
+    "importDescription": "เลือกแชมเปี้ยนและตั้งชื่อแบบกำหนดเองสำหรับมอดของคุณ (ทางเลือก)",
+    "selectedFile": "ไฟล์ที่เลือก",
+    "selectChampion": "เลือกแชมเปี้ยน",
+    "championPlaceholder": "ไม่มีแชมเปี้ยนเฉพาะ",
+    "customName": "ชื่อแบบกำหนดเอง",
+    "customNamePlaceholder": "ใส่ชื่อสกิน...",
+    "importing": "กำลังนำเข้า...",
+    "import": "นำเข้า",
+    "noFileSelected": "ไม่ได้เลือกไฟล์",
+    "invalidFile": "รูปแบบไฟล์ไม่ถูกต้อง",
+    "importSuccess": "นำเข้าสกินสำเร็จ!",
+    "importFailed": "ไม่สามารถนำเข้าสกิน",
+    "previewImage": "ภาพตัวอย่าง",
+    "browseImage": "เรียกดู",
+    "noImageSelected": "ไม่ได้เลือกภาพ",
+    "batchImportTitle": "กำลังนำเข้าไฟล์หลายไฟล์",
+    "importingProgress": "กำลังนำเข้า {{current}} จาก {{total}} ไฟล์...",
+    "batchComplete": "นำเข้าเสร็จสิ้น!",
+    "succeeded": "สำเร็จ",
+    "failed": "ไม่สำเร็จ",
+    "failedFiles": "ไฟล์ที่ไม่สำเร็จ:",
+    "close": "ปิด",
+    "fixModIssues": "แก้ไขปัญหามอด",
+    "fixModIssuesDescription": "แก้ไข health bar, วัสดุ, และ VFX ที่หายไป"
+  },
+  "editCustomSkin": {
+    "title": "แก้ไขมอดแบบกำหนดเอง",
+    "modName": "ชื่อมอด",
+    "modNamePlaceholder": "ใส่ชื่อมอด",
+    "previewImage": "ภาพตัวอย่าง (ทางเลือก)",
+    "selectImage": "เลือกภาพ",
+    "newImageSelected": "เลือกภาพใหม่แล้ว",
+    "modMaintenance": "การบำรุงรักษามอด",
+    "fixModIssues": "แก้ไขปัญหามอด",
+    "fixing": "กำลังแก้ไข...",
+    "fixDescription": "แก้ไขปัญหา health bar, วัสดุ, และ VFX ที่หายไป",
+    "startingFix": "เริ่มกระบวนการแก้ไข...",
+    "fixCompleted": "แก้ไขเสร็จสิ้นสำเร็จ!",
+    "fixFailed": "การแก้ไขไม่สำเร็จ: {{error}}",
+    "fixError": "เกิดข้อผิดพลาดขณะแก้ไขมอด",
+    "saveChanges": "บันทึกการเปลี่ยนแปลง"
+  },
+  "cancel": "ยกเลิก",
+  "success": "สำเร็จ",
+  "error": "ข้อผิดพลาด",
+  "update": {
+    "available": "มีอัปเดตใหม่",
+    "description": "มี Bocchi เวอร์ชันใหม่ให้ดาวน์โหลด",
+    "whatsNew": "มีอะไรใหม่",
+    "downloading": "กำลังดาวน์โหลด...",
+    "updateNow": "อัปเดตตอนนี้",
+    "championDataAvailable": "มีอัปเดตข้อมูลแชมเปี้ยน",
+    "championDataDescription": "มีข้อมูลแชมเปี้ยนเวอร์ชันใหม่ อัปเดตนี้รวมถึงแชมเปี้ยน สกิน และเนื้อหาเกมล่าสุด",
+    "currentVersion": "เวอร์ชันปัจจุบัน: ",
+    "updating": "กำลังอัปเดต..."
+  },
+  "skins": {
+    "selected_one": "เลือก {{count}} สกิน",
+    "selected_other": "เลือก {{count}} สกิน",
+    "toDownload": "({{count}} ที่จะดาวน์โหลด)",
+    "downloaded": "สกินที่ดาวน์โหลดแล้ว",
+    "notDownloaded": "ยังไม่ดาวน์โหลด",
+    "repository": "สกิน Repository",
+    "customImports": "การนำเข้าแบบกำหนดเอง",
+    "total": "รวม: {{count}} สกิน",
+    "searchPlaceholder": "ค้นหาตามชื่อแชมเปี้ยนหรือสกิน...",
+    "noSkinsFound": "ไม่พบสกิน",
+    "userImport": "การนำเข้าของผู้ใช้",
+    "custom": "แบบกำหนดเอง",
+    "deleting": "กำลังลบ...",
+    "chromas_one": "มี {{count}} โครมาให้เลือก",
+    "chromas_other": "มี {{count}} โครมาให้เลือก",
+    "selectChroma": "เลือกโครมาสำหรับ {{skinName}}",
+    "chooseChroma_one": "เลือกจาก {{count}} โครมาที่มี",
+    "chooseChroma_other": "เลือกจาก {{count}} โครมาที่มี",
+    "selectVariant": "เลือกรูปแบบสำหรับ {{skinName}}",
+    "chooseVariant": "เลือกจาก {{count}} {{type}} ที่มี",
+    "exaltedVariant": "รูปแบบ exalted",
+    "formVariant": "รูปแบบ form",
+    "mySkins": "สกินของฉัน",
+    "roomSkins": "สกินห้อง",
+    "manage": "จัดการ",
+    "manageDownloaded": "จัดการสกินที่ดาวน์โหลด",
+    "downloadedCount": "สกินที่ดาวน์โหลดแล้ว ({{count}})",
+    "allSkins": "สกินทั้งหมด",
+    "autoSelected": "อัตโนมัติ"
+  },
+  "filters": {
+    "title": "ตัวกรอง & เรียงลำดับ",
+    "active": "ใช้งานอยู่",
+    "downloadStatus": "สถานะดาวน์โหลด",
+    "all": "ทั้งหมด",
+    "downloaded": "ดาวน์โหลดแล้ว",
+    "notDownloaded": "ยังไม่ดาวน์โหลด",
+    "chromas": "โครมา",
+    "hasChromas": "มีโครมา",
+    "noChromas": "ไม่มีโครมา",
+    "championType": "ประเภทแชมเปี้ยน",
+    "sortBy": "เรียงลำดับตาม",
+    "nameAsc": "ชื่อ (A-Z)",
+    "nameDesc": "ชื่อ (Z-A)",
+    "skinNumAsc": "หมายเลขสกิน (ต่ำไปสูง)",
+    "skinNumDesc": "หมายเลขสกิน (สูงไปต่ำ)",
+    "championName": "ชื่อแชมเปี้ยน",
+    "rarityAsc": "ความหายาก (ต่ำไปสูง)",
+    "rarityDesc": "ความหายาก (สูงไปต่ำ)",
+    "winRateDesc": "อัตราชนะ (สูงไปต่ำ)",
+    "winRateAsc": "อัตราชนะ (ต่ำไปสูง)",
+    "pickRateDesc": "อัตราการเลือก (สูงไปต่ำ)",
+    "pickRateAsc": "อัตราการเลือก (ต่ำไปสูง)",
+    "totalGamesDesc": "เล่นมากที่สุด",
+    "totalGamesAsc": "เล่นน้อยที่สุด",
+    "rarity": "ความหายาก",
+    "rarities": {
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "ultimate": "Ultimate",
+      "mythic": "Mythic",
+      "transcendent": "Transcendent",
+      "exalted": "Exalted"
+    }
+  },
+  "patcher": {
+    "applying": "กำลังใช้งาน...",
+    "stopping": "กำลังหยุด...",
+    "stopPatcher": "หยุด Patcher",
+    "apply_one": "ใช้ {{count}} สกิน",
+    "apply_other": "ใช้ {{count}} สกิน",
+    "messages": "ข้อความ Patcher:"
+  },
+  "room": {
+    "joinCreate": "เข้าร่วม/สร้างห้อง",
+    "p2pRoom": "ห้อง P2P",
+    "description": "สร้างห้องใหม่หรือเข้าร่วมห้องที่มีอยู่เพื่อแชร์สกินกับผู้อื่น",
+    "displayName": "ชื่อที่แสดง",
+    "displayNamePlaceholder": "ใส่ชื่อของคุณ",
+    "createNew": "สร้างห้องใหม่",
+    "creating": "กำลังสร้าง...",
+    "createRoom": "สร้างห้อง",
+    "joinExisting": "เข้าร่วมห้องที่มีอยู่",
+    "roomIdPlaceholder": "ใส่ ID ห้อง (เช่น ABC123)",
+    "joining": "กำลังเข้าร่วม...",
+    "joinRoom": "เข้าร่วมห้อง",
+    "roomId": "ห้อง: {{id}}",
+    "copyRoomId": "คัดลอก ID ห้อง",
+    "members_one": "{{count}} สมาชิก",
+    "members_other": "{{count}} สมาชิก"
+  },
+  "fileTransfer": {
+    "incoming": "การถ่ายโอนไฟล์ที่เข้ามา",
+    "description": "เพื่อนต้องการแชร์มอดแบบกำหนดเองกับคุณ",
+    "file": "ไฟล์:",
+    "size": "ขนาด:",
+    "champion": "แชมเปี้ยน:",
+    "skin": "สกิน:",
+    "transferring": "กำลังถ่ายโอนไฟล์...",
+    "completed": "การถ่ายโอนเสร็จสิ้น!"
+  },
+  "customMod": {
+    "edit": "แก้ไขมอดแบบกำหนดเอง",
+    "modName": "ชื่อมอด",
+    "modNamePlaceholder": "ใส่ชื่อมอด",
+    "previewImage": "ภาพตัวอย่าง (ทางเลือก)",
+    "selectImage": "เลือกภาพ",
+    "newImageSelected": "เลือกภาพใหม่แล้ว"
+  },
+  "social": {
+    "joinDiscord": "เข้าร่วม Discord",
+    "viewGithub": "ดูใน GitHub",
+    "donate": "บริจาค"
+  },
+  "lcu": {
+    "connected": "เชื่อมต่อกับ League Client",
+    "disconnected": "ตัดการเชื่อมต่อจาก League Client",
+    "championHovered": "เลือกแชมเปี้ยน",
+    "championLocked": "ล็อคแชมเปี้ยน",
+    "viewSkins": "ดูสกิน",
+    "connecting": "กำลังเชื่อมต่อกับ League Client...",
+    "connectionFailed": "ไม่สามารถเชื่อมต่อกับ League Client",
+    "status": "สถานะ LCU",
+    "notConnected": "ไม่ได้เชื่อมต่อ",
+    "inChampSelect": "ใน Champion Select",
+    "disabled": "ปิดใช้งาน",
+    "tooltipNotConnected": "เริ่ม League of Legends client เพื่อเปิดใช้งานการตรวจจับแชมเปี้ยนอัตโนมัติระหว่าง champion select",
+    "tooltipConnected": "เชื่อมต่อกับ League client แล้ว จะแสดงการแจ้งเตือนเมื่อคุณเลือกแชมเปี้ยน",
+    "tooltipInChampSelect": "ปัจจุบันใน champion select เลือกแชมเปี้ยนเพื่อดูการแจ้งเตือน",
+    "tooltipDisabled": "การตรวจจับแชมเปี้ยนถูกปิดใช้งาน เปิดใช้งานในการตั้งค่าเพื่อรับการแจ้งเตือนเมื่อเลือกแชมเปี้ยน",
+    "championLockedDescription": "คุณได้ล็อค {{champion}} แล้ว คุณต้องการเรียกดูสกินที่มีหรือไม่?",
+    "championHoveredDescription": "คุณกำลังเลือก {{champion}} คุณต้องการเรียกดูสกินที่มีหรือไม่?",
+    "randomSkin": "สกินสุ่ม",
+    "randomRaritySkin": "สกินความหายากสุ่ม"
+  },
+  "smartApply": {
+    "willApply": "อัจฉริยะ: {{count}}/{{total}}",
+    "applying": "กำลังใช้ {{count}} สกินสำหรับ: {{champions}}",
+    "success": "ใช้ {{applied}} จาก {{total}} สกิน",
+    "failed": "ไม่สามารถใช้สกิน",
+    "noSkinsToApply": "ไม่มีสกินที่จะใช้สำหรับทีมของคุณ",
+    "noSkinsForTeam": "ไม่มีสกินที่เลือกสำหรับแชมเปี้ยนทีมของคุณ"
+  },
+  "errors": {
+    "generic": "เกิดข้อผิดพลาด",
+    "downloadFailed": "ดาวน์โหลดไม่สำเร็จ",
+    "connectionError": "ข้อผิดพลาดการเชื่อมต่อ",
+    "pathNotSet": "กรุณาตั้งเส้นทางเกมก่อน",
+    "operationTimeout": "การดำเนินการหมดเวลา กรุณาลองใหม่อีกครั้ง",
+    "skinNotAvailable": "สกินไม่มีใน lol-skins repository หรือ mapping ผิดพลาด"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "คุณแน่ใจหรือไม่ที่จะลบสกินทั้งหมด? การกระทำนี้ไม่สามารถยกเลิกได้",
+    "confirmDeleteChampion": "คุณแน่ใจหรือไม่ที่จะลบสกินทั้งหมดสำหรับ {{champion}}? การกระทำนี้ไม่สามารถยกเลิกได้"
+  }
+}

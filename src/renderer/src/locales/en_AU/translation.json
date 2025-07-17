@@ -1,0 +1,417 @@
+{
+  "app": {
+    "title": "CSLOL Skin Launcher",
+    "loading": "Loading...",
+    "ready": "Ready"
+  },
+  "actions": {
+    "browse": "Browse",
+    "download": "Download",
+    "update": "Update",
+    "apply": "Apply",
+    "stop": "Stop",
+    "close": "Close",
+    "minimise": "Minimise",
+    "maximise": "Maximise",
+    "restore": "Restore",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "clearAll": "Clear All",
+    "clearFilters": "Clear Filters",
+    "save": "Save",
+    "saveChanges": "Save Changes",
+    "delete": "Delete",
+    "deleteAll": "Delete all skins",
+    "deleteAllForChampion": "Delete all skins for {{champion}}",
+    "decline": "Decline",
+    "accept": "Accept",
+    "join": "Join",
+    "cancel": "Cancel",
+    "leave": "Leave",
+    "create": "Create",
+    "copy": "Copy",
+    "later": "Later",
+    "skipForNow": "Skip for now",
+    "downloadAndInstall": "Download and Install"
+  },
+  "nav": {
+    "favorites": "Favourites",
+    "settings": "Settings",
+    "about": "About"
+  },
+  "champion": {
+    "searchPlaceholder": "Search champions",
+    "noData": "No champion data found",
+    "downloadData": "Download Champion Data",
+    "updateData": "Update Data",
+    "version": "Version",
+    "allChampions": "All Champions",
+    "customMods": "Custom Mods"
+  },
+  "skin": {
+    "searchPlaceholder": "Search skins across all champions...",
+    "apply": "Apply Skin",
+    "applied": "Applied",
+    "downloaded": "Downloaded",
+    "favorite": "Add to favourites",
+    "unfavorite": "Remove from favourites",
+    "clickToApply": "Click on any skin to apply it instantly",
+    "showing_one": "Showing {{count}} skin",
+    "showing_other": "Showing {{count}} skins"
+  },
+  "status": {
+    "detectingGame": "Detecting game path...",
+    "gameDetected": "Game path detected automatically",
+    "gameNotFound": "Game path not found. Please browse manually.",
+    "downloading": "Downloading {{name}}...",
+    "applying": "Applying {{name}}...",
+    "applied": "Applied {{name}} successfully!",
+    "stopping": "Stopping patcher...",
+    "stopped": "Patcher stopped",
+    "error": "Error: {{message}}",
+    "fetchingData": "Fetching champion data...",
+    "autoAcceptedMatch": "Match automatically accepted!",
+    "dataFetched": "Successfully fetched data for {{count}} champions!",
+    "gamePathSet": "Game path set successfully!",
+    "pleaseSetGamePath": "Please set game path first",
+    "downloadingTools": "Downloading cslol-tools",
+    "toolsDownloaded": "Tools downloaded successfully!",
+    "stoppingCurrentPatcher": "Stopping current patcher",
+    "failedToStopPatcher": "Failed to stop patcher: {{error}}",
+    "deletedCustomMod": "Deleted custom mod: {{name}}",
+    "deletedSkin": "Deleted skin: {{name}}",
+    "failedToDeleteMod": "Failed to delete mod: {{error}}",
+    "failedToDeleteSkin": "Failed to delete skin: {{error}}",
+    "autoSelectedSkinsCleanedUp": "Cleaned up {{count}} auto-selected skins"
+  },
+  "tools": {
+    "required": "CS:LOL Tools Required",
+    "description": "The CS:LOL mod tools are required to apply skins. Would you like to download them now?",
+    "downloading": "Downloading tools... {{progress}}%",
+    "downloadTools": "Download Tools"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Configure your app preferences",
+    "gamePath": "Game Path",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications",
+    "leagueClient": {
+      "title": "League Client Integration",
+      "description": "Enable features that connect with the League of Legends client"
+    },
+    "championDetection": {
+      "title": "Champion Detection",
+      "description": "Automatically show notifications when you select champions in League client"
+    },
+    "autoViewSkins": {
+      "title": "Auto View Skins",
+      "description": "Automatically view skins when a champion is detected (skips confirmation dialogue)"
+    },
+    "smartApply": {
+      "title": "Smart Apply",
+      "description": "Only load skins for champions in your team (reduces loading time)"
+    },
+    "autoApply": {
+      "title": "Auto Apply",
+      "description": "Automatically apply skins when all champions are locked"
+    },
+    "autoApplyTriggerTime": {
+      "title": "Auto Apply Trigger Time",
+      "description": "Seconds before game starts to automatically apply skins (5-30 seconds)"
+    },
+    "autoAccept": {
+      "title": "Auto Accept Match",
+      "description": "Automatically accept ready check when a match is found"
+    },
+    "autoPick": {
+      "title": "Auto Pick",
+      "description": "Automatically pick champions during champion select",
+      "force": "Force Pick",
+      "forceDescription": "Override team picks and pick even if already selected",
+      "championPriority": "Pick Priority List"
+    },
+    "autoBan": {
+      "title": "Auto Ban",
+      "description": "Automatically ban champions during champion select",
+      "force": "Force Ban",
+      "forceDescription": "Override team intent and ban even if teammate wants to play",
+      "championPriority": "Ban Priority List"
+    },
+    "selectChampion": "Select champion",
+    "addChampion": "Add Champion",
+    "autoRandomSkin": {
+      "title": "Auto Random Skin",
+      "description": "Automatically select a random skin when a champion is detected"
+    },
+    "autoRandomRaritySkin": {
+      "title": "Auto Random Rarity Skin",
+      "description": "Automatically select a random skin with rarity (Epic, Legendary, etc.) when a champion is detected"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "Auto Random Favourite Skin",
+      "description": "Automatically select a random skin from your favourites when a champion is detected"
+    },
+    "autoRandomHighestWinRateSkin": {
+      "title": "Auto Random Highest Win Rate Skin",
+      "description": "Automatically select a random skin from the top 3 highest win rate skins"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "Auto Random Highest Pick Rate Skin",
+      "description": "Automatically select a random skin from the top 3 most popular skins"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "Auto Random Most Played Skin",
+      "description": "Automatically select a random skin from the top 3 most played skins"
+    },
+    "inGameOverlay": {
+      "title": "In-Game Overlay",
+      "description": "Pre-attach overlay to League client for faster skin notifications (requires any Auto Random feature)"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "Allow Multiple Skins per Champion",
+      "description": "Enable to use multiple skins for the same champion simultaneously"
+    },
+    "autoFixModIssues": {
+      "title": "Auto-fix mod issues on import",
+      "description": "Automatically fix missing health bars, materials, and VFX when importing mods"
+    },
+    "tabs": {
+      "general": "General",
+      "leagueClient": "League Client",
+      "skinManagement": "Skin Management"
+    },
+    "randomSkinSelection": {
+      "title": "Random Skin Selection",
+      "none": "Disabled"
+    },
+    "minimizeToTray": {
+      "title": "Minimise to Tray",
+      "description": "Hide the app to system tray instead of closing when clicking the close button"
+    }
+  },
+  "tray": {
+    "show": "Show Bocchi",
+    "hide": "Hide Bocchi",
+    "language": "Language",
+    "openSettings": "Open Settings",
+    "quit": "Quit Bocchi"
+  },
+  "fileUpload": {
+    "uploadButton": "Upload Custom Mod",
+    "importTitle": "Import Custom Mod",
+    "importDescription": "Optionally select a champion and set a custom name for your mod.",
+    "selectedFile": "Selected File",
+    "selectChampion": "Select Champion",
+    "championPlaceholder": "No specific champion",
+    "customName": "Custom Name",
+    "customNamePlaceholder": "Enter skin name...",
+    "importing": "Importing...",
+    "import": "Import",
+    "noFileSelected": "No file selected",
+    "invalidFile": "Invalid file format",
+    "importSuccess": "Skin imported successfully!",
+    "importFailed": "Failed to import skin",
+    "previewImage": "Preview Image",
+    "browseImage": "Browse",
+    "noImageSelected": "No image selected",
+    "batchImportTitle": "Importing Multiple Files",
+    "importingProgress": "Importing {{current}} of {{total}} files...",
+    "batchComplete": "Import Complete!",
+    "succeeded": "succeeded",
+    "failed": "failed",
+    "failedFiles": "Failed files:",
+    "close": "Close",
+    "fixModIssues": "Fix mod issues",
+    "fixModIssuesDescription": "Fixes missing health bars, materials, and VFX"
+  },
+  "editCustomSkin": {
+    "title": "Edit Custom Mod",
+    "modName": "Mod Name",
+    "modNamePlaceholder": "Enter mod name",
+    "previewImage": "Preview Image (Optional)",
+    "selectImage": "Select Image",
+    "newImageSelected": "New image selected",
+    "modMaintenance": "Mod Maintenance",
+    "fixModIssues": "Fix Mod Issues",
+    "fixing": "Fixing...",
+    "fixDescription": "Fixes missing health bars, materials, and VFX issues",
+    "startingFix": "Starting fix process...",
+    "fixCompleted": "Fix completed successfully!",
+    "fixFailed": "Fix failed: {{error}}",
+    "fixError": "An error occurred while fixing the mod",
+    "saveChanges": "Save Changes"
+  },
+  "cancel": "Cancel",
+  "success": "Success",
+  "error": "Error",
+  "update": {
+    "available": "Update Available",
+    "description": "A new version of Bocchi is available for download.",
+    "whatsNew": "What's New",
+    "downloading": "Downloading...",
+    "updateNow": "Update Now",
+    "championDataAvailable": "Champion Data Update Available",
+    "championDataDescription": "A new version of champion data is available. This update includes the latest champions, skins, and other game content.",
+    "currentVersion": "Current version: ",
+    "updating": "Updating..."
+  },
+  "skins": {
+    "selected_one": "{{count}} skin selected",
+    "selected_other": "{{count}} skins selected",
+    "toDownload": "({{count}} to download)",
+    "downloaded": "Downloaded Skins",
+    "notDownloaded": "Not Downloaded",
+    "repository": "Repository Skins",
+    "customImports": "Custom Imports",
+    "total": "Total: {{count}} skins",
+    "searchPlaceholder": "Search by champion or skin name...",
+    "noSkinsFound": "No skins found",
+    "userImport": "User Import",
+    "custom": "Custom",
+    "deleting": "Deleting...",
+    "chromas_one": "{{count}} chroma available",
+    "chromas_other": "{{count}} chromas available",
+    "selectChroma": "Select Chroma for {{skinName}}",
+    "chooseChroma_one": "Choose from {{count}} available chroma",
+    "chooseChroma_other": "Choose from {{count}} available chromas",
+    "selectVariant": "Select Variant for {{skinName}}",
+    "chooseVariant": "Choose from {{count}} available {{type}}",
+    "exaltedVariant": "Exalted variants",
+    "formVariant": "Form variants",
+    "mySkins": "My Skins",
+    "roomSkins": "Room Skins",
+    "manage": "Manage",
+    "manageDownloaded": "Manage downloaded skins",
+    "downloadedCount": "Downloaded Skins ({{count}})",
+    "allSkins": "All Skins",
+    "autoSelected": "Auto"
+  },
+  "filters": {
+    "title": "Filters & Sort",
+    "active": "Active",
+    "downloadStatus": "Download Status",
+    "all": "All",
+    "downloaded": "Downloaded",
+    "notDownloaded": "Not Downloaded",
+    "chromas": "Chromas",
+    "hasChromas": "Has Chromas",
+    "noChromas": "No Chromas",
+    "championType": "Champion Type",
+    "sortBy": "Sort By",
+    "nameAsc": "Name (A-Z)",
+    "nameDesc": "Name (Z-A)",
+    "skinNumAsc": "Skin # (Low to High)",
+    "skinNumDesc": "Skin # (High to Low)",
+    "championName": "Champion Name",
+    "rarityAsc": "Rarity (Low to High)",
+    "rarityDesc": "Rarity (High to Low)",
+    "winRateDesc": "Win Rate (High to Low)",
+    "winRateAsc": "Win Rate (Low to High)",
+    "pickRateDesc": "Pick Rate (High to Low)",
+    "pickRateAsc": "Pick Rate (Low to High)",
+    "totalGamesDesc": "Most Played",
+    "totalGamesAsc": "Least Played",
+    "rarity": "Rarity",
+    "rarities": {
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "ultimate": "Ultimate",
+      "mythic": "Mythic",
+      "transcendent": "Transcendent",
+      "exalted": "Exalted"
+    }
+  },
+  "patcher": {
+    "applying": "Applying...",
+    "stopping": "Stopping...",
+    "stopPatcher": "Stop Patcher",
+    "apply_one": "Apply {{count}} Skin",
+    "apply_other": "Apply {{count}} Skins",
+    "messages": "Patcher Messages:"
+  },
+  "room": {
+    "joinCreate": "Join/Create Room",
+    "p2pRoom": "P2P Room",
+    "description": "Create a new room or join an existing one to share skins with others.",
+    "displayName": "Display Name",
+    "displayNamePlaceholder": "Enter your name",
+    "createNew": "Create a New Room",
+    "creating": "Creating...",
+    "createRoom": "Create Room",
+    "joinExisting": "Join Existing Room",
+    "roomIdPlaceholder": "Enter room ID (e.g., ABC123)",
+    "joining": "Joining...",
+    "joinRoom": "Join Room",
+    "roomId": "Room: {{id}}",
+    "copyRoomId": "Copy room ID",
+    "members_one": "{{count}} member",
+    "members_other": "{{count}} members"
+  },
+  "fileTransfer": {
+    "incoming": "Incoming File Transfer",
+    "description": "A peer wants to share a custom mod with you",
+    "file": "File:",
+    "size": "Size:",
+    "champion": "Champion:",
+    "skin": "Skin:",
+    "transferring": "Transferring file...",
+    "completed": "Transfer completed!"
+  },
+  "customMod": {
+    "edit": "Edit Custom Mod",
+    "modName": "Mod Name",
+    "modNamePlaceholder": "Enter mod name",
+    "previewImage": "Preview Image (Optional)",
+    "selectImage": "Select Image",
+    "newImageSelected": "New image selected"
+  },
+  "social": {
+    "joinDiscord": "Join Discord",
+    "viewGithub": "View on GitHub",
+    "donate": "Donate"
+  },
+  "lcu": {
+    "connected": "Connected to League Client",
+    "disconnected": "Disconnected from League Client",
+    "championHovered": "Champion Selected",
+    "championLocked": "Champion Locked",
+    "viewSkins": "View Skins",
+    "connecting": "Connecting to League Client...",
+    "connectionFailed": "Failed to connect to League Client",
+    "status": "LCU Status",
+    "notConnected": "Not Connected",
+    "inChampSelect": "In Champion Select",
+    "disabled": "Disabled",
+    "tooltipNotConnected": "Start League of Legends client to enable automatic champion detection during champion select",
+    "tooltipConnected": "Connected to League client. Will show notifications when you select champions",
+    "tooltipInChampSelect": "Currently in champion select. Select a champion to see a notification",
+    "tooltipDisabled": "Champion detection is disabled. Enable it in settings to receive notifications when selecting champions",
+    "championLockedDescription": "You have locked in {{champion}}. Would you like to browse available skins?",
+    "championHoveredDescription": "You are hovering {{champion}}. Would you like to browse available skins?",
+    "randomSkin": "Random Skin",
+    "randomRaritySkin": "Random Rarity Skin"
+  },
+  "smartApply": {
+    "willApply": "Smart: {{count}}/{{total}}",
+    "applying": "Applying {{count}} skins for: {{champions}}",
+    "success": "Applied {{applied}} of {{total}} skins",
+    "failed": "Failed to apply skins",
+    "noSkinsToApply": "No skins to apply for your team",
+    "noSkinsForTeam": "No skins selected for your team champions"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "downloadFailed": "Failed to download",
+    "connectionError": "Connection error",
+    "pathNotSet": "Please set game path first",
+    "operationTimeout": "Operation timed out. Please try again.",
+    "skinNotAvailable": "The skin is either not available in lol-skins repository or the mapping is wrong"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "Are you sure you want to delete all skins? This action cannot be undone.",
+    "confirmDeleteChampion": "Are you sure you want to delete all skins for {{champion}}? This action cannot be undone."
+  }
+}

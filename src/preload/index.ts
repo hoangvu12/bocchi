@@ -89,6 +89,7 @@ const api = {
   // Settings
   getSettings: (key?: string) => ipcRenderer.invoke('get-settings', key),
   setSettings: (key: string, value: any) => ipcRenderer.invoke('set-settings', key, value),
+  getSystemLocale: () => ipcRenderer.invoke('get-system-locale'),
 
   // Auto-updater
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),

@@ -1,0 +1,417 @@
+{
+  "app": {
+    "title": "CSLOL Skin Launcher",
+    "loading": "Memuat...",
+    "ready": "Siap"
+  },
+  "actions": {
+    "browse": "Telusuri",
+    "download": "Unduh",
+    "update": "Perbarui",
+    "apply": "Terapkan",
+    "stop": "Berhenti",
+    "close": "Tutup",
+    "minimize": "Minimalkan",
+    "maximize": "Maksimalkan",
+    "restore": "Kembalikan",
+    "search": "Cari",
+    "filter": "Filter",
+    "sort": "Urutkan",
+    "clearAll": "Hapus Semua",
+    "clearFilters": "Hapus Filter",
+    "save": "Simpan",
+    "saveChanges": "Simpan Perubahan",
+    "delete": "Hapus",
+    "deleteAll": "Hapus semua skin",
+    "deleteAllForChampion": "Hapus semua skin untuk {{champion}}",
+    "decline": "Tolak",
+    "accept": "Terima",
+    "join": "Bergabung",
+    "cancel": "Batal",
+    "leave": "Keluar",
+    "create": "Buat",
+    "copy": "Salin",
+    "later": "Nanti",
+    "skipForNow": "Lewati sekarang",
+    "downloadAndInstall": "Unduh dan Install"
+  },
+  "nav": {
+    "favorites": "Favorit",
+    "settings": "Pengaturan",
+    "about": "Tentang"
+  },
+  "champion": {
+    "searchPlaceholder": "Cari champion",
+    "noData": "Data champion tidak ditemukan",
+    "downloadData": "Unduh Data Champion",
+    "updateData": "Perbarui Data",
+    "version": "Versi",
+    "allChampions": "Semua Champion",
+    "customMods": "Mod Kustom"
+  },
+  "skin": {
+    "searchPlaceholder": "Cari skin di semua champion...",
+    "apply": "Terapkan Skin",
+    "applied": "Diterapkan",
+    "downloaded": "Diunduh",
+    "favorite": "Tambah ke favorit",
+    "unfavorite": "Hapus dari favorit",
+    "clickToApply": "Klik skin mana pun untuk langsung menerapkannya",
+    "showing_one": "Menampilkan {{count}} skin",
+    "showing_other": "Menampilkan {{count}} skin"
+  },
+  "status": {
+    "detectingGame": "Mendeteksi jalur game...",
+    "gameDetected": "Jalur game terdeteksi otomatis",
+    "gameNotFound": "Jalur game tidak ditemukan. Silakan telusuri secara manual.",
+    "downloading": "Mengunduh {{name}}...",
+    "applying": "Menerapkan {{name}}...",
+    "applied": "Berhasil menerapkan {{name}}!",
+    "stopping": "Menghentikan patcher...",
+    "stopped": "Patcher dihentikan",
+    "error": "Error: {{message}}",
+    "fetchingData": "Mengambil data champion...",
+    "autoAcceptedMatch": "Pertandingan diterima secara otomatis!",
+    "dataFetched": "Berhasil mengambil data untuk {{count}} champion!",
+    "gamePathSet": "Jalur game berhasil ditetapkan!",
+    "pleaseSetGamePath": "Silakan tetapkan jalur game terlebih dahulu",
+    "downloadingTools": "Mengunduh cslol-tools",
+    "toolsDownloaded": "Tools berhasil diunduh!",
+    "stoppingCurrentPatcher": "Menghentikan patcher saat ini",
+    "failedToStopPatcher": "Gagal menghentikan patcher: {{error}}",
+    "deletedCustomMod": "Mod kustom dihapus: {{name}}",
+    "deletedSkin": "Skin dihapus: {{name}}",
+    "failedToDeleteMod": "Gagal menghapus mod: {{error}}",
+    "failedToDeleteSkin": "Gagal menghapus skin: {{error}}",
+    "autoSelectedSkinsCleanedUp": "Membersihkan {{count}} skin yang dipilih otomatis"
+  },
+  "tools": {
+    "required": "CS:LOL Tools Diperlukan",
+    "description": "CS:LOL mod tools diperlukan untuk menerapkan skin. Apakah Anda ingin mengunduhnya sekarang?",
+    "downloading": "Mengunduh tools... {{progress}}%",
+    "downloadTools": "Unduh Tools"
+  },
+  "settings": {
+    "title": "Pengaturan",
+    "description": "Konfigurasi preferensi aplikasi Anda",
+    "gamePath": "Jalur Game",
+    "language": "Bahasa",
+    "theme": "Tema",
+    "notifications": "Notifikasi",
+    "leagueClient": {
+      "title": "Integrasi League Client",
+      "description": "Aktifkan fitur yang terhubung dengan klien League of Legends"
+    },
+    "championDetection": {
+      "title": "Deteksi Champion",
+      "description": "Otomatis menampilkan notifikasi saat Anda memilih champion di klien League"
+    },
+    "autoViewSkins": {
+      "title": "Tampilan Skin Otomatis",
+      "description": "Otomatis menampilkan skin saat champion terdeteksi (melewati dialog konfirmasi)"
+    },
+    "smartApply": {
+      "title": "Penerapan Pintar",
+      "description": "Hanya memuat skin untuk champion di tim Anda (mengurangi waktu loading)"
+    },
+    "autoApply": {
+      "title": "Penerapan Otomatis",
+      "description": "Otomatis menerapkan skin saat semua champion telah terkunci"
+    },
+    "autoApplyTriggerTime": {
+      "title": "Waktu Pemicu Penerapan Otomatis",
+      "description": "Detik sebelum game dimulai untuk otomatis menerapkan skin (5-30 detik)"
+    },
+    "autoAccept": {
+      "title": "Terima Pertandingan Otomatis",
+      "description": "Otomatis menerima ready check saat pertandingan ditemukan"
+    },
+    "autoPick": {
+      "title": "Pilih Otomatis",
+      "description": "Otomatis memilih champion saat champion select",
+      "force": "Paksa Pilih",
+      "forceDescription": "Menimpa pilihan tim dan memilih meskipun sudah dipilih",
+      "championPriority": "Daftar Prioritas Pilihan"
+    },
+    "autoBan": {
+      "title": "Ban Otomatis",
+      "description": "Otomatis mem-ban champion saat champion select",
+      "force": "Paksa Ban",
+      "forceDescription": "Menimpa niat tim dan mem-ban meskipun rekan tim ingin memainkannya",
+      "championPriority": "Daftar Prioritas Ban"
+    },
+    "selectChampion": "Pilih champion",
+    "addChampion": "Tambah Champion",
+    "autoRandomSkin": {
+      "title": "Skin Acak Otomatis",
+      "description": "Otomatis memilih skin acak saat champion terdeteksi"
+    },
+    "autoRandomRaritySkin": {
+      "title": "Skin Rarity Acak Otomatis",
+      "description": "Otomatis memilih skin acak dengan rarity (Epic, Legendary, dll.) saat champion terdeteksi"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "Skin Favorit Acak Otomatis",
+      "description": "Otomatis memilih skin acak dari favorit Anda saat champion terdeteksi"
+    },
+    "autoRandomHighestWinRateSkin": {
+      "title": "Skin Win Rate Tertinggi Acak Otomatis",
+      "description": "Otomatis memilih skin acak dari 3 skin dengan win rate tertinggi"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "Skin Pick Rate Tertinggi Acak Otomatis",
+      "description": "Otomatis memilih skin acak dari 3 skin paling populer"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "Skin Paling Dimainkan Acak Otomatis",
+      "description": "Otomatis memilih skin acak dari 3 skin yang paling banyak dimainkan"
+    },
+    "inGameOverlay": {
+      "title": "Overlay Dalam Game",
+      "description": "Pra-lampirkan overlay ke klien League untuk notifikasi skin yang lebih cepat (memerlukan fitur Auto Random mana pun)"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "Izinkan Beberapa Skin per Champion",
+      "description": "Aktifkan untuk menggunakan beberapa skin untuk champion yang sama secara bersamaan"
+    },
+    "autoFixModIssues": {
+      "title": "Perbaiki masalah mod otomatis saat import",
+      "description": "Otomatis memperbaiki health bar, material, dan VFX yang hilang saat mengimpor mod"
+    },
+    "tabs": {
+      "general": "Umum",
+      "leagueClient": "League Client",
+      "skinManagement": "Manajemen Skin"
+    },
+    "randomSkinSelection": {
+      "title": "Pemilihan Skin Acak",
+      "none": "Dinonaktifkan"
+    },
+    "minimizeToTray": {
+      "title": "Minimalkan ke Tray",
+      "description": "Sembunyikan aplikasi ke system tray alih-alih menutup saat mengklik tombol tutup"
+    }
+  },
+  "tray": {
+    "show": "Tampilkan Bocchi",
+    "hide": "Sembunyikan Bocchi",
+    "language": "Bahasa",
+    "openSettings": "Buka Pengaturan",
+    "quit": "Keluar dari Bocchi"
+  },
+  "fileUpload": {
+    "uploadButton": "Upload Mod Kustom",
+    "importTitle": "Impor Mod Kustom",
+    "importDescription": "Opsional pilih champion dan atur nama kustom untuk mod Anda.",
+    "selectedFile": "File Terpilih",
+    "selectChampion": "Pilih Champion",
+    "championPlaceholder": "Tidak ada champion spesifik",
+    "customName": "Nama Kustom",
+    "customNamePlaceholder": "Masukkan nama skin...",
+    "importing": "Mengimpor...",
+    "import": "Impor",
+    "noFileSelected": "Tidak ada file yang dipilih",
+    "invalidFile": "Format file tidak valid",
+    "importSuccess": "Skin berhasil diimpor!",
+    "importFailed": "Gagal mengimpor skin",
+    "previewImage": "Gambar Pratinjau",
+    "browseImage": "Telusuri",
+    "noImageSelected": "Tidak ada gambar yang dipilih",
+    "batchImportTitle": "Mengimpor Beberapa File",
+    "importingProgress": "Mengimpor {{current}} dari {{total}} file...",
+    "batchComplete": "Impor Selesai!",
+    "succeeded": "berhasil",
+    "failed": "gagal",
+    "failedFiles": "File yang gagal:",
+    "close": "Tutup",
+    "fixModIssues": "Perbaiki masalah mod",
+    "fixModIssuesDescription": "Memperbaiki health bar, material, dan VFX yang hilang"
+  },
+  "editCustomSkin": {
+    "title": "Edit Mod Kustom",
+    "modName": "Nama Mod",
+    "modNamePlaceholder": "Masukkan nama mod",
+    "previewImage": "Gambar Pratinjau (Opsional)",
+    "selectImage": "Pilih Gambar",
+    "newImageSelected": "Gambar baru dipilih",
+    "modMaintenance": "Pemeliharaan Mod",
+    "fixModIssues": "Perbaiki Masalah Mod",
+    "fixing": "Memperbaiki...",
+    "fixDescription": "Memperbaiki masalah health bar, material, dan VFX yang hilang",
+    "startingFix": "Memulai proses perbaikan...",
+    "fixCompleted": "Perbaikan berhasil diselesaikan!",
+    "fixFailed": "Perbaikan gagal: {{error}}",
+    "fixError": "Terjadi kesalahan saat memperbaiki mod",
+    "saveChanges": "Simpan Perubahan"
+  },
+  "cancel": "Batal",
+  "success": "Berhasil",
+  "error": "Error",
+  "update": {
+    "available": "Pembaruan Tersedia",
+    "description": "Versi baru Bocchi tersedia untuk diunduh.",
+    "whatsNew": "Apa yang Baru",
+    "downloading": "Mengunduh...",
+    "updateNow": "Perbarui Sekarang",
+    "championDataAvailable": "Pembaruan Data Champion Tersedia",
+    "championDataDescription": "Versi baru data champion tersedia. Pembaruan ini mencakup champion, skin, dan konten game terbaru.",
+    "currentVersion": "Versi saat ini: ",
+    "updating": "Memperbarui..."
+  },
+  "skins": {
+    "selected_one": "{{count}} skin dipilih",
+    "selected_other": "{{count}} skin dipilih",
+    "toDownload": "({{count}} untuk diunduh)",
+    "downloaded": "Skin Terunduh",
+    "notDownloaded": "Belum Diunduh",
+    "repository": "Skin Repository",
+    "customImports": "Impor Kustom",
+    "total": "Total: {{count}} skin",
+    "searchPlaceholder": "Cari berdasarkan nama champion atau skin...",
+    "noSkinsFound": "Tidak ada skin yang ditemukan",
+    "userImport": "Impor Pengguna",
+    "custom": "Kustom",
+    "deleting": "Menghapus...",
+    "chromas_one": "{{count}} chroma tersedia",
+    "chromas_other": "{{count}} chroma tersedia",
+    "selectChroma": "Pilih Chroma untuk {{skinName}}",
+    "chooseChroma_one": "Pilih dari {{count}} chroma tersedia",
+    "chooseChroma_other": "Pilih dari {{count}} chroma tersedia",
+    "selectVariant": "Pilih Varian untuk {{skinName}}",
+    "chooseVariant": "Pilih dari {{count}} {{type}} tersedia",
+    "exaltedVariant": "Varian exalted",
+    "formVariant": "Varian form",
+    "mySkins": "Skin Saya",
+    "roomSkins": "Skin Ruangan",
+    "manage": "Kelola",
+    "manageDownloaded": "Kelola skin yang diunduh",
+    "downloadedCount": "Skin Terunduh ({{count}})",
+    "allSkins": "Semua Skin",
+    "autoSelected": "Otomatis"
+  },
+  "filters": {
+    "title": "Filter & Urutkan",
+    "active": "Aktif",
+    "downloadStatus": "Status Unduh",
+    "all": "Semua",
+    "downloaded": "Diunduh",
+    "notDownloaded": "Belum Diunduh",
+    "chromas": "Chroma",
+    "hasChromas": "Memiliki Chroma",
+    "noChromas": "Tidak Ada Chroma",
+    "championType": "Tipe Champion",
+    "sortBy": "Urutkan Berdasarkan",
+    "nameAsc": "Nama (A-Z)",
+    "nameDesc": "Nama (Z-A)",
+    "skinNumAsc": "Nomor Skin (Rendah ke Tinggi)",
+    "skinNumDesc": "Nomor Skin (Tinggi ke Rendah)",
+    "championName": "Nama Champion",
+    "rarityAsc": "Rarity (Rendah ke Tinggi)",
+    "rarityDesc": "Rarity (Tinggi ke Rendah)",
+    "winRateDesc": "Win Rate (Tinggi ke Rendah)",
+    "winRateAsc": "Win Rate (Rendah ke Tinggi)",
+    "pickRateDesc": "Pick Rate (Tinggi ke Rendah)",
+    "pickRateAsc": "Pick Rate (Rendah ke Tinggi)",
+    "totalGamesDesc": "Paling Dimainkan",
+    "totalGamesAsc": "Paling Sedikit Dimainkan",
+    "rarity": "Rarity",
+    "rarities": {
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "ultimate": "Ultimate",
+      "mythic": "Mythic",
+      "transcendent": "Transcendent",
+      "exalted": "Exalted"
+    }
+  },
+  "patcher": {
+    "applying": "Menerapkan...",
+    "stopping": "Menghentikan...",
+    "stopPatcher": "Hentikan Patcher",
+    "apply_one": "Terapkan {{count}} Skin",
+    "apply_other": "Terapkan {{count}} Skin",
+    "messages": "Pesan Patcher:"
+  },
+  "room": {
+    "joinCreate": "Bergabung/Buat Ruangan",
+    "p2pRoom": "Ruangan P2P",
+    "description": "Buat ruangan baru atau bergabung dengan yang sudah ada untuk berbagi skin dengan orang lain.",
+    "displayName": "Nama Tampilan",
+    "displayNamePlaceholder": "Masukkan nama Anda",
+    "createNew": "Buat Ruangan Baru",
+    "creating": "Membuat...",
+    "createRoom": "Buat Ruangan",
+    "joinExisting": "Bergabung dengan Ruangan yang Ada",
+    "roomIdPlaceholder": "Masukkan ID ruangan (mis., ABC123)",
+    "joining": "Bergabung...",
+    "joinRoom": "Bergabung dengan Ruangan",
+    "roomId": "Ruangan: {{id}}",
+    "copyRoomId": "Salin ID ruangan",
+    "members_one": "{{count}} anggota",
+    "members_other": "{{count}} anggota"
+  },
+  "fileTransfer": {
+    "incoming": "Transfer File Masuk",
+    "description": "Rekan ingin berbagi mod kustom dengan Anda",
+    "file": "File:",
+    "size": "Ukuran:",
+    "champion": "Champion:",
+    "skin": "Skin:",
+    "transferring": "Mentransfer file...",
+    "completed": "Transfer selesai!"
+  },
+  "customMod": {
+    "edit": "Edit Mod Kustom",
+    "modName": "Nama Mod",
+    "modNamePlaceholder": "Masukkan nama mod",
+    "previewImage": "Gambar Pratinjau (Opsional)",
+    "selectImage": "Pilih Gambar",
+    "newImageSelected": "Gambar baru dipilih"
+  },
+  "social": {
+    "joinDiscord": "Bergabung dengan Discord",
+    "viewGithub": "Lihat di GitHub",
+    "donate": "Donasi"
+  },
+  "lcu": {
+    "connected": "Terhubung ke League Client",
+    "disconnected": "Terputus dari League Client",
+    "championHovered": "Champion Dipilih",
+    "championLocked": "Champion Terkunci",
+    "viewSkins": "Lihat Skin",
+    "connecting": "Menghubungkan ke League Client...",
+    "connectionFailed": "Gagal terhubung ke League Client",
+    "status": "Status LCU",
+    "notConnected": "Tidak Terhubung",
+    "inChampSelect": "Di Champion Select",
+    "disabled": "Dinonaktifkan",
+    "tooltipNotConnected": "Mulai klien League of Legends untuk mengaktifkan deteksi champion otomatis saat champion select",
+    "tooltipConnected": "Terhubung ke klien League. Akan menampilkan notifikasi saat Anda memilih champion",
+    "tooltipInChampSelect": "Saat ini di champion select. Pilih champion untuk melihat notifikasi",
+    "tooltipDisabled": "Deteksi champion dinonaktifkan. Aktifkan di pengaturan untuk menerima notifikasi saat memilih champion",
+    "championLockedDescription": "Anda telah mengunci {{champion}}. Apakah Anda ingin menelusuri skin yang tersedia?",
+    "championHoveredDescription": "Anda sedang mengarahkan kursor ke {{champion}}. Apakah Anda ingin menelusuri skin yang tersedia?",
+    "randomSkin": "Skin Acak",
+    "randomRaritySkin": "Skin Rarity Acak"
+  },
+  "smartApply": {
+    "willApply": "Pintar: {{count}}/{{total}}",
+    "applying": "Menerapkan {{count}} skin untuk: {{champions}}",
+    "success": "Menerapkan {{applied}} dari {{total}} skin",
+    "failed": "Gagal menerapkan skin",
+    "noSkinsToApply": "Tidak ada skin untuk diterapkan untuk tim Anda",
+    "noSkinsForTeam": "Tidak ada skin yang dipilih untuk champion tim Anda"
+  },
+  "errors": {
+    "generic": "Terjadi kesalahan",
+    "downloadFailed": "Gagal mengunduh",
+    "connectionError": "Kesalahan koneksi",
+    "pathNotSet": "Silakan tetapkan jalur game terlebih dahulu",
+    "operationTimeout": "Operasi timeout. Silakan coba lagi.",
+    "skinNotAvailable": "Skin tidak tersedia di repository lol-skins atau mapping salah"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "Apakah Anda yakin ingin menghapus semua skin? Tindakan ini tidak dapat dibatalkan.",
+    "confirmDeleteChampion": "Apakah Anda yakin ingin menghapus semua skin untuk {{champion}}? Tindakan ini tidak dapat dibatalkan."
+  }
+}

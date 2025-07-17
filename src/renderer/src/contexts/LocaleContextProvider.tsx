@@ -19,12 +19,42 @@ export const LocaleProvider: React.FC<LocaleProviderProps> = ({ children }) => {
         setCurrentLanguage(savedLang as LanguageCode)
         await i18n.changeLanguage(savedLang)
       } else {
-        // Try to detect system language
+        // Try to detect Windows system language first
+        try {
+          const systemLocaleResult = await window.api.getSystemLocale?.()
+          if (systemLocaleResult?.success && systemLocaleResult.locale) {
+            // Convert locale format (e.g., 'en-US' to 'en_US', 'ar-AE' to 'ar_AE')
+            const normalizedLocale = systemLocaleResult.locale.replace('-', '_')
+
+            // First try exact match
+            let matchedLang = supportedLanguages.find((lang) => lang.code === normalizedLocale)
+
+            // If no exact match, try language family match (e.g., 'en' matches 'en_US')
+            if (!matchedLang) {
+              const languageCode = normalizedLocale.split('_')[0]
+              matchedLang = supportedLanguages.find((lang) => lang.code.startsWith(languageCode))
+            }
+
+            if (matchedLang) {
+              console.log(
+                `Detected Windows system language: ${systemLocaleResult.locale} -> ${matchedLang.code}`
+              )
+              setCurrentLanguage(matchedLang.code)
+              await i18n.changeLanguage(matchedLang.code)
+              return
+            }
+          }
+        } catch (error) {
+          console.warn('Failed to detect Windows system language:', error)
+        }
+
+        // Fallback to browser language detection
         const systemLang = navigator.language.replace('-', '_')
         const matchedLang = supportedLanguages.find((lang) =>
           lang.code.startsWith(systemLang.split('_')[0])
         )
         if (matchedLang) {
+          console.log(`Detected browser language: ${navigator.language} -> ${matchedLang.code}`)
           setCurrentLanguage(matchedLang.code)
           await i18n.changeLanguage(matchedLang.code)
         }

@@ -1,0 +1,417 @@
+{
+  "app": {
+    "title": "CSLOL Skin Launcher",
+    "loading": "Φόρτωση...",
+    "ready": "Έτοιμο"
+  },
+  "actions": {
+    "browse": "Περιήγηση",
+    "download": "Λήψη",
+    "update": "Ενημέρωση",
+    "apply": "Εφαρμογή",
+    "stop": "Διακοπή",
+    "close": "Κλείσιμο",
+    "minimize": "Ελαχιστοποίηση",
+    "maximize": "Μεγιστοποίηση",
+    "restore": "Επαναφορά",
+    "search": "Αναζήτηση",
+    "filter": "Φίλτρο",
+    "sort": "Ταξινόμηση",
+    "clearAll": "Καθαρισμός όλων",
+    "clearFilters": "Καθαρισμός φίλτρων",
+    "save": "Αποθήκευση",
+    "saveChanges": "Αποθήκευση αλλαγών",
+    "delete": "Διαγραφή",
+    "deleteAll": "Διαγραφή όλων των skins",
+    "deleteAllForChampion": "Διαγραφή όλων των skins για τον {{champion}}",
+    "decline": "Απόρριψη",
+    "accept": "Αποδοχή",
+    "join": "Συμμετοχή",
+    "cancel": "Ακύρωση",
+    "leave": "Αποχώρηση",
+    "create": "Δημιουργία",
+    "copy": "Αντιγραφή",
+    "later": "Αργότερα",
+    "skipForNow": "Παράλειψη για τώρα",
+    "downloadAndInstall": "Λήψη και εγκατάσταση"
+  },
+  "nav": {
+    "favorites": "Αγαπημένα",
+    "settings": "Ρυθμίσεις",
+    "about": "Σχετικά"
+  },
+  "champion": {
+    "searchPlaceholder": "Αναζήτηση πρωταγωνιστών",
+    "noData": "Δεν βρέθηκαν δεδομένα πρωταγωνιστών",
+    "downloadData": "Λήψη δεδομένων πρωταγωνιστών",
+    "updateData": "Ενημέρωση δεδομένων",
+    "version": "Έκδοση",
+    "allChampions": "Όλοι οι πρωταγωνιστές",
+    "customMods": "Προσαρμοσμένα mods"
+  },
+  "skin": {
+    "searchPlaceholder": "Αναζήτηση skins σε όλους τους πρωταγωνιστές...",
+    "apply": "Εφαρμογή skin",
+    "applied": "Εφαρμοσμένο",
+    "downloaded": "Ληφθέν",
+    "favorite": "Προσθήκη στα αγαπημένα",
+    "unfavorite": "Αφαίρεση από αγαπημένα",
+    "clickToApply": "Κάντε κλικ σε οποιοδήποτε skin για άμεση εφαρμογή",
+    "showing_one": "Εμφανίζεται {{count}} skin",
+    "showing_other": "Εμφανίζονται {{count}} skins"
+  },
+  "status": {
+    "detectingGame": "Εντοπισμός διαδρομής παιχνιδιού...",
+    "gameDetected": "Η διαδρομή παιχνιδιού εντοπίστηκε αυτόματα",
+    "gameNotFound": "Δεν βρέθηκε διαδρομή παιχνιδιού. Παρακαλώ περιηγηθείτε χειροκίνητα.",
+    "downloading": "Λήψη {{name}}...",
+    "applying": "Εφαρμογή {{name}}...",
+    "applied": "Το {{name}} εφαρμόστηκε επιτυχώς!",
+    "stopping": "Διακοπή patcher...",
+    "stopped": "Το patcher σταμάτησε",
+    "error": "Σφάλμα: {{message}}",
+    "fetchingData": "Λήψη δεδομένων πρωταγωνιστών...",
+    "autoAcceptedMatch": "Ο αγώνας έγινε αυτόματα αποδεκτός!",
+    "dataFetched": "Επιτυχής λήψη δεδομένων για {{count}} πρωταγωνιστές!",
+    "gamePathSet": "Η διαδρομή παιχνιδιού ορίστηκε επιτυχώς!",
+    "pleaseSetGamePath": "Παρακαλώ ορίστε πρώτα τη διαδρομή παιχνιδιού",
+    "downloadingTools": "Λήψη cslol-tools",
+    "toolsDownloaded": "Τα εργαλεία λήφθηκαν επιτυχώς!",
+    "stoppingCurrentPatcher": "Διακοπή τρέχοντος patcher",
+    "failedToStopPatcher": "Αποτυχία διακοπής patcher: {{error}}",
+    "deletedCustomMod": "Διαγράφηκε προσαρμοσμένο mod: {{name}}",
+    "deletedSkin": "Διαγράφηκε skin: {{name}}",
+    "failedToDeleteMod": "Αποτυχία διαγραφής mod: {{error}}",
+    "failedToDeleteSkin": "Αποτυχία διαγραφής skin: {{error}}",
+    "autoSelectedSkinsCleanedUp": "Καθαρίστηκαν {{count}} αυτόματα επιλεγμένα skins"
+  },
+  "tools": {
+    "required": "Απαιτούνται CS:LOL Tools",
+    "description": "Τα εργαλεία CS:LOL mod απαιτούνται για την εφαρμογή skins. Θα θέλατε να τα κατεβάσετε τώρα;",
+    "downloading": "Λήψη εργαλείων... {{progress}}%",
+    "downloadTools": "Λήψη εργαλείων"
+  },
+  "settings": {
+    "title": "Ρυθμίσεις",
+    "description": "Διαμόρφωση προτιμήσεων εφαρμογής",
+    "gamePath": "Διαδρομή παιχνιδιού",
+    "language": "Γλώσσα",
+    "theme": "Θέμα",
+    "notifications": "Ειδοποιήσεις",
+    "leagueClient": {
+      "title": "Ενσωμάτωση League Client",
+      "description": "Ενεργοποίηση λειτουργιών που συνδέονται με τον League of Legends client"
+    },
+    "championDetection": {
+      "title": "Εντοπισμός πρωταγωνιστή",
+      "description": "Αυτόματη εμφάνιση ειδοποιήσεων όταν επιλέγετε πρωταγωνιστές στον League client"
+    },
+    "autoViewSkins": {
+      "title": "Αυτόματη προβολή skins",
+      "description": "Αυτόματη προβολή skins όταν εντοπίζεται πρωταγωνιστής (παραλείπει διάλογο επιβεβαίωσης)"
+    },
+    "smartApply": {
+      "title": "Έξυπνη εφαρμογή",
+      "description": "Φόρτωση μόνο skins για πρωταγωνιστές στην ομάδα σας (μειώνει χρόνο φόρτωσης)"
+    },
+    "autoApply": {
+      "title": "Αυτόματη εφαρμογή",
+      "description": "Αυτόματη εφαρμογή skins όταν όλοι οι πρωταγωνιστές είναι κλειδωμένοι"
+    },
+    "autoApplyTriggerTime": {
+      "title": "Χρόνος ενεργοποίησης αυτόματης εφαρμογής",
+      "description": "Δευτερόλεπτα πριν την έναρξη του παιχνιδιού για αυτόματη εφαρμογή skins (5-30 δευτερόλεπτα)"
+    },
+    "autoAccept": {
+      "title": "Αυτόματη αποδοχή αγώνα",
+      "description": "Αυτόματη αποδοχή ελέγχου ετοιμότητας όταν βρεθεί αγώνας"
+    },
+    "autoPick": {
+      "title": "Αυτόματη επιλογή",
+      "description": "Αυτόματη επιλογή πρωταγωνιστών κατά την επιλογή πρωταγωνιστή",
+      "force": "Εξαναγκασμένη επιλογή",
+      "forceDescription": "Παράκαμψη επιλογών ομάδας και επιλογή ακόμη κι αν έχει ήδη επιλεγεί",
+      "championPriority": "Λίστα προτεραιότητας επιλογής"
+    },
+    "autoBan": {
+      "title": "Αυτόματο ban",
+      "description": "Αυτόματο ban πρωταγωνιστών κατά την επιλογή πρωταγωνιστή",
+      "force": "Εξαναγκασμένο ban",
+      "forceDescription": "Παράκαμψη πρόθεσης ομάδας και ban ακόμη κι αν συμπαίκτης θέλει να παίξει",
+      "championPriority": "Λίστα προτεραιότητας ban"
+    },
+    "selectChampion": "Επιλογή πρωταγωνιστή",
+    "addChampion": "Προσθήκη πρωταγωνιστή",
+    "autoRandomSkin": {
+      "title": "Αυτόματο τυχαίο skin",
+      "description": "Αυτόματη επιλογή τυχαίου skin όταν εντοπίζεται πρωταγωνιστής"
+    },
+    "autoRandomRaritySkin": {
+      "title": "Αυτόματο τυχαίο σπάνιο skin",
+      "description": "Αυτόματη επιλογή τυχαίου skin με σπανιότητα (Epic, Legendary, κλπ.) όταν εντοπίζεται πρωταγωνιστής"
+    },
+    "autoRandomFavoriteSkin": {
+      "title": "Αυτόματο τυχαίο αγαπημένο skin",
+      "description": "Αυτόματη επιλογή τυχαίου skin από τα αγαπημένα σας όταν εντοπίζεται πρωταγωνιστής"
+    },
+    "autoRandomHighestWinRateSkin": {
+      "title": "Αυτόματο τυχαίο skin με υψηλότερο ποσοστό νίκης",
+      "description": "Αυτόματη επιλογή τυχαίου skin από τα τοπ 3 με υψηλότερο ποσοστό νίκης"
+    },
+    "autoRandomHighestPickRateSkin": {
+      "title": "Αυτόματο τυχαίο skin με υψηλότερο ποσοστό επιλογής",
+      "description": "Αυτόματη επιλογή τυχαίου skin από τα τοπ 3 πιο δημοφιλή skins"
+    },
+    "autoRandomMostPlayedSkin": {
+      "title": "Αυτόματο τυχαίο περισσότερο παιγμένο skin",
+      "description": "Αυτόματη επιλογή τυχαίου skin από τα τοπ 3 περισσότερο παιγμένα skins"
+    },
+    "inGameOverlay": {
+      "title": "Overlay στο παιχνίδι",
+      "description": "Προ-επισύναψη overlay στον League client για ταχύτερες ειδοποιήσεις skin (απαιτεί οποιαδήποτε λειτουργία Auto Random)"
+    },
+    "allowMultipleSkinsPerChampion": {
+      "title": "Επιτρέπει πολλαπλά skins ανά πρωταγωνιστή",
+      "description": "Επιτρέπει τη χρήση πολλαπλών skins για τον ίδιο πρωταγωνιστή ταυτόχρονα"
+    },
+    "autoFixModIssues": {
+      "title": "Αυτόματη διόρθωση προβλημάτων mod κατά την εισαγωγή",
+      "description": "Αυτόματη διόρθωση ελλειπών health bars, υλικών και VFX κατά την εισαγωγή mods"
+    },
+    "tabs": {
+      "general": "Γενικά",
+      "leagueClient": "League Client",
+      "skinManagement": "Διαχείριση Skins"
+    },
+    "randomSkinSelection": {
+      "title": "Τυχαία επιλογή skin",
+      "none": "Απενεργοποιημένο"
+    },
+    "minimizeToTray": {
+      "title": "Ελαχιστοποίηση στο tray",
+      "description": "Απόκρυψη εφαρμογής στο system tray αντί για κλείσιμο όταν κάνετε κλικ στο κουμπί κλεισίματος"
+    }
+  },
+  "tray": {
+    "show": "Εμφάνιση Bocchi",
+    "hide": "Απόκρυψη Bocchi",
+    "language": "Γλώσσα",
+    "openSettings": "Άνοιγμα ρυθμίσεων",
+    "quit": "Έξοδος από Bocchi"
+  },
+  "fileUpload": {
+    "uploadButton": "Ανέβασμα προσαρμοσμένου mod",
+    "importTitle": "Εισαγωγή προσαρμοσμένου mod",
+    "importDescription": "Προαιρετικά επιλέξτε έναν πρωταγωνιστή και ορίστε προσαρμοσμένο όνομα για το mod σας.",
+    "selectedFile": "Επιλεγμένο αρχείο",
+    "selectChampion": "Επιλογή πρωταγωνιστή",
+    "championPlaceholder": "Κανένας συγκεκριμένος πρωταγωνιστής",
+    "customName": "Προσαρμοσμένο όνομα",
+    "customNamePlaceholder": "Εισάγετε όνομα skin...",
+    "importing": "Εισαγωγή...",
+    "import": "Εισαγωγή",
+    "noFileSelected": "Δεν επιλέχθηκε αρχείο",
+    "invalidFile": "Μη έγκυρος τύπος αρχείου",
+    "importSuccess": "Το skin εισήχθη επιτυχώς!",
+    "importFailed": "Αποτυχία εισαγωγής skin",
+    "previewImage": "Εικόνα προεπισκόπησης",
+    "browseImage": "Περιήγηση",
+    "noImageSelected": "Δεν επιλέχθηκε εικόνα",
+    "batchImportTitle": "Εισαγωγή πολλαπλών αρχείων",
+    "importingProgress": "Εισαγωγή {{current}} από {{total}} αρχεία...",
+    "batchComplete": "Εισαγωγή ολοκληρώθηκε!",
+    "succeeded": "επιτυχής",
+    "failed": "αποτυχημένη",
+    "failedFiles": "Αποτυχημένα αρχεία:",
+    "close": "Κλείσιμο",
+    "fixModIssues": "Διόρθωση προβλημάτων mod",
+    "fixModIssuesDescription": "Διορθώνει ελλείπουσες health bars, υλικά και VFX"
+  },
+  "editCustomSkin": {
+    "title": "Επεξεργασία προσαρμοσμένου mod",
+    "modName": "Όνομα mod",
+    "modNamePlaceholder": "Εισάγετε όνομα mod",
+    "previewImage": "Εικόνα προεπισκόπησης (προαιρετικό)",
+    "selectImage": "Επιλογή εικόνας",
+    "newImageSelected": "Επιλέχθηκε νέα εικόνα",
+    "modMaintenance": "Συντήρηση mod",
+    "fixModIssues": "Διόρθωση προβλημάτων mod",
+    "fixing": "Διόρθωση...",
+    "fixDescription": "Διορθώνει ελλείπουσες health bars, υλικά και προβλήματα VFX",
+    "startingFix": "Έναρξη διαδικασίας διόρθωσης...",
+    "fixCompleted": "Η διόρθωση ολοκληρώθηκε επιτυχώς!",
+    "fixFailed": "Η διόρθωση απέτυχε: {{error}}",
+    "fixError": "Παρουσιάστηκε σφάλμα κατά τη διόρθωση του mod",
+    "saveChanges": "Αποθήκευση αλλαγών"
+  },
+  "cancel": "Ακύρωση",
+  "success": "Επιτυχία",
+  "error": "Σφάλμα",
+  "update": {
+    "available": "Διαθέσιμη ενημέρωση",
+    "description": "Μια νέα έκδοση του Bocchi είναι διαθέσιμη για λήψη.",
+    "whatsNew": "Τι νέο υπάρχει",
+    "downloading": "Λήψη...",
+    "updateNow": "Ενημέρωση τώρα",
+    "championDataAvailable": "Διαθέσιμη ενημέρωση δεδομένων πρωταγωνιστών",
+    "championDataDescription": "Μια νέα έκδοση των δεδομένων πρωταγωνιστών είναι διαθέσιμη. Αυτή η ενημέρωση περιλαμβάνει τους πιο πρόσφατους πρωταγωνιστές, skins και άλλο περιεχόμενο παιχνιδιού.",
+    "currentVersion": "Τρέχουσα έκδοση: ",
+    "updating": "Ενημέρωση..."
+  },
+  "skins": {
+    "selected_one": "{{count}} skin επιλεγμένο",
+    "selected_other": "{{count}} skins επιλεγμένα",
+    "toDownload": "({{count}} προς λήψη)",
+    "downloaded": "Ληφθέντα skins",
+    "notDownloaded": "Δεν λήφθηκαν",
+    "repository": "Skins αποθετηρίου",
+    "customImports": "Προσαρμοσμένες εισαγωγές",
+    "total": "Σύνολο: {{count}} skins",
+    "searchPlaceholder": "Αναζήτηση βάσει πρωταγωνιστή ή ονόματος skin...",
+    "noSkinsFound": "Δεν βρέθηκαν skins",
+    "userImport": "Εισαγωγή χρήστη",
+    "custom": "Προσαρμοσμένο",
+    "deleting": "Διαγραφή...",
+    "chromas_one": "{{count}} chroma διαθέσιμο",
+    "chromas_other": "{{count}} chromas διαθέσιμα",
+    "selectChroma": "Επιλογή chroma για {{skinName}}",
+    "chooseChroma_one": "Επιλογή από {{count}} διαθέσιμο chroma",
+    "chooseChroma_other": "Επιλογή από {{count}} διαθέσιμα chromas",
+    "selectVariant": "Επιλογή παραλλαγής για {{skinName}}",
+    "chooseVariant": "Επιλογή από {{count}} διαθέσιμα {{type}}",
+    "exaltedVariant": "Εξυψωμένες παραλλαγές",
+    "formVariant": "Παραλλαγές μορφής",
+    "mySkins": "Τα skins μου",
+    "roomSkins": "Skins δωματίου",
+    "manage": "Διαχείριση",
+    "manageDownloaded": "Διαχείριση ληφθέντων skins",
+    "downloadedCount": "Ληφθέντα skins ({{count}})",
+    "allSkins": "Όλα τα skins",
+    "autoSelected": "Αυτόματο"
+  },
+  "filters": {
+    "title": "Φίλτρα & Ταξινόμηση",
+    "active": "Ενεργό",
+    "downloadStatus": "Κατάσταση λήψης",
+    "all": "Όλα",
+    "downloaded": "Ληφθέντα",
+    "notDownloaded": "Δεν λήφθηκαν",
+    "chromas": "Chromas",
+    "hasChromas": "Έχει chromas",
+    "noChromas": "Χωρίς chromas",
+    "championType": "Τύπος πρωταγωνιστή",
+    "sortBy": "Ταξινόμηση κατά",
+    "nameAsc": "Όνομα (Α-Ω)",
+    "nameDesc": "Όνομα (Ω-Α)",
+    "skinNumAsc": "Αριθμός skin (Χαμηλό προς Υψηλό)",
+    "skinNumDesc": "Αριθμός skin (Υψηλό προς Χαμηλό)",
+    "championName": "Όνομα πρωταγωνιστή",
+    "rarityAsc": "Σπανιότητα (Χαμηλή προς Υψηλή)",
+    "rarityDesc": "Σπανιότητα (Υψηλή προς Χαμηλή)",
+    "winRateDesc": "Ποσοστό νίκης (Υψηλό προς Χαμηλό)",
+    "winRateAsc": "Ποσοστό νίκης (Χαμηλό προς Υψηλό)",
+    "pickRateDesc": "Ποσοστό επιλογής (Υψηλό προς Χαμηλό)",
+    "pickRateAsc": "Ποσοστό επιλογής (Χαμηλό προς Υψηλό)",
+    "totalGamesDesc": "Περισσότερο παιγμένα",
+    "totalGamesAsc": "Λιγότερο παιγμένα",
+    "rarity": "Σπανιότητα",
+    "rarities": {
+      "epic": "Epic",
+      "legendary": "Legendary",
+      "ultimate": "Ultimate",
+      "mythic": "Mythic",
+      "transcendent": "Transcendent",
+      "exalted": "Exalted"
+    }
+  },
+  "patcher": {
+    "applying": "Εφαρμογή...",
+    "stopping": "Διακοπή...",
+    "stopPatcher": "Διακοπή patcher",
+    "apply_one": "Εφαρμογή {{count}} skin",
+    "apply_other": "Εφαρμογή {{count}} skins",
+    "messages": "Μηνύματα patcher:"
+  },
+  "room": {
+    "joinCreate": "Συμμετοχή/Δημιουργία δωματίου",
+    "p2pRoom": "P2P δωμάτιο",
+    "description": "Δημιουργήστε ένα νέο δωμάτιο ή συμμετέχετε σε υπάρχον για να μοιραστείτε skins με άλλους.",
+    "displayName": "Εμφανιζόμενο όνομα",
+    "displayNamePlaceholder": "Εισάγετε το όνομά σας",
+    "createNew": "Δημιουργία νέου δωματίου",
+    "creating": "Δημιουργία...",
+    "createRoom": "Δημιουργία δωματίου",
+    "joinExisting": "Συμμετοχή σε υπάρχον δωμάτιο",
+    "roomIdPlaceholder": "Εισάγετε ID δωματίου (π.χ. ABC123)",
+    "joining": "Συμμετοχή...",
+    "joinRoom": "Συμμετοχή στο δωμάτιο",
+    "roomId": "Δωμάτιο: {{id}}",
+    "copyRoomId": "Αντιγραφή ID δωματίου",
+    "members_one": "{{count}} μέλος",
+    "members_other": "{{count}} μέλη"
+  },
+  "fileTransfer": {
+    "incoming": "Εισερχόμενη μεταφορά αρχείου",
+    "description": "Ένας peer θέλει να μοιραστεί ένα προσαρμοσμένο mod μαζί σας",
+    "file": "Αρχείο:",
+    "size": "Μέγεθος:",
+    "champion": "Πρωταγωνιστής:",
+    "skin": "Skin:",
+    "transferring": "Μεταφορά αρχείου...",
+    "completed": "Η μεταφορά ολοκληρώθηκε!"
+  },
+  "customMod": {
+    "edit": "Επεξεργασία προσαρμοσμένου mod",
+    "modName": "Όνομα mod",
+    "modNamePlaceholder": "Εισάγετε όνομα mod",
+    "previewImage": "Εικόνα προεπισκόπησης (προαιρετικό)",
+    "selectImage": "Επιλογή εικόνας",
+    "newImageSelected": "Επιλέχθηκε νέα εικόνα"
+  },
+  "social": {
+    "joinDiscord": "Συμμετοχή στο Discord",
+    "viewGithub": "Προβολή στο GitHub",
+    "donate": "Δωρεά"
+  },
+  "lcu": {
+    "connected": "Συνδεδεμένο στον League Client",
+    "disconnected": "Αποσυνδεδεμένο από τον League Client",
+    "championHovered": "Πρωταγωνιστής επιλεγμένος",
+    "championLocked": "Πρωταγωνιστής κλειδωμένος",
+    "viewSkins": "Προβολή skins",
+    "connecting": "Σύνδεση στον League Client...",
+    "connectionFailed": "Αποτυχία σύνδεσης στον League Client",
+    "status": "Κατάσταση LCU",
+    "notConnected": "Δεν συνδέθηκε",
+    "inChampSelect": "Στην επιλογή πρωταγωνιστή",
+    "disabled": "Απενεργοποιημένο",
+    "tooltipNotConnected": "Εκκινήστε τον League of Legends client για να ενεργοποιήσετε την αυτόματη ανίχνευση πρωταγωνιστή κατά την επιλογή πρωταγωνιστή",
+    "tooltipConnected": "Συνδεδεμένο στον League client. Θα εμφανίσει ειδοποιήσεις όταν επιλέγετε πρωταγωνιστές",
+    "tooltipInChampSelect": "Αυτή τη στιγμή στην επιλογή πρωταγωνιστή. Επιλέξτε έναν πρωταγωνιστή για να δείτε ειδοποίηση",
+    "tooltipDisabled": "Η ανίχνευση πρωταγωνιστή είναι απενεργοποιημένη. Ενεργοποιήστε τη στις ρυθμίσεις για να λαμβάνετε ειδοποιήσεις όταν επιλέγετε πρωταγωνιστές",
+    "championLockedDescription": "Κλειδώσατε τον {{champion}}. Θα θέλατε να περιηγηθείτε στα διαθέσιμα skins;",
+    "championHoveredDescription": "Έχετε κάνει hover στον {{champion}}. Θα θέλατε να περιηγηθείτε στα διαθέσιμα skins;",
+    "randomSkin": "Τυχαίο skin",
+    "randomRaritySkin": "Τυχαίο σπάνιο skin"
+  },
+  "smartApply": {
+    "willApply": "Έξυπνα: {{count}}/{{total}}",
+    "applying": "Εφαρμογή {{count}} skins για: {{champions}}",
+    "success": "Εφαρμόστηκαν {{applied}} από {{total}} skins",
+    "failed": "Αποτυχία εφαρμογής skins",
+    "noSkinsToApply": "Δεν υπάρχουν skins προς εφαρμογή για την ομάδα σας",
+    "noSkinsForTeam": "Δεν επιλέχθηκαν skins για τους πρωταγωνιστές της ομάδας σας"
+  },
+  "errors": {
+    "generic": "Παρουσιάστηκε σφάλμα",
+    "downloadFailed": "Αποτυχία λήψης",
+    "connectionError": "Σφάλμα σύνδεσης",
+    "pathNotSet": "Παρακαλώ ορίστε πρώτα τη διαδρομή παιχνιδιού",
+    "operationTimeout": "Η λειτουργία έληξε. Παρακαλώ δοκιμάστε ξανά.",
+    "skinNotAvailable": "Το skin δεν είναι διαθέσιμο στο lol-skins repository ή η αντιστοίχιση είναι λανθασμένη"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "Είστε βέβαιοι ότι θέλετε να διαγράψετε όλα τα skins; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+    "confirmDeleteChampion": "Είστε βέβαιοι ότι θέλετε να διαγράψετε όλα τα skins για τον {{champion}}; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί."
+  }
+}
