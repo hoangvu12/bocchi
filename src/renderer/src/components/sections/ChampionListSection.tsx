@@ -3,7 +3,10 @@ import { useAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { VirtualizedChampionList, type VirtualizedChampionListRef } from '../VirtualizedChampionList'
+import {
+  VirtualizedChampionList,
+  type VirtualizedChampionListRef
+} from '../VirtualizedChampionList'
 import { AlphabetGrid } from '../AlphabetGrid'
 import {
   championSearchQueryAtom,
@@ -67,11 +70,11 @@ export function ChampionListSection() {
             <button
               onClick={() => setShowAlphabetGrid(!showAlphabetGrid)}
               className={cn(
-                "px-3 py-1.5 rounded-lg transition-all flex-shrink-0",
-                "bg-secondary-100 dark:bg-secondary-800",
-                "hover:bg-secondary-200 dark:hover:bg-secondary-700",
-                "text-xs font-bold text-text-primary",
-                showAlphabetGrid && "bg-primary-500 text-white hover:bg-primary-600"
+                'px-3 py-1.5 rounded-lg transition-all flex-shrink-0',
+                'bg-secondary-100 dark:bg-secondary-800',
+                'hover:bg-secondary-200 dark:hover:bg-secondary-700',
+                'text-xs font-bold text-text-primary',
+                showAlphabetGrid && 'bg-primary-500 text-white hover:bg-primary-600'
               )}
               title="Jump to letter (A-Z)"
             >
