@@ -1,15 +1,6 @@
 ### Features
 
-- Save app's window bounds and restore them when open
-- Sort skins by OP.gg data (highest win rate, most played, etc)
-
-### Fixes
-
-- Only allow one instance of Bocchi
-- Random skins from OP.gg data doesn't work
-- Some skins still not showing downloaded
-
-### Other
-
-- Improved logging when run patcher
-- Added translations for in-game overlay
+- Added alphabet grid to quickly jump to champions by letter
+- Added download all skins button in the main interface
+- Added support for all League of Legends languages
+- Added skin update when new skins are available
