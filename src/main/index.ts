@@ -27,6 +27,7 @@ import {
   supportedLanguages,
   type LanguageCode
 } from './services/translationService'
+import { SkinInfo } from './types'
 // Import SelectedSkin type from renderer atoms
 interface SelectedSkin {
   championKey: string
@@ -1505,6 +1506,55 @@ function setupIpcHandlers(): void {
     try {
       const result = await fileImportService.deleteCustomSkin(modPath)
       return result
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  // Skin update handlers
+  ipcMain.handle('check-skin-updates', async (_, skinPaths?: string[]) => {
+    try {
+      let skinInfos: SkinInfo[] | undefined
+
+      if (skinPaths) {
+        // Check updates for specific skins
+        const allSkins = await skinDownloader.listDownloadedSkins()
+        skinInfos = allSkins.filter((skin) => skin.localPath && skinPaths.includes(skin.localPath))
+      }
+
+      const updates = await skinDownloader.checkForSkinUpdates(skinInfos)
+
+      // Convert Map to object for JSON serialization
+      const updatesObj = Object.fromEntries(updates.entries())
+
+      return { success: true, data: updatesObj }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('update-skin', async (_, skinInfo: SkinInfo) => {
+    try {
+      const updatedSkin = await skinDownloader.updateSkin(skinInfo)
+      return { success: true, data: updatedSkin }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('bulk-update-skins', async (_, skinInfos: SkinInfo[]) => {
+    try {
+      const result = await skinDownloader.bulkUpdateSkins(skinInfos)
+      return { success: true, data: result }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('generate-metadata-for-existing-skins', async () => {
+    try {
+      await skinDownloader.generateMetadataForExistingSkins()
+      return { success: true }
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
     }

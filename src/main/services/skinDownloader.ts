@@ -5,7 +5,10 @@ import path from 'path'
 import { createWriteStream } from 'fs'
 import { pipeline } from 'stream/promises'
 import { app } from 'electron'
-import { SkinInfo } from '../types'
+import { SkinInfo, SkinMetadata, SkinUpdateInfo } from '../types'
+import { githubApiService } from './githubApiService'
+import { skinMetadataService } from './skinMetadataService'
+import { skinMigrationService } from './skinMigrationService'
 
 interface BatchDownloadState {
   isRunning: boolean
@@ -96,6 +99,43 @@ export class SkinDownloader {
       await pipeline(response.data, writer)
 
       console.log(`Downloaded ZIP: ${skinInfo.skinName} to ${zipPath}`)
+
+      // Try to fetch and store commit info (non-blocking)
+      try {
+        console.log(`[SkinDownloader] Attempting to fetch commit info for: ${url}`)
+        const githubPath = githubApiService.parseGitHubPathFromUrl(url)
+        console.log(`[SkinDownloader] GitHub path: ${githubPath}`)
+
+        const commitInfo = await githubApiService.getLatestCommitForSkin(githubPath)
+        console.log(`[SkinDownloader] Commit info received:`, commitInfo)
+
+        if (commitInfo && skinInfo.localPath) {
+          const stats = await fs.stat(skinInfo.localPath)
+          const metadata: SkinMetadata = {
+            commitSha: commitInfo.sha,
+            downloadedAt: new Date(),
+            githubPath,
+            fileSize: stats.size,
+            version: 1
+          }
+          console.log(`[SkinDownloader] Saving metadata to: ${skinInfo.localPath}`)
+          await skinMetadataService.saveMetadata(skinInfo.localPath, metadata)
+          console.log(
+            `[SkinDownloader] Successfully stored commit info for ${skinInfo.skinName}: ${commitInfo.sha}`
+          )
+        } else {
+          console.warn(
+            `[SkinDownloader] Missing commit info or local path for ${skinInfo.skinName}`
+          )
+        }
+      } catch (error) {
+        // Log but don't fail the download
+        console.error(
+          `[SkinDownloader] Failed to store commit info for ${skinInfo.skinName}:`,
+          error
+        )
+      }
+
       return skinInfo
     } catch (error) {
       console.error(`Failed to download skin: ${error}`)
@@ -285,12 +325,21 @@ export class SkinDownloader {
               )}`
             }
 
+            // Try to load metadata (non-blocking)
+            let metadata: SkinMetadata | undefined
+            try {
+              metadata = (await skinMetadataService.getMetadata(skinPath)) || undefined
+            } catch (error) {
+              console.warn(`Failed to load metadata for ${skinPath}:`, error)
+            }
+
             skins.push({
               championName,
               skinName,
               url: reconstructedUrl,
               localPath: skinPath,
-              source: 'repository'
+              source: 'repository',
+              metadata
             })
           }
         }
@@ -374,6 +423,14 @@ export class SkinDownloader {
     const zipPath = path.join(this.cacheDir, championName, skinName)
     try {
       await fs.unlink(zipPath)
+
+      // Also delete metadata file if it exists
+      try {
+        await skinMetadataService.deleteMetadata(zipPath)
+      } catch (error) {
+        console.warn(`Failed to delete metadata for ${zipPath}:`, error)
+      }
+
       // Clean up empty champion directory
       const championDir = path.join(this.cacheDir, championName)
       const files = await fs.readdir(championDir)
@@ -694,6 +751,137 @@ export class SkinDownloader {
       await this.downloadWithConcurrency(failedUrls, 3, onProgress)
     } finally {
       this.batchDownloadState.isRunning = false
+    }
+  }
+
+  async checkForSkinUpdates(skinInfos?: SkinInfo[]): Promise<Map<string, SkinUpdateInfo>> {
+    const updates = new Map<string, SkinUpdateInfo>()
+    const skinsToCheck = skinInfos || (await this.listDownloadedSkins())
+
+    for (const skin of skinsToCheck) {
+      const key = `${skin.championName}_${skin.skinName}`
+
+      // Can only check updates for repository skins with metadata
+      if (skin.source !== 'repository' || !skin.metadata?.commitSha) {
+        updates.set(key, {
+          hasUpdate: false,
+          canCheck: false,
+          updateMessage:
+            skin.source === 'repository'
+              ? 'No update info available (downloaded before update tracking)'
+              : 'Updates not available for user-imported skins'
+        })
+        continue
+      }
+
+      try {
+        const githubPath = skin.metadata.githubPath
+        if (!githubPath) {
+          updates.set(key, {
+            hasUpdate: false,
+            canCheck: false,
+            updateMessage: 'Missing GitHub path information'
+          })
+          continue
+        }
+
+        const latestCommit = await githubApiService.getLatestCommitForSkin(githubPath)
+        if (!latestCommit) {
+          updates.set(key, {
+            hasUpdate: false,
+            canCheck: false,
+            updateMessage: 'Unable to fetch latest commit information'
+          })
+          continue
+        }
+
+        const hasUpdate = latestCommit.sha !== skin.metadata.commitSha
+        updates.set(key, {
+          hasUpdate,
+          canCheck: true,
+          currentCommitSha: skin.metadata.commitSha,
+          latestCommitSha: latestCommit.sha,
+          latestCommitDate: latestCommit.date,
+          updateMessage: hasUpdate ? 'Update available' : 'Up to date'
+        })
+
+        // Update the last check time
+        if (skin.localPath) {
+          await skinMetadataService.updateLastCheckTime(skin.localPath)
+        }
+      } catch (error) {
+        console.warn(`Failed to check updates for ${key}:`, error)
+        updates.set(key, {
+          hasUpdate: false,
+          canCheck: false,
+          updateMessage: 'Failed to check for updates'
+        })
+      }
+    }
+
+    return updates
+  }
+
+  async updateSkin(skinInfo: SkinInfo): Promise<SkinInfo> {
+    if (!skinInfo.localPath) {
+      throw new Error('Cannot update skin without local path')
+    }
+
+    try {
+      // Delete the old skin file (but keep metadata for comparison)
+      await fs.unlink(skinInfo.localPath)
+
+      // Re-download the skin
+      const updatedSkin = await this.downloadSkin(skinInfo.url)
+
+      console.log(`Successfully updated skin: ${skinInfo.skinName}`)
+      return updatedSkin
+    } catch (error) {
+      console.error(`Failed to update skin ${skinInfo.skinName}:`, error)
+      throw error
+    }
+  }
+
+  async bulkUpdateSkins(skinInfos: SkinInfo[]): Promise<{
+    updated: SkinInfo[]
+    failed: Array<{ skin: SkinInfo; error: string }>
+  }> {
+    const updated: SkinInfo[] = []
+    const failed: Array<{ skin: SkinInfo; error: string }> = []
+
+    for (const skin of skinInfos) {
+      try {
+        const updatedSkin = await this.updateSkin(skin)
+        updated.push(updatedSkin)
+
+        // Add small delay between updates to avoid overwhelming the server
+        await new Promise((resolve) => setTimeout(resolve, 500))
+      } catch (error) {
+        failed.push({
+          skin,
+          error: error instanceof Error ? error.message : 'Unknown error'
+        })
+      }
+    }
+
+    return { updated, failed }
+  }
+
+  async generateMetadataForExistingSkins(): Promise<void> {
+    try {
+      const skins = await this.listDownloadedSkins()
+      const result = await skinMigrationService.generateMetadataForExistingSkins(skins)
+
+      console.log(
+        `[SkinDownloader] Metadata generation completed: ${result.successful} successful, ${result.failed} failed`
+      )
+
+      if (result.errors.length > 0) {
+        console.warn('[SkinDownloader] Metadata generation errors:', result.errors)
+      }
+    } catch (error) {
+      console.error('[SkinDownloader] Failed to generate metadata for existing skins:', error)
+      throw error
     }
   }
 }

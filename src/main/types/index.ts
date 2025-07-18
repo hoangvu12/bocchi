@@ -20,6 +20,24 @@ export interface ModInfo {
   installed: boolean
 }
 
+export interface SkinMetadata {
+  commitSha: string
+  downloadedAt: Date
+  lastUpdateCheck?: Date
+  fileSize?: number
+  githubPath?: string
+  version?: number
+}
+
+export interface SkinUpdateInfo {
+  hasUpdate: boolean
+  currentCommitSha?: string
+  latestCommitSha?: string
+  latestCommitDate?: Date
+  updateMessage?: string
+  canCheck: boolean
+}
+
 export interface SkinInfo {
   championName: string
   skinName: string
@@ -27,6 +45,8 @@ export interface SkinInfo {
   localPath?: string
   source?: 'repository' | 'user' | 'p2p'
   sharedBy?: string
+  metadata?: SkinMetadata
+  updateInfo?: SkinUpdateInfo
 }
 
 export interface P2PRoom {

@@ -277,6 +277,18 @@ export interface IApi {
   onSettingsChanged: (callback: (key: string, value: any) => void) => () => void
   onOpenSettings: (callback: () => void) => () => void
   onLanguageChanged: (callback: (language: string) => void) => () => void
+
+  // Skin update management
+  checkSkinUpdates: (
+    skinPaths?: string[]
+  ) => Promise<{ success: boolean; data?: Record<string, any>; error?: string }>
+  updateSkin: (skinInfo: SkinInfo) => Promise<{ success: boolean; data?: SkinInfo; error?: string }>
+  bulkUpdateSkins: (skinInfos: SkinInfo[]) => Promise<{
+    success: boolean
+    data?: { updated: SkinInfo[]; failed: Array<{ skin: SkinInfo; error: string }> }
+    error?: string
+  }>
+  generateMetadataForExistingSkins: () => Promise<{ success: boolean; error?: string }>
 }
 
 declare global {

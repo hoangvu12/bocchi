@@ -154,6 +154,13 @@ const api = {
     ipcRenderer.invoke('edit-custom-skin', modPath, newName, newImagePath),
   deleteCustomSkin: (modPath: string) => ipcRenderer.invoke('delete-custom-skin', modPath),
 
+  // Skin update management
+  checkSkinUpdates: (skinPaths?: string[]) => ipcRenderer.invoke('check-skin-updates', skinPaths),
+  updateSkin: (skinInfo: any) => ipcRenderer.invoke('update-skin', skinInfo),
+  bulkUpdateSkins: (skinInfos: any[]) => ipcRenderer.invoke('bulk-update-skins', skinInfos),
+  generateMetadataForExistingSkins: () =>
+    ipcRenderer.invoke('generate-metadata-for-existing-skins'),
+
   // Patcher events
   onPatcherStatus: (callback: (status: string) => void) => {
     const handler = (_: any, status: string) => {
