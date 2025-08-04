@@ -261,8 +261,10 @@
     "saveChanges": "保存更改"
   },
   "common": {
-    "cancel": "Cancel",
-    "close": "Close"
+    "cancel": "取消",
+    "close": "关闭",
+    "save": "保存",
+    "saving": "保存中..."
   },
   "cancel": "取消",
   "success": "成功",
@@ -361,6 +363,51 @@
     "apply_one": "应用 {{count}} 个皮肤",
     "apply_other": "应用 {{count}} 个皮肤",
     "messages": "补丁器消息："
+  },
+  "presets": {
+    "title": "预设配置",
+    "saveAsPreset": "保存为预设",
+    "loadPreset": "加载预设",
+    "managePresets": "管理预设",
+    "noPresets": "尚未保存任何预设",
+    "createFirst": "选择皮肤并点击\"保存为预设\"来创建您的第一个预设",
+    "saveDialog": {
+      "title": "保存预设",
+      "description": "将 {{count}} 个选中的皮肤保存为预设",
+      "nameLabel": "预设名称",
+      "namePlaceholder": "输入预设名称",
+      "descriptionLabel": "描述（可选）",
+      "descriptionPlaceholder": "为此预设输入描述"
+    },
+    "errors": {
+      "nameRequired": "预设名称是必需的",
+      "saveFailed": "保存预设失败",
+      "loadFailed": "加载预设失败",
+      "deleteFailed": "删除预设失败",
+      "exportFailed": "导出预设失败",
+      "importFailed": "导入预设失败"
+    },
+    "saveSuccess": "预设\"{{name}}\"保存成功",
+    "saveFailed": "保存预设失败",
+    "loadSuccess": "预设\"{{name}}\"加载成功",
+    "deleteConfirm": "您确定要删除预设\"{{name}}\"吗？",
+    "deleteSuccess": "预设删除成功",
+    "exportSuccess": "预设导出成功",
+    "importSuccess": "预设导入成功",
+    "skinCount_one": "{{count}} 个皮肤",
+    "skinCount_other": "{{count}} 个皮肤",
+    "lastUpdated": "最后更新：{{date}}",
+    "actions": {
+      "apply": "应用",
+      "edit": "编辑",
+      "duplicate": "复制",
+      "export": "导出",
+      "delete": "删除"
+    },
+    "importPreset": "导入预设",
+    "noResults": "未找到预设",
+    "duplicateSuccess": "预设\"{{name}}\"复制成功",
+    "duplicateFailed": "复制预设失败"
   },
   "room": {
     "joinCreate": "加入/创建",

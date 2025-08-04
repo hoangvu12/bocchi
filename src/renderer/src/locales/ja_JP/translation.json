@@ -378,6 +378,51 @@
     "apply_other": "{{count}}個のスキンを適用",
     "messages": "パッチャーメッセージ:"
   },
+  "presets": {
+    "title": "プリセット",
+    "saveAsPreset": "プリセットとして保存",
+    "loadPreset": "プリセットを読み込み",
+    "managePresets": "プリセットを管理",
+    "noPresets": "まだプリセットが保存されていません",
+    "createFirst": "スキンを選択して「プリセットとして保存」をクリックして最初のプリセットを作成してください",
+    "saveDialog": {
+      "title": "プリセットを保存",
+      "description": "{{count}}個の選択されたスキンをプリセットとして保存",
+      "nameLabel": "プリセット名",
+      "namePlaceholder": "プリセット名を入力",
+      "descriptionLabel": "説明（任意）",
+      "descriptionPlaceholder": "このプリセットの説明を入力"
+    },
+    "errors": {
+      "nameRequired": "プリセット名は必須です",
+      "saveFailed": "プリセットの保存に失敗しました",
+      "loadFailed": "プリセットの読み込みに失敗しました",
+      "deleteFailed": "プリセットの削除に失敗しました",
+      "exportFailed": "プリセットのエクスポートに失敗しました",
+      "importFailed": "プリセットのインポートに失敗しました"
+    },
+    "saveSuccess": "プリセット「{{name}}」を正常に保存しました",
+    "saveFailed": "プリセットの保存に失敗しました",
+    "loadSuccess": "プリセット「{{name}}」を正常に読み込みました",
+    "deleteConfirm": "プリセット「{{name}}」を削除してもよろしいですか？",
+    "deleteSuccess": "プリセットを正常に削除しました",
+    "exportSuccess": "プリセットを正常にエクスポートしました",
+    "importSuccess": "プリセットを正常にインポートしました",
+    "skinCount_one": "{{count}}個のスキン",
+    "skinCount_other": "{{count}}個のスキン",
+    "lastUpdated": "最終更新: {{date}}",
+    "actions": {
+      "apply": "適用",
+      "edit": "編集",
+      "duplicate": "複製",
+      "export": "エクスポート",
+      "delete": "削除"
+    },
+    "importPreset": "プリセットをインポート",
+    "noResults": "プリセットが見つかりません",
+    "duplicateSuccess": "プリセット「{{name}}」を正常に複製しました",
+    "duplicateFailed": "プリセットの複製に失敗しました"
+  },
   "room": {
     "joinCreate": "参加/作成",
     "p2pRoom": "P2Pルーム",

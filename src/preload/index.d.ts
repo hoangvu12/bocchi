@@ -133,6 +133,27 @@ export interface IApi {
     championKey: string
   ) => Promise<{ success: boolean; favorites?: any[]; error?: string }>
 
+  // Preset management
+  createPreset: (
+    name: string,
+    description: string | undefined,
+    skins: any[]
+  ) => Promise<{ success: boolean; data?: any; error?: string }>
+  listPresets: () => Promise<{ success: boolean; data?: any[]; error?: string }>
+  getPreset: (id: string) => Promise<{ success: boolean; data?: any; error?: string }>
+  updatePreset: (
+    id: string,
+    updates: any
+  ) => Promise<{ success: boolean; data?: any; error?: string }>
+  deletePreset: (id: string) => Promise<{ success: boolean; error?: string }>
+  duplicatePreset: (
+    id: string,
+    newName: string
+  ) => Promise<{ success: boolean; data?: any; error?: string }>
+  validatePreset: (id: string) => Promise<{ success: boolean; data?: any; error?: string }>
+  exportPreset: (id: string) => Promise<{ success: boolean; filePath?: string; error?: string }>
+  importPreset: () => Promise<{ success: boolean; data?: any; error?: string }>
+
   // Tools management
   checkToolsExist: () => Promise<boolean>
   downloadTools: () => Promise<{ success: boolean; error?: string }>

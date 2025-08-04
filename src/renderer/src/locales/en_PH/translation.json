@@ -375,6 +375,51 @@
     "apply_other": "Apply {{count}} Skins",
     "messages": "Patcher Messages:"
   },
+  "presets": {
+    "title": "Presets",
+    "saveAsPreset": "Save as Preset",
+    "loadPreset": "Load Preset",
+    "managePresets": "Manage Presets",
+    "noPresets": "No presets saved yet",
+    "createFirst": "Create your first preset by selecting skins and clicking 'Save as Preset'",
+    "saveDialog": {
+      "title": "Save Preset",
+      "description": "Save {{count}} selected skins as a preset",
+      "nameLabel": "Preset Name",
+      "namePlaceholder": "Enter preset name",
+      "descriptionLabel": "Description (optional)",
+      "descriptionPlaceholder": "Enter a description for this preset"
+    },
+    "errors": {
+      "nameRequired": "Preset name is required",
+      "saveFailed": "Failed to save preset",
+      "loadFailed": "Failed to load preset",
+      "deleteFailed": "Failed to delete preset",
+      "exportFailed": "Failed to export preset",
+      "importFailed": "Failed to import preset"
+    },
+    "saveSuccess": "Preset '{{name}}' saved successfully",
+    "saveFailed": "Failed to save preset",
+    "loadSuccess": "Preset '{{name}}' loaded successfully",
+    "deleteConfirm": "Are you sure you want to delete preset '{{name}}'?",
+    "deleteSuccess": "Preset deleted successfully",
+    "exportSuccess": "Preset exported successfully",
+    "importSuccess": "Preset imported successfully",
+    "skinCount_one": "{{count}} skin",
+    "skinCount_other": "{{count}} skins",
+    "lastUpdated": "Last updated: {{date}}",
+    "actions": {
+      "apply": "Apply",
+      "edit": "Edit",
+      "duplicate": "Duplicate",
+      "export": "Export",
+      "delete": "Delete"
+    },
+    "importPreset": "Import Preset",
+    "noResults": "No presets found",
+    "duplicateSuccess": "Preset '{{name}}' duplicated successfully",
+    "duplicateFailed": "Failed to duplicate preset"
+  },
   "room": {
     "joinCreate": "Join/Create Room",
     "p2pRoom": "P2P Room",

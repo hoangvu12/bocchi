@@ -375,6 +375,51 @@
     "apply_other": "Zastosuj {{count}} skinów",
     "messages": "Wiadomości patchera:"
   },
+  "presets": {
+    "title": "Presety",
+    "saveAsPreset": "Zapisz jako preset",
+    "loadPreset": "Wczytaj preset",
+    "managePresets": "Zarządzaj presetami",
+    "noPresets": "Nie zapisano jeszcze żadnych presetów",
+    "createFirst": "Utwórz swój pierwszy preset wybierając skiny i klikając 'Zapisz jako preset'",
+    "saveDialog": {
+      "title": "Zapisz preset",
+      "description": "Zapisz {{count}} wybranych skinów jako preset",
+      "nameLabel": "Nazwa presetu",
+      "namePlaceholder": "Wprowadź nazwę presetu",
+      "descriptionLabel": "Opis (opcjonalny)",
+      "descriptionPlaceholder": "Wprowadź opis dla tego presetu"
+    },
+    "errors": {
+      "nameRequired": "Nazwa presetu jest wymagana",
+      "saveFailed": "Nie udało się zapisać presetu",
+      "loadFailed": "Nie udało się wczytać presetu",
+      "deleteFailed": "Nie udało się usunąć presetu",
+      "exportFailed": "Nie udało się wyeksportować presetu",
+      "importFailed": "Nie udało się zaimportować presetu"
+    },
+    "saveSuccess": "Preset '{{name}}' zapisany pomyślnie",
+    "saveFailed": "Nie udało się zapisać presetu",
+    "loadSuccess": "Preset '{{name}}' wczytany pomyślnie",
+    "deleteConfirm": "Czy na pewno chcesz usunąć preset '{{name}}'?",
+    "deleteSuccess": "Preset usunięty pomyślnie",
+    "exportSuccess": "Preset wyeksportowany pomyślnie",
+    "importSuccess": "Preset zaimportowany pomyślnie",
+    "skinCount_one": "{{count}} skin",
+    "skinCount_other": "{{count}} skinów",
+    "lastUpdated": "Ostatnia aktualizacja: {{date}}",
+    "actions": {
+      "apply": "Zastosuj",
+      "edit": "Edytuj",
+      "duplicate": "Duplikuj",
+      "export": "Eksportuj",
+      "delete": "Usuń"
+    },
+    "importPreset": "Importuj preset",
+    "noResults": "Nie znaleziono presetów",
+    "duplicateSuccess": "Preset '{{name}}' zduplikowany pomyślnie",
+    "duplicateFailed": "Nie udało się zduplikować presetu"
+  },
   "room": {
     "joinCreate": "Dołącz/Utwórz pokój",
     "p2pRoom": "Pokój P2P",

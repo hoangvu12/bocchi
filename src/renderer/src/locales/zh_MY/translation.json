@@ -375,6 +375,51 @@
     "apply_other": "套用 {{count}} 個造型",
     "messages": "修補器訊息："
   },
+  "presets": {
+    "title": "預設配置",
+    "saveAsPreset": "儲存為預設",
+    "loadPreset": "載入預設",
+    "managePresets": "管理預設",
+    "noPresets": "尚未儲存任何預設",
+    "createFirst": "選擇造型並點擊「儲存為預設」來建立您的第一個預設",
+    "saveDialog": {
+      "title": "儲存預設",
+      "description": "將 {{count}} 個選中的造型儲存為預設",
+      "nameLabel": "預設名稱",
+      "namePlaceholder": "輸入預設名稱",
+      "descriptionLabel": "描述（可選）",
+      "descriptionPlaceholder": "為此預設輸入描述"
+    },
+    "errors": {
+      "nameRequired": "預設名稱是必需的",
+      "saveFailed": "儲存預設失敗",
+      "loadFailed": "載入預設失敗",
+      "deleteFailed": "刪除預設失敗",
+      "exportFailed": "匯出預設失敗",
+      "importFailed": "匯入預設失敗"
+    },
+    "saveSuccess": "預設「{{name}}」儲存成功",
+    "saveFailed": "儲存預設失敗",
+    "loadSuccess": "預設「{{name}}」載入成功",
+    "deleteConfirm": "您確定要刪除預設「{{name}}」嗎？",
+    "deleteSuccess": "預設刪除成功",
+    "exportSuccess": "預設匯出成功",
+    "importSuccess": "預設匯入成功",
+    "skinCount_one": "{{count}} 個造型",
+    "skinCount_other": "{{count}} 個造型",
+    "lastUpdated": "最後更新：{{date}}",
+    "actions": {
+      "apply": "套用",
+      "edit": "編輯",
+      "duplicate": "複製",
+      "export": "匯出",
+      "delete": "刪除"
+    },
+    "importPreset": "匯入預設",
+    "noResults": "未找到預設",
+    "duplicateSuccess": "預設「{{name}}」複製成功",
+    "duplicateFailed": "複製預設失敗"
+  },
   "room": {
     "joinCreate": "加入/建立房間",
     "p2pRoom": "P2P 房間",

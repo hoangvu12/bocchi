@@ -375,6 +375,51 @@
     "apply_other": "Applica {{count}} skin",
     "messages": "Messaggi patcher:"
   },
+  "presets": {
+    "title": "Preimpostazioni",
+    "saveAsPreset": "Salva come preimpostazione",
+    "loadPreset": "Carica preimpostazione",
+    "managePresets": "Gestisci preimpostazioni",
+    "noPresets": "Nessuna preimpostazione salvata ancora",
+    "createFirst": "Crea la tua prima preimpostazione selezionando skin e cliccando su 'Salva come preimpostazione'",
+    "saveDialog": {
+      "title": "Salva preimpostazione",
+      "description": "Salva {{count}} skin selezionate come preimpostazione",
+      "nameLabel": "Nome preimpostazione",
+      "namePlaceholder": "Inserisci nome preimpostazione",
+      "descriptionLabel": "Descrizione (opzionale)",
+      "descriptionPlaceholder": "Inserisci una descrizione per questa preimpostazione"
+    },
+    "errors": {
+      "nameRequired": "Il nome della preimpostazione è richiesto",
+      "saveFailed": "Salvataggio preimpostazione fallito",
+      "loadFailed": "Caricamento preimpostazione fallito",
+      "deleteFailed": "Eliminazione preimpostazione fallita",
+      "exportFailed": "Esportazione preimpostazione fallita",
+      "importFailed": "Importazione preimpostazione fallita"
+    },
+    "saveSuccess": "Preimpostazione '{{name}}' salvata con successo",
+    "saveFailed": "Salvataggio preimpostazione fallito",
+    "loadSuccess": "Preimpostazione '{{name}}' caricata con successo",
+    "deleteConfirm": "Sei sicuro di voler eliminare la preimpostazione '{{name}}'?",
+    "deleteSuccess": "Preimpostazione eliminata con successo",
+    "exportSuccess": "Preimpostazione esportata con successo",
+    "importSuccess": "Preimpostazione importata con successo",
+    "skinCount_one": "{{count}} skin",
+    "skinCount_other": "{{count}} skin",
+    "lastUpdated": "Ultimo aggiornamento: {{date}}",
+    "actions": {
+      "apply": "Applica",
+      "edit": "Modifica",
+      "duplicate": "Duplica",
+      "export": "Esporta",
+      "delete": "Elimina"
+    },
+    "importPreset": "Importa preimpostazione",
+    "noResults": "Nessuna preimpostazione trovata",
+    "duplicateSuccess": "Preimpostazione '{{name}}' duplicata con successo",
+    "duplicateFailed": "Duplicazione preimpostazione fallita"
+  },
   "room": {
     "joinCreate": "Unisciti/Crea stanza",
     "p2pRoom": "Stanza P2P",

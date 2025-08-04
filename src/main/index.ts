@@ -28,6 +28,7 @@ import {
   type LanguageCode
 } from './services/translationService'
 import { SkinInfo } from './types'
+import { PresetService } from './services/presetService'
 // Import SelectedSkin type from renderer atoms
 interface SelectedSkin {
   championKey: string
@@ -50,6 +51,7 @@ const toolsDownloader = new ToolsDownloader()
 const updaterService = new UpdaterService()
 const fileImportService = new FileImportService()
 const imageService = new ImageService()
+const presetService = new PresetService()
 
 // Store auto-selected skin data from renderer for overlay display
 let rendererAutoSelectedSkin: {
@@ -403,6 +405,7 @@ if (gotTheLock) {
     await skinDownloader.initialize()
     await favoritesService.initialize()
     await fileImportService.initialize()
+    await presetService.initialize()
 
     // Initialize translation service with saved language
     const savedLanguage = settingsService.get('language') || 'en_US'
@@ -610,7 +613,6 @@ function setupIpcHandlers(): void {
     }
     return { success: false }
   })
-
 
   // Bulk download from repository
   ipcMain.handle('download-all-skins-bulk', async (event, options) => {
@@ -1249,6 +1251,127 @@ function setupIpcHandlers(): void {
     try {
       const favorites = favoritesService.getFavoritesByChampion(championKey)
       return { success: true, favorites }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  // Preset management
+  ipcMain.handle(
+    'preset:create',
+    async (_, name: string, description: string | undefined, skins: any[]) => {
+      try {
+        const preset = await presetService.createPreset(name, description, skins)
+        return { success: true, data: preset }
+      } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+      }
+    }
+  )
+
+  ipcMain.handle('preset:list', async () => {
+    try {
+      const presets = await presetService.listPresets()
+      return { success: true, data: presets }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('preset:get', async (_, id: string) => {
+    try {
+      const preset = await presetService.getPreset(id)
+      return { success: true, data: preset }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('preset:update', async (_, id: string, updates: any) => {
+    try {
+      const preset = await presetService.updatePreset(id, updates)
+      return { success: true, data: preset }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('preset:delete', async (_, id: string) => {
+    try {
+      await presetService.deletePreset(id)
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('preset:duplicate', async (_, id: string, newName: string) => {
+    try {
+      const preset = await presetService.duplicatePreset(id, newName)
+      return { success: true, data: preset }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('preset:validate', async (_, id: string) => {
+    try {
+      const preset = await presetService.getPreset(id)
+      if (!preset) {
+        return { success: false, error: 'Preset not found' }
+      }
+      const downloadedSkins = await skinDownloader.listDownloadedSkins()
+      const validationResult = await presetService.validatePresetSkins(preset, downloadedSkins)
+      return { success: true, data: validationResult }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('preset:export', async (_, id: string) => {
+    try {
+      const exportData = await presetService.exportPreset(id)
+      // Show save dialog
+      const result = await dialog.showSaveDialog(mainWindow!, {
+        defaultPath: `${exportData.preset.name.replace(/[^a-z0-9]/gi, '_')}_preset.json`,
+        filters: [
+          { name: 'JSON Files', extensions: ['json'] },
+          { name: 'All Files', extensions: ['*'] }
+        ]
+      })
+
+      if (!result.canceled && result.filePath) {
+        await fs.promises.writeFile(result.filePath, JSON.stringify(exportData, null, 2))
+        return { success: true, filePath: result.filePath }
+      }
+
+      return { success: false, error: 'Export canceled' }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('preset:import', async () => {
+    try {
+      // Show open dialog
+      const result = await dialog.showOpenDialog(mainWindow!, {
+        filters: [
+          { name: 'JSON Files', extensions: ['json'] },
+          { name: 'All Files', extensions: ['*'] }
+        ],
+        properties: ['openFile']
+      })
+
+      if (!result.canceled && result.filePaths.length > 0) {
+        const filePath = result.filePaths[0]
+        const fileContent = await fs.promises.readFile(filePath, 'utf-8')
+        const exportData = JSON.parse(fileContent)
+
+        const preset = await presetService.importPreset(exportData)
+        return { success: true, data: preset }
+      }
+
+      return { success: false, error: 'Import canceled' }
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
     }

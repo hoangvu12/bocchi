@@ -378,6 +378,51 @@
     "apply_other": "{{count}}개 스킨 적용",
     "messages": "패처 메시지:"
   },
+  "presets": {
+    "title": "프리셋",
+    "saveAsPreset": "프리셋으로 저장",
+    "loadPreset": "프리셋 불러오기",
+    "managePresets": "프리셋 관리",
+    "noPresets": "아직 저장된 프리셋이 없습니다",
+    "createFirst": "스킨을 선택하고 '프리셋으로 저장'을 클릭하여 첫 번째 프리셋을 만드세요",
+    "saveDialog": {
+      "title": "프리셋 저장",
+      "description": "선택한 {{count}}개의 스킨을 프리셋으로 저장",
+      "nameLabel": "프리셋 이름",
+      "namePlaceholder": "프리셋 이름 입력",
+      "descriptionLabel": "설명 (선택사항)",
+      "descriptionPlaceholder": "이 프리셋에 대한 설명 입력"
+    },
+    "errors": {
+      "nameRequired": "프리셋 이름이 필요합니다",
+      "saveFailed": "프리셋 저장에 실패했습니다",
+      "loadFailed": "프리셋 불러오기에 실패했습니다",
+      "deleteFailed": "프리셋 삭제에 실패했습니다",
+      "exportFailed": "프리셋 내보내기에 실패했습니다",
+      "importFailed": "프리셋 가져오기에 실패했습니다"
+    },
+    "saveSuccess": "프리셋 '{{name}}'이(가) 성공적으로 저장되었습니다",
+    "saveFailed": "프리셋 저장에 실패했습니다",
+    "loadSuccess": "프리셋 '{{name}}'이(가) 성공적으로 불러와졌습니다",
+    "deleteConfirm": "프리셋 '{{name}}'을(를) 삭제하시겠습니까?",
+    "deleteSuccess": "프리셋이 성공적으로 삭제되었습니다",
+    "exportSuccess": "프리셋이 성공적으로 내보내졌습니다",
+    "importSuccess": "프리셋이 성공적으로 가져와졌습니다",
+    "skinCount_one": "{{count}}개 스킨",
+    "skinCount_other": "{{count}}개 스킨",
+    "lastUpdated": "마지막 업데이트: {{date}}",
+    "actions": {
+      "apply": "적용",
+      "edit": "편집",
+      "duplicate": "복제",
+      "export": "내보내기",
+      "delete": "삭제"
+    },
+    "importPreset": "프리셋 가져오기",
+    "noResults": "프리셋을 찾을 수 없습니다",
+    "duplicateSuccess": "프리셋 '{{name}}'이(가) 성공적으로 복제되었습니다",
+    "duplicateFailed": "프리셋 복제에 실패했습니다"
+  },
   "room": {
     "joinCreate": "참가/생성",
     "p2pRoom": "P2P 룸",

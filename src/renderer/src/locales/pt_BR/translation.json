@@ -375,6 +375,51 @@
     "apply_other": "Aplicar {{count}} Skins",
     "messages": "Mensagens do Patcher:"
   },
+  "presets": {
+    "title": "Presets",
+    "saveAsPreset": "Salvar como Preset",
+    "loadPreset": "Carregar Preset",
+    "managePresets": "Gerenciar Presets",
+    "noPresets": "Nenhum preset salvo ainda",
+    "createFirst": "Crie seu primeiro preset selecionando skins e clicando em 'Salvar como Preset'",
+    "saveDialog": {
+      "title": "Salvar Preset",
+      "description": "Salvar {{count}} skins selecionadas como preset",
+      "nameLabel": "Nome do Preset",
+      "namePlaceholder": "Digite o nome do preset",
+      "descriptionLabel": "Descrição (opcional)",
+      "descriptionPlaceholder": "Digite uma descrição para este preset"
+    },
+    "errors": {
+      "nameRequired": "Nome do preset é obrigatório",
+      "saveFailed": "Falha ao salvar preset",
+      "loadFailed": "Falha ao carregar preset",
+      "deleteFailed": "Falha ao excluir preset",
+      "exportFailed": "Falha ao exportar preset",
+      "importFailed": "Falha ao importar preset"
+    },
+    "saveSuccess": "Preset '{{name}}' salvo com sucesso",
+    "saveFailed": "Falha ao salvar preset",
+    "loadSuccess": "Preset '{{name}}' carregado com sucesso",
+    "deleteConfirm": "Tem certeza de que deseja excluir o preset '{{name}}'?",
+    "deleteSuccess": "Preset excluído com sucesso",
+    "exportSuccess": "Preset exportado com sucesso",
+    "importSuccess": "Preset importado com sucesso",
+    "skinCount_one": "{{count}} skin",
+    "skinCount_other": "{{count}} skins",
+    "lastUpdated": "Última atualização: {{date}}",
+    "actions": {
+      "apply": "Aplicar",
+      "edit": "Editar",
+      "duplicate": "Duplicar",
+      "export": "Exportar",
+      "delete": "Excluir"
+    },
+    "importPreset": "Importar Preset",
+    "noResults": "Nenhum preset encontrado",
+    "duplicateSuccess": "Preset '{{name}}' duplicado com sucesso",
+    "duplicateFailed": "Falha ao duplicar preset"
+  },
   "room": {
     "joinCreate": "Entrar/Criar Sala",
     "p2pRoom": "Sala P2P",

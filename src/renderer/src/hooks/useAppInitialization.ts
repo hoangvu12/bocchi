@@ -9,6 +9,8 @@ import {
   autoApplyEnabledAtom,
   autoApplyTriggerTimeAtom
 } from '../store/atoms/settings.atoms'
+import { presetsAtom } from '../store/atoms/presets'
+import { presetService } from '../services/presetService'
 import {
   autoViewSkinsEnabledAtom,
   autoRandomRaritySkinEnabledAtom,
@@ -53,6 +55,7 @@ export function useAppInitialization() {
   const setAutoBanForce = useSetAtom(autoBanForceAtom)
   const setAutoBanChampions = useSetAtom(autoBanChampionsAtom)
   const setShowSettingsDialog = useSetAtom(showSettingsDialogAtom)
+  const setPresets = useSetAtom(presetsAtom)
 
   // Load app version
   useEffect(() => {
@@ -96,6 +99,20 @@ export function useAppInitialization() {
     setChampionSearchQuery('')
     setSkinSearchQuery('')
   }, [setChampionSearchQuery, setSkinSearchQuery])
+
+  // Load presets on mount
+  useEffect(() => {
+    const loadPresets = async () => {
+      try {
+        const presets = await presetService.listPresets()
+        setPresets(presets)
+      } catch (error) {
+        console.error('Failed to load presets:', error)
+      }
+    }
+
+    loadPresets()
+  }, [setPresets])
 
   // Load settings
   useEffect(() => {

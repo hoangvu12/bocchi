@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useTranslation } from 'react-i18next'
 import { selectedSkinsAtom, selectedSkinsDrawerExpandedAtom, p2pRoomAtom } from '../store/atoms'
 import type { SelectedSkin, AutoSyncedSkin } from '../store/atoms'
@@ -9,6 +9,12 @@ import { p2pFileTransferService } from '../services/p2pFileTransferService'
 import { Badge } from './ui/badge'
 import { useSmartSkinApply } from '../hooks/useSmartSkinApply'
 import { generateSkinFilename } from '../../../shared/utils/skinFilename'
+import { SavePresetDialog } from './SavePresetDialog'
+import { presetService } from '../services/presetService'
+import { toast } from 'sonner'
+import { presetsAtom, presetDialogOpenAtom, presetCountAtom } from '../store/atoms/presets'
+import { Button } from './ui/button'
+import { BookOpenIcon } from 'lucide-react'
 
 interface ExtendedSelectedSkin extends SelectedSkin {
   customModInfo?: {
@@ -85,6 +91,10 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   const [p2pRoom] = useAtom(p2pRoomAtom)
   const [activeTab, setActiveTab] = useState<'my-skins' | 'room-skins'>('my-skins')
   const [smartApplySummary, setSmartApplySummary] = useState<any>(null)
+  const [showSavePresetDialog, setShowSavePresetDialog] = useState(false)
+  const [, setPresets] = useAtom(presetsAtom)
+  const [, setShowPresetsDialog] = useAtom(presetDialogOpenAtom)
+  const presetCount = useAtomValue(presetCountAtom)
 
   // Smart apply hook
   const {
@@ -187,6 +197,22 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
     // Always use the parent's apply function which handles loading states
     // The parent (App.tsx) will check if it should use smart apply or regular apply
     onApplySkins()
+  }
+
+  const handleSavePreset = async (name: string, description?: string) => {
+    try {
+      const preset = await presetService.createPreset(name, description, selectedSkins)
+
+      // Update presets list
+      const presets = await presetService.listPresets()
+      setPresets(presets)
+
+      toast.success(t('presets.saveSuccess', { name: preset.name }))
+    } catch (error) {
+      console.error('Failed to save preset:', error)
+      toast.error(t('presets.saveFailed'))
+      throw error
+    }
   }
 
   const removeSkin = (skinToRemove: SelectedSkin) => {
@@ -513,6 +539,33 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
           >
             {t('actions.clearAll')}
           </button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setShowSavePresetDialog(true)}
+            disabled={loading || selectedSkins.length === 0}
+            className="bg-surface-secondary hover:bg-secondary-200 dark:hover:bg-secondary-700"
+          >
+            {t('presets.saveAsPreset')}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowPresetsDialog(true)}
+            disabled={loading}
+            className="relative"
+          >
+            <BookOpenIcon className="h-4 w-4 mr-2" />
+            {t('presets.title')}
+            {presetCount > 0 && (
+              <Badge
+                variant="secondary"
+                className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-xs"
+              >
+                {presetCount}
+              </Badge>
+            )}
+          </Button>
           <button
             className={`px-6 py-2 font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
               isPatcherRunning
@@ -783,6 +836,14 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
           </div>
         </div>
       )}
+
+      {/* Save Preset Dialog */}
+      <SavePresetDialog
+        isOpen={showSavePresetDialog}
+        onClose={() => setShowSavePresetDialog(false)}
+        selectedSkins={selectedSkins}
+        onSave={handleSavePreset}
+      />
     </div>
   )
 }

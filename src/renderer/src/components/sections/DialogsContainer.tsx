@@ -7,6 +7,7 @@ import { DownloadedSkinsDialog } from '../DownloadedSkinsDialog'
 import { FileTransferDialog } from '../FileTransferDialog'
 import { SettingsDialog } from '../SettingsDialog'
 import { ChampionSelectDialog } from '../ChampionSelectDialog'
+import { PresetsDialog } from '../PresetsDialog'
 import { showUpdateDialogAtom, statusMessageAtom } from '../../store/atoms/game.atoms'
 import { showChampionDataUpdateAtom } from '../../store/atoms/champion.atoms'
 import {
@@ -137,6 +138,8 @@ export function DialogsContainer({
           onAddSkin={handleSkinClick}
         />
       )}
+
+      <PresetsDialog />
     </>
   )
 }

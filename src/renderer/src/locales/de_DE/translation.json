@@ -375,6 +375,51 @@
     "apply_other": "{{count}} Skins anwenden",
     "messages": "Patcher-Nachrichten:"
   },
+  "presets": {
+    "title": "Voreinstellungen",
+    "saveAsPreset": "Als Voreinstellung speichern",
+    "loadPreset": "Voreinstellung laden",
+    "managePresets": "Voreinstellungen verwalten",
+    "noPresets": "Noch keine Voreinstellungen gespeichert",
+    "createFirst": "Erstelle deine erste Voreinstellung, indem du Skins auswählst und auf 'Als Voreinstellung speichern' klickst",
+    "saveDialog": {
+      "title": "Voreinstellung speichern",
+      "description": "{{count}} ausgewählte Skins als Voreinstellung speichern",
+      "nameLabel": "Name der Voreinstellung",
+      "namePlaceholder": "Namen der Voreinstellung eingeben",
+      "descriptionLabel": "Beschreibung (optional)",
+      "descriptionPlaceholder": "Beschreibung für diese Voreinstellung eingeben"
+    },
+    "errors": {
+      "nameRequired": "Name der Voreinstellung ist erforderlich",
+      "saveFailed": "Fehler beim Speichern der Voreinstellung",
+      "loadFailed": "Fehler beim Laden der Voreinstellung",
+      "deleteFailed": "Fehler beim Löschen der Voreinstellung",
+      "exportFailed": "Fehler beim Exportieren der Voreinstellung",
+      "importFailed": "Fehler beim Importieren der Voreinstellung"
+    },
+    "saveSuccess": "Voreinstellung '{{name}}' erfolgreich gespeichert",
+    "saveFailed": "Fehler beim Speichern der Voreinstellung",
+    "loadSuccess": "Voreinstellung '{{name}}' erfolgreich geladen",
+    "deleteConfirm": "Bist du sicher, dass du die Voreinstellung '{{name}}' löschen möchtest?",
+    "deleteSuccess": "Voreinstellung erfolgreich gelöscht",
+    "exportSuccess": "Voreinstellung erfolgreich exportiert",
+    "importSuccess": "Voreinstellung erfolgreich importiert",
+    "skinCount_one": "{{count}} Skin",
+    "skinCount_other": "{{count}} Skins",
+    "lastUpdated": "Zuletzt aktualisiert: {{date}}",
+    "actions": {
+      "apply": "Anwenden",
+      "edit": "Bearbeiten",
+      "duplicate": "Duplizieren",
+      "export": "Exportieren",
+      "delete": "Löschen"
+    },
+    "importPreset": "Voreinstellung importieren",
+    "noResults": "Keine Voreinstellungen gefunden",
+    "duplicateSuccess": "Voreinstellung '{{name}}' erfolgreich dupliziert",
+    "duplicateFailed": "Fehler beim Duplizieren der Voreinstellung"
+  },
   "room": {
     "joinCreate": "Raum beitreten/erstellen",
     "p2pRoom": "P2P-Raum",

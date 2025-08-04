@@ -375,6 +375,51 @@
     "apply_other": "Appliquer {{count}} skins",
     "messages": "Messages du patcher :"
   },
+  "presets": {
+    "title": "Préréglages",
+    "saveAsPreset": "Enregistrer comme préréglage",
+    "loadPreset": "Charger un préréglage",
+    "managePresets": "Gérer les préréglages",
+    "noPresets": "Aucun préréglage enregistré pour le moment",
+    "createFirst": "Créez votre premier préréglage en sélectionnant des skins et en cliquant sur 'Enregistrer comme préréglage'",
+    "saveDialog": {
+      "title": "Enregistrer le préréglage",
+      "description": "Enregistrer {{count}} skins sélectionnés comme préréglage",
+      "nameLabel": "Nom du préréglage",
+      "namePlaceholder": "Entrez le nom du préréglage",
+      "descriptionLabel": "Description (optionnelle)",
+      "descriptionPlaceholder": "Entrez une description pour ce préréglage"
+    },
+    "errors": {
+      "nameRequired": "Le nom du préréglage est requis",
+      "saveFailed": "Échec de l'enregistrement du préréglage",
+      "loadFailed": "Échec du chargement du préréglage",
+      "deleteFailed": "Échec de la suppression du préréglage",
+      "exportFailed": "Échec de l'exportation du préréglage",
+      "importFailed": "Échec de l'importation du préréglage"
+    },
+    "saveSuccess": "Préréglage '{{name}}' enregistré avec succès",
+    "saveFailed": "Échec de l'enregistrement du préréglage",
+    "loadSuccess": "Préréglage '{{name}}' chargé avec succès",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer le préréglage '{{name}}' ?",
+    "deleteSuccess": "Préréglage supprimé avec succès",
+    "exportSuccess": "Préréglage exporté avec succès",
+    "importSuccess": "Préréglage importé avec succès",
+    "skinCount_one": "{{count}} skin",
+    "skinCount_other": "{{count}} skins",
+    "lastUpdated": "Dernière mise à jour : {{date}}",
+    "actions": {
+      "apply": "Appliquer",
+      "edit": "Modifier",
+      "duplicate": "Dupliquer",
+      "export": "Exporter",
+      "delete": "Supprimer"
+    },
+    "importPreset": "Importer un préréglage",
+    "noResults": "Aucun préréglage trouvé",
+    "duplicateSuccess": "Préréglage '{{name}}' dupliqué avec succès",
+    "duplicateFailed": "Échec de la duplication du préréglage"
+  },
   "room": {
     "joinCreate": "Rejoindre/Créer une salle",
     "p2pRoom": "Salle P2P",

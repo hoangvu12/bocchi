@@ -375,6 +375,51 @@
     "apply_other": "{{count}} skin uygula",
     "messages": "Yama programı mesajları:"
   },
+  "presets": {
+    "title": "Ön Ayarlar",
+    "saveAsPreset": "Ön Ayar Olarak Kaydet",
+    "loadPreset": "Ön Ayar Yükle",
+    "managePresets": "Ön Ayarları Yönet",
+    "noPresets": "Henüz kaydedilmiş ön ayar yok",
+    "createFirst": "Skinleri seçerek ve 'Ön Ayar Olarak Kaydet'e tıklayarak ilk ön ayarınızı oluşturun",
+    "saveDialog": {
+      "title": "Ön Ayar Kaydet",
+      "description": "{{count}} seçili skini ön ayar olarak kaydet",
+      "nameLabel": "Ön Ayar Adı",
+      "namePlaceholder": "Ön ayar adını girin",
+      "descriptionLabel": "Açıklama (isteğe bağlı)",
+      "descriptionPlaceholder": "Bu ön ayar için bir açıklama girin"
+    },
+    "errors": {
+      "nameRequired": "Ön ayar adı gereklidir",
+      "saveFailed": "Ön ayar kaydetme başarısız",
+      "loadFailed": "Ön ayar yükleme başarısız",
+      "deleteFailed": "Ön ayar silme başarısız",
+      "exportFailed": "Ön ayar dışa aktarma başarısız",
+      "importFailed": "Ön ayar içe aktarma başarısız"
+    },
+    "saveSuccess": "Ön ayar '{{name}}' başarıyla kaydedildi",
+    "saveFailed": "Ön ayar kaydetme başarısız",
+    "loadSuccess": "Ön ayar '{{name}}' başarıyla yüklendi",
+    "deleteConfirm": "Ön ayar '{{name}}'i silmek istediğinizden emin misiniz?",
+    "deleteSuccess": "Ön ayar başarıyla silindi",
+    "exportSuccess": "Ön ayar başarıyla dışa aktarıldı",
+    "importSuccess": "Ön ayar başarıyla içe aktarıldı",
+    "skinCount_one": "{{count}} skin",
+    "skinCount_other": "{{count}} skin",
+    "lastUpdated": "Son güncelleme: {{date}}",
+    "actions": {
+      "apply": "Uygula",
+      "edit": "Düzenle",
+      "duplicate": "Çoğalt",
+      "export": "Dışa Aktar",
+      "delete": "Sil"
+    },
+    "importPreset": "Ön Ayar İçe Aktar",
+    "noResults": "Ön ayar bulunamadı",
+    "duplicateSuccess": "Ön ayar '{{name}}' başarıyla çoğaltıldı",
+    "duplicateFailed": "Ön ayar çoğaltma başarısız"
+  },
   "room": {
     "joinCreate": "Odaya katıl/oluştur",
     "p2pRoom": "P2P odası",

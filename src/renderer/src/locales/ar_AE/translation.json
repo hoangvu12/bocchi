@@ -375,6 +375,51 @@
     "apply_other": "تطبيق {{count}} أشكال",
     "messages": "رسائل المطبق:"
   },
+  "presets": {
+    "title": "الإعدادات المسبقة",
+    "saveAsPreset": "حفظ كإعداد مسبق",
+    "loadPreset": "تحميل إعداد مسبق",
+    "managePresets": "إدارة الإعدادات المسبقة",
+    "noPresets": "لا توجد إعدادات مسبقة محفوظة بعد",
+    "createFirst": "أنشئ إعدادك المسبق الأول عن طريق اختيار الأشكال والنقر على 'حفظ كإعداد مسبق'",
+    "saveDialog": {
+      "title": "حفظ الإعداد المسبق",
+      "description": "حفظ {{count}} شكل محدد كإعداد مسبق",
+      "nameLabel": "اسم الإعداد المسبق",
+      "namePlaceholder": "أدخل اسم الإعداد المسبق",
+      "descriptionLabel": "الوصف (اختياري)",
+      "descriptionPlaceholder": "أدخل وصفاً لهذا الإعداد المسبق"
+    },
+    "errors": {
+      "nameRequired": "اسم الإعداد المسبق مطلوب",
+      "saveFailed": "فشل في حفظ الإعداد المسبق",
+      "loadFailed": "فشل في تحميل الإعداد المسبق",
+      "deleteFailed": "فشل في حذف الإعداد المسبق",
+      "exportFailed": "فشل في تصدير الإعداد المسبق",
+      "importFailed": "فشل في استيراد الإعداد المسبق"
+    },
+    "saveSuccess": "تم حفظ الإعداد المسبق '{{name}}' بنجاح",
+    "saveFailed": "فشل في حفظ الإعداد المسبق",
+    "loadSuccess": "تم تحميل الإعداد المسبق '{{name}}' بنجاح",
+    "deleteConfirm": "هل أنت متأكد من أنك تريد حذف الإعداد المسبق '{{name}}'؟",
+    "deleteSuccess": "تم حذف الإعداد المسبق بنجاح",
+    "exportSuccess": "تم تصدير الإعداد المسبق بنجاح",
+    "importSuccess": "تم استيراد الإعداد المسبق بنجاح",
+    "skinCount_one": "{{count}} شكل",
+    "skinCount_other": "{{count}} شكل",
+    "lastUpdated": "آخر تحديث: {{date}}",
+    "actions": {
+      "apply": "تطبيق",
+      "edit": "تحرير",
+      "duplicate": "مضاعفة",
+      "export": "تصدير",
+      "delete": "حذف"
+    },
+    "importPreset": "استيراد إعداد مسبق",
+    "noResults": "لم يتم العثور على إعدادات مسبقة",
+    "duplicateSuccess": "تم مضاعفة الإعداد المسبق '{{name}}' بنجاح",
+    "duplicateFailed": "فشل في مضاعفة الإعداد المسبق"
+  },
   "room": {
     "joinCreate": "انضمام/إنشاء غرفة",
     "p2pRoom": "غرفة P2P",

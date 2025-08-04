@@ -102,6 +102,19 @@ const api = {
   getFavoritesByChampion: (championKey: string) =>
     ipcRenderer.invoke('get-favorites-by-champion', championKey),
 
+  // Preset management
+  createPreset: (name: string, description: string | undefined, skins: any[]) =>
+    ipcRenderer.invoke('preset:create', name, description, skins),
+  listPresets: () => ipcRenderer.invoke('preset:list'),
+  getPreset: (id: string) => ipcRenderer.invoke('preset:get', id),
+  updatePreset: (id: string, updates: any) => ipcRenderer.invoke('preset:update', id, updates),
+  deletePreset: (id: string) => ipcRenderer.invoke('preset:delete', id),
+  duplicatePreset: (id: string, newName: string) =>
+    ipcRenderer.invoke('preset:duplicate', id, newName),
+  validatePreset: (id: string) => ipcRenderer.invoke('preset:validate', id),
+  exportPreset: (id: string) => ipcRenderer.invoke('preset:export', id),
+  importPreset: () => ipcRenderer.invoke('preset:import'),
+
   // Tools management
   checkToolsExist: () => ipcRenderer.invoke('check-tools-exist'),
   downloadTools: () => ipcRenderer.invoke('download-tools'),

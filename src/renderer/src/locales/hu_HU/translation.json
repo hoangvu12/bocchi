@@ -375,6 +375,51 @@
     "apply_other": "{{count}} skin alkalmazása",
     "messages": "Patcher üzenetek:"
   },
+  "presets": {
+    "title": "Előbeállítások",
+    "saveAsPreset": "Mentés előbeállításként",
+    "loadPreset": "Előbeállítás betöltése",
+    "managePresets": "Előbeállítások kezelése",
+    "noPresets": "Még nincsenek elmentett előbeállítások",
+    "createFirst": "Hozd létre az első előbeállításodat skinok kiválasztásával és a 'Mentés előbeállításként' gombra kattintással",
+    "saveDialog": {
+      "title": "Előbeállítás mentése",
+      "description": "{{count}} kiválasztott skin mentése előbeállításként",
+      "nameLabel": "Előbeállítás neve",
+      "namePlaceholder": "Add meg az előbeállítás nevét",
+      "descriptionLabel": "Leírás (opcionális)",
+      "descriptionPlaceholder": "Add meg az előbeállítás leírását"
+    },
+    "errors": {
+      "nameRequired": "Az előbeállítás neve kötelező",
+      "saveFailed": "Az előbeállítás mentése sikertelen",
+      "loadFailed": "Az előbeállítás betöltése sikertelen",
+      "deleteFailed": "Az előbeállítás törlése sikertelen",
+      "exportFailed": "Az előbeállítás exportálása sikertelen",
+      "importFailed": "Az előbeállítás importálása sikertelen"
+    },
+    "saveSuccess": "Az '{{name}}' előbeállítás sikeresen elmentve",
+    "saveFailed": "Az előbeállítás mentése sikertelen",
+    "loadSuccess": "Az '{{name}}' előbeállítás sikeresen betöltve",
+    "deleteConfirm": "Biztosan törölni szeretnéd az '{{name}}' előbeállítást?",
+    "deleteSuccess": "Az előbeállítás sikeresen törölve",
+    "exportSuccess": "Az előbeállítás sikeresen exportálva",
+    "importSuccess": "Az előbeállítás sikeresen importálva",
+    "skinCount_one": "{{count}} skin",
+    "skinCount_other": "{{count}} skin",
+    "lastUpdated": "Utolsó frissítés: {{date}}",
+    "actions": {
+      "apply": "Alkalmazás",
+      "edit": "Szerkesztés",
+      "duplicate": "Duplikálás",
+      "export": "Exportálás",
+      "delete": "Törlés"
+    },
+    "importPreset": "Előbeállítás importálása",
+    "noResults": "Nem találhatók előbeállítások",
+    "duplicateSuccess": "Az '{{name}}' előbeállítás sikeresen duplikálva",
+    "duplicateFailed": "Az előbeállítás duplikálása sikertelen"
+  },
   "room": {
     "joinCreate": "Szoba csatlakozás/létrehozás",
     "p2pRoom": "P2P szoba",

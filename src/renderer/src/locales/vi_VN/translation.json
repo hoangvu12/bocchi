@@ -283,8 +283,10 @@
     "saveChanges": "Lưu Thay Đổi"
   },
   "common": {
-    "cancel": "Cancel",
-    "close": "Close"
+    "cancel": "Hủy",
+    "close": "Đóng",
+    "save": "Lưu",
+    "saving": "Đang lưu..."
   },
   "cancel": "Hủy",
   "success": "Thành công",
@@ -379,6 +381,51 @@
     "stopPatcher": "Dừng Patcher",
     "apply": "Áp dụng {{count}} trang phục",
     "messages": "Thông báo từ Patcher:"
+  },
+  "presets": {
+    "title": "Bộ cài đặt sẵn",
+    "saveAsPreset": "Lưu thành bộ cài đặt",
+    "loadPreset": "Tải bộ cài đặt",
+    "managePresets": "Quản lý bộ cài đặt",
+    "noPresets": "Chưa có bộ cài đặt nào được lưu",
+    "createFirst": "Tạo bộ cài đặt đầu tiên bằng cách chọn trang phục và nhấn 'Lưu thành bộ cài đặt'",
+    "saveDialog": {
+      "title": "Lưu bộ cài đặt",
+      "description": "Lưu {{count}} trang phục đã chọn thành bộ cài đặt",
+      "nameLabel": "Tên bộ cài đặt",
+      "namePlaceholder": "Nhập tên bộ cài đặt",
+      "descriptionLabel": "Mô tả (tùy chọn)",
+      "descriptionPlaceholder": "Nhập mô tả cho bộ cài đặt này"
+    },
+    "errors": {
+      "nameRequired": "Tên bộ cài đặt là bắt buộc",
+      "saveFailed": "Không thể lưu bộ cài đặt",
+      "loadFailed": "Không thể tải bộ cài đặt",
+      "deleteFailed": "Không thể xóa bộ cài đặt",
+      "exportFailed": "Không thể xuất bộ cài đặt",
+      "importFailed": "Không thể nhập bộ cài đặt"
+    },
+    "saveSuccess": "Đã lưu thành công bộ cài đặt '{{name}}'",
+    "saveFailed": "Không thể lưu bộ cài đặt",
+    "loadSuccess": "Đã tải thành công bộ cài đặt '{{name}}'",
+    "deleteConfirm": "Bạn có chắc chắn muốn xóa bộ cài đặt '{{name}}'?",
+    "deleteSuccess": "Đã xóa bộ cài đặt thành công",
+    "exportSuccess": "Đã xuất bộ cài đặt thành công",
+    "importSuccess": "Đã nhập bộ cài đặt thành công",
+    "skinCount_one": "{{count}} trang phục",
+    "skinCount_other": "{{count}} trang phục",
+    "lastUpdated": "Cập nhật lần cuối: {{date}}",
+    "actions": {
+      "apply": "Áp dụng",
+      "edit": "Chỉnh sửa",
+      "duplicate": "Nhân bản",
+      "export": "Xuất",
+      "delete": "Xóa"
+    },
+    "importPreset": "Nhập bộ cài đặt",
+    "noResults": "Không tìm thấy bộ cài đặt",
+    "duplicateSuccess": "Đã nhân bản thành công bộ cài đặt '{{name}}'",
+    "duplicateFailed": "Không thể nhân bản bộ cài đặt"
   },
   "room": {
     "joinCreate": "Tham gia/Tạo phòng",

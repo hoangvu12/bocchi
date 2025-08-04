@@ -375,6 +375,51 @@
     "apply_other": "Terapkan {{count}} Skin",
     "messages": "Pesan Patcher:"
   },
+  "presets": {
+    "title": "Preset",
+    "saveAsPreset": "Simpan sebagai Preset",
+    "loadPreset": "Muat Preset",
+    "managePresets": "Kelola Preset",
+    "noPresets": "Belum ada preset yang disimpan",
+    "createFirst": "Buat preset pertama Anda dengan memilih skin dan klik 'Simpan sebagai Preset'",
+    "saveDialog": {
+      "title": "Simpan Preset",
+      "description": "Simpan {{count}} skin yang dipilih sebagai preset",
+      "nameLabel": "Nama Preset",
+      "namePlaceholder": "Masukkan nama preset",
+      "descriptionLabel": "Deskripsi (opsional)",
+      "descriptionPlaceholder": "Masukkan deskripsi untuk preset ini"
+    },
+    "errors": {
+      "nameRequired": "Nama preset diperlukan",
+      "saveFailed": "Gagal menyimpan preset",
+      "loadFailed": "Gagal memuat preset",
+      "deleteFailed": "Gagal menghapus preset",
+      "exportFailed": "Gagal mengekspor preset",
+      "importFailed": "Gagal mengimpor preset"
+    },
+    "saveSuccess": "Preset '{{name}}' berhasil disimpan",
+    "saveFailed": "Gagal menyimpan preset",
+    "loadSuccess": "Preset '{{name}}' berhasil dimuat",
+    "deleteConfirm": "Apakah Anda yakin ingin menghapus preset '{{name}}'?",
+    "deleteSuccess": "Preset berhasil dihapus",
+    "exportSuccess": "Preset berhasil diekspor",
+    "importSuccess": "Preset berhasil diimpor",
+    "skinCount_one": "{{count}} skin",
+    "skinCount_other": "{{count}} skin",
+    "lastUpdated": "Terakhir diperbarui: {{date}}",
+    "actions": {
+      "apply": "Terapkan",
+      "edit": "Edit",
+      "duplicate": "Duplikasi",
+      "export": "Ekspor",
+      "delete": "Hapus"
+    },
+    "importPreset": "Impor Preset",
+    "noResults": "Tidak ada preset ditemukan",
+    "duplicateSuccess": "Preset '{{name}}' berhasil diduplikasi",
+    "duplicateFailed": "Gagal menduplikasi preset"
+  },
   "room": {
     "joinCreate": "Bergabung/Buat Ruangan",
     "p2pRoom": "Ruangan P2P",

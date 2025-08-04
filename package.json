@@ -59,6 +59,7 @@
     "sonner": "^2.0.6",
     "tailwind-merge": "^3.3.1",
     "tar": "^7.4.3",
+    "uuid": "^11.1.0",
     "ws": "^8.18.3"
   },
   "devDependencies": {
@@ -73,6 +74,7 @@
     "@types/react-dom": "^19.1.2",
     "@types/react-window": "^1.8.8",
     "@types/tar": "^6.1.13",
+    "@types/uuid": "^10.0.0",
     "@types/ws": "^8.18.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.21",

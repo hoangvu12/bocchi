@@ -375,6 +375,51 @@
     "apply_other": "Aplică {{count}} skin-uri",
     "messages": "Mesajele patcher-ului:"
   },
+  "presets": {
+    "title": "Presetări",
+    "saveAsPreset": "Salvează ca presetare",
+    "loadPreset": "Încarcă presetare",
+    "managePresets": "Gestionează presetările",
+    "noPresets": "Nu sunt presetări salvate încă",
+    "createFirst": "Creează prima ta presetare selectând skin-uri și apăsând pe 'Salvează ca presetare'",
+    "saveDialog": {
+      "title": "Salvează presetarea",
+      "description": "Salvează {{count}} skin-uri selectate ca presetare",
+      "nameLabel": "Nume presetare",
+      "namePlaceholder": "Introdu numele presetării",
+      "descriptionLabel": "Descriere (opțională)",
+      "descriptionPlaceholder": "Introdu o descriere pentru această presetare"
+    },
+    "errors": {
+      "nameRequired": "Numele presetării este necesar",
+      "saveFailed": "Salvarea presetării a eșuat",
+      "loadFailed": "Încărcarea presetării a eșuat",
+      "deleteFailed": "Ștergerea presetării a eșuat",
+      "exportFailed": "Exportarea presetării a eșuat",
+      "importFailed": "Importarea presetării a eșuat"
+    },
+    "saveSuccess": "Presetarea '{{name}}' a fost salvată cu succes",
+    "saveFailed": "Salvarea presetării a eșuat",
+    "loadSuccess": "Presetarea '{{name}}' a fost încărcată cu succes",
+    "deleteConfirm": "Ești sigur că vrei să ștergi presetarea '{{name}}'?",
+    "deleteSuccess": "Presetarea a fost ștearsă cu succes",
+    "exportSuccess": "Presetarea a fost exportată cu succes",
+    "importSuccess": "Presetarea a fost importată cu succes",
+    "skinCount_one": "{{count}} skin",
+    "skinCount_other": "{{count}} skin-uri",
+    "lastUpdated": "Ultima actualizare: {{date}}",
+    "actions": {
+      "apply": "Aplică",
+      "edit": "Editează",
+      "duplicate": "Duplică",
+      "export": "Exportă",
+      "delete": "Șterge"
+    },
+    "importPreset": "Importă presetare",
+    "noResults": "Nu s-au găsit presetări",
+    "duplicateSuccess": "Presetarea '{{name}}' a fost duplicată cu succes",
+    "duplicateFailed": "Duplicarea presetării a eșuat"
+  },
   "room": {
     "joinCreate": "Alătură-te/Creează cameră",
     "p2pRoom": "Cameră P2P",

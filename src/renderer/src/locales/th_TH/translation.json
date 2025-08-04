@@ -375,6 +375,51 @@
     "apply_other": "ใช้ {{count}} สกิน",
     "messages": "ข้อความ Patcher:"
   },
+  "presets": {
+    "title": "พรีเซ็ต",
+    "saveAsPreset": "บันทึกเป็นพรีเซ็ต",
+    "loadPreset": "โหลดพรีเซ็ต",
+    "managePresets": "จัดการพรีเซ็ต",
+    "noPresets": "ยังไม่มีพรีเซ็ตที่บันทึกไว้",
+    "createFirst": "สร้างพรีเซ็ตแรกของคุณโดยการเลือกสกินและคลิก 'บันทึกเป็นพรีเซ็ต'",
+    "saveDialog": {
+      "title": "บันทึกพรีเซ็ต",
+      "description": "บันทึก {{count}} สกินที่เลือกเป็นพรีเซ็ต",
+      "nameLabel": "ชื่อพรีเซ็ต",
+      "namePlaceholder": "ใส่ชื่อพรีเซ็ต",
+      "descriptionLabel": "คำอธิบาย (ไม่จำเป็น)",
+      "descriptionPlaceholder": "ใส่คำอธิบายสำหรับพรีเซ็ตนี้"
+    },
+    "errors": {
+      "nameRequired": "ต้องระบุชื่อพรีเซ็ต",
+      "saveFailed": "บันทึกพรีเซ็ตไม่สำเร็จ",
+      "loadFailed": "โหลดพรีเซ็ตไม่สำเร็จ",
+      "deleteFailed": "ลบพรีเซ็ตไม่สำเร็จ",
+      "exportFailed": "ส่งออกพรีเซ็ตไม่สำเร็จ",
+      "importFailed": "นำเข้าพรีเซ็ตไม่สำเร็จ"
+    },
+    "saveSuccess": "บันทึกพรีเซ็ต '{{name}}' สำเร็จแล้ว",
+    "saveFailed": "บันทึกพรีเซ็ตไม่สำเร็จ",
+    "loadSuccess": "โหลดพรีเซ็ต '{{name}}' สำเร็จแล้ว",
+    "deleteConfirm": "คุณแน่ใจหรือไม่ว่าต้องการลบพรีเซ็ต '{{name}}'?",
+    "deleteSuccess": "ลบพรีเซ็ตสำเร็จแล้ว",
+    "exportSuccess": "ส่งออกพรีเซ็ตสำเร็จแล้ว",
+    "importSuccess": "นำเข้าพรีเซ็ตสำเร็จแล้ว",
+    "skinCount_one": "{{count}} สกิน",
+    "skinCount_other": "{{count}} สกิน",
+    "lastUpdated": "อัปเดตล่าสุด: {{date}}",
+    "actions": {
+      "apply": "ใช้งาน",
+      "edit": "แก้ไข",
+      "duplicate": "ทำสำเนา",
+      "export": "ส่งออก",
+      "delete": "ลบ"
+    },
+    "importPreset": "นำเข้าพรีเซ็ต",
+    "noResults": "ไม่พบพรีเซ็ต",
+    "duplicateSuccess": "ทำสำเนาพรีเซ็ต '{{name}}' สำเร็จแล้ว",
+    "duplicateFailed": "ทำสำเนาพรีเซ็ตไม่สำเร็จ"
+  },
   "room": {
     "joinCreate": "เข้าร่วม/สร้างห้อง",
     "p2pRoom": "ห้อง P2P",

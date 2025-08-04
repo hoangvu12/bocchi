@@ -368,6 +368,51 @@
     "apply_other": "Aplicar {{count}} skins",
     "messages": "Mensajes del patcher:"
   },
+  "presets": {
+    "title": "Configuraciones predeterminadas",
+    "saveAsPreset": "Guardar como configuración",
+    "loadPreset": "Cargar configuración",
+    "managePresets": "Administrar configuraciones",
+    "noPresets": "No hay configuraciones guardadas aún",
+    "createFirst": "Crea tu primera configuración seleccionando skins y haciendo clic en 'Guardar como configuración'",
+    "saveDialog": {
+      "title": "Guardar configuración",
+      "description": "Guardar {{count}} skins seleccionados como configuración",
+      "nameLabel": "Nombre de la configuración",
+      "namePlaceholder": "Introduce el nombre de la configuración",
+      "descriptionLabel": "Descripción (opcional)",
+      "descriptionPlaceholder": "Introduce una descripción para esta configuración"
+    },
+    "errors": {
+      "nameRequired": "El nombre de la configuración es obligatorio",
+      "saveFailed": "Error al guardar la configuración",
+      "loadFailed": "Error al cargar la configuración",
+      "deleteFailed": "Error al eliminar la configuración",
+      "exportFailed": "Error al exportar la configuración",
+      "importFailed": "Error al importar la configuración"
+    },
+    "saveSuccess": "Configuración '{{name}}' guardada exitosamente",
+    "saveFailed": "Error al guardar la configuración",
+    "loadSuccess": "Configuración '{{name}}' cargada exitosamente",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar la configuración '{{name}}'?",
+    "deleteSuccess": "Configuración eliminada exitosamente",
+    "exportSuccess": "Configuración exportada exitosamente",
+    "importSuccess": "Configuración importada exitosamente",
+    "skinCount_one": "{{count}} skin",
+    "skinCount_other": "{{count}} skins",
+    "lastUpdated": "Última actualización: {{date}}",
+    "actions": {
+      "apply": "Aplicar",
+      "edit": "Editar",
+      "duplicate": "Duplicar",
+      "export": "Exportar",
+      "delete": "Eliminar"
+    },
+    "importPreset": "Importar configuración",
+    "noResults": "No se encontraron configuraciones",
+    "duplicateSuccess": "Configuración '{{name}}' duplicada exitosamente",
+    "duplicateFailed": "Error al duplicar la configuración"
+  },
   "room": {
     "joinCreate": "Unirse/Crear sala",
     "p2pRoom": "Sala P2P",

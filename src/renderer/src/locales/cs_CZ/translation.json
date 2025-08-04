@@ -375,6 +375,51 @@
     "apply_other": "Aplikovat {{count}} skinů",
     "messages": "Zprávy patcheru:"
   },
+  "presets": {
+    "title": "Předvolby",
+    "saveAsPreset": "Uložit jako předvolbu",
+    "loadPreset": "Načíst předvolbu",
+    "managePresets": "Spravovat předvolby",
+    "noPresets": "Zatím nebyly uloženy žádné předvolby",
+    "createFirst": "Vytvořte svou první předvolbu výběrem skinů a kliknutím na 'Uložit jako předvolbu'",
+    "saveDialog": {
+      "title": "Uložit předvolbu",
+      "description": "Uložit {{count}} vybraných skinů jako předvolbu",
+      "nameLabel": "Název předvolby",
+      "namePlaceholder": "Zadejte název předvolby",
+      "descriptionLabel": "Popis (volitelný)",
+      "descriptionPlaceholder": "Zadejte popis pro tuto předvolbu"
+    },
+    "errors": {
+      "nameRequired": "Název předvolby je povinný",
+      "saveFailed": "Uložení předvolby se nezdařilo",
+      "loadFailed": "Načtení předvolby se nezdařilo",
+      "deleteFailed": "Smazání předvolby se nezdařilo",
+      "exportFailed": "Export předvolby se nezdařil",
+      "importFailed": "Import předvolby se nezdařil"
+    },
+    "saveSuccess": "Předvolba '{{name}}' byla úspěšně uložena",
+    "saveFailed": "Uložení předvolby se nezdařilo",
+    "loadSuccess": "Předvolba '{{name}}' byla úspěšně načtena",
+    "deleteConfirm": "Jste si jisti, že chcete smazat předvolbu '{{name}}'?",
+    "deleteSuccess": "Předvolba byla úspěšně smazána",
+    "exportSuccess": "Předvolba byla úspěšně exportována",
+    "importSuccess": "Předvolba byla úspěšně importována",
+    "skinCount_one": "{{count}} skin",
+    "skinCount_other": "{{count}} skinů",
+    "lastUpdated": "Poslední aktualizace: {{date}}",
+    "actions": {
+      "apply": "Aplikovat",
+      "edit": "Upravit",
+      "duplicate": "Duplikovat",
+      "export": "Exportovat",
+      "delete": "Smazat"
+    },
+    "importPreset": "Importovat předvolbu",
+    "noResults": "Nebyly nalezeny žádné předvolby",
+    "duplicateSuccess": "Předvolba '{{name}}' byla úspěšně duplikována",
+    "duplicateFailed": "Duplikace předvolby se nezdařila"
+  },
   "room": {
     "joinCreate": "Připojit se/Vytvořit místnost",
     "p2pRoom": "P2P místnost",
