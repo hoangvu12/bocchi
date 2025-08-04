@@ -318,7 +318,17 @@
     "manageDownloaded": "管理已下载的皮肤",
     "downloadedCount": "已下载皮肤 ({{count}})",
     "allSkins": "所有皮肤",
-    "autoSelected": "自动"
+    "autoSelected": "自动",
+    "generateMetadata": "生成元数据",
+    "generating": "生成中...",
+    "checkForUpdates": "检查更新",
+    "checking": "检查中...",
+    "updateAvailable": "有可用更新",
+    "update": "更新",
+    "updating": "更新中...",
+    "updateAll": "全部更新 ({{count}})",
+    "updatingCount": "正在更新 {{count}}...",
+    "downloadedBeforeTracking": "在更新跟踪之前下载"
   },
   "filters": {
     "title": "筛选和排序",

@@ -335,7 +335,17 @@
     "manageDownloaded": "다운로드된 스킨 관리",
     "downloadedCount": "다운로드된 스킨 ({{count}})",
     "allSkins": "모든 스킨",
-    "autoSelected": "자동"
+    "autoSelected": "자동",
+    "generateMetadata": "메타데이터 생성",
+    "generating": "생성 중...",
+    "checkForUpdates": "업데이트 확인",
+    "checking": "확인 중...",
+    "updateAvailable": "업데이트 가능",
+    "update": "업데이트",
+    "updating": "업데이트 중...",
+    "updateAll": "모두 업데이트 ({{count}})",
+    "updatingCount": "{{count}}개 업데이트 중...",
+    "downloadedBeforeTracking": "업데이트 추적 이전에 다운로드됨"
   },
   "filters": {
     "title": "필터 및 정렬",

@@ -321,7 +321,17 @@
     "manageDownloaded": "Manage downloaded skins",
     "downloadedCount": "Downloaded Skins ({{count}})",
     "allSkins": "All Skins",
-    "autoSelected": "Auto"
+    "autoSelected": "Auto",
+    "generateMetadata": "Generate Metadata",
+    "generating": "Generating...",
+    "checkForUpdates": "Check for Updates",
+    "checking": "Checking...",
+    "updateAvailable": "Update Available",
+    "update": "Update",
+    "updating": "Updating...",
+    "updateAll": "Update All ({{count}})",
+    "updatingCount": "Updating {{count}}...",
+    "downloadedBeforeTracking": "Downloaded before update tracking"
   },
   "filters": {
     "title": "Filters & Sort",

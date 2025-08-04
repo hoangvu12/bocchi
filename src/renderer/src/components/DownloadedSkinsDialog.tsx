@@ -315,7 +315,7 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[800px] max-h-[80vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
+          <DialogTitle className="flex items-center justify-between mr-4">
             <span>{t('skins.downloadedCount', { count: totalSkins })}</span>
             <div className="flex gap-2">
               {totalSkins > 0 && (
@@ -328,10 +328,10 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                   {isGeneratingMetadata ? (
                     <>
                       <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
-                      Generating...
+                      {t('skins.generating')}
                     </>
                   ) : (
-                    'Generate Metadata'
+                    t('skins.generateMetadata')
                   )}
                 </Button>
               )}
@@ -345,10 +345,10 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                   {isCheckingUpdates ? (
                     <>
                       <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
-                      Checking...
+                      {t('skins.checking')}
                     </>
                   ) : (
-                    'Check for Updates'
+                    t('skins.checkForUpdates')
                   )}
                 </Button>
               )}
@@ -363,10 +363,10 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                   {isUpdatingAll ? (
                     <>
                       <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                      Updating {skinsWithUpdates.length}...
+                      {t('skins.updatingCount', { count: skinsWithUpdates.length })}
                     </>
                   ) : (
-                    `Update All (${skinsWithUpdates.length})`
+                    t('skins.updateAll', { count: skinsWithUpdates.length })
                   )}
                 </Button>
               )}
@@ -506,13 +506,13 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                                     variant="secondary"
                                     className="bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900 dark:text-green-300"
                                   >
-                                    Update Available
+                                    {t('skins.updateAvailable')}
                                   </Badge>
                                 )}
                                 {!skin.isCustom && !updateInfo?.canCheck && (
                                   <span
                                     className="text-xs text-gray-400"
-                                    title="Downloaded before update tracking"
+                                    title={t('skins.downloadedBeforeTracking')}
                                   >
                                     ⓘ
                                   </span>
@@ -543,10 +543,10 @@ export const DownloadedSkinsDialog: React.FC<DownloadedSkinsDialogProps> = ({
                                     {isUpdating ? (
                                       <>
                                         <div className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
-                                        Updating...
+                                        {t('skins.updating')}
                                       </>
                                     ) : (
-                                      'Update'
+                                      t('skins.update')
                                     )}
                                   </Button>
                                 )}

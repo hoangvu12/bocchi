@@ -335,7 +335,17 @@
     "manageDownloaded": "ダウンロード済みスキンを管理",
     "downloadedCount": "ダウンロード済みスキン ({{count}})",
     "allSkins": "すべてのスキン",
-    "autoSelected": "自動"
+    "autoSelected": "自動",
+    "generateMetadata": "メタデータを生成",
+    "generating": "生成中...",
+    "checkForUpdates": "アップデートを確認",
+    "checking": "確認中...",
+    "updateAvailable": "アップデートが利用可能",
+    "update": "アップデート",
+    "updating": "アップデート中...",
+    "updateAll": "すべてアップデート ({{count}})",
+    "updatingCount": "{{count}}個をアップデート中...",
+    "downloadedBeforeTracking": "アップデート追跡前にダウンロード済み"
   },
   "filters": {
     "title": "フィルターと並び替え",

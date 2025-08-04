@@ -335,7 +335,17 @@
     "manageDownloaded": "Управление скачанными скинами",
     "downloadedCount": "Скачанные скины ({{count}})",
     "allSkins": "Все скины",
-    "autoSelected": "Авто"
+    "autoSelected": "Авто",
+    "generateMetadata": "Создать метаданные",
+    "generating": "Создание...",
+    "checkForUpdates": "Проверить обновления",
+    "checking": "Проверка...",
+    "updateAvailable": "Доступно обновление",
+    "update": "Обновить",
+    "updating": "Обновление...",
+    "updateAll": "Обновить все ({{count}})",
+    "updatingCount": "Обновление {{count}}...",
+    "downloadedBeforeTracking": "Загружено до отслеживания обновлений"
   },
   "filters": {
     "title": "Фильтры и сортировка",

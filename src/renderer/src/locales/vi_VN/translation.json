@@ -318,7 +318,17 @@
     "manageDownloaded": "Quản lý trang phục đã tải",
     "downloadedCount": "Trang phục đã tải ({{count}})",
     "allSkins": "Tất cả trang phục",
-    "autoSelected": "Tự động"
+    "autoSelected": "Tự động",
+    "generateMetadata": "Tạo Metadata",
+    "generating": "Đang tạo...",
+    "checkForUpdates": "Kiểm tra cập nhật",
+    "checking": "Đang kiểm tra...",
+    "updateAvailable": "Có cập nhật",
+    "update": "Cập nhật",
+    "updating": "Đang cập nhật...",
+    "updateAll": "Cập nhật tất cả ({{count}})",
+    "updatingCount": "Đang cập nhật {{count}}...",
+    "downloadedBeforeTracking": "Đã tải xuống trước khi theo dõi cập nhật"
   },
   "filters": {
     "title": "Bộ lọc & Sắp xếp",
