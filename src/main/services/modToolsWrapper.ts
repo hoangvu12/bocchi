@@ -101,7 +101,6 @@ export class ModToolsWrapper {
       }
 
       await this.stopOverlay()
-      await this.forceKillModTools()
 
       if (
         this.pathContainsOneDrive(this.installedPath) ||
@@ -112,9 +111,11 @@ export class ModToolsWrapper {
         )
       }
 
-      console.debug('[ModToolsWrapper] Cleaning directories before injection')
-      await this.ensureCleanDirectoryWithRetry(this.installedPath)
+      console.debug('[ModToolsWrapper] Preparing directories')
       await this.ensureCleanDirectoryWithRetry(this.profilesPath)
+
+      // Create installed directory if it doesn't exist (don't clean it to preserve imported mods)
+      await fs.mkdir(this.installedPath, { recursive: true }).catch(() => {})
 
       const gamePath = path.normalize(preset.gamePath)
       try {
@@ -128,97 +129,91 @@ export class ModToolsWrapper {
         return { success: false, message: 'No skins selected' }
       }
 
+      // Get list of already imported mods
+      const existingMods = new Set<string>()
+      try {
+        const installedDirs = await fs.readdir(this.installedPath)
+        for (const dir of installedDirs) {
+          const metaPath = path.join(this.installedPath, dir, 'META', 'info.json')
+          try {
+            await fs.access(metaPath)
+            existingMods.add(dir)
+          } catch {
+            // Not a valid mod directory, skip
+          }
+        }
+      } catch {
+        // Installed directory doesn't exist yet
+      }
+
+      console.info(`[ModToolsWrapper] Found ${existingMods.size} already imported mods`)
+      console.info(`[ModToolsWrapper] Processing ${validSkinMods.length} skins`)
+
+      // Import skins sequentially, skipping already imported ones
       const importedModNames: string[] = []
-      const failedMods: string[] = []
+      let skippedCount = 0
 
-      const importPromises = validSkinMods.map(async (modPath, index): Promise<string | null> => {
-        try {
-          // Use a unique name for each mod to avoid conflicts
-          // Remove trailing spaces from mod name to avoid validation issues
-          const baseName = path.basename(modPath, path.extname(modPath)).trim()
-          const modName = `mod_${index}_${baseName}`
-          const modInstallPath = path.join(this.installedPath, modName)
+      for (let index = 0; index < validSkinMods.length; index++) {
+        const modPath = validSkinMods[index]
+        const baseName = path.basename(modPath, path.extname(modPath)).trim()
+        const modName = `mod_${index}_${baseName}`
 
-          await fs.mkdir(modInstallPath, { recursive: true })
+        // Report progress
+        if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+          this.mainWindow.webContents.send('import-progress', {
+            current: index + 1,
+            total: validSkinMods.length,
+            name: baseName,
+            phase: 'importing'
+          })
+        }
+
+        // Check if this mod is already imported
+        if (existingMods.has(modName)) {
           console.info(
-            `[ModToolsWrapper] Importing skin mod ${index + 1} of ${validSkinMods.length} into ${modInstallPath}`
+            `[ModToolsWrapper] Skipping already imported mod ${index + 1}/${validSkinMods.length}: ${baseName}`
+          )
+          importedModNames.push(modName)
+          skippedCount++
+          continue
+        }
+
+        try {
+          console.info(
+            `[ModToolsWrapper] Importing ${index + 1}/${validSkinMods.length}: ${baseName}`
           )
 
-          let importSuccess = false
-          let lastError: Error | null = null
+          await this.execToolWithTimeout(
+            this.modToolsPath,
+            [
+              'import',
+              path.normalize(modPath),
+              path.normalize(path.join(this.installedPath, modName)),
+              `--game:${gamePath}`,
+              preset.noTFT ? '--noTFT' : ''
+            ].filter(Boolean),
+            30000
+          )
 
-          for (let attempt = 1; attempt <= 3; attempt++) {
-            try {
-              if (attempt > 1) {
-                console.info(
-                  `[ModToolsWrapper] Retrying import, attempt ${attempt}/3 for mod ${index + 1}`
-                )
-                await new Promise((resolve) => setTimeout(resolve, 1000 * Math.pow(2, attempt - 1)))
-              }
-
-              await this.execToolWithTimeout(
-                this.modToolsPath,
-                [
-                  'import',
-                  path.normalize(modPath),
-                  path.normalize(modInstallPath),
-                  `--game:${path.normalize(preset.gamePath)}`
-                ],
-                60000
-              )
-
-              importSuccess = true
-              break
-            } catch (error) {
-              lastError = error as Error
-              console.warn(
-                `[ModToolsWrapper] Import attempt ${attempt} failed for mod ${index + 1}: ${error instanceof Error ? error.message : String(error)}`
-              )
-              await this.forceKillModTools()
-            }
-          }
-
-          if (importSuccess) {
-            console.info(`[ModToolsWrapper] Successfully imported skin mod ${index + 1}`)
-            return modName
-          } else {
-            console.error(
-              `[ModToolsWrapper] All import attempts failed for skin mod ${index + 1}`,
-              {
-                lastError
-              }
-            )
-            failedMods.push(`mod_${index + 1}`)
-            return null
-          }
+          importedModNames.push(modName)
+          console.info(`[ModToolsWrapper] Successfully imported: ${baseName}`)
         } catch (error) {
-          console.error(`[ModToolsWrapper] Error processing skin mod ${index + 1}:`, { error })
-          failedMods.push(`mod_${index + 1}`)
-          return null
+          console.error(`[ModToolsWrapper] Failed to import skin ${index + 1}:`, error)
+          // Continue with other skins even if one fails
         }
-      })
-
-      const results = await Promise.all(importPromises)
-      results.forEach((modName) => {
-        if (modName) importedModNames.push(modName)
-      })
+      }
 
       if (importedModNames.length === 0) {
-        throw new Error(
-          `No mods could be successfully prepared for injection. Failed mods: ${failedMods.length}`
-        )
+        throw new Error('Failed to import any skins')
       }
 
-      if (failedMods.length > 0) {
-        console.warn(`[ModToolsWrapper] Some mods failed to import: ${failedMods.length} failed`)
-      }
+      console.info(
+        `[ModToolsWrapper] Import complete. Imported: ${importedModNames.length - skippedCount}, Skipped: ${skippedCount}`
+      )
 
       const profileName = `preset_${preset.id}`
       const profilePath = path.join(this.profilesPath, profileName)
       const profileConfigPath = `${profilePath}.config`
-
-      await fs.writeFile(`${profilePath}.profile`, importedModNames.join('\n'))
-
       const modsParameter = importedModNames.join('/')
 
       console.info('[ModToolsWrapper] Creating overlay...')
@@ -229,8 +224,7 @@ export class ModToolsWrapper {
         try {
           if (attempt > 1) {
             console.info(`[ModToolsWrapper] Retrying overlay creation, attempt ${attempt}/3`)
-            await this.forceKillModTools()
-            await new Promise((resolve) => setTimeout(resolve, 1000 * Math.pow(2, attempt - 1)))
+            await new Promise((resolve) => setTimeout(resolve, 500))
           }
 
           const mkoverlayArgs = [
@@ -257,12 +251,10 @@ export class ModToolsWrapper {
             `[ModToolsWrapper] Overlay creation attempt ${attempt} failed:`,
             error as Error
           )
-          await this.forceKillModTools()
         }
       }
 
       if (!overlaySuccess) {
-        await this.forceKillModTools()
         throw new Error(
           `Failed to create overlay after 3 attempts: ${mkOverlayError?.message || 'Unknown mkoverlay error'}`
         )
@@ -360,5 +352,16 @@ export class ModToolsWrapper {
 
   isRunning(): boolean {
     return this.runningProcess !== null && !this.runningProcess.killed
+  }
+
+  async clearImportedModsCache(): Promise<void> {
+    try {
+      console.info('[ModToolsWrapper] Clearing imported mods cache')
+      await fs.rm(this.installedPath, { recursive: true, force: true })
+      console.info('[ModToolsWrapper] Imported mods cache cleared successfully')
+    } catch (error) {
+      console.error('[ModToolsWrapper] Failed to clear imported mods cache:', error)
+      throw error
+    }
   }
 }
