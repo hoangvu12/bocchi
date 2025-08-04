@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger
 } from './ui/dropdown-menu'
 import { MoreVertical, Upload, Copy, Trash2, Play, Edit } from 'lucide-react'
-import type { Preset } from '../../../main/types/preset'
+import type { Preset } from '../../../shared/types/preset'
 
 interface PresetCardProps {
   preset: Preset

@@ -1,4 +1,4 @@
-import type { Preset, PresetSkin, PresetValidationResult } from '../../../main/types/preset'
+import type { Preset, PresetSkin, PresetValidationResult } from '../../../shared/types/preset'
 import type { SelectedSkin } from '../store/atoms'
 
 export class PresetServiceClient {

@@ -1,6 +1,6 @@
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
-import type { Preset } from '../../../../main/types/preset'
+import type { Preset } from '../../../../shared/types/preset'
 
 // List of all presets
 export const presetsAtom = atom<Preset[]>([])

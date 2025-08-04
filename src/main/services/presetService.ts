@@ -2,7 +2,12 @@ import { app } from 'electron'
 import { promises as fs } from 'fs'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
-import type { Preset, PresetSkin, PresetExport, PresetValidationResult } from '../types/preset'
+import type {
+  Preset,
+  PresetSkin,
+  PresetExport,
+  PresetValidationResult
+} from '../../shared/types/preset'
 import type { SkinInfo } from '../types'
 
 export class PresetService {

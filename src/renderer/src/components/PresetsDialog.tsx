@@ -14,7 +14,7 @@ import {
   presetsLoadingAtom
 } from '../store/atoms/presets'
 import { selectedSkinsAtom } from '../store/atoms'
-import type { Preset } from '../../../main/types/preset'
+import type { Preset } from '../../../shared/types/preset'
 import { Search, Download } from 'lucide-react'
 
 interface PresetsDialogProps {
