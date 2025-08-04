@@ -49,6 +49,32 @@ export interface IApi {
   ) => () => void
   retryFailedDownloads: () => Promise<{ success: boolean; error?: string }>
 
+  // Bulk download from repository
+  downloadAllSkinsBulk: (options: {
+    excludeChromas: boolean
+    excludeVariants: boolean
+    excludeLegacy: boolean
+    excludeEsports: boolean
+    onlyFavorites: boolean
+    overwriteExisting: boolean
+    concurrency?: number
+  }) => Promise<{ success: boolean; error?: string }>
+  onDownloadAllSkinsBulkProgress: (
+    callback: (progress: {
+      phase: 'downloading' | 'extracting' | 'processing' | 'completed'
+      totalSize?: number
+      downloadedSize?: number
+      totalFiles?: number
+      processedFiles?: number
+      currentFile?: string
+      skippedFiles?: number
+      failedFiles?: string[]
+      downloadSpeed?: number
+      timeRemaining?: number
+      overallProgress: number
+    }) => void
+  ) => () => void
+
   // File import
   importSkinFile: (
     filePath: string,

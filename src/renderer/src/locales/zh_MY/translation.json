@@ -120,7 +120,15 @@
     "pause": "Pause",
     "resume": "Resume",
     "cancel": "Cancel",
-    "completed": "Download Complete"
+    "completed": "Download Complete",
+    "downloadingRepository": "正在下載存儲庫",
+    "extracting": "正在解壓文件",
+    "processingSkins": "正在處理皮膚",
+    "downloadProgress": "正在下載存儲庫壓縮包",
+    "extractProgress": "正在解壓壓縮包",
+    "processed": "已處理",
+    "skipped": "已跳過",
+    "retryFailed": "重試失敗項"
   },
   "settings": {
     "title": "設定",

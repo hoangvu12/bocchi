@@ -120,7 +120,15 @@
     "pause": "Pause",
     "resume": "Resume",
     "cancel": "Cancel",
-    "completed": "Download Complete"
+    "completed": "Download Complete",
+    "downloadingRepository": "Depo indiriliyor",
+    "extracting": "Dosyalar çıkarılıyor",
+    "processingSkins": "Kostümler işleniyor",
+    "downloadProgress": "Depo arşivi indiriliyor",
+    "extractProgress": "Arşiv çıkarılıyor",
+    "processed": "İşlendi",
+    "skipped": "Atlandı",
+    "retryFailed": "Başarısızları yeniden dene"
   },
   "settings": {
     "title": "Ayarlar",

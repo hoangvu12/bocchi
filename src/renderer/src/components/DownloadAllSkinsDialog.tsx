@@ -15,6 +15,10 @@ interface DownloadProgress {
   failedSkins: string[]
   isRunning: boolean
   isPaused: boolean
+  // New fields for bulk download
+  phase?: 'downloading' | 'extracting' | 'processing' | 'completed'
+  overallProgress?: number
+  skippedFiles?: number
 }
 
 interface DownloadAllSkinsDialogProps {
@@ -52,9 +56,28 @@ export const DownloadAllSkinsDialog: React.FC<DownloadAllSkinsDialogProps> = ({
   }
 
   const overallProgress =
-    progress.totalSkins > 0 ? (progress.completedSkins / progress.totalSkins) * 100 : 0
+    progress.overallProgress !== undefined
+      ? progress.overallProgress
+      : progress.totalSkins > 0
+        ? (progress.completedSkins / progress.totalSkins) * 100
+        : 0
 
-  const isCompleted = progress.completedSkins === progress.totalSkins && progress.totalSkins > 0
+  const isCompleted =
+    progress.phase === 'completed' ||
+    (progress.completedSkins === progress.totalSkins && progress.totalSkins > 0)
+
+  const getPhaseTitle = () => {
+    switch (progress.phase) {
+      case 'downloading':
+        return t('downloadAll.downloadingRepository')
+      case 'extracting':
+        return t('downloadAll.extracting')
+      case 'processing':
+        return t('downloadAll.processingSkins')
+      default:
+        return t('downloadAll.title')
+    }
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -73,7 +96,7 @@ export const DownloadAllSkinsDialog: React.FC<DownloadAllSkinsDialogProps> = ({
                 ) : (
                   <div className="h-5 w-5 rounded-full border-2 border-primary-500 border-t-transparent animate-spin" />
                 )}
-                {t('downloadAll.title')}
+                {getPhaseTitle()}
               </>
             )}
           </DialogTitle>
@@ -84,10 +107,19 @@ export const DownloadAllSkinsDialog: React.FC<DownloadAllSkinsDialogProps> = ({
           <div>
             <div className="flex justify-between text-sm text-text-secondary mb-2">
               <span>
-                {t('downloadAll.progress', {
-                  completed: progress.completedSkins,
-                  total: progress.totalSkins
-                })}
+                {progress.phase === 'downloading'
+                  ? t('downloadAll.downloadProgress')
+                  : progress.phase === 'extracting'
+                    ? t('downloadAll.extractProgress')
+                    : progress.phase === 'processing' && progress.totalSkins > 0
+                      ? t('downloadAll.progress', {
+                          completed: progress.completedSkins,
+                          total: progress.totalSkins
+                        })
+                      : t('downloadAll.progress', {
+                          completed: progress.completedSkins,
+                          total: progress.totalSkins
+                        })}
               </span>
               <span>{overallProgress.toFixed(1)}%</span>
             </div>
@@ -108,14 +140,32 @@ export const DownloadAllSkinsDialog: React.FC<DownloadAllSkinsDialogProps> = ({
           {/* Stats */}
           {progress.isRunning && !isCompleted && (
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="text-text-secondary">{t('downloadAll.speed')}: </span>
-                <span className="text-text-primary">{formatSpeed(progress.downloadSpeed)}</span>
-              </div>
-              <div>
-                <span className="text-text-secondary">{t('downloadAll.timeRemaining')}: </span>
-                <span className="text-text-primary">{formatTime(progress.timeRemaining)}</span>
-              </div>
+              {progress.phase === 'downloading' && (
+                <>
+                  <div>
+                    <span className="text-text-secondary">{t('downloadAll.speed')}: </span>
+                    <span className="text-text-primary">{formatSpeed(progress.downloadSpeed)}</span>
+                  </div>
+                  <div>
+                    <span className="text-text-secondary">{t('downloadAll.timeRemaining')}: </span>
+                    <span className="text-text-primary">{formatTime(progress.timeRemaining)}</span>
+                  </div>
+                </>
+              )}
+              {progress.phase === 'processing' && (
+                <>
+                  <div>
+                    <span className="text-text-secondary">{t('downloadAll.processed')}: </span>
+                    <span className="text-text-primary">{progress.completedSkins}</span>
+                  </div>
+                  {progress.skippedFiles !== undefined && progress.skippedFiles > 0 && (
+                    <div>
+                      <span className="text-text-secondary">{t('downloadAll.skipped')}: </span>
+                      <span className="text-text-primary">{progress.skippedFiles}</span>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           )}
 
@@ -157,7 +207,7 @@ export const DownloadAllSkinsDialog: React.FC<DownloadAllSkinsDialogProps> = ({
                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                       />
                     </svg>
-                    Retry Failed
+                    {t('downloadAll.retryFailed')}
                   </Button>
                 )}
                 <Button

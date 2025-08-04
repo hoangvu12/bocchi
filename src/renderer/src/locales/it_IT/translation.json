@@ -120,7 +120,15 @@
     "pause": "Pause",
     "resume": "Resume",
     "cancel": "Cancel",
-    "completed": "Download Complete"
+    "completed": "Download Complete",
+    "downloadingRepository": "Download del repository",
+    "extracting": "Estrazione dei file",
+    "processingSkins": "Elaborazione delle skin",
+    "downloadProgress": "Download dell'archivio del repository",
+    "extractProgress": "Estrazione dell'archivio",
+    "processed": "Elaborati",
+    "skipped": "Saltati",
+    "retryFailed": "Riprova falliti"
   },
   "settings": {
     "title": "Impostazioni",

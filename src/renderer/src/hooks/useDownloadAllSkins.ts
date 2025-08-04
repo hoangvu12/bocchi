@@ -20,6 +20,7 @@ interface DownloadOptions {
   excludeEsports: boolean
   onlyFavorites: boolean
   concurrency: number
+  overwriteExisting?: boolean
 }
 
 export function useDownloadAllSkins() {
@@ -37,11 +38,32 @@ export function useDownloadAllSkins() {
     isRunning: false,
     isPaused: false
   })
-
-  // Set up progress listener
+  // Set up progress listener for bulk download
   useEffect(() => {
-    const unsubscribe = window.api.onDownloadAllSkinsProgress((progressData) => {
-      setProgress(progressData)
+    const unsubscribe = window.api.onDownloadAllSkinsBulkProgress((progressData) => {
+      // Convert bulk progress to old format for UI compatibility
+      const convertedProgress: DownloadProgress = {
+        totalSkins: progressData.totalFiles || 0,
+        completedSkins: progressData.processedFiles || 0,
+        currentSkin: progressData.currentFile || null,
+        currentProgress:
+          progressData.phase === 'downloading'
+            ? Math.round(((progressData.downloadedSize || 0) / (progressData.totalSize || 1)) * 100)
+            : progressData.phase === 'processing'
+              ? 100
+              : 0,
+        downloadSpeed: progressData.downloadSpeed || 0,
+        timeRemaining: progressData.timeRemaining || 0,
+        failedSkins: progressData.failedFiles || [],
+        isRunning: progressData.phase !== 'completed',
+        isPaused: false,
+        // Additional fields for UI
+        phase: progressData.phase,
+        overallProgress: progressData.overallProgress,
+        skippedFiles: progressData.skippedFiles
+      } as DownloadProgress & { phase?: string; overallProgress?: number; skippedFiles?: number }
+
+      setProgress(convertedProgress)
     })
 
     return () => {
@@ -142,34 +164,29 @@ export function useDownloadAllSkins() {
     setIsOptionsDialogOpen(false)
   }, [])
 
-  const startDownloadWithOptions = useCallback(
-    async (options: DownloadOptions) => {
-      const skinUrls = getAllSkinUrls(options)
+  const startDownloadWithOptions = useCallback(async (options: DownloadOptions) => {
+    setIsProgressDialogOpen(true)
 
-      if (skinUrls.length === 0) {
-        console.warn('No skins found to download')
-        return
-      }
+    try {
+      const result = await window.api.downloadAllSkinsBulk({
+        excludeChromas: options.excludeChromas,
+        excludeVariants: options.excludeVariants,
+        excludeLegacy: options.excludeLegacy,
+        excludeEsports: options.excludeEsports,
+        onlyFavorites: options.onlyFavorites,
+        overwriteExisting: options.overwriteExisting || false,
+        concurrency: options.concurrency
+      })
 
-      setIsProgressDialogOpen(true)
-
-      try {
-        const result = await window.api.downloadAllSkins(skinUrls, {
-          excludeChromas: options.excludeChromas,
-          concurrency: options.concurrency
-        })
-
-        if (!result.success) {
-          console.error('Failed to start download:', result.error)
-          // TODO: Show error toast
-        }
-      } catch (error) {
-        console.error('Error starting download:', error)
+      if (!result.success) {
+        console.error('Failed to start bulk download:', result.error)
         // TODO: Show error toast
       }
-    },
-    [getAllSkinUrls]
-  )
+    } catch (error) {
+      console.error('Error starting download:', error)
+      // TODO: Show error toast
+    }
+  }, [])
 
   const pauseDownload = useCallback(async () => {
     try {

@@ -120,7 +120,15 @@
     "pause": "Pause",
     "resume": "Resume",
     "cancel": "Cancel",
-    "completed": "Download Complete"
+    "completed": "Download Complete",
+    "downloadingRepository": "Λήψη αποθετηρίου",
+    "extracting": "Εξαγωγή αρχείων",
+    "processingSkins": "Επεξεργασία skins",
+    "downloadProgress": "Λήψη αρχείου αποθετηρίου",
+    "extractProgress": "Εξαγωγή αρχείου",
+    "processed": "Επεξεργάστηκε",
+    "skipped": "Παραλείφθηκε",
+    "retryFailed": "Επανάληψη αποτυχημένων"
   },
   "settings": {
     "title": "Ρυθμίσεις",

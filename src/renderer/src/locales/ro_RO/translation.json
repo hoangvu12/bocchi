@@ -120,7 +120,15 @@
     "pause": "Pause",
     "resume": "Resume",
     "cancel": "Cancel",
-    "completed": "Download Complete"
+    "completed": "Download Complete",
+    "downloadingRepository": "Descărcare depozit",
+    "extracting": "Extragere fișiere",
+    "processingSkins": "Procesare skin-uri",
+    "downloadProgress": "Descărcare arhivă depozit",
+    "extractProgress": "Extragere arhivă",
+    "processed": "Procesate",
+    "skipped": "Omise",
+    "retryFailed": "Reîncearcă eșuate"
   },
   "settings": {
     "title": "Setări",

@@ -29,6 +29,22 @@ const api = {
   },
   retryFailedDownloads: () => ipcRenderer.invoke('retry-failed-downloads'),
 
+  // Bulk download from repository
+  downloadAllSkinsBulk: (options: {
+    excludeChromas: boolean
+    excludeVariants: boolean
+    excludeLegacy: boolean
+    excludeEsports: boolean
+    onlyFavorites: boolean
+    overwriteExisting: boolean
+    concurrency?: number
+  }) => ipcRenderer.invoke('download-all-skins-bulk', options),
+  onDownloadAllSkinsBulkProgress: (callback: (progress: any) => void) => {
+    const handler = (_: any, progress: any) => callback(progress)
+    ipcRenderer.on('download-all-skins-bulk-progress', handler)
+    return () => ipcRenderer.removeListener('download-all-skins-bulk-progress', handler)
+  },
+
   // File import
   importSkinFile: (
     filePath: string,
