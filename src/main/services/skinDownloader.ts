@@ -302,6 +302,9 @@ export class SkinDownloader {
           }
           const skinFiles = await fs.readdir(championPath)
           for (const skinFile of skinFiles) {
+            // Skip meta.json and .meta.json files
+            if (skinFile === 'meta.json' || skinFile.endsWith('.meta.json')) continue
+
             const skinPath = path.join(championPath, skinFile)
             if (seenPaths.has(skinPath)) continue
             seenPaths.add(skinPath)
@@ -434,7 +437,15 @@ export class SkinDownloader {
       // Clean up empty champion directory
       const championDir = path.join(this.cacheDir, championName)
       const files = await fs.readdir(championDir)
-      if (files.length === 0) {
+      // Filter out meta.json files when checking if directory is empty
+      const nonMetaFiles = files.filter((f) => f !== 'meta.json' && !f.endsWith('.meta.json'))
+      if (nonMetaFiles.length === 0) {
+        // Delete any remaining metadata files before removing directory
+        for (const file of files) {
+          if (file === 'meta.json' || file.endsWith('.meta.json')) {
+            await fs.unlink(path.join(championDir, file)).catch(() => {})
+          }
+        }
         await fs.rmdir(championDir)
       }
     } catch (error) {
