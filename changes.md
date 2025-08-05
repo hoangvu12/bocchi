@@ -1,6 +1,11 @@
 ### Features
+- Presets
 
-- Added alphabet grid to quickly jump to champions by letter
-- Added download all skins button in the main interface
-- Added support for all League of Legends languages
-- Added skin update when new skins are available
+### Performance
+- Better skins apply logic (faster)
+
+### Fixes
+- Meta file is counted as a skin in Manage skins
+- Better download all skins implementation
+
+Notes: Skins now will take long time to apply first time (cache). But it will get faster for later apply.
