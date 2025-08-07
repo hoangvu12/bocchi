@@ -653,6 +653,7 @@ function calculateSimilarity(str1: string, str2: string): number {
 function normalizeSkinName(name: string): string {
   return name
     .toLowerCase()
+    .replace(/\//g, ' ') // Replace forward slashes with spaces
     .replace(/['']/g, '') // Remove apostrophes
     .replace(/\s+/g, '') // Remove spaces
     .replace(/\./g, '') // Remove dots
