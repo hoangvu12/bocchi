@@ -1,0 +1,70 @@
+name: Update LOL Skins Directory Structure
+
+on:
+  schedule:
+    # Run daily at 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-directory:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Bocchi repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Checkout lol-skins repository
+        uses: actions/checkout@v4
+        with:
+          repository: darkseal-org/lol-skins
+          path: lol-skins-repo
+          sparse-checkout: |
+            skins
+      
+      - name: Install tree command
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tree
+      
+      - name: Generate directory structure
+        run: |
+          cd lol-skins-repo
+          
+          # Generate tree structure exactly like the example
+          # No file sizes, no extra info, just the structure
+          tree --dirsfirst -I '.git|.github|README.md|.DS_Store' skins > ../scripts/lol_skins_directory.txt
+          
+          # Add header
+          echo "Directory structure:" | cat - ../scripts/lol_skins_directory.txt > temp && mv temp ../scripts/lol_skins_directory.txt
+          
+          # Show first 30 lines for verification in logs
+          echo "Generated directory structure (first 30 lines):"
+          head -30 ../scripts/lol_skins_directory.txt
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet scripts/lol_skins_directory.txt; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Directory structure has been updated"
+          fi
+      
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add scripts/lol_skins_directory.txt
+          git commit -m "chore: update lol-skins directory structure
+
+          Auto-generated from darkseal-org/lol-skins repository"
+          git push
+      
+      - name: No changes detected
+        if: steps.check_changes.outputs.has_changes != 'true'
+        run: echo "No changes detected in directory structure"
