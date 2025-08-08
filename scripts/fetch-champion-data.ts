@@ -2,7 +2,6 @@ import axios from 'axios'
 import * as fs from 'fs/promises'
 import * as path from 'path'
 import pLimit from 'p-limit'
-import * as cheerio from 'cheerio'
 import {
   fetchAllLolSkinsData,
   findBestSkinMatch,
@@ -54,8 +53,6 @@ const CDRAGON_BASE_URL =
 const CONCURRENT_REQUESTS = 10 // Increased from sequential to 10 concurrent
 const RETRY_ATTEMPTS = 3
 const RETRY_DELAY = 1000
-const OPGG_CONCURRENT_REQUESTS = 3 // Be respectful to OP.GG
-const OPGG_REQUEST_DELAY = 1000 // Delay between OP.GG requests
 
 interface Chroma {
   id: number
@@ -92,9 +89,6 @@ interface Skin {
   skinType: string
   skinLines?: Array<{ id: number }>
   description?: string
-  winRate?: number
-  pickRate?: number
-  totalGames?: number
 }
 
 interface Champion {
@@ -125,26 +119,6 @@ interface ProgressTracker {
   completed: number
   startTime: number
   currentPhase: string
-}
-
-interface SkinWinRate {
-  skinName: string
-  winRate: number
-  pickRate: number
-  totalGames: number
-}
-
-interface SkinWinRateMapping {
-  championKey: string
-  championId: number
-  skinId: string // e.g., "266_1"
-  skinNum: number
-  opggName: string
-  matchedName: string
-  winRate: number
-  pickRate: number
-  totalGames: number
-  confidence: number // 0-1, how confident we are in the match
 }
 
 // CDragon response types
@@ -620,49 +594,6 @@ function buildChampionNameLookup(championFolders: string[]): Map<string, string>
   return lookup
 }
 
-// Utility functions for skin name matching
-function levenshteinDistance(str1: string, str2: string): number {
-  const m = str1.length
-  const n = str2.length
-  const dp: number[][] = Array(m + 1)
-    .fill(null)
-    .map(() => Array(n + 1).fill(0))
-
-  for (let i = 0; i <= m; i++) dp[i][0] = i
-  for (let j = 0; j <= n; j++) dp[0][j] = j
-
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      if (str1[i - 1] === str2[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1]
-      } else {
-        dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])
-      }
-    }
-  }
-
-  return dp[m][n]
-}
-
-function calculateSimilarity(str1: string, str2: string): number {
-  const maxLen = Math.max(str1.length, str2.length)
-  if (maxLen === 0) return 1
-  const distance = levenshteinDistance(str1, str2)
-  return 1 - distance / maxLen
-}
-
-function normalizeSkinName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/\//g, ' ') // Replace forward slashes with spaces
-    .replace(/['']/g, '') // Remove apostrophes
-    .replace(/\s+/g, '') // Remove spaces
-    .replace(/\./g, '') // Remove dots
-    .replace(/-/g, '') // Remove hyphens
-    .replace(/[()]/g, '') // Remove parentheses
-    .replace(/:/g, '') // Remove colons
-}
-
 function processTieredSkin(skin: CDragonSkin, championId: number, lolSkinsList: any[]): Skin[] {
   const tiers = skin.questSkinInfo?.tiers
   if (!tiers || tiers.length === 0) {
@@ -1023,165 +954,6 @@ async function loadExistingData(
   return existingData
 }
 
-async function scrapeChampionSkinStats(championKey: string): Promise<SkinWinRate[]> {
-  try {
-    // Convert champion key to lowercase for OP.GG URL
-    const urlChampion = championKey.toLowerCase()
-    const url = `https://op.gg/lol/skins/statistics/${urlChampion}`
-
-    // Add delay to be respectful
-    await delay(OPGG_REQUEST_DELAY)
-
-    // Fetch the HTML
-    const response = await retryRequest(() =>
-      axios.get(url, {
-        headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-          'Accept-Language': 'en-US,en;q=0.9'
-        },
-        timeout: 10000
-      })
-    )
-
-    // Load HTML into Cheerio
-    const $ = cheerio.load(response.data)
-
-    // Find the skin statistics table
-    const skinStats: SkinWinRate[] = []
-
-    // Parse all rows
-    $('tbody tr').each((index, element) => {
-      const $row = $(element)
-      const cells = $row
-        .find('td')
-        .map((_, el) => $(el).text().trim())
-        .get()
-
-      if (cells.length >= 6) {
-        const skinName = cells[1]
-        const gamesPlayed = cells[3].replace(/,/g, '')
-        const winRateText = cells[4]
-        const pickRateText = cells[5]
-
-        // Skip header row
-        if (skinName === 'Champion') return
-
-        // Parse percentages and numbers
-        const winRate = parseFloat(winRateText.replace('%', ''))
-        const pickRate = parseFloat(pickRateText.replace('%', ''))
-        const totalGames = parseInt(gamesPlayed)
-
-        if (skinName && !isNaN(winRate)) {
-          skinStats.push({
-            skinName,
-            winRate,
-            pickRate: isNaN(pickRate) ? 0 : pickRate,
-            totalGames: isNaN(totalGames) ? 0 : totalGames
-          })
-        }
-      }
-    })
-
-    return skinStats
-  } catch (error) {
-    console.error(`Failed to scrape skin stats for ${championKey}:`, error.message)
-    // Return empty array on error to continue with other champions
-    return []
-  }
-}
-
-function findBestOPGGSkinMatch(
-  opggSkinName: string,
-  championSkins: Array<{ id: string; num: number; name: string; nameEn?: string }>
-): { skin: { id: string; num: number; name: string; nameEn?: string }; confidence: number } | null {
-  const normalizedOpggName = normalizeSkinName(opggSkinName)
-  let bestMatch: {
-    skin: { id: string; num: number; name: string; nameEn?: string }
-    confidence: number
-  } | null = null
-  let bestScore = 0
-
-  for (const skin of championSkins) {
-    // Skip base skin (num: 0) unless OP.GG name is just the champion name
-    if (skin.num === 0 && !opggSkinName.match(/^[A-Z][a-z]+$/)) continue
-
-    // Try matching with English name first, then regular name
-    const namesToTry = [skin.nameEn, skin.name].filter(Boolean)
-
-    for (const name of namesToTry) {
-      const normalizedName = normalizeSkinName(name!)
-      const score = calculateSimilarity(normalizedOpggName, normalizedName)
-
-      if (score > bestScore) {
-        bestScore = score
-        bestMatch = { skin, confidence: score }
-      }
-
-      // If we found an exact match, no need to continue
-      if (score === 1) break
-    }
-  }
-
-  // Only return matches with reasonable confidence (> 0.7)
-  return bestMatch && bestMatch.confidence > 0.7 ? bestMatch : null
-}
-
-async function fetchAllSkinWinRates(
-  champions: Champion[]
-): Promise<Map<string, SkinWinRateMapping>> {
-  console.log('\nFetching skin win rates from OP.GG...')
-
-  // Create limit function for concurrent requests
-  const limit = pLimit(OPGG_CONCURRENT_REQUESTS)
-
-  // Store all mappings
-  const allMappings: SkinWinRateMapping[] = []
-  let processedChampions = 0
-
-  updateProgress('Fetching Win Rates', 0, champions.length)
-
-  // Process champions
-  await Promise.all(
-    champions.map((champion) =>
-      limit(async () => {
-        const winRates = await scrapeChampionSkinStats(champion.key)
-        processedChampions++
-        updateProgress('Fetching Win Rates', processedChampions, champions.length)
-
-        if (winRates.length === 0) {
-          return
-        }
-
-        // Match OP.GG skins to our skin data
-        for (const opggSkin of winRates) {
-          const match = findBestOPGGSkinMatch(opggSkin.skinName, champion.skins)
-
-          if (match) {
-            allMappings.push({
-              championKey: champion.key,
-              championId: champion.id,
-              skinId: match.skin.id,
-              skinNum: match.skin.num,
-              opggName: opggSkin.skinName,
-              matchedName: match.skin.nameEn || match.skin.name,
-              winRate: opggSkin.winRate,
-              pickRate: opggSkin.pickRate,
-              totalGames: opggSkin.totalGames,
-              confidence: match.confidence
-            })
-          }
-        }
-      })
-    )
-  )
-
-  console.log(`Fetched win rate data for ${allMappings.length} skins`)
-
-  // Create a map for quick lookup
-  return new Map(allMappings.map((m) => [m.skinId, m]))
-}
-
 async function saveAllData(
   dataDir: string,
   allData: Record<string, ChampionData>,
@@ -1250,12 +1022,8 @@ async function main() {
 
     // Parse command line arguments
     const forceRefresh = process.argv.includes('--force')
-    const skipWinRates = process.argv.includes('--skip-winrates')
     if (forceRefresh) {
       console.log('Force refresh enabled - will fetch all data regardless of version')
-    }
-    if (skipWinRates) {
-      console.log('Skipping win rate fetching')
     }
 
     // Create data directory
@@ -1387,26 +1155,6 @@ async function main() {
           version,
           lastUpdated: new Date().toISOString(),
           champions
-        }
-      }
-
-      // Fetch win rates from OP.GG using English champion data
-      if (!skipWinRates) {
-        updateProgress('Fetching win rate data')
-        const winRateMap = await fetchAllSkinWinRates(allData['en_US'].champions)
-
-        // Merge win rates into all language data
-        for (const languageData of Object.values(allData)) {
-          languageData.champions.forEach((champion) => {
-            champion.skins.forEach((skin) => {
-              const winRateInfo = winRateMap.get(skin.id)
-              if (winRateInfo) {
-                skin.winRate = winRateInfo.winRate
-                skin.pickRate = winRateInfo.pickRate
-                skin.totalGames = winRateInfo.totalGames
-              }
-            })
-          })
         }
       }
 

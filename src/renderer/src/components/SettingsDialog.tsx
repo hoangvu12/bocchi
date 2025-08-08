@@ -710,12 +710,8 @@ export function SettingsDialog({
                                 </div>
                               </Label>
                             </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem
-                                value="winrate"
-                                id="winrate"
-                                disabled={loading || !championDetection}
-                              />
+                            <div className="flex items-center space-x-2 opacity-50">
+                              <RadioGroupItem value="winrate" id="winrate" disabled={true} />
                               <Label
                                 htmlFor="winrate"
                                 className="text-sm font-normal cursor-pointer"
@@ -723,17 +719,14 @@ export function SettingsDialog({
                                 <div>
                                   <div>{t('settings.autoRandomHighestWinRateSkin.title')}</div>
                                   <div className="text-xs text-text-secondary">
-                                    {t('settings.autoRandomHighestWinRateSkin.description')}
+                                    {t('settings.autoRandomHighestWinRateSkin.description')}{' '}
+                                    (Currently unavailable)
                                   </div>
                                 </div>
                               </Label>
                             </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem
-                                value="pickrate"
-                                id="pickrate"
-                                disabled={loading || !championDetection}
-                              />
+                            <div className="flex items-center space-x-2 opacity-50">
+                              <RadioGroupItem value="pickrate" id="pickrate" disabled={true} />
                               <Label
                                 htmlFor="pickrate"
                                 className="text-sm font-normal cursor-pointer"
@@ -741,17 +734,14 @@ export function SettingsDialog({
                                 <div>
                                   <div>{t('settings.autoRandomHighestPickRateSkin.title')}</div>
                                   <div className="text-xs text-text-secondary">
-                                    {t('settings.autoRandomHighestPickRateSkin.description')}
+                                    {t('settings.autoRandomHighestPickRateSkin.description')}{' '}
+                                    (Currently unavailable)
                                   </div>
                                 </div>
                               </Label>
                             </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem
-                                value="mostplayed"
-                                id="mostplayed"
-                                disabled={loading || !championDetection}
-                              />
+                            <div className="flex items-center space-x-2 opacity-50">
+                              <RadioGroupItem value="mostplayed" id="mostplayed" disabled={true} />
                               <Label
                                 htmlFor="mostplayed"
                                 className="text-sm font-normal cursor-pointer"
@@ -759,7 +749,8 @@ export function SettingsDialog({
                                 <div>
                                   <div>{t('settings.autoRandomMostPlayedSkin.title')}</div>
                                   <div className="text-xs text-text-secondary">
-                                    {t('settings.autoRandomMostPlayedSkin.description')}
+                                    {t('settings.autoRandomMostPlayedSkin.description')} (Currently
+                                    unavailable)
                                   </div>
                                 </div>
                               </Label>
