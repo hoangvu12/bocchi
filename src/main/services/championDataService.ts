@@ -52,7 +52,6 @@ interface SkinMappingsData {
 }
 
 export class ChampionDataService {
-  private apiVersion: string = ''
   private supportedLanguages = [
     'en_US',
     'en_AU',
@@ -109,21 +108,13 @@ export class ChampionDataService {
     }
   }
 
-  private async getApiVersion(): Promise<string> {
-    const response = await axios.get('https://ddragon.leagueoflegends.com/api/versions.json')
-    return response.data[0]
-  }
-
-  private async getChampionDetails(champId: string, language: string = 'en_US'): Promise<any> {
-    const url = `https://ddragon.leagueoflegends.com/cdn/${this.apiVersion}/data/${language}/champion/${champId}.json`
-    const response = await axios.get(url)
-    return response.data.data[champId]
-  }
-
   public async fetchAndSaveChampionData(
     language: string = 'en_US'
   ): Promise<{ success: boolean; message: string; championCount?: number }> {
     try {
+      // Clear cached data to ensure fresh data is loaded
+      this.cachedData.delete(language)
+
       // Try to fetch from GitHub first
       const githubUrl = `${this.githubDataUrl}/champion-data-${language}.json`
 
@@ -206,102 +197,17 @@ export class ChampionDataService {
         // Cache the data in memory
         this.cachedData.set(language, data)
 
-        // Update apiVersion for consistency
-        this.apiVersion = data.version
-
         return {
           success: true,
           message: `Successfully fetched data for ${data.champions.length} champions from GitHub`,
           championCount: data.champions.length
         }
       } catch (githubError) {
-        console.log('Failed to fetch from GitHub, falling back to Riot API:', githubError)
-        // Fall back to original implementation if GitHub fetch fails
-      }
-
-      // Original implementation as fallback
-      // Get latest API version
-      this.apiVersion = await this.getApiVersion()
-
-      // Get all champions in the specified language
-      const championsUrl = `https://ddragon.leagueoflegends.com/cdn/${this.apiVersion}/data/${language}/champion.json`
-      const response = await axios.get(championsUrl)
-      const championsData = response.data.data
-
-      const champions: Champion[] = []
-
-      // Fetch detailed data for each champion
-      for (const [champId, champBasicInfo] of Object.entries(championsData) as [string, any][]) {
-        try {
-          const champDetails = await this.getChampionDetails(champId, language)
-
-          // If we're not fetching English, also get English skin names for download
-          const englishSkinNames: { [key: string]: string } = {}
-          if (language !== 'en_US') {
-            try {
-              const champDetailsEn = await this.getChampionDetails(champId, 'en_US')
-              champDetailsEn.skins.forEach((skin: any) => {
-                englishSkinNames[skin.id] = skin.name
-              })
-            } catch (error) {
-              console.error(`Failed to fetch English names for ${champId}:`, error)
-            }
-          }
-
-          const champion: Champion = {
-            id: parseInt(champBasicInfo.key),
-            key: champId,
-            name: champBasicInfo.name,
-            title: champBasicInfo.title,
-            image: `https://ddragon.leagueoflegends.com/cdn/${this.apiVersion}/img/champion/${champBasicInfo.image.full}`,
-            tags: champDetails.tags || [],
-            skins: champDetails.skins.map((skin: any) => {
-              const skinName = skin.name
-
-              // Get lolSkinsName from mappings
-              let lolSkinsName: string | undefined
-              if (skin.num > 0) {
-                // Skip default skins
-                const mappingKey = `${champId}_${skin.num}`
-                lolSkinsName = this.skinMappings.get(mappingKey)
-              }
-
-              return {
-                id: skin.id,
-                num: skin.num,
-                name: skinName,
-                nameEn: language !== 'en_US' ? englishSkinNames[skin.id] || skinName : undefined,
-                lolSkinsName: lolSkinsName,
-                chromas: skin.chromas || false
-              }
-            })
-          }
-
-          champions.push(champion)
-
-          // Small delay to avoid rate limiting
-          await new Promise((resolve) => setTimeout(resolve, 50))
-        } catch (error) {
-          console.error(`Failed to fetch details for ${champId}:`, error)
+        console.error('Failed to fetch from GitHub:', githubError)
+        return {
+          success: false,
+          message: `Failed to fetch champion data from GitHub: ${githubError instanceof Error ? githubError.message : 'Unknown error'}`
         }
-      }
-
-      // Sort champions by name
-      champions.sort((a, b) => a.name.localeCompare(b.name))
-
-      // Cache the data in memory
-      const data = {
-        version: this.apiVersion,
-        lastUpdated: new Date().toISOString(),
-        champions
-      }
-
-      this.cachedData.set(language, data)
-
-      return {
-        success: true,
-        message: `Successfully fetched data for ${champions.length} champions`,
-        championCount: champions.length
       }
     } catch (error) {
       console.error('Error fetching champion data:', error)
@@ -380,22 +286,15 @@ export class ChampionDataService {
       const currentData = this.cachedData.get(language)
       if (!currentData) return true // No data, needs update
 
-      // Try to check GitHub version first
-      try {
-        const githubUrl = `${this.githubDataUrl}/champion-data-${language}.json`
-        const response = await axios.get(githubUrl, {
-          headers: {
-            'Cache-Control': 'no-cache'
-          }
-        })
-        const githubData = response.data
-        return currentData.version !== githubData.version
-      } catch {
-        // Fall back to checking Riot API version
-        console.log('Failed to check GitHub version, falling back to Riot API')
-        const latestVersion = await this.getApiVersion()
-        return currentData.version !== latestVersion
-      }
+      // Check GitHub version
+      const githubUrl = `${this.githubDataUrl}/champion-data-${language}.json`
+      const response = await axios.get(githubUrl, {
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      })
+      const githubData = response.data
+      return currentData.version !== githubData.version
     } catch (error) {
       console.error('Error checking for updates:', error)
       return true // On error, assume update needed
