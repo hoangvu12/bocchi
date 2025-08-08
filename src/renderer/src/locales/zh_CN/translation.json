@@ -151,7 +151,7 @@
     },
     "autoViewSkins": {
       "title": "自动查看皮肤",
-      "description": "检测到英雄时自动查看皮肤（跳过确认对话框）"
+      "description": "检测到英雄时自动查看皮肤"
     },
     "autoAcceptMatch": {
       "title": "自动接受对局",

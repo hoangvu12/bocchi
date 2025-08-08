@@ -153,7 +153,7 @@
     },
     "autoViewSkins": {
       "title": "Auto View Skins",
-      "description": "Automatically view skins when a champion is detected (skips confirmation dialog)"
+      "description": "Automatically view skins when a champion is detected"
     },
     "smartApply": {
       "title": "Smart Apply",

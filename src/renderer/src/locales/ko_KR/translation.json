@@ -151,7 +151,7 @@
     },
     "autoViewSkins": {
       "title": "스킨 자동 보기",
-      "description": "챔피언이 감지될 때 스킨을 자동으로 표시 (확인 대화상자 건너뛰기)"
+      "description": "챔피언이 감지될 때 스킨을 자동으로 표시"
     },
     "autoAcceptMatch": {
       "title": "대전 자동 수락",

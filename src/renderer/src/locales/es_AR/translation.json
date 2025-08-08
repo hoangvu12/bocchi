@@ -151,7 +151,7 @@
     },
     "autoViewSkins": {
       "title": "Ver skins automáticamente",
-      "description": "Ver skins automáticamente cuando se detecta un campeón (omite el diálogo de confirmación)"
+      "description": "Ver skins automáticamente cuando se detecta un campeón"
     },
     "autoAcceptMatch": {
       "title": "Aceptar partida automáticamente",

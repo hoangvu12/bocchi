@@ -151,7 +151,7 @@
     },
     "autoViewSkins": {
       "title": "スキン自動表示",
-      "description": "チャンピオンが検出された時にスキンを自動的に表示（確認ダイアログをスキップ）"
+      "description": "チャンピオンが検出された時にスキンを自動的に表示"
     },
     "autoAcceptMatch": {
       "title": "マッチを自動承認",

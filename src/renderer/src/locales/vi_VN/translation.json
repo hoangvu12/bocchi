@@ -152,7 +152,7 @@
     },
     "autoViewSkins": {
       "title": "Tự động xem skin",
-      "description": "Tự động xem skin khi phát hiện tướng (bỏ qua hộp thoại xác nhận)"
+      "description": "Tự động xem skin khi phát hiện tướng"
     },
     "smartApply": {
       "title": "Áp dụng thông minh",

@@ -1,12 +1,11 @@
 import { useCallback } from 'react'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { UpdateDialog } from '../UpdateDialog'
 import { ChampionDataUpdateDialog } from '../ChampionDataUpdateDialog'
 import { EditCustomSkinDialog } from '../EditCustomSkinDialog'
 import { DownloadedSkinsDialog } from '../DownloadedSkinsDialog'
 import { FileTransferDialog } from '../FileTransferDialog'
 import { SettingsDialog } from '../SettingsDialog'
-import { ChampionSelectDialog } from '../ChampionSelectDialog'
 import { PresetsDialog } from '../PresetsDialog'
 import { showUpdateDialogAtom, statusMessageAtom } from '../../store/atoms/game.atoms'
 import { showChampionDataUpdateAtom } from '../../store/atoms/champion.atoms'
@@ -16,26 +15,13 @@ import {
   showDownloadedSkinsDialogAtom,
   showSettingsDialogAtom
 } from '../../store/atoms/ui.atoms'
-import { lcuStateSelector } from '../../store/atoms/selectors.atoms'
 import {
   leagueClientEnabledAtom,
   championDetectionEnabledAtom
 } from '../../store/atoms/settings.atoms'
 import { useChampionData } from '../../hooks/useChampionData'
 import { useSkinManagement } from '../../hooks/useSkinManagement'
-import type { Champion, Skin } from '../../App'
-
-interface DialogsContainerProps {
-  onChampionNavigate: () => void
-  clearSelectedChampion: () => void
-  handleSkinClick: (champion: Champion, skin: Skin, chromaId?: string) => void
-}
-
-export function DialogsContainer({
-  onChampionNavigate,
-  clearSelectedChampion,
-  handleSkinClick
-}: DialogsContainerProps) {
+export function DialogsContainer() {
   const { championData, updateChampionData, isUpdatingChampionData } = useChampionData()
   const { downloadedSkins, loadDownloadedSkins, deleteDownloadedSkin, deleteCustomSkin } =
     useSkinManagement()
@@ -51,9 +37,6 @@ export function DialogsContainer({
   const [, setLeagueClientEnabled] = useAtom(leagueClientEnabledAtom)
   const [, setChampionDetectionEnabled] = useAtom(championDetectionEnabledAtom)
   const setStatusMessage = useSetAtom(statusMessageAtom)
-
-  const lcuState = useAtomValue(lcuStateSelector)
-  const { lcuSelectedChampion, isChampionLocked, autoViewSkinsEnabled } = lcuState
 
   const handleEditCustomSkinSave = useCallback(
     async (newName: string, newImagePath?: string) => {
@@ -127,17 +110,6 @@ export function DialogsContainer({
         onLeagueClientChange={(enabled) => setLeagueClientEnabled(enabled)}
         onChampionDetectionChange={(enabled) => setChampionDetectionEnabled(enabled)}
       />
-
-      {!autoViewSkinsEnabled && (
-        <ChampionSelectDialog
-          champion={lcuSelectedChampion}
-          isLocked={isChampionLocked}
-          onViewSkins={onChampionNavigate}
-          onClose={clearSelectedChampion}
-          championData={championData || undefined}
-          onAddSkin={handleSkinClick}
-        />
-      )}
 
       <PresetsDialog />
     </>

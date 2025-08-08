@@ -769,11 +769,7 @@ function AppContent(): React.JSX.Element {
         <DragDropOverlay />
       </MainLayout>
 
-      <DialogsContainer
-        onChampionNavigate={onChampionNavigate}
-        clearSelectedChampion={clearSelectedChampion}
-        handleSkinClick={handleSkinClick}
-      />
+      <DialogsContainer />
     </>
   )
 }
