@@ -92,15 +92,17 @@ export function SkinBrowserSection({
         availableTags={allChampionTags}
         downloadedCount={downloadedCount}
         totalCount={totalCount}
+        resultsCount={displaySkins.length}
         onClearFilters={() => setFilters(DEFAULT_FILTERS)}
       />
       <div className="px-8 pt-6 pb-4 flex items-center justify-between gap-4">
         <input
           type="text"
           placeholder={t('skin.searchPlaceholder')}
+          aria-label={t('skin.searchPlaceholder')}
           value={skinSearchQuery}
           onChange={(e) => setSkinSearchQuery(e.target.value)}
-          className={styles.skinSearchInput.className}
+          className={styles.searchInput.className}
         />
         <div className="flex items-center gap-2">
           <FileUploadButton

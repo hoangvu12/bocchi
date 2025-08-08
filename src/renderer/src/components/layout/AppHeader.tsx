@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { Heart } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAtom, useAtomValue } from 'jotai'
 import { gamePathAtom, toolsExistAtom } from '../../store/atoms/game.atoms'
@@ -60,8 +61,18 @@ export const AppHeader = memo(() => {
             }`}
           onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
           disabled={loading}
+          aria-pressed={showFavoritesOnly}
+          aria-label={t('nav.favorites')}
         >
-          <span className={showFavoritesOnly ? 'text-red-500' : ''}>❤️</span> {t('nav.favorites')}
+          <Heart
+            className={`w-4 h-4 ${
+              showFavoritesOnly ? 'text-error fill-error' : 'text-text-secondary'
+            } transition-colors`}
+            aria-hidden="true"
+            strokeWidth={showFavoritesOnly ? 2.5 : 2}
+            fill={showFavoritesOnly ? 'currentColor' : 'none'}
+          />
+          {t('nav.favorites')}
         </button>
         {!championData && (
           <button

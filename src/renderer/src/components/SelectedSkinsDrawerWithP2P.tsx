@@ -14,7 +14,16 @@ import { presetService } from '../services/presetService'
 import { toast } from 'sonner'
 import { presetsAtom, presetDialogOpenAtom, presetCountAtom } from '../store/atoms/presets'
 import { Button } from './ui/button'
-import { BookOpenIcon, GripVertical } from 'lucide-react'
+import {
+  BookOpenIcon,
+  GripVertical,
+  CheckCircle2,
+  Package,
+  Search,
+  GitMerge,
+  Save,
+  Brush
+} from 'lucide-react'
 import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
 import { arrayMoveImmutable } from 'array-move'
 
@@ -581,49 +590,117 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             ) : (loading || isPatcherRunning) && patcherPhase.phase !== 'idle' ? (
               <div className="flex items-center gap-3">
                 {patcherPhase.phase === 'running' ? (
-                  // Running state - just show status text
-                  <span className="text-sm text-text-secondary font-medium">
-                    {patcherPhase.detail
-                      ? `✅ ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').replace('[WARN]', '').trim()}`
-                      : '✅ Patcher running'}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" aria-hidden="true" />
+                    <span className="text-sm text-text-secondary font-medium" aria-live="polite">
+                      {patcherPhase.detail
+                        ? patcherPhase.detail
+                            .replace('[INFO]', '')
+                            .replace('[INF]', '')
+                            .replace('[WARN]', '')
+                            .trim()
+                        : 'Patcher running'}
+                    </span>
+                  </div>
                 ) : (
-                  // Loading phases - show progress bar
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-text-secondary font-medium">
-                        {patcherPhase.phase === 'importing' &&
-                          (patcherPhase.detail
-                            ? `📦 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
-                            : '📦 Importing mods')}
-                        {patcherPhase.phase === 'indexing' &&
-                          (patcherPhase.detail
-                            ? `🔍 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
-                            : '🔍 Indexing game')}
-                        {patcherPhase.phase === 'reading' &&
-                          (patcherPhase.detail
-                            ? `📖 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
-                            : '📖 Reading mods')}
-                        {patcherPhase.phase === 'merging' &&
-                          (patcherPhase.detail
-                            ? `🔀 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
-                            : '🔀 Merging mods')}
-                        {patcherPhase.phase === 'writing' &&
-                          (patcherPhase.detail
-                            ? `💾 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
-                            : '💾 Writing data')}
-                        {patcherPhase.phase === 'cleaning' &&
-                          (patcherPhase.detail
-                            ? `🧹 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
-                            : '🧹 Cleaning up')}
-                      </span>
+                      <div
+                        className="flex items-center gap-1 text-xs text-text-secondary font-medium"
+                        aria-live="polite"
+                      >
+                        {patcherPhase.phase === 'importing' && (
+                          <>
+                            <Package
+                              className="w-3.5 h-3.5 text-text-secondary"
+                              aria-hidden="true"
+                            />
+                            <span>
+                              {(patcherPhase.detail ? patcherPhase.detail : 'Importing mods')
+                                .replace('[INFO]', '')
+                                .replace('[INF]', '')
+                                .trim()}
+                            </span>
+                          </>
+                        )}
+                        {patcherPhase.phase === 'indexing' && (
+                          <>
+                            <Search
+                              className="w-3.5 h-3.5 text-text-secondary"
+                              aria-hidden="true"
+                            />
+                            <span>
+                              {(patcherPhase.detail ? patcherPhase.detail : 'Indexing game')
+                                .replace('[INFO]', '')
+                                .replace('[INF]', '')
+                                .trim()}
+                            </span>
+                          </>
+                        )}
+                        {patcherPhase.phase === 'reading' && (
+                          <>
+                            <BookOpenIcon
+                              className="w-3.5 h-3.5 text-text-secondary"
+                              aria-hidden="true"
+                            />
+                            <span>
+                              {(patcherPhase.detail ? patcherPhase.detail : 'Reading mods')
+                                .replace('[INFO]', '')
+                                .replace('[INF]', '')
+                                .trim()}
+                            </span>
+                          </>
+                        )}
+                        {patcherPhase.phase === 'merging' && (
+                          <>
+                            <GitMerge
+                              className="w-3.5 h-3.5 text-text-secondary"
+                              aria-hidden="true"
+                            />
+                            <span>
+                              {(patcherPhase.detail ? patcherPhase.detail : 'Merging mods')
+                                .replace('[INFO]', '')
+                                .replace('[INF]', '')
+                                .trim()}
+                            </span>
+                          </>
+                        )}
+                        {patcherPhase.phase === 'writing' && (
+                          <>
+                            <Save className="w-3.5 h-3.5 text-text-secondary" aria-hidden="true" />
+                            <span>
+                              {(patcherPhase.detail ? patcherPhase.detail : 'Writing data')
+                                .replace('[INFO]', '')
+                                .replace('[INF]', '')
+                                .trim()}
+                            </span>
+                          </>
+                        )}
+                        {patcherPhase.phase === 'cleaning' && (
+                          <>
+                            <Brush className="w-3.5 h-3.5 text-text-secondary" aria-hidden="true" />
+                            <span>
+                              {(patcherPhase.detail ? patcherPhase.detail : 'Cleaning up')
+                                .replace('[INFO]', '')
+                                .replace('[INF]', '')
+                                .trim()}
+                            </span>
+                          </>
+                        )}
+                      </div>
                       {patcherPhase.progress !== undefined && (
                         <span className="text-xs text-text-muted">
                           {Math.round(patcherPhase.progress)}%
                         </span>
                       )}
                     </div>
-                    <div className="w-48 h-1.5 bg-secondary-200 dark:bg-secondary-700 rounded-full overflow-hidden">
+                    <div
+                      className="w-48 h-1.5 bg-secondary-200 dark:bg-secondary-700 rounded-full overflow-hidden"
+                      role="progressbar"
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={Math.round(patcherPhase.progress || 0)}
+                    >
                       <div
                         className="h-full bg-primary-500 transition-all duration-300 ease-out"
                         style={{
