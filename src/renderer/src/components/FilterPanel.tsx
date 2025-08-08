@@ -45,6 +45,7 @@ interface FilterPanelProps {
   availableTags: string[]
   downloadedCount: number
   totalCount: number
+  resultsCount: number
   onClearFilters: () => void
 }
 
@@ -54,6 +55,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   availableTags,
   downloadedCount,
   totalCount,
+  resultsCount,
   onClearFilters
 }) => {
   const { t } = useTranslation()
@@ -65,6 +67,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     championTags: true,
     sortBy: true
   })
+  const [tagSearch, setTagSearch] = useState('')
+  const [showAllTags, setShowAllTags] = useState(false)
 
   const updateFilter = <K extends keyof FilterOptions>(key: K, value: FilterOptions[K]) => {
     onFiltersChange({ ...filters, [key]: value })
@@ -116,6 +120,53 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     filters.sortBy !== 'name-asc' ||
     filters.rarity !== 'all'
 
+  // Build active filter chips
+  const activeFilterChips: Array<{ key: string; label: string; remove: () => void }> = []
+
+  if (filters.downloadStatus !== 'all') {
+    activeFilterChips.push({
+      key: 'downloadStatus',
+      label:
+        filters.downloadStatus === 'downloaded'
+          ? t('filters.downloaded')
+          : t('filters.notDownloaded'),
+      remove: () => updateFilter('downloadStatus', 'all')
+    })
+  }
+
+  if (filters.chromaStatus !== 'all') {
+    activeFilterChips.push({
+      key: 'chromaStatus',
+      label:
+        filters.chromaStatus === 'has-chromas' ? t('filters.hasChromas') : t('filters.noChromas'),
+      remove: () => updateFilter('chromaStatus', 'all')
+    })
+  }
+
+  if (filters.rarity !== 'all') {
+    activeFilterChips.push({
+      key: 'rarity',
+      label: t(`filters.rarities.${filters.rarity.replace('k', '').toLowerCase()}`),
+      remove: () => updateFilter('rarity', 'all')
+    })
+  }
+
+  filters.championTags.forEach((tag) =>
+    activeFilterChips.push({
+      key: `tag_${tag}`,
+      label: tag,
+      remove: () => toggleTag(tag)
+    })
+  )
+
+  // Filter & slice tags for display
+  const filteredTags = availableTags.filter((tag) =>
+    tag.toLowerCase().includes(tagSearch.toLowerCase())
+  )
+  const TAG_INITIAL_LIMIT = 18
+  const visibleTags =
+    showAllTags || tagSearch ? filteredTags : filteredTags.slice(0, TAG_INITIAL_LIMIT)
+
   return (
     <div className="relative bg-surface border-b-2 border-border transition-all duration-300">
       <div className="px-8 py-4">
@@ -146,9 +197,15 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             )}
           </Button>
 
-          <div className="flex items-center gap-4 text-sm text-text-secondary">
-            <span>
+          <div className="flex items-center gap-4 text-sm text-text-secondary flex-wrap">
+            <span className="whitespace-nowrap">
               {downloadedCount} / {totalCount} {t('skin.downloaded').toLowerCase()}
+            </span>
+            <span className="whitespace-nowrap">
+              {resultsCount}{' '}
+              {resultsCount === 1
+                ? t('skin.showing_one', { count: resultsCount })
+                : t('skin.showing_other', { count: resultsCount })}
             </span>
             {hasActiveFilters && (
               <Button
@@ -161,6 +218,43 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             )}
           </div>
         </div>
+
+        {/* Active filter chips summary (always visible when any filters active) */}
+        {hasActiveFilters && activeFilterChips.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {activeFilterChips.map((chip) => (
+              <button
+                key={chip.key}
+                onClick={chip.remove}
+                className="group inline-flex items-center gap-1 rounded-sm bg-secondary-100/70 dark:bg-secondary-800/60 border border-border/60 hover:bg-secondary-200 dark:hover:bg-secondary-700 hover:border-border/80 px-2 py-[3px] text-[11px] font-medium text-text-tertiary hover:text-text-secondary transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-border/70"
+                title="Remove filter"
+              >
+                <span className="truncate max-w-[9rem]">{chip.label}</span>
+                <svg
+                  className="w-3 h-3 opacity-55 group-hover:opacity-80 transition-opacity"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+                <span className="sr-only">Remove {chip.label}</span>
+              </button>
+            ))}
+            <button
+              onClick={onClearFilters}
+              className="inline-flex items-center rounded-sm px-2 py-[3px] text-[11px] font-medium text-text-muted hover:text-text-secondary hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-border/60"
+            >
+              {t('actions.clearFilters')}
+            </button>
+          </div>
+        )}
 
         {isExpanded && (
           <div className="absolute top-full left-0 right-0 z-10 bg-surface border-b-2 border-border shadow-lg max-h-[60vh] sm:max-h-[70vh] lg:max-h-[75vh] overflow-y-auto">
@@ -283,22 +377,58 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                   />
                 </div>
                 {expandedSections.championTags && (
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    {availableTags.map((tag) => (
-                      <Button
-                        key={tag}
-                        variant={filters.championTags.includes(tag) ? 'default' : 'secondary'}
-                        size="sm"
-                        onClick={() => toggleTag(tag)}
-                        className={
-                          filters.championTags.includes(tag)
-                            ? 'bg-primary-500 hover:bg-primary-600'
-                            : ''
-                        }
-                      >
-                        {tag}
-                      </Button>
-                    ))}
+                  <div className="space-y-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <input
+                        type="text"
+                        value={tagSearch}
+                        onChange={(e) => setTagSearch(e.target.value)}
+                        placeholder="Search tags..."
+                        className="w-full sm:w-64 px-3 py-1.5 text-xs rounded-md border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      />
+                      {!showAllTags && filteredTags.length > TAG_INITIAL_LIMIT && !tagSearch && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setShowAllTags(true)}
+                          className="text-xs"
+                        >
+                          + {filteredTags.length - TAG_INITIAL_LIMIT} more
+                        </Button>
+                      )}
+                      {showAllTags && filteredTags.length > TAG_INITIAL_LIMIT && !tagSearch && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setShowAllTags(false)}
+                          className="text-xs"
+                        >
+                          Collapse
+                        </Button>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                      {visibleTags.map((tag) => (
+                        <Button
+                          key={tag}
+                          variant={filters.championTags.includes(tag) ? 'default' : 'secondary'}
+                          size="sm"
+                          onClick={() => toggleTag(tag)}
+                          className={
+                            filters.championTags.includes(tag)
+                              ? 'bg-primary-500 hover:bg-primary-600'
+                              : ''
+                          }
+                        >
+                          {tag}
+                        </Button>
+                      ))}
+                      {visibleTags.length === 0 && (
+                        <span className="text-xs text-text-muted italic px-1.5 py-0.5">
+                          No tags
+                        </span>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
