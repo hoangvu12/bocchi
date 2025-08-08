@@ -181,8 +181,50 @@ function AppContent(): React.JSX.Element {
 
       let availableSkins = champion.skins.filter((skin) => skin.num !== 0)
 
-      const favoriteChromaOptions: Array<{ skin: Skin; chromaId?: string; chromaName?: string }> =
-        []
+      // Fetch custom skins for this champion (only for modes that support them)
+      let customSkins: any[] = []
+      const isStatBasedMode =
+        autoRandomRaritySkinEnabled ||
+        autoRandomHighestWinRateSkinEnabled ||
+        autoRandomHighestPickRateSkinEnabled ||
+        autoRandomMostPlayedSkinEnabled
+
+      if (!isStatBasedMode) {
+        try {
+          const downloadedSkinsResult = await window.api.listDownloadedSkins()
+          if (downloadedSkinsResult.success && downloadedSkinsResult.skins) {
+            // Filter for custom skins (source: 'user') that match this champion
+            customSkins = downloadedSkinsResult.skins.filter((skin: any) => {
+              // Check if it's a user-imported skin
+              if (skin.source !== 'user') return false
+
+              // Match champion name (case-insensitive)
+              // Custom skins use championName, official skins use champion.name
+              const skinChampionName = skin.championName?.toLowerCase()
+              const currentChampionName = champion.name?.toLowerCase()
+              const currentChampionKey = champion.key?.toLowerCase()
+
+              return (
+                skinChampionName === currentChampionName || skinChampionName === currentChampionKey
+              )
+            })
+
+            console.log(
+              `[AutoSelect] Found ${customSkins.length} custom skins for ${champion.name}`,
+              customSkins.map((s) => ({ championName: s.championName, skinName: s.skinName }))
+            )
+          }
+        } catch (error) {
+          console.error('[AutoSelect] Failed to fetch custom skins:', error)
+        }
+      }
+
+      const favoriteChromaOptions: Array<{
+        skin?: Skin
+        customSkin?: any
+        chromaId?: string
+        chromaName?: string
+      }> = []
 
       if (autoRandomFavoriteSkinEnabled) {
         // Get favorites for this champion
@@ -203,18 +245,41 @@ function AppContent(): React.JSX.Element {
 
         // Build list of favorited options (base skins and specific chromas)
         favoritesResult.favorites.forEach((fav) => {
-          const skin = champion.skins.find((s) => String(s.id) === fav.skinId)
-          if (skin && skin.num !== 0) {
-            if (fav.chromaId) {
-              // This is a specific chroma favorite
-              favoriteChromaOptions.push({
-                skin,
-                chromaId: fav.chromaId,
-                chromaName: fav.chromaName
-              })
+          // Check if it's a custom skin favorite (skinId starts with 'custom_')
+          if (fav.skinId.startsWith('custom_')) {
+            // Find the custom skin in our list
+            const customSkin = customSkins.find((cs: any) => {
+              // The custom skin ID format is: custom_[User] skinName or custom_skinName
+              // We need to match the skinName part from the favorite
+              const favSkinName = fav.skinId.replace('custom_', '')
+              console.log(
+                `[AutoFavorite] Matching custom skin - favorite: "${favSkinName}" vs skin: "${cs.skinName}"`
+              )
+              return cs.skinName === favSkinName
+            })
+            if (customSkin) {
+              console.log(`[AutoFavorite] Found matching custom skin for favorite:`, customSkin)
+              favoriteChromaOptions.push({ customSkin })
             } else {
-              // This is a base skin favorite
-              favoriteChromaOptions.push({ skin })
+              console.log(
+                `[AutoFavorite] No matching custom skin found for favorite: ${fav.skinId}`
+              )
+            }
+          } else {
+            // It's a regular skin favorite
+            const skin = champion.skins.find((s) => String(s.id) === fav.skinId)
+            if (skin && skin.num !== 0) {
+              if (fav.chromaId) {
+                // This is a specific chroma favorite
+                favoriteChromaOptions.push({
+                  skin,
+                  chromaId: fav.chromaId,
+                  chromaName: fav.chromaName
+                })
+              } else {
+                // This is a base skin favorite
+                favoriteChromaOptions.push({ skin })
+              }
             }
           }
         })
@@ -225,11 +290,20 @@ function AppContent(): React.JSX.Element {
         }
 
         // For compatibility with existing code, we still need availableSkins
-        availableSkins = [...new Set(favoriteChromaOptions.map((opt) => opt.skin))]
+        availableSkins = [
+          ...new Set(
+            favoriteChromaOptions
+              .filter((opt) => opt.skin !== undefined)
+              .map((opt) => opt.skin as Skin)
+          )
+        ]
 
         console.log(
           `[AutoFavorite] Found ${favoriteChromaOptions.length} favorite options (including chromas)`,
-          favoriteChromaOptions.map((opt) => ({ name: opt.skin.name, chromaId: opt.chromaId }))
+          favoriteChromaOptions.map((opt) => ({
+            name: opt.skin?.name || opt.customSkin?.skinName,
+            chromaId: opt.chromaId
+          }))
         )
       } else if (autoRandomRaritySkinEnabled) {
         // Filter to only rarity skins
@@ -291,66 +365,159 @@ function AppContent(): React.JSX.Element {
         }
       }
 
-      if (availableSkins.length === 0) {
+      // For basic random mode (no specific mode enabled), include custom skins
+      let allAvailableOptions: Array<{
+        type: 'official' | 'custom'
+        skin?: Skin
+        customSkin?: any
+      }> = []
+
+      if (!isStatBasedMode && !autoRandomFavoriteSkinEnabled) {
+        // Basic random mode - include both official and custom skins
+        allAvailableOptions = [
+          ...availableSkins.map((skin) => ({ type: 'official' as const, skin })),
+          ...customSkins.map((customSkin) => ({ type: 'custom' as const, customSkin }))
+        ]
+        console.log(
+          `[AutoSelect] Basic random mode: ${availableSkins.length} official skins + ${customSkins.length} custom skins`
+        )
+      } else if (!autoRandomFavoriteSkinEnabled) {
+        // Stat-based modes - only official skins
+        allAvailableOptions = availableSkins.map((skin) => ({ type: 'official' as const, skin }))
+      }
+
+      if (availableSkins.length === 0 && customSkins.length === 0) {
         console.log(`[AutoFavorite] No available skins found, returning early`)
         return
       }
 
       // Select a random skin or chroma
-      let randomSkin: Skin
+      let randomSkin: Skin | undefined
+      let randomCustomSkin: any | undefined
       let selectedChromaId: string | undefined
+      let isCustomSkinSelected = false
 
       if (autoRandomFavoriteSkinEnabled && favoriteChromaOptions.length > 0) {
-        // Select from favorite options (which may include specific chromas)
+        // Select from favorite options (which may include specific chromas or custom skins)
         const randomOption =
           favoriteChromaOptions[Math.floor(Math.random() * favoriteChromaOptions.length)]
-        randomSkin = randomOption.skin
-        selectedChromaId = randomOption.chromaId
-        console.log(`[AutoFavorite] Selected random favorite:`, {
-          name: randomSkin.name,
-          id: randomSkin.id,
-          chromaId: selectedChromaId
-        })
-      } else {
-        // Select from filtered skins (non-favorite modes)
+
+        if (randomOption.customSkin) {
+          // Selected a custom skin from favorites
+          randomCustomSkin = randomOption.customSkin
+          isCustomSkinSelected = true
+          console.log(`[AutoFavorite] Selected random favorite custom skin:`, {
+            championName: randomCustomSkin.championName,
+            skinName: randomCustomSkin.skinName
+          })
+        } else if (randomOption.skin) {
+          // Selected a regular skin from favorites
+          randomSkin = randomOption.skin
+          selectedChromaId = randomOption.chromaId
+          console.log(`[AutoFavorite] Selected random favorite:`, {
+            name: randomSkin.name,
+            id: randomSkin.id,
+            chromaId: selectedChromaId
+          })
+        }
+      } else if (allAvailableOptions.length > 0) {
+        // Select from all available options (basic random mode or stat-based modes)
+        const randomOption =
+          allAvailableOptions[Math.floor(Math.random() * allAvailableOptions.length)]
+
+        if (randomOption.type === 'custom') {
+          randomCustomSkin = randomOption.customSkin
+          isCustomSkinSelected = true
+          console.log(`[AutoSelect] Selected random custom skin:`, {
+            championName: randomCustomSkin.championName,
+            skinName: randomCustomSkin.skinName
+          })
+        } else {
+          randomSkin = randomOption.skin
+          console.log(`[AutoSelect] Selected random skin:`, {
+            name: randomSkin?.name,
+            id: randomSkin?.id
+          })
+        }
+      } else if (availableSkins.length > 0) {
+        // Fallback for stat-based modes
         const randomIndex = Math.floor(Math.random() * availableSkins.length)
         randomSkin = availableSkins[randomIndex]
-        console.log(`[AutoFavorite] Selected random skin:`, {
+        console.log(`[AutoSelect] Selected random skin:`, {
           name: randomSkin.name,
           id: randomSkin.id
         })
       }
 
       // Add the auto-selected skin
-      const newSelectedSkin = {
-        championKey: champion.key,
-        championName: champion.name,
-        skinId: randomSkin.id,
-        skinName: randomSkin.name,
-        skinNameEn: randomSkin.nameEn,
-        lolSkinsName: randomSkin.lolSkinsName,
-        skinNum: randomSkin.num,
-        chromaId: selectedChromaId,
-        isDownloaded: false,
-        isAutoSelected: true
-      }
-      console.log(`[AutoFavorite] Created newSelectedSkin:`, newSelectedSkin)
+      let newSelectedSkin: any
 
-      // Send the auto-selected skin to main process for overlay display
-      try {
-        console.log(`[AutoSelect] Sending skin to overlay:`, {
+      if (isCustomSkinSelected && randomCustomSkin) {
+        // Create a selected skin object for custom skin
+        newSelectedSkin = {
           championKey: champion.key,
-          skinName: randomSkin.name,
-          skinNum: randomSkin.num
-        })
-        await window.api.setOverlayAutoSelectedSkin({
+          championName: champion.name,
+          skinId: `custom_${randomCustomSkin.skinName}`, // Format: custom_[User] skinName
+          skinName: randomCustomSkin.skinName,
+          skinNameEn: randomCustomSkin.skinName, // Custom skins don't have separate EN names
+          lolSkinsName: randomCustomSkin.skinName,
+          skinNum: -1, // Custom skins don't have a num
+          isDownloaded: true, // Custom skins are already downloaded
+          isAutoSelected: true,
+          isCustom: true,
+          localPath: randomCustomSkin.localPath
+        }
+        console.log(`[AutoSelect] Created custom skin selection:`, newSelectedSkin)
+      } else if (randomSkin) {
+        // Create a selected skin object for official skin
+        newSelectedSkin = {
           championKey: champion.key,
           championName: champion.name,
           skinId: randomSkin.id,
           skinName: randomSkin.name,
+          skinNameEn: randomSkin.nameEn,
+          lolSkinsName: randomSkin.lolSkinsName,
           skinNum: randomSkin.num,
-          rarity: randomSkin.rarity
-        })
+          chromaId: selectedChromaId,
+          isDownloaded: false,
+          isAutoSelected: true
+        }
+        console.log(`[AutoFavorite] Created newSelectedSkin:`, newSelectedSkin)
+      } else {
+        console.log('[AutoSelect] No skin selected, returning')
+        return
+      }
+
+      // Send the auto-selected skin to main process for overlay display
+      try {
+        if (isCustomSkinSelected && randomCustomSkin) {
+          console.log(`[AutoSelect] Sending custom skin to overlay:`, {
+            championKey: champion.key,
+            skinName: randomCustomSkin.skinName
+          })
+          await window.api.setOverlayAutoSelectedSkin({
+            championKey: champion.key,
+            championName: champion.name,
+            skinId: newSelectedSkin.skinId,
+            skinName: randomCustomSkin.skinName,
+            skinNum: -1, // Custom skins don't have a num
+            rarity: undefined
+          })
+        } else if (randomSkin) {
+          console.log(`[AutoSelect] Sending skin to overlay:`, {
+            championKey: champion.key,
+            skinName: randomSkin.name,
+            skinNum: randomSkin.num
+          })
+          await window.api.setOverlayAutoSelectedSkin({
+            championKey: champion.key,
+            championName: champion.name,
+            skinId: randomSkin.id,
+            skinName: randomSkin.name,
+            skinNum: randomSkin.num,
+            rarity: randomSkin.rarity
+          })
+        }
         console.log(`[AutoSelect] Successfully sent skin to overlay`)
       } catch (error) {
         console.error('[AutoSelect] Failed to send auto-selected skin to main process:', error)
@@ -383,58 +550,65 @@ function AppContent(): React.JSX.Element {
         return newSkins
       })
 
-      // Pre-download the auto-selected skin in the background
-      const skinFileName = generateSkinFilename(randomSkin)
-      const championNameForUrl = getChampionDisplayName(champion)
-      const githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(
-        skinFileName
-      )}`
+      // Pre-download the auto-selected skin in the background (only for official skins)
+      if (!isCustomSkinSelected && randomSkin) {
+        const skinFileName = generateSkinFilename(randomSkin)
+        const championNameForUrl = getChampionDisplayName(champion)
+        const githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(
+          skinFileName
+        )}`
 
-      // Update tracking for the new auto-selected skin
-      setPreDownloadedAutoSkin({
-        championKey: champion.key,
-        championName: champion.key, // Use key for file system operations
-        skinFileName,
-        downloadUrl: githubUrl
-      })
+        // Update tracking for the new auto-selected skin
+        setPreDownloadedAutoSkin({
+          championKey: champion.key,
+          championName: champion.key, // Use key for file system operations
+          skinFileName,
+          downloadUrl: githubUrl
+        })
 
-      // Check if already downloaded
-      const downloadedSkinsResult = await window.api.listDownloadedSkins()
-      if (downloadedSkinsResult.success) {
-        const isAlreadyDownloaded = downloadedSkinsResult.skins?.some(
-          (ds) => ds.championName === champion.key && ds.skinName === skinFileName
-        )
-
-        if (!isAlreadyDownloaded) {
-          // Download in the background
-          console.log(`Pre-downloading auto-selected skin: ${champion.name} - ${randomSkin.name}`)
-          window.api.downloadSkin(githubUrl).then((result) => {
-            if (result.success) {
-              console.log(`Successfully pre-downloaded: ${randomSkin.name}`)
-              // Update the skin's download status
-              setSelectedSkins((prev) =>
-                prev.map((skin) =>
-                  skin.skinId === randomSkin.id && skin.isAutoSelected
-                    ? { ...skin, isDownloaded: true }
-                    : skin
-                )
-              )
-              // Reload downloaded skins list
-              loadDownloadedSkins()
-            } else {
-              console.error(`Failed to pre-download skin: ${result.error}`)
-            }
-          })
-        } else {
-          // Skin is already downloaded, update the status
-          setSelectedSkins((prev) =>
-            prev.map((skin) =>
-              skin.skinId === randomSkin.id && skin.isAutoSelected
-                ? { ...skin, isDownloaded: true }
-                : skin
-            )
+        // Check if already downloaded
+        const downloadedSkinsResult = await window.api.listDownloadedSkins()
+        if (downloadedSkinsResult.success) {
+          const isAlreadyDownloaded = downloadedSkinsResult.skins?.some(
+            (ds) => ds.championName === champion.key && ds.skinName === skinFileName
           )
+
+          if (!isAlreadyDownloaded) {
+            // Download in the background
+            console.log(`Pre-downloading auto-selected skin: ${champion.name} - ${randomSkin.name}`)
+            window.api.downloadSkin(githubUrl).then((result) => {
+              if (result.success) {
+                console.log(`Successfully pre-downloaded: ${randomSkin.name}`)
+                // Update the skin's download status
+                setSelectedSkins((prev) =>
+                  prev.map((skin) =>
+                    skin.skinId === randomSkin.id && skin.isAutoSelected
+                      ? { ...skin, isDownloaded: true }
+                      : skin
+                  )
+                )
+                // Reload downloaded skins list
+                loadDownloadedSkins()
+              } else {
+                console.error(`Failed to pre-download skin: ${result.error}`)
+              }
+            })
+          } else {
+            // Skin is already downloaded, update the status
+            setSelectedSkins((prev) =>
+              prev.map((skin) =>
+                skin.skinId === randomSkin.id && skin.isAutoSelected
+                  ? { ...skin, isDownloaded: true }
+                  : skin
+              )
+            )
+          }
         }
+      } else if (isCustomSkinSelected) {
+        // Custom skin is already downloaded, no pre-download needed
+        console.log(
+          `[AutoSelect] Custom skin already available locally: ${randomCustomSkin.skinName}`
+        )
       }
     }
   })
