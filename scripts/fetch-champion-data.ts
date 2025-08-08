@@ -594,7 +594,12 @@ function buildChampionNameLookup(championFolders: string[]): Map<string, string>
   return lookup
 }
 
-function processTieredSkin(skin: CDragonSkin, championId: number, lolSkinsList: any[]): Skin[] {
+function processTieredSkin(
+  skin: CDragonSkin,
+  championId: number,
+  lolSkinsList: any[],
+  englishSkinNames?: Map<string, string>
+): Skin[] {
   const tiers = skin.questSkinInfo?.tiers
   if (!tiers || tiers.length === 0) {
     // If no tiers, return empty array to skip this skin
@@ -607,7 +612,9 @@ function processTieredSkin(skin: CDragonSkin, championId: number, lolSkinsList: 
     const skinId = `${championId}_${skinNum}`
 
     // Don't try to match base skins (num: 0) with lol-skins
-    const match = skinNum === 0 ? null : findBestSkinMatch(tier.name, lolSkinsList)
+    // For non-English languages, use English name if available for matching
+    const nameForMatching = englishSkinNames?.get(skinId) || tier.name
+    const match = skinNum === 0 ? null : findBestSkinMatch(nameForMatching, lolSkinsList)
     const isBaseSkin = skinNum === 0
     const hasMatch = match !== null
 
@@ -677,7 +684,7 @@ async function fetchChampionDetail(
       // Check if this is a tiered skin
       if (skin.questSkinInfo?.productType === 'kTieredSkin' && skin.questSkinInfo.tiers) {
         // Process tiered skin
-        return processTieredSkin(skin, championId, lolSkinsList)
+        return processTieredSkin(skin, championId, lolSkinsList, englishSkinNames)
       }
 
       // Process regular skin
@@ -686,7 +693,9 @@ async function fetchChampionDetail(
       const skinName = skin.isBase ? detailData.name : skin.name
 
       // Don't try to match base skins (num: 0) with lol-skins
-      const match = skinNum === 0 ? null : findBestSkinMatch(skinName, lolSkinsList)
+      // For non-English languages, use English name if available for matching
+      const nameForMatching = englishSkinNames?.get(skinId) || skinName
+      const match = skinNum === 0 ? null : findBestSkinMatch(nameForMatching, lolSkinsList)
       const isBaseSkin = skinNum === 0
       const hasMatch = match !== null
 
@@ -792,7 +801,9 @@ async function fetchChampionDetail(
         const skinName = skin.isBase ? detailData.name : skin.name
 
         // Don't try to match base skins (num: 0) with lol-skins
-        const match = skinNum === 0 ? null : findBestSkinMatch(skinName, lolSkinsList)
+        // For non-English languages, use English name if available for matching
+        const nameForMatching = englishSkinNames?.get(skinId) || skinName
+        const match = skinNum === 0 ? null : findBestSkinMatch(nameForMatching, lolSkinsList)
         const isBaseSkin = skinNum === 0
         const hasMatch = match !== null
 
