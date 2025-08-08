@@ -210,6 +210,7 @@ export interface IApi {
   editCustomSkin: (
     modPath: string,
     newName: string,
+    newChampionKey?: string,
     newImagePath?: string
   ) => Promise<{ success: boolean; error?: string }>
   deleteCustomSkin: (modPath: string) => Promise<{ success: boolean; error?: string }>

@@ -39,10 +39,15 @@ export function DialogsContainer() {
   const setStatusMessage = useSetAtom(statusMessageAtom)
 
   const handleEditCustomSkinSave = useCallback(
-    async (newName: string, newImagePath?: string) => {
+    async (newName: string, newChampion?: string, newImagePath?: string) => {
       if (!editingCustomSkin) return
 
-      const result = await window.api.editCustomSkin(editingCustomSkin.path, newName, newImagePath)
+      const result = await window.api.editCustomSkin(
+        editingCustomSkin.path,
+        newName,
+        newChampion,
+        newImagePath
+      )
 
       if (result.success) {
         await loadDownloadedSkins()
@@ -79,7 +84,9 @@ export function DialogsContainer() {
         <EditCustomSkinDialog
           isOpen={showEditDialog}
           currentName={editingCustomSkin.name}
+          currentChampion={editingCustomSkin.champion}
           modPath={editingCustomSkin.path}
+          champions={championData?.champions}
           onClose={() => {
             setShowEditDialog(false)
             setEditingCustomSkin(null)

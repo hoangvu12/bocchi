@@ -714,7 +714,16 @@ function AppContent(): React.JSX.Element {
   // Handle edit custom skin
   const handleEditCustomSkin = useCallback(
     async (skinPath: string, currentName: string) => {
-      setEditingCustomSkin({ path: skinPath, name: currentName })
+      // Extract champion from path
+      const fileName = skinPath.split(/[\\/]/).pop() || ''
+      const championMatch = fileName.match(/^([^_]+)_/)
+      const currentChampion = championMatch?.[1] === 'Custom' ? '' : championMatch?.[1]
+
+      setEditingCustomSkin({
+        path: skinPath,
+        name: currentName,
+        champion: currentChampion // Keep empty string here, will be converted to __none__ in the dialog
+      })
       setShowEditDialog(true)
     },
     [setEditingCustomSkin, setShowEditDialog]

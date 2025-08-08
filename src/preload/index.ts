@@ -186,8 +186,12 @@ const api = {
 
   // Custom skin images
   getCustomSkinImage: (modPath: string) => ipcRenderer.invoke('get-custom-skin-image', modPath),
-  editCustomSkin: (modPath: string, newName: string, newImagePath?: string) =>
-    ipcRenderer.invoke('edit-custom-skin', modPath, newName, newImagePath),
+  editCustomSkin: (
+    modPath: string,
+    newName: string,
+    newChampionKey?: string,
+    newImagePath?: string
+  ) => ipcRenderer.invoke('edit-custom-skin', modPath, newName, newChampionKey, newImagePath),
   deleteCustomSkin: (modPath: string) => ipcRenderer.invoke('delete-custom-skin', modPath),
 
   // Skin update management

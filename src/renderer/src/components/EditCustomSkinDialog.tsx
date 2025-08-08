@@ -5,26 +5,34 @@ import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
 import { Loader2, Wrench } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+import type { Champion } from '../App'
+import { getChampionDisplayName } from '../utils/championUtils'
 
 interface EditCustomSkinDialogProps {
   isOpen: boolean
   currentName: string
+  currentChampion?: string
   modPath?: string
+  champions?: Champion[]
   onClose: () => void
-  onSave: (newName: string, newImagePath?: string) => void
+  onSave: (newName: string, newChampion?: string, newImagePath?: string) => void
   onFixComplete?: () => void
 }
 
 export const EditCustomSkinDialog: React.FC<EditCustomSkinDialogProps> = ({
   isOpen,
   currentName,
+  currentChampion,
   modPath,
+  champions,
   onClose,
   onSave,
   onFixComplete
 }) => {
   const { t } = useTranslation()
   const [newName, setNewName] = useState(currentName)
+  const [selectedChampion, setSelectedChampion] = useState<string>(currentChampion || '__none__')
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedImageName, setSelectedImageName] = useState<string>('')
   const [isFixing, setIsFixing] = useState(false)
@@ -32,9 +40,10 @@ export const EditCustomSkinDialog: React.FC<EditCustomSkinDialogProps> = ({
 
   useEffect(() => {
     setNewName(currentName)
+    setSelectedChampion(currentChampion || '__none__')
     setSelectedImage(null)
     setSelectedImageName('')
-  }, [currentName])
+  }, [currentName, currentChampion])
 
   const handleSelectImage = async () => {
     const result = await window.api.browseImageFile()
@@ -47,7 +56,9 @@ export const EditCustomSkinDialog: React.FC<EditCustomSkinDialogProps> = ({
 
   const handleSave = () => {
     if (newName.trim()) {
-      onSave(newName.trim(), selectedImage || undefined)
+      // Convert __none__ back to empty string for the backend
+      const championToSave = selectedChampion === '__none__' ? '' : selectedChampion
+      onSave(newName.trim(), championToSave, selectedImage || undefined)
     }
   }
 
@@ -110,6 +121,27 @@ export const EditCustomSkinDialog: React.FC<EditCustomSkinDialogProps> = ({
               onChange={(e) => setNewName(e.target.value)}
               placeholder={t('editCustomSkin.modNamePlaceholder')}
             />
+          </div>
+
+          <div>
+            <Label htmlFor="champion-select">{t('editCustomSkin.champion')}</Label>
+            <Select value={selectedChampion} onValueChange={setSelectedChampion}>
+              <SelectTrigger id="champion-select">
+                <SelectValue placeholder={t('editCustomSkin.selectChampion')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="__none__">
+                  <span className="text-charcoal-500 dark:text-charcoal-500">
+                    {t('editCustomSkin.noSpecificChampion')}
+                  </span>
+                </SelectItem>
+                {champions?.map((champion) => (
+                  <SelectItem key={champion.key} value={champion.key}>
+                    {getChampionDisplayName(champion)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div>

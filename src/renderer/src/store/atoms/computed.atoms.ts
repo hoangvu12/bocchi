@@ -272,11 +272,16 @@ export const displaySkinsAtom = atom((get) => {
         downloadedSkin.championName &&
         downloadedSkin.championName.toLowerCase() === selectedChampion.key.toLowerCase()
       ) {
+        // Remove [User] prefix and file extensions for display
+        const displayName = downloadedSkin.skinName
+          .replace('[User] ', '')
+          .replace(/\.(wad|zip|fantome|wad\.client)$/i, '')
+
         const customSkin: Skin = {
           id: `custom_${downloadedSkin.skinName}`,
           num: -1,
-          name: downloadedSkin.skinName.replace('[User] ', ''),
-          nameEn: downloadedSkin.skinName.replace('[User] ', ''),
+          name: displayName,
+          nameEn: displayName,
           chromas: false,
           rarity: 'kNoRarity',
           rarityGemPath: null,
@@ -329,11 +334,16 @@ export const displaySkinsAtom = atom((get) => {
           }
         }
 
+        // Remove [User] prefix and file extensions for display
+        const displayName = downloadedSkin.skinName
+          .replace('[User] ', '')
+          .replace(/\.(wad|zip|fantome|wad\.client)$/i, '')
+
         const customSkin: Skin = {
           id: `custom_${downloadedSkin.skinName}`,
           num: -1,
-          name: downloadedSkin.skinName.replace('[User] ', ''),
-          nameEn: downloadedSkin.skinName.replace('[User] ', ''),
+          name: displayName,
+          nameEn: displayName,
           chromas: false,
           rarity: 'kNoRarity',
           rarityGemPath: null,
@@ -377,11 +387,16 @@ export const displaySkinsAtom = atom((get) => {
         }
 
         // Create a custom skin object
+        // Remove [User] prefix and file extensions for display
+        const displayName = downloadedSkin.skinName
+          .replace('[User] ', '')
+          .replace(/\.(wad|zip|fantome|wad\.client)$/i, '')
+
         const customSkin: Skin = {
           id: `custom_${downloadedSkin.skinName}`,
           num: -1, // Custom skins don't have a number
-          name: downloadedSkin.skinName.replace('[User] ', ''),
-          nameEn: downloadedSkin.skinName.replace('[User] ', ''),
+          name: displayName,
+          nameEn: displayName,
           chromas: false,
           rarity: 'kNoRarity',
           rarityGemPath: null,

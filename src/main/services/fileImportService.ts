@@ -201,7 +201,7 @@ export class FileImportService {
 
       const skinInfo: SkinInfo = {
         championName: championName || 'Custom',
-        skinName: '[User] ' + skinName.trim() + '.wad', // Ensure trimmed name
+        skinName: '[User] ' + skinName.trim(), // Don't include extension in display name
         url: `file://${wadPath}`,
         localPath: modFilePath, // Use the original file path
         source: 'user'
@@ -268,7 +268,7 @@ export class FileImportService {
 
       const skinInfo: SkinInfo = {
         championName: championName || 'Custom',
-        skinName: '[User] ' + skinName.trim() + ext, // Ensure trimmed name
+        skinName: '[User] ' + skinName.trim(), // Don't include extension in display name
         url: `file://${zipPath}`,
         localPath: modFilePath, // Use the original file path
         source: 'user'
@@ -330,6 +330,7 @@ export class FileImportService {
   async editCustomSkin(
     modPath: string,
     newName: string,
+    newChampionKey?: string,
     newImagePath?: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
@@ -344,7 +345,11 @@ export class FileImportService {
           throw new Error('Invalid mod file name structure')
         }
 
-        const championName = parts[0]
+        // Extract current champion, use new one if provided
+        const currentChampion = parts[0]
+        const championName =
+          newChampionKey !== undefined ? newChampionKey || 'Custom' : currentChampion
+
         const newFileName = `${championName}_${newName}${ext}`
         const newModPath = path.join(path.dirname(modPath), newFileName)
 
@@ -355,7 +360,7 @@ export class FileImportService {
 
         // Update metadata folder
         const oldMetadataPath = path.join(this.modsDir, oldFileName)
-        const newMetadataPath = path.join(this.modsDir, `${championName}_${newName}`)
+        const newMetadataPath = path.join(this.modsDir, newFileName.replace(ext, ''))
 
         if (await this.fileExists(oldMetadataPath)) {
           if (oldMetadataPath !== newMetadataPath) {
@@ -391,7 +396,11 @@ export class FileImportService {
           throw new Error('Invalid mod folder structure')
         }
 
-        const championName = parts[0]
+        // Extract current champion, use new one if provided
+        const currentChampion = parts[0]
+        const championName =
+          newChampionKey !== undefined ? newChampionKey || 'Custom' : currentChampion
+
         const newFolderName = `${championName}_${newName}`
         const newModPath = path.join(path.dirname(modPath), newFolderName)
 

@@ -1560,9 +1560,14 @@ function setupIpcHandlers(): void {
   // Edit custom skin
   ipcMain.handle(
     'edit-custom-skin',
-    async (_, modPath: string, newName: string, newImagePath?: string) => {
+    async (_, modPath: string, newName: string, newChampionKey?: string, newImagePath?: string) => {
       try {
-        const result = await fileImportService.editCustomSkin(modPath, newName, newImagePath)
+        const result = await fileImportService.editCustomSkin(
+          modPath,
+          newName,
+          newChampionKey,
+          newImagePath
+        )
         return result
       } catch (error) {
         return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
