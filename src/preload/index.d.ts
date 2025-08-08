@@ -208,6 +208,9 @@ export interface IApi {
   onPatcherStatus: (callback: (status: string) => void) => () => void
   onPatcherMessage: (callback: (message: string) => void) => () => void
   onPatcherError: (callback: (error: string) => void) => () => void
+  onImportProgress: (
+    callback: (data: { current: number; total: number; name: string; phase: string }) => void
+  ) => () => void
 
   openExternal: (url: string) => Promise<{ success: boolean; error?: string }>
 

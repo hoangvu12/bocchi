@@ -212,6 +212,13 @@ const api = {
     ipcRenderer.on('patcher-error', handler)
     return () => ipcRenderer.removeListener('patcher-error', handler)
   },
+  onImportProgress: (callback: (data: any) => void) => {
+    const handler = (_: any, data: any) => {
+      callback(data)
+    }
+    ipcRenderer.on('import-progress', handler)
+    return () => ipcRenderer.removeListener('import-progress', handler)
+  },
 
   // P2P File Transfer APIs
   getModFileInfo: (filePath: string) => ipcRenderer.invoke('get-mod-file-info', filePath),

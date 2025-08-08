@@ -77,7 +77,6 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   isPatcherRunning,
   downloadedSkins,
   championData,
-  statusMessage,
   errorMessage,
   gamePath,
   autoSyncedSkins = []
@@ -85,8 +84,19 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   const { t } = useTranslation()
   const [selectedSkins, setSelectedSkins] = useAtom(selectedSkinsAtom)
   const [isExpanded, setIsExpanded] = useAtom(selectedSkinsDrawerExpandedAtom)
-  const [patcherStatus, setPatcherStatus] = useState<string>('')
-  const [patcherMessages, setPatcherMessages] = useState<string[]>([])
+  const [patcherPhase, setPatcherPhase] = useState<{
+    phase:
+      | 'idle'
+      | 'importing'
+      | 'indexing'
+      | 'reading'
+      | 'merging'
+      | 'writing'
+      | 'cleaning'
+      | 'running'
+    progress?: number
+    detail?: string
+  }>({ phase: 'idle' })
   const [customImages, setCustomImages] = useState<Record<string, string>>({})
   const [p2pRoom] = useAtom(p2pRoomAtom)
   const [activeTab, setActiveTab] = useState<'my-skins' | 'room-skins'>('my-skins')
@@ -95,6 +105,15 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   const [, setPresets] = useAtom(presetsAtom)
   const [, setShowPresetsDialog] = useAtom(presetDialogOpenAtom)
   const presetCount = useAtomValue(presetCountAtom)
+
+  // Set phase based on patcher state
+  useEffect(() => {
+    if (isPatcherRunning && patcherPhase.phase === 'idle') {
+      setPatcherPhase({ phase: 'running', detail: 'Patcher running' })
+    } else if (!isPatcherRunning && !loading && patcherPhase.phase === 'running') {
+      setPatcherPhase({ phase: 'idle' })
+    }
+  }, [isPatcherRunning, loading, patcherPhase.phase])
 
   // Smart apply hook
   const {
@@ -134,23 +153,68 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   }, [teamComposition, smartApplyEnabled, selectedSkins, getSmartApplySummary])
 
   useEffect(() => {
-    // Listen for patcher status updates
+    // Listen for patcher status updates and parse them
     const unsubscribeStatus = window.api.onPatcherStatus((status: string) => {
-      setPatcherStatus(status)
+      const lowerStatus = status.toLowerCase()
+
+      // Parse the status to determine the current phase
+      if (lowerStatus.includes('importing') || lowerStatus.includes('import')) {
+        setPatcherPhase({ phase: 'importing', detail: status })
+      } else if (lowerStatus.includes('indexing game')) {
+        setPatcherPhase({ phase: 'indexing', detail: status })
+      } else if (lowerStatus.includes('reading mods')) {
+        setPatcherPhase({ phase: 'reading', detail: status })
+      } else if (lowerStatus.includes('merging mods')) {
+        setPatcherPhase({ phase: 'merging', detail: status })
+      } else if (lowerStatus.includes('writing wads') || lowerStatus.includes('writing:')) {
+        setPatcherPhase({ phase: 'writing', detail: status })
+      } else if (lowerStatus.includes('cleaning up')) {
+        setPatcherPhase({ phase: 'cleaning', detail: status })
+      } else if (lowerStatus.includes('done!')) {
+        // When done, switch to running phase
+        setPatcherPhase({ phase: 'running', detail: 'Waiting for League match to start' })
+      } else if (status === '') {
+        setPatcherPhase({ phase: 'idle' })
+      } else if (
+        lowerStatus.includes('waiting') ||
+        lowerStatus.includes('league') ||
+        lowerStatus.includes('found') ||
+        lowerStatus.includes('scanning') ||
+        lowerStatus.includes('patching')
+      ) {
+        // These are runtime status messages from the patcher
+        setPatcherPhase((prev) => ({
+          phase: prev.phase === 'idle' || prev.phase === 'importing' ? 'running' : prev.phase,
+          detail: status
+        }))
+      } else {
+        // Keep current phase but update detail
+        setPatcherPhase((prev) => ({ ...prev, detail: status }))
+      }
     })
 
-    // Listen for patcher messages
+    // Listen for import progress updates
+    const unsubscribeProgress = window.api.onImportProgress((data: any) => {
+      setPatcherPhase({
+        phase: 'importing',
+        progress: (data.current / data.total) * 100,
+        detail: `Importing ${data.name} (${data.current}/${data.total})`
+      })
+    })
+
+    // Listen for patcher messages (we won't display these anymore, just log them)
     const unsubscribeMessage = window.api.onPatcherMessage((message: string) => {
-      setPatcherMessages((prev) => [...prev.slice(-4), message]) // Keep last 5 messages
+      console.log('[Patcher]:', message)
     })
 
     // Listen for patcher errors
     const unsubscribeError = window.api.onPatcherError((error: string) => {
-      setPatcherMessages((prev) => [...prev.slice(-4), `Error: ${error}`])
+      console.error('[Patcher Error]:', error)
     })
 
     return () => {
       unsubscribeStatus()
+      unsubscribeProgress()
       unsubscribeMessage()
       unsubscribeError()
     }
@@ -191,8 +255,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   }, [selectedSkins, downloadedSkins, customImages])
 
   const handleApplySkins = async () => {
-    // Clear previous patcher messages when starting a new session
-    setPatcherMessages([])
+    // Don't set phase here - let the status updates handle it
 
     // Always use the parent's apply function which handles loading states
     // The parent (App.tsx) will check if it should use smart apply or regular apply
@@ -463,25 +526,75 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
           <div className="flex items-center gap-3">
             {errorMessage ? (
               <span className="text-sm text-state-error font-medium">{errorMessage}</span>
-            ) : (loading || patcherStatus) && (statusMessage || patcherStatus) ? (
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1.5">
-                  <div
-                    className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
-                    style={{ animationDelay: '0ms' }}
-                  ></div>
-                  <div
-                    className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
-                    style={{ animationDelay: '150ms' }}
-                  ></div>
-                  <div
-                    className="w-2 h-2 bg-primary-500 rounded-full animate-bounce"
-                    style={{ animationDelay: '300ms' }}
-                  ></div>
-                </div>
-                <span className="text-sm text-text-secondary">
-                  {patcherStatus || statusMessage}
-                </span>
+            ) : (loading || isPatcherRunning) && patcherPhase.phase !== 'idle' ? (
+              <div className="flex items-center gap-3">
+                {patcherPhase.phase === 'running' ? (
+                  // Running state - just show status text
+                  <span className="text-sm text-text-secondary font-medium">
+                    {patcherPhase.detail
+                      ? `✅ ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').replace('[WARN]', '').trim()}`
+                      : '✅ Patcher running'}
+                  </span>
+                ) : (
+                  // Loading phases - show progress bar
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-text-secondary font-medium">
+                        {patcherPhase.phase === 'importing' &&
+                          (patcherPhase.detail
+                            ? `📦 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
+                            : '📦 Importing mods')}
+                        {patcherPhase.phase === 'indexing' &&
+                          (patcherPhase.detail
+                            ? `🔍 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
+                            : '🔍 Indexing game')}
+                        {patcherPhase.phase === 'reading' &&
+                          (patcherPhase.detail
+                            ? `📖 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
+                            : '📖 Reading mods')}
+                        {patcherPhase.phase === 'merging' &&
+                          (patcherPhase.detail
+                            ? `🔀 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
+                            : '🔀 Merging mods')}
+                        {patcherPhase.phase === 'writing' &&
+                          (patcherPhase.detail
+                            ? `💾 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
+                            : '💾 Writing data')}
+                        {patcherPhase.phase === 'cleaning' &&
+                          (patcherPhase.detail
+                            ? `🧹 ${patcherPhase.detail.replace('[INFO]', '').replace('[INF]', '').trim()}`
+                            : '🧹 Cleaning up')}
+                      </span>
+                      {patcherPhase.progress !== undefined && (
+                        <span className="text-xs text-text-muted">
+                          {Math.round(patcherPhase.progress)}%
+                        </span>
+                      )}
+                    </div>
+                    <div className="w-48 h-1.5 bg-secondary-200 dark:bg-secondary-700 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-primary-500 transition-all duration-300 ease-out"
+                        style={{
+                          width: patcherPhase.progress
+                            ? `${patcherPhase.progress}%`
+                            : patcherPhase.phase === 'importing'
+                              ? '15%'
+                              : patcherPhase.phase === 'indexing'
+                                ? '30%'
+                                : patcherPhase.phase === 'reading'
+                                  ? '45%'
+                                  : patcherPhase.phase === 'merging'
+                                    ? '60%'
+                                    : patcherPhase.phase === 'writing'
+                                      ? '80%'
+                                      : patcherPhase.phase === 'cleaning'
+                                        ? '95%'
+                                        : '0%'
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <>
@@ -708,29 +821,6 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                         </div>
                       )
                     })}
-                  </div>
-                )}
-
-                {/* Patcher Messages */}
-                {patcherMessages.length > 0 && (
-                  <div className="mt-4 p-3 bg-secondary-100 dark:bg-secondary-800 rounded-lg">
-                    <h4 className="text-xs font-medium text-text-secondary mb-2">
-                      {t('patcher.messages')}
-                    </h4>
-                    <div className="space-y-1">
-                      {patcherMessages.map((message, index) => (
-                        <p
-                          key={index}
-                          className={`text-[10px] leading-tight ${
-                            message.startsWith('Error:')
-                              ? 'text-red-600 dark:text-red-400'
-                              : 'text-text-secondary'
-                          }`}
-                        >
-                          {message}
-                        </p>
-                      ))}
-                    </div>
                   </div>
                 )}
               </>

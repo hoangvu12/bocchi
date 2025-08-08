@@ -66,7 +66,8 @@ export class ModToolsWrapper {
   private async execToolWithTimeout(
     command: string,
     args: string[],
-    timeout: number
+    timeout: number,
+    sendProgress: boolean = false
   ): Promise<string> {
     return new Promise((resolve, reject) => {
       const process = spawn(command, args)
@@ -76,8 +77,39 @@ export class ModToolsWrapper {
         process.kill()
         reject(new Error(`Process timed out after ${timeout}ms`))
       }, timeout)
-      process.stdout.on('data', (data) => (stdout += data.toString()))
-      process.stderr.on('data', (data) => (stderr += data.toString()))
+
+      process.stdout.on('data', (data) => {
+        const output = data.toString()
+        stdout += output
+
+        // Send progress to renderer if requested
+        if (sendProgress && this.mainWindow && !this.mainWindow.isDestroyed()) {
+          const lines = output.split('\n').filter((line) => line.trim())
+          lines.forEach((line) => {
+            const trimmedLine = line.trim()
+            console.log(`[MOD-TOOLS]: ${trimmedLine}`)
+            this.mainWindow!.webContents.send('patcher-status', trimmedLine)
+          })
+        }
+      })
+
+      process.stderr.on('data', (data) => {
+        const output = data.toString()
+        stderr += output
+
+        // Also send stderr to renderer if it contains status info
+        if (sendProgress && this.mainWindow && !this.mainWindow.isDestroyed()) {
+          const lines = output.split('\n').filter((line) => line.trim())
+          lines.forEach((line) => {
+            const trimmedLine = line.trim()
+            if (trimmedLine.includes('[INFO]') || trimmedLine.includes('[WARN]')) {
+              console.log(`[MOD-TOOLS]: ${trimmedLine}`)
+              this.mainWindow!.webContents.send('patcher-status', trimmedLine)
+            }
+          })
+        }
+      })
+
       process.on('close', (code) => {
         clearTimeout(timer)
         if (code === 0) {
@@ -192,7 +224,8 @@ export class ModToolsWrapper {
               `--game:${gamePath}`,
               preset.noTFT ? '--noTFT' : ''
             ].filter(Boolean),
-            30000
+            30000,
+            true
           )
 
           importedModNames.push(modName)
@@ -240,7 +273,7 @@ export class ModToolsWrapper {
             `[ModToolsWrapper] Executing mkoverlay (Attempt ${attempt}): ${mkoverlayArgs.join(' ')}`
           )
 
-          await this.execToolWithTimeout(this.modToolsPath, mkoverlayArgs, 60000)
+          await this.execToolWithTimeout(this.modToolsPath, mkoverlayArgs, 60000, true)
 
           overlaySuccess = true
           console.info('[ModToolsWrapper] Overlay created successfully')
