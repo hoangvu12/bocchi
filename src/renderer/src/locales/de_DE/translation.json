@@ -240,6 +240,10 @@
     "minimizeToTray": {
       "title": "In System-Tray minimieren",
       "description": "App in System-Tray verstecken anstatt zu schließen beim Klicken auf Schließen-Button"
+    },
+    "applicationUpdate": {
+      "title": "Anwendung Updates",
+      "description": "Aktuelle Version: {{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "Bocchi verstecken",
     "language": "Sprache",
     "openSettings": "Einstellungen öffnen",
-    "quit": "Bocchi beenden"
+    "quit": "Bocchi beenden",
+    "checkForUpdates": "Nach Updates suchen"
   },
   "fileUpload": {
     "uploadButton": "Benutzerdefinierten Mod hochladen",
@@ -313,7 +318,11 @@
     "championDataAvailable": "Champion-Daten-Update verfügbar",
     "championDataDescription": "Eine neue Version der Champion-Daten ist verfügbar. Dieses Update enthält die neuesten Champions, Skins und anderen Spielinhalt.",
     "currentVersion": "Aktuelle Version: ",
-    "updating": "Aktualisiere..."
+    "updating": "Aktualisiere...",
+    "checkForUpdates": "Nach Updates suchen",
+    "checking": "Suche nach Updates...",
+    "noUpdates": "Sie haben die neueste Version!",
+    "error": "Fehler beim Suchen nach Updates"
   },
   "skins": {
     "selected_one": "{{count}} Skin ausgewählt",

@@ -239,12 +239,17 @@
     "minimizeToTray": {
       "title": "Thu nhỏ vào khay hệ thống",
       "description": "Ẩn ứng dụng vào khay hệ thống thay vì đóng khi nhấn nút đóng"
+    },
+    "applicationUpdate": {
+      "title": "Cập nhật ứng dụng",
+      "description": "Phiên bản hiện tại: {{version}}"
     }
   },
   "tray": {
     "show": "Hiện Bocchi",
     "hide": "Ẩn Bocchi",
     "language": "Ngôn ngữ",
+    "checkForUpdates": "Kiểm tra cập nhật",
     "openSettings": "Mở Cài đặt",
     "quit": "Thoát Bocchi"
   },
@@ -311,6 +316,10 @@
     "whatsNew": "Có gì mới",
     "downloading": "Đang tải xuống...",
     "updateNow": "Cập nhật ngay",
+    "checkForUpdates": "Kiểm tra cập nhật",
+    "checking": "Đang kiểm tra cập nhật...",
+    "noUpdates": "Bạn đang sử dụng phiên bản mới nhất!",
+    "error": "Không thể kiểm tra cập nhật",
     "championDataAvailable": "Có bản cập nhật dữ liệu tướng",
     "championDataDescription": "Đã có phiên bản mới của dữ liệu tướng. Bản cập nhật này bao gồm các tướng, trang phục và nội dung game mới nhất.",
     "currentVersion": "Phiên bản hiện tại: ",

@@ -240,6 +240,10 @@
       "title": "模组工具超时时间",
       "description": "模组导入和创建覆盖层的最大等待时间",
       "hint": "如果您有很多模组或系统较慢，请增加此值。减少此值可更快检测错误。"
+    },
+    "applicationUpdate": {
+      "title": "应用程序更新",
+      "description": "当前版本：{{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "隱藏 Bocchi",
     "language": "語言",
     "openSettings": "開啟設定",
-    "quit": "退出 Bocchi"
+    "quit": "退出 Bocchi",
+    "checkForUpdates": "检查更新"
   },
   "fileUpload": {
     "uploadButton": "上傳自訂模組",
@@ -313,7 +318,11 @@
     "championDataAvailable": "英雄資料更新可用",
     "championDataDescription": "有新版本的英雄資料可用。此更新包含最新的英雄、造型和其他遊戲內容。",
     "currentVersion": "目前版本：",
-    "updating": "正在更新..."
+    "updating": "正在更新...",
+    "checkForUpdates": "检查更新",
+    "checking": "正在检查更新...",
+    "noUpdates": "您已使用最新版本！",
+    "error": "检查更新失败"
   },
   "skins": {
     "selected_one": "已選擇 {{count}} 個造型",

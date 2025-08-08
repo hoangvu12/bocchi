@@ -240,6 +240,10 @@
       "title": "Timeout strumenti mod",
       "description": "Tempo massimo di attesa per l'importazione di mod e la creazione di overlay",
       "hint": "Aumenta questo valore se hai molte mod o un sistema lento. Diminuiscilo per un rilevamento errori più rapido."
+    },
+    "applicationUpdate": {
+      "title": "Aggiornamenti dell'applicazione",
+      "description": "Versione corrente: {{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "Nascondi Bocchi",
     "language": "Lingua",
     "openSettings": "Apri impostazioni",
-    "quit": "Esci da Bocchi"
+    "quit": "Esci da Bocchi",
+    "checkForUpdates": "Controlla aggiornamenti"
   },
   "fileUpload": {
     "uploadButton": "Carica mod personalizzata",
@@ -313,7 +318,11 @@
     "championDataAvailable": "Aggiornamento dati campioni disponibile",
     "championDataDescription": "Una nuova versione dei dati campioni è disponibile. Questo aggiornamento include i campioni più recenti, skin e altro contenuto del gioco.",
     "currentVersion": "Versione corrente: ",
-    "updating": "Aggiornando..."
+    "updating": "Aggiornando...",
+    "checkForUpdates": "Controlla aggiornamenti",
+    "checking": "Controllo aggiornamenti...",
+    "noUpdates": "Hai l'ultima versione!",
+    "error": "Errore nel controllo degli aggiornamenti"
   },
   "skins": {
     "selected_one": "{{count}} skin selezionata",

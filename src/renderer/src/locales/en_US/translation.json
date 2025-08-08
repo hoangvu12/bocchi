@@ -240,12 +240,17 @@
     "minimizeToTray": {
       "title": "Minimize to Tray",
       "description": "Hide the app to system tray instead of closing when clicking the close button"
+    },
+    "applicationUpdate": {
+      "title": "Application Updates",
+      "description": "Current version: {{version}}"
     }
   },
   "tray": {
     "show": "Show Bocchi",
     "hide": "Hide Bocchi",
     "language": "Language",
+    "checkForUpdates": "Check for Updates",
     "openSettings": "Open Settings",
     "quit": "Quit Bocchi"
   },
@@ -311,6 +316,10 @@
     "whatsNew": "What's New",
     "downloading": "Downloading...",
     "updateNow": "Update Now",
+    "checkForUpdates": "Check for Updates",
+    "checking": "Checking for updates...",
+    "noUpdates": "You're on the latest version!",
+    "error": "Failed to check for updates",
     "championDataAvailable": "Champion Data Update Available",
     "championDataDescription": "A new version of champion data is available. This update includes the latest champions, skins, and other game content.",
     "currentVersion": "Current version: ",

@@ -340,6 +340,19 @@ function updateTrayMenu(): void {
     },
     { type: 'separator' },
     {
+      label: t('tray.checkForUpdates', 'Check for Updates'),
+      click: async () => {
+        try {
+          if (mainWindow) {
+            mainWindow.show()
+          }
+          await updaterService.checkForUpdates()
+        } catch (error) {
+          console.error('Failed to check for updates:', error)
+        }
+      }
+    },
+    {
       label: t('tray.openSettings', 'Open Settings'),
       click: () => {
         if (mainWindow) {

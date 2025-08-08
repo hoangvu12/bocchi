@@ -225,12 +225,17 @@
       "title": "Tiempo de espera de Mod Tools",
       "description": "Tiempo máximo para esperar la importación de mods y creación de overlay",
       "hint": "Aumenta este valor si tienes muchos mods o un sistema lento. Disminúyelo para detectar errores más rápido."
+    },
+    "applicationUpdate": {
+      "title": "Actualizaciones de la aplicación",
+      "description": "Versión actual: {{version}}"
     }
   },
   "tray": {
     "show": "Mostrar Bocchi",
     "hide": "Ocultar Bocchi",
     "language": "Idioma",
+    "checkForUpdates": "Buscar actualizaciones",
     "openSettings": "Abrir Configuración",
     "quit": "Salir de Bocchi"
   },
@@ -305,6 +310,10 @@
     "whatsNew": "Novedades",
     "downloading": "Descargando...",
     "updateNow": "Actualizar ahora",
+    "checkForUpdates": "Buscar actualizaciones",
+    "checking": "Buscando actualizaciones...",
+    "noUpdates": "¡Estás usando la última versión!",
+    "error": "Error al buscar actualizaciones",
     "championDataAvailable": "Actualización de datos de campeones disponible",
     "championDataDescription": "Hay una nueva versión de datos de campeones disponible. Esta actualización incluye los últimos campeones, skins y otro contenido del juego.",
     "currentVersion": "Versión actual: ",

@@ -240,6 +240,10 @@
       "title": "Batas Waktu Mod Tools",
       "description": "Waktu maksimum untuk menunggu impor mod dan pembuatan overlay",
       "hint": "Tingkatkan nilai ini jika Anda memiliki banyak mod atau sistem yang lambat. Kurangi untuk deteksi kesalahan yang lebih cepat."
+    },
+    "applicationUpdate": {
+      "title": "Pembaruan Aplikasi",
+      "description": "Versi saat ini: {{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "Sembunyikan Bocchi",
     "language": "Bahasa",
     "openSettings": "Buka Pengaturan",
-    "quit": "Keluar dari Bocchi"
+    "quit": "Keluar dari Bocchi",
+    "checkForUpdates": "Periksa Pembaruan"
   },
   "fileUpload": {
     "uploadButton": "Upload Mod Kustom",
@@ -313,7 +318,11 @@
     "championDataAvailable": "Pembaruan Data Champion Tersedia",
     "championDataDescription": "Versi baru data champion tersedia. Pembaruan ini mencakup champion, skin, dan konten game terbaru.",
     "currentVersion": "Versi saat ini: ",
-    "updating": "Memperbarui..."
+    "updating": "Memperbarui...",
+    "checkForUpdates": "Periksa Pembaruan",
+    "checking": "Memeriksa pembaruan...",
+    "noUpdates": "Anda menggunakan versi terbaru!",
+    "error": "Gagal memeriksa pembaruan"
   },
   "skins": {
     "selected_one": "{{count}} skin dipilih",

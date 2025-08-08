@@ -240,6 +240,10 @@
       "title": "مهلة أدوات التعديل",
       "description": "الحد الأقصى للوقت للانتظار لاستيراد التعديلات وإنشاء الطبقة",
       "hint": "قم بزيادة هذه القيمة إذا كان لديك العديد من التعديلات أو نظام بطيء. قللها لاكتشاف الأخطاء بشكل أسرع."
+    },
+    "applicationUpdate": {
+      "title": "Application Updates",
+      "description": "Current version: {{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "إخفاء Bocchi",
     "language": "اللغة",
     "openSettings": "فتح الإعدادات",
-    "quit": "إنهاء Bocchi"
+    "quit": "إنهاء Bocchi",
+    "checkForUpdates": "Check for Updates"
   },
   "fileUpload": {
     "uploadButton": "رفع تعديل مخصص",
@@ -313,7 +318,11 @@
     "championDataAvailable": "تحديث بيانات الأبطال متاح",
     "championDataDescription": "إصدار جديد من بيانات الأبطال متاح. هذا التحديث يتضمن أحدث الأبطال والأشكال ومحتوى اللعبة الآخر.",
     "currentVersion": "الإصدار الحالي: ",
-    "updating": "جاري التحديث..."
+    "updating": "جاري التحديث...",
+    "checkForUpdates": "Check for Updates",
+    "checking": "Checking for updates...",
+    "noUpdates": "You're on the latest version!",
+    "error": "Failed to check for updates"
   },
   "skins": {
     "selected_one": "تم اختيار {{count}} شكل",

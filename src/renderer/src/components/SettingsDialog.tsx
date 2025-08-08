@@ -1,7 +1,11 @@
-import { useSetAtom } from 'jotai'
-import { ChevronDown, Gamepad2, Package, Settings, Monitor } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useAtom, useSetAtom } from 'jotai'
+import { ChevronDown, Gamepad2, Package, Settings, Monitor, RefreshCw } from 'lucide-react'
+import { useEffect, useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
+import { showUpdateDialogAtom, appVersionAtom } from '../store/atoms/game.atoms'
+import { isCheckingForUpdatesAtom } from '../store/atoms/ui.atoms'
+import { Button } from './ui/button'
 import {
   autoAcceptEnabledAtom,
   autoRandomFavoriteSkinEnabledAtom,
@@ -48,6 +52,9 @@ export function SettingsDialog({
   onChampionDetectionChange
 }: SettingsDialogProps) {
   const { t } = useTranslation()
+  const appVersion = useAtom(appVersionAtom)[0]
+  const setShowUpdateDialog = useSetAtom(showUpdateDialogAtom)
+  const [isCheckingForUpdates, setIsCheckingForUpdates] = useAtom(isCheckingForUpdatesAtom)
   const [leagueClientEnabled, setLeagueClientEnabled] = useState(true)
   const [championDetection, setChampionDetection] = useState(true)
   const [autoViewSkinsEnabled, setAutoViewSkinsEnabled] = useState(false)
@@ -445,6 +452,26 @@ export function SettingsDialog({
     }
   }
 
+  const handleCheckForUpdates = useCallback(async () => {
+    setIsCheckingForUpdates(true)
+    try {
+      const result = await window.api.checkForUpdates()
+      if (result.success && result.updateInfo) {
+        // Update is available, dialog will be shown automatically by the event listener
+        setShowUpdateDialog(true)
+        onClose() // Close settings dialog to show update dialog
+      } else {
+        // No update available
+        toast.success(t('update.noUpdates', `You're on the latest version (v${appVersion})!`))
+      }
+    } catch (error) {
+      console.error('Failed to check for updates:', error)
+      toast.error(t('update.error', 'Failed to check for updates'))
+    } finally {
+      setIsCheckingForUpdates(false)
+    }
+  }, [appVersion, t, setIsCheckingForUpdates, setShowUpdateDialog, onClose])
+
   const handleModToolsTimeoutChange = async (value: number[]) => {
     const timeout = value[0]
     setModToolsTimeout(timeout)
@@ -483,6 +510,32 @@ export function SettingsDialog({
           </TabsList>
 
           <TabsContent value="general" className="space-y-6 mt-6">
+            {/* Application Update */}
+            <div className="flex items-center justify-between space-x-4">
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.applicationUpdate.title', 'Application Updates')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.applicationUpdate.description', { version: `v${appVersion}` })}
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleCheckForUpdates}
+                disabled={isCheckingForUpdates || loading}
+                className="flex items-center gap-2"
+              >
+                {isCheckingForUpdates ? (
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-3.5 h-3.5" />
+                )}
+                {t('update.checkForUpdates')}
+              </Button>
+            </div>
+
             {/* Minimize to Tray Setting */}
             <div className="flex items-center justify-between space-x-4">
               <div className="flex-1">

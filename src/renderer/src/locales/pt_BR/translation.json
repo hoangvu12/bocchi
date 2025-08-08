@@ -240,6 +240,10 @@
     "minimizeToTray": {
       "title": "Minimizar para Bandeja",
       "description": "Ocultar o aplicativo na bandeja do sistema em vez de fechar ao clicar no botão fechar"
+    },
+    "applicationUpdate": {
+      "title": "Atualizações do aplicativo",
+      "description": "Versão atual: {{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "Ocultar Bocchi",
     "language": "Idioma",
     "openSettings": "Abrir Configurações",
-    "quit": "Sair do Bocchi"
+    "quit": "Sair do Bocchi",
+    "checkForUpdates": "Verificar atualizações"
   },
   "fileUpload": {
     "uploadButton": "Enviar Mod Personalizado",
@@ -313,7 +318,11 @@
     "championDataAvailable": "Atualização de Dados dos Campeões Disponível",
     "championDataDescription": "Uma nova versão dos dados dos campeões está disponível. Esta atualização inclui os campeões, skins e outros conteúdos do jogo mais recentes.",
     "currentVersion": "Versão atual: ",
-    "updating": "Atualizando..."
+    "updating": "Atualizando...",
+    "checkForUpdates": "Verificar atualizações",
+    "checking": "Verificando atualizações...",
+    "noUpdates": "Você tem a versão mais recente!",
+    "error": "Erro ao verificar atualizações"
   },
   "skins": {
     "selected_one": "{{count}} skin selecionada",

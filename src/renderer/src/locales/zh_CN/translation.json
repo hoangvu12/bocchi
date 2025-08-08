@@ -209,12 +209,17 @@
       "title": "模组工具超时时间",
       "description": "模组导入和创建覆盖层的最大等待时间",
       "hint": "如果您有很多模组或系统较慢，请增加此值。减少此值可更快检测错误。"
+    },
+    "applicationUpdate": {
+      "title": "应用程序更新",
+      "description": "当前版本：{{version}}"
     }
   },
   "tray": {
     "show": "显示 Bocchi",
     "hide": "隐藏 Bocchi",
     "language": "语言",
+    "checkForUpdates": "检查更新",
     "openSettings": "打开设置",
     "quit": "退出 Bocchi"
   },
@@ -289,6 +294,10 @@
     "whatsNew": "新功能",
     "downloading": "下载中...",
     "updateNow": "立即更新",
+    "checkForUpdates": "检查更新",
+    "checking": "正在检查更新...",
+    "noUpdates": "您已使用最新版本！",
+    "error": "检查更新失败",
     "championDataAvailable": "英雄数据更新可用",
     "championDataDescription": "英雄数据的新版本可用。此更新包括最新的英雄、皮肤和其他游戏内容。",
     "currentVersion": "当前版本：",

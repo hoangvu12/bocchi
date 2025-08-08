@@ -240,6 +240,10 @@
       "title": "Timeout instrumente mod",
       "description": "Timp maxim de așteptare pentru importul modurilor și crearea overlay-ului",
       "hint": "Creșteți această valoare dacă aveți multe moduri sau un sistem lent. Reduceți pentru detectarea mai rapidă a erorilor."
+    },
+    "applicationUpdate": {
+      "title": "Actualizări aplicație",
+      "description": "Versiunea curentă: {{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "Ascunde Bocchi",
     "language": "Limba",
     "openSettings": "Deschide setările",
-    "quit": "Ieși din Bocchi"
+    "quit": "Ieși din Bocchi",
+    "checkForUpdates": "Verifică actualizări"
   },
   "fileUpload": {
     "uploadButton": "Încarcă mod personalizat",
@@ -313,7 +318,11 @@
     "championDataAvailable": "Actualizare pentru datele campionilor disponibilă",
     "championDataDescription": "O nouă versiune a datelor campionilor este disponibilă. Această actualizare include cei mai recenți campioni, skin-uri și alt conținut al jocului.",
     "currentVersion": "Versiunea curentă: ",
-    "updating": "Se actualizează..."
+    "updating": "Se actualizează...",
+    "checkForUpdates": "Verifică actualizări",
+    "checking": "Se verifică actualizările...",
+    "noUpdates": "Aveți cea mai recentă versiune!",
+    "error": "Eroare la verificarea actualizărilor"
   },
   "skins": {
     "selected_one": "{{count}} skin selectat",

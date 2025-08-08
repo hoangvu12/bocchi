@@ -240,6 +240,10 @@
       "title": "Mod eszközök időtúllépés",
       "description": "Maximális várakozási idő mod importáláshoz és overlay létrehozáshoz",
       "hint": "Növelje ezt az értéket, ha sok modja van vagy lassú a rendszere. Csökkentse a gyorsabb hibaészleléshez."
+    },
+    "applicationUpdate": {
+      "title": "Alkalmazás frissítések",
+      "description": "Jelenlegi verzió: {{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "Bocchi elrejtése",
     "language": "Nyelv",
     "openSettings": "Beállítások megnyitása",
-    "quit": "Bocchi kilépés"
+    "quit": "Bocchi kilépés",
+    "checkForUpdates": "Frissítések keresése"
   },
   "fileUpload": {
     "uploadButton": "Egyéni mod feltöltése",
@@ -313,7 +318,11 @@
     "championDataAvailable": "Bajnok adat frissítés elérhető",
     "championDataDescription": "A bajnok adatok új verziója elérhető. Ez a frissítés tartalmazza a legújabb bajnokokat, skineket és egyéb játék tartalmat.",
     "currentVersion": "Jelenlegi verzió: ",
-    "updating": "Frissítés..."
+    "updating": "Frissítés...",
+    "checkForUpdates": "Frissítések keresése",
+    "checking": "Frissítések keresése...",
+    "noUpdates": "A legfrissebb verziót használja!",
+    "error": "Hiba a frissítések keresésekor"
   },
   "skins": {
     "selected_one": "{{count}} skin kiválasztva",

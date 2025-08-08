@@ -240,6 +240,10 @@
       "title": "Mod Araçları Zaman Aşımı",
       "description": "Mod içe aktarma ve kaplama oluşturma işlemleri için maksimum bekleme süresi",
       "hint": "Çok sayıda modunuz varsa veya sisteminiz yavaşsa bu değeri artırın. Daha hızlı hata tespiti için azaltın."
+    },
+    "applicationUpdate": {
+      "title": "Uygulama Güncellemeleri",
+      "description": "Geçerli sürüm: {{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "Bocchi'yi gizle",
     "language": "Dil",
     "openSettings": "Ayarları aç",
-    "quit": "Bocchi'den çık"
+    "quit": "Bocchi'den çık",
+    "checkForUpdates": "Güncellemeleri Kontrol Et"
   },
   "fileUpload": {
     "uploadButton": "Özel mod yükle",
@@ -313,7 +318,11 @@
     "championDataAvailable": "Şampiyon verisi güncellemesi mevcut",
     "championDataDescription": "Şampiyon verilerinin yeni sürümü mevcut. Bu güncelleme en son şampiyonları, skinleri ve diğer oyun içeriğini içerir.",
     "currentVersion": "Mevcut sürüm: ",
-    "updating": "Güncelleniyor..."
+    "updating": "Güncelleniyor...",
+    "checkForUpdates": "Güncellemeleri Kontrol Et",
+    "checking": "Güncellemeler kontrol ediliyor...",
+    "noUpdates": "En son sürümü kullanıyorsunuz!",
+    "error": "Güncellemeler kontrol edilirken hata"
   },
   "skins": {
     "selected_one": "{{count}} skin seçildi",

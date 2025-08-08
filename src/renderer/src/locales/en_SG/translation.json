@@ -240,6 +240,10 @@
       "title": "Mod Tools Timeout",
       "description": "Maximum time to wait for mod import and overlay creation operations",
       "hint": "Increase this value if you have many mods or a slow system. Decrease for faster failure detection."
+    },
+    "applicationUpdate": {
+      "title": "Application Updates",
+      "description": "Current version: {{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "Hide Bocchi",
     "language": "Language",
     "openSettings": "Open Settings",
-    "quit": "Quit Bocchi"
+    "quit": "Quit Bocchi",
+    "checkForUpdates": "Check for Updates"
   },
   "fileUpload": {
     "uploadButton": "Upload Custom Mod",
@@ -313,7 +318,11 @@
     "championDataAvailable": "Champion Data Update Available",
     "championDataDescription": "A new version of champion data is available. This update includes the latest champions, skins, and other game content.",
     "currentVersion": "Current version: ",
-    "updating": "Updating..."
+    "updating": "Updating...",
+    "checkForUpdates": "Check for Updates",
+    "checking": "Checking for updates...",
+    "noUpdates": "You're on the latest version!",
+    "error": "Failed to check for updates"
   },
   "skins": {
     "selected_one": "{{count}} skin selected",

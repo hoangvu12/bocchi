@@ -240,6 +240,10 @@
       "title": "Časový limit nástrojů modů",
       "description": "Maximální doba čekání na import modů a vytvoření překryvu",
       "hint": "Zvyšte tuto hodnotu, pokud máte mnoho modů nebo pomalý systém. Snižte pro rychlejší detekci chyb."
+    },
+    "applicationUpdate": {
+      "title": "Aktualizace aplikace",
+      "description": "Aktuální verze: {{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "Skrýt Bocchi",
     "language": "Jazyk",
     "openSettings": "Otevřít nastavení",
-    "quit": "Ukončit Bocchi"
+    "quit": "Ukončit Bocchi",
+    "checkForUpdates": "Zkontrolovat aktualizace"
   },
   "fileUpload": {
     "uploadButton": "Nahrát vlastní mód",
@@ -313,7 +318,11 @@
     "championDataAvailable": "Dostupná aktualizace dat šampionů",
     "championDataDescription": "Nová verze dat šampionů je k dispozici. Tato aktualizace obsahuje nejnovější šampiony, skiny a další herní obsah.",
     "currentVersion": "Aktuální verze: ",
-    "updating": "Aktualizuje se..."
+    "updating": "Aktualizuje se...",
+    "checkForUpdates": "Zkontrolovat aktualizace",
+    "checking": "Kontrola aktualizací...",
+    "noUpdates": "Máte nejnovější verzi!",
+    "error": "Chyba při kontrole aktualizací"
   },
   "skins": {
     "selected_one": "{{count}} skin vybrán",

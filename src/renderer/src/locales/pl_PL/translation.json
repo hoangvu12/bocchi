@@ -240,6 +240,10 @@
       "title": "Limit czasu narzędzi modów",
       "description": "Maksymalny czas oczekiwania na import modów i tworzenie nakładki",
       "hint": "Zwiększ tę wartość, jeśli masz wiele modów lub wolny system. Zmniejsz dla szybszego wykrywania błędów."
+    },
+    "applicationUpdate": {
+      "title": "Aktualizacje aplikacji",
+      "description": "Bieżąca wersja: {{version}}"
     }
   },
   "tray": {
@@ -247,7 +251,8 @@
     "hide": "Ukryj Bocchi",
     "language": "Język",
     "openSettings": "Otwórz ustawienia",
-    "quit": "Wyjdź z Bocchi"
+    "quit": "Wyjdź z Bocchi",
+    "checkForUpdates": "Sprawdź aktualizacje"
   },
   "fileUpload": {
     "uploadButton": "Prześlij niestandardowy mod",
@@ -313,7 +318,11 @@
     "championDataAvailable": "Dostępna aktualizacja danych bohaterów",
     "championDataDescription": "Nowa wersja danych bohaterów jest dostępna. Ta aktualizacja zawiera najnowszych bohaterów, skiny i inną zawartość gry.",
     "currentVersion": "Bieżąca wersja: ",
-    "updating": "Aktualizowanie..."
+    "updating": "Aktualizowanie...",
+    "checkForUpdates": "Sprawdź aktualizacje",
+    "checking": "Sprawdzanie aktualizacji...",
+    "noUpdates": "Masz najnowszą wersję!",
+    "error": "Błąd sprawdzania aktualizacji"
   },
   "skins": {
     "selected_one": "Wybrano {{count}} skina",

@@ -13,3 +13,6 @@ export const editingCustomSkinAtom = atom<{ path: string; name: string; champion
 
 // Drag and drop atoms
 export const isDraggingAtom = atom<boolean>(false)
+
+// Update checking state
+export const isCheckingForUpdatesAtom = atom<boolean>(false)
