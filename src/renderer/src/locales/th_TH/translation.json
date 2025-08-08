@@ -89,7 +89,13 @@
     "required": "จำเป็นต้องใช้ CS:LOL Tools",
     "description": "จำเป็นต้องใช้ CS:LOL mod tools เพื่อใช้สกิน คุณต้องการดาวน์โหลดตอนนี้หรือไม่?",
     "downloading": "กำลังดาวน์โหลดเครื่องมือ... {{progress}}%",
-    "downloadTools": "ดาวน์โหลดเครื่องมือ"
+    "downloadTools": "ดาวน์โหลดเครื่องมือ",
+    "downloadFailed": "ดาวน์โหลดล้มเหลว",
+    "retryDownload": "ลองดาวน์โหลดอีกครั้ง",
+    "manualDownload": "ดาวน์โหลดด้วยตนเอง",
+    "maxRetries": "ถึงจำนวนครั้งสูงสุดแล้ว",
+    "extractTo": "แยกไปยัง:",
+    "havingTrouble": "มีปัญหาหรือไม่? คุณยังสามารถ:"
   },
   "downloadAll": {
     "title": "Download All Skins",

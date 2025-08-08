@@ -87,7 +87,13 @@
     "required": "需要 CS:LOL 工具",
     "description": "需要 CS:LOL 模组工具才能应用皮肤。现在下载吗？",
     "downloading": "正在下载工具... {{progress}}%",
-    "downloadTools": "下载工具"
+    "downloadTools": "下载工具",
+    "downloadFailed": "下载失败",
+    "retryDownload": "重试下载",
+    "manualDownload": "手动下载",
+    "maxRetries": "已达到最大重试次数",
+    "extractTo": "解压到:",
+    "havingTrouble": "遇到问题？您也可以："
   },
   "downloadAll": {
     "title": "下载所有皮肤",

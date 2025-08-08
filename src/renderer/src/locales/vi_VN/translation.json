@@ -88,7 +88,13 @@
     "required": "Cần Công Cụ CS:LOL",
     "description": "Cần công cụ CS:LOL để áp dụng trang phục. Bạn có muốn tải xuống ngay không?",
     "downloading": "Đang tải công cụ... {{progress}}%",
-    "downloadTools": "Tải Công Cụ"
+    "downloadTools": "Tải Công Cụ",
+    "downloadFailed": "Tải xuống thất bại",
+    "retryDownload": "Thử tải lại",
+    "manualDownload": "Tải xuống thủ công",
+    "maxRetries": "Đã đạt số lần thử tối đa",
+    "extractTo": "Giải nén tới:",
+    "havingTrouble": "Gặp khó khăn? Bạn cũng có thể:"
   },
   "downloadAll": {
     "title": "Tải tất cả trang phục",

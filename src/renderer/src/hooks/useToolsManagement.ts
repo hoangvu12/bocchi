@@ -5,7 +5,11 @@ import {
   toolsExistAtom,
   downloadingToolsAtom,
   toolsDownloadProgressAtom,
-  statusMessageAtom
+  statusMessageAtom,
+  toolsErrorAtom,
+  downloadAttemptsAtom,
+  downloadSpeedAtom,
+  downloadSizeAtom
 } from '../store/atoms/game.atoms'
 
 export function useToolsManagement() {
@@ -13,6 +17,10 @@ export function useToolsManagement() {
   const [toolsExist, setToolsExist] = useAtom(toolsExistAtom)
   const [downloadingTools, setDownloadingTools] = useAtom(downloadingToolsAtom)
   const [toolsDownloadProgress, setToolsDownloadProgress] = useAtom(toolsDownloadProgressAtom)
+  const [toolsError, setToolsError] = useAtom(toolsErrorAtom)
+  const [downloadAttempts, setDownloadAttempts] = useAtom(downloadAttemptsAtom)
+  const [downloadSpeed, setDownloadSpeed] = useAtom(downloadSpeedAtom)
+  const [downloadSize, setDownloadSize] = useAtom(downloadSizeAtom)
   const setStatusMessage = useSetAtom(statusMessageAtom)
 
   const checkToolsExist = useCallback(async () => {
@@ -20,32 +28,66 @@ export function useToolsManagement() {
     setToolsExist(exist)
   }, [setToolsExist])
 
-  const downloadTools = useCallback(async () => {
-    setDownloadingTools(true)
-    setStatusMessage(t('status.downloadingTools'))
+  const downloadTools = useCallback(
+    async (isRetry = false) => {
+      setDownloadingTools(true)
+      setToolsError(null)
+      setStatusMessage(t('status.downloadingTools'))
 
-    const result = await window.api.downloadTools()
-    if (result.success) {
-      setToolsExist(true)
-      setStatusMessage(t('status.toolsDownloaded'))
-    } else {
-      setStatusMessage(`Failed to download tools: ${result.error}`)
-    }
+      const currentAttempt = isRetry ? downloadAttempts + 1 : 1
+      setDownloadAttempts(currentAttempt)
 
-    setDownloadingTools(false)
-    setToolsDownloadProgress(0)
-  }, [t, setDownloadingTools, setToolsExist, setStatusMessage, setToolsDownloadProgress])
+      const result = await window.api.downloadTools(currentAttempt)
+      if (result.success) {
+        setToolsExist(true)
+        setStatusMessage(t('status.toolsDownloaded'))
+        setToolsError(null)
+        setDownloadAttempts(0)
+      } else {
+        setToolsError({
+          type: result.errorType || 'unknown',
+          message: result.error || 'Unknown error',
+          details: result.errorDetails,
+          canRetry: result.canRetry !== false
+        })
+        setStatusMessage(`Failed to download tools: ${result.error}`)
+      }
+
+      setDownloadingTools(false)
+      setToolsDownloadProgress(0)
+      setDownloadSpeed(0)
+      setDownloadSize({ loaded: 0, total: 0 })
+    },
+    [
+      t,
+      setDownloadingTools,
+      setToolsExist,
+      setStatusMessage,
+      setToolsDownloadProgress,
+      setToolsError,
+      downloadAttempts,
+      setDownloadAttempts,
+      setDownloadSpeed,
+      setDownloadSize
+    ]
+  )
 
   // Set up tools download progress listener
   useEffect(() => {
-    const unsubscribe = window.api.onToolsDownloadProgress((progress) => {
+    const unsubscribeProgress = window.api.onToolsDownloadProgress((progress) => {
       setToolsDownloadProgress(progress)
     })
 
+    const unsubscribeDetails = window.api.onToolsDownloadDetails((details) => {
+      setDownloadSpeed(details.speed)
+      setDownloadSize({ loaded: details.loaded, total: details.total })
+    })
+
     return () => {
-      unsubscribe()
+      unsubscribeProgress()
+      unsubscribeDetails()
     }
-  }, [setToolsDownloadProgress])
+  }, [setToolsDownloadProgress, setDownloadSpeed, setDownloadSize])
 
   // Check tools on mount
   useEffect(() => {
@@ -56,6 +98,10 @@ export function useToolsManagement() {
     toolsExist,
     downloadingTools,
     toolsDownloadProgress,
+    toolsError,
+    downloadAttempts,
+    downloadSpeed,
+    downloadSize,
     checkToolsExist,
     downloadTools
   }

@@ -8,6 +8,15 @@ export const gamePathAtom = atomWithStorage<string>('gamePath', '')
 export const toolsExistAtom = atom<boolean | null>(null)
 export const downloadingToolsAtom = atom<boolean>(false)
 export const toolsDownloadProgressAtom = atom<number>(0)
+export const toolsErrorAtom = atom<{
+  type: 'network' | 'github' | 'filesystem' | 'extraction' | 'validation' | 'unknown'
+  message: string
+  details?: string
+  canRetry: boolean
+} | null>(null)
+export const downloadAttemptsAtom = atom<number>(0)
+export const downloadSpeedAtom = atom<number>(0)
+export const downloadSizeAtom = atom<{ loaded: number; total: number }>({ loaded: 0, total: 0 })
 
 // Patcher status atoms
 export const isPatcherRunningAtom = atom<boolean>(false)

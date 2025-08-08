@@ -156,14 +156,24 @@ export interface IApi {
 
   // Tools management
   checkToolsExist: () => Promise<boolean>
-  downloadTools: () => Promise<{ success: boolean; error?: string }>
+  downloadTools: (attempt?: number) => Promise<{
+    success: boolean
+    error?: string
+    errorType?: 'network' | 'github' | 'filesystem' | 'extraction' | 'validation' | 'unknown'
+    errorDetails?: string
+    canRetry?: boolean
+  }>
   getToolsInfo: () => Promise<{
     success: boolean
     downloadUrl?: string
     version?: string
+    size?: number
     error?: string
   }>
   onToolsDownloadProgress: (callback: (progress: number) => void) => () => void
+  onToolsDownloadDetails: (
+    callback: (details: { loaded: number; total: number; speed: number }) => void
+  ) => () => void
 
   // Window controls
   minimizeWindow: () => void

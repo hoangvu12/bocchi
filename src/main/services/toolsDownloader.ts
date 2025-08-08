@@ -1,8 +1,22 @@
 import { app } from 'electron'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import * as fs from 'fs'
 import * as path from 'path'
 import AdmZip from 'adm-zip'
+
+export interface DownloadProgress {
+  loaded: number
+  total: number
+  speed: number // bytes per second
+}
+
+export interface ToolsError {
+  type: 'network' | 'github' | 'filesystem' | 'extraction' | 'validation' | 'unknown'
+  message: string
+  details?: string
+  canRetry: boolean
+  statusCode?: number
+}
 
 export class ToolsDownloader {
   private toolsPath: string
@@ -29,14 +43,15 @@ export class ToolsDownloader {
     }
   }
 
-  async getLatestReleaseInfo(): Promise<{ downloadUrl: string; version: string }> {
+  async getLatestReleaseInfo(): Promise<{ downloadUrl: string; version: string; size: number }> {
     try {
       const response = await axios.get(
         'https://api.github.com/repos/LeagueToolkit/cslol-manager/releases/latest',
         {
           headers: {
             Accept: 'application/vnd.github.v3+json'
-          }
+          },
+          timeout: 10000 // 10 second timeout
         }
       )
 
@@ -44,54 +59,121 @@ export class ToolsDownloader {
       const asset = release.assets.find((a: any) => a.name === 'cslol-manager.zip')
 
       if (!asset) {
-        throw new Error('Could not find cslol-manager.zip in latest release')
+        throw this.createError(
+          'validation',
+          'Could not find cslol-manager.zip in latest release',
+          'The release format may have changed',
+          false
+        )
       }
 
       return {
         downloadUrl: asset.browser_download_url,
-        version: release.tag_name
+        version: release.tag_name,
+        size: asset.size
       }
     } catch (error) {
-      throw new Error(
-        `Failed to get latest release info: ${error instanceof Error ? error.message : 'Unknown error'}`
-      )
+      if (error instanceof Error && 'type' in error) {
+        throw error
+      }
+      throw this.classifyError(error)
     }
   }
 
-  async downloadAndExtractTools(onProgress?: (progress: number) => void): Promise<void> {
+  async downloadAndExtractTools(
+    onProgress?: (progress: number, details?: DownloadProgress) => void
+  ): Promise<void> {
+    let tempDir: string | undefined
     try {
-      const { downloadUrl } = await this.getLatestReleaseInfo()
+      const { downloadUrl, size } = await this.getLatestReleaseInfo()
 
       // Create temp directory
-      const tempDir = path.join(app.getPath('temp'), 'cslol-download')
+      tempDir = path.join(app.getPath('temp'), 'cslol-download')
       await fs.promises.mkdir(tempDir, { recursive: true })
 
       const zipPath = path.join(tempDir, 'cslol-manager.zip')
 
-      // Download the file
+      // Download the file with progress tracking
+      const startTime = Date.now()
+
       const response = await axios.get(downloadUrl, {
         responseType: 'stream',
+        timeout: 60000, // 60 second timeout
         onDownloadProgress: (progressEvent) => {
-          if (progressEvent.total && onProgress) {
-            const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100)
-            onProgress(progress)
+          const loaded = progressEvent.loaded
+          const total = progressEvent.total || size
+
+          if (onProgress) {
+            const now = Date.now()
+            const duration = (now - startTime) / 1000
+            const speed = duration > 0 ? loaded / duration : 0
+
+            const progress = Math.round((loaded / total) * 100)
+            onProgress(progress, {
+              loaded,
+              total,
+              speed
+            })
           }
-        }
+        },
+        maxContentLength: 500 * 1024 * 1024, // 500MB max
+        maxBodyLength: 500 * 1024 * 1024
       })
 
-      // Save to file
+      // Save to file with error handling
       const writer = fs.createWriteStream(zipPath)
       response.data.pipe(writer)
 
       await new Promise<void>((resolve, reject) => {
         writer.on('finish', () => resolve())
-        writer.on('error', reject)
+        writer.on('error', (error) => {
+          reject(this.createError('filesystem', 'Failed to save download', error.message, true))
+        })
+        response.data.on('error', (error: Error) => {
+          reject(this.createError('network', 'Download stream interrupted', error.message, true))
+        })
       })
 
-      // Extract the zip
-      const zip = new AdmZip(zipPath)
+      // Verify download size
+      const stats = await fs.promises.stat(zipPath)
+      if (stats.size === 0) {
+        throw this.createError(
+          'validation',
+          'Downloaded file is empty',
+          'The download may have been blocked by antivirus or firewall',
+          true
+        )
+      }
+
+      // Extract the zip with validation
+      let zip: AdmZip
+      try {
+        zip = new AdmZip(zipPath)
+        // Test zip integrity
+        const entries = zip.getEntries()
+        if (entries.length === 0) {
+          throw new Error('ZIP archive is empty')
+        }
+      } catch (error) {
+        throw this.createError(
+          'extraction',
+          'Failed to read ZIP file',
+          error instanceof Error ? error.message : 'Archive may be corrupted',
+          true
+        )
+      }
+
       const extractPath = path.join(tempDir, 'extracted')
-      zip.extractAllTo(extractPath, true)
+      try {
+        zip.extractAllTo(extractPath, true)
+      } catch (error) {
+        throw this.createError(
+          'extraction',
+          'Failed to extract ZIP file',
+          error instanceof Error ? error.message : 'Extraction failed',
+          true
+        )
+      }
 
       // Find the cslol-tools folder
       const cslolManagerPath = path.join(extractPath, 'cslol-manager')
@@ -104,7 +186,28 @@ export class ToolsDownloader {
         .catch(() => false)
 
       if (!sourceExists) {
-        throw new Error('Could not find cslol-tools folder in the extracted archive')
+        throw this.createError(
+          'validation',
+          'Invalid archive structure',
+          'Could not find cslol-tools folder in the extracted archive',
+          false
+        )
+      }
+
+      // Verify mod-tools.exe exists in source
+      const modToolsPath = path.join(cslolToolsSource, 'mod-tools.exe')
+      const modToolsExists = await fs.promises
+        .access(modToolsPath)
+        .then(() => true)
+        .catch(() => false)
+
+      if (!modToolsExists) {
+        throw this.createError(
+          'validation',
+          'Missing required files',
+          'mod-tools.exe not found in archive',
+          true
+        )
       }
 
       // Create parent directory if needed
@@ -119,14 +222,49 @@ export class ToolsDownloader {
       }
 
       // Move the cslol-tools folder to the correct location
-      await this.copyDirectory(cslolToolsSource, this.toolsPath)
+      try {
+        await this.copyDirectory(cslolToolsSource, this.toolsPath)
+      } catch (error) {
+        throw this.createError(
+          'filesystem',
+          'Failed to install tools',
+          error instanceof Error ? error.message : 'Copy operation failed',
+          true
+        )
+      }
+
+      // Final verification
+      const installedModTools = path.join(this.toolsPath, 'mod-tools.exe')
+      const verifyInstall = await fs.promises
+        .access(installedModTools, fs.constants.F_OK | fs.constants.X_OK)
+        .then(() => true)
+        .catch(() => false)
+
+      if (!verifyInstall) {
+        throw this.createError(
+          'validation',
+          'Installation verification failed',
+          'mod-tools.exe is not accessible after installation',
+          true
+        )
+      }
 
       // Clean up temp files
       await fs.promises.rm(tempDir, { recursive: true, force: true })
     } catch (error) {
-      throw new Error(
-        `Failed to download and extract tools: ${error instanceof Error ? error.message : 'Unknown error'}`
-      )
+      // Clean up on error
+      if (tempDir) {
+        try {
+          await fs.promises.rm(tempDir, { recursive: true, force: true })
+        } catch {
+          // Ignore cleanup errors
+        }
+      }
+
+      if (error instanceof Error && 'type' in error) {
+        throw error
+      }
+      throw this.classifyError(error)
     }
   }
 
@@ -252,6 +390,122 @@ export class ToolsDownloader {
 
   getMultiRitoFixesPath(): string {
     return this.multiRitoFixesPath
+  }
+
+  private createError(
+    type: ToolsError['type'],
+    message: string,
+    details?: string,
+    canRetry: boolean = true
+  ): ToolsError {
+    const error = new Error(message) as Error & ToolsError
+    ;(error as any).type = type
+    ;(error as any).message = message
+    ;(error as any).details = details
+    ;(error as any).canRetry = canRetry
+    return error as ToolsError
+  }
+
+  private classifyError(error: unknown): ToolsError {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError
+
+      // Network errors
+      if (axiosError.code === 'ECONNABORTED' || axiosError.code === 'ETIMEDOUT') {
+        return this.createError(
+          'network',
+          'Connection timed out',
+          'The download is taking too long. Check your internet connection.',
+          true
+        )
+      }
+
+      if (axiosError.code === 'ENOTFOUND' || axiosError.code === 'EAI_AGAIN') {
+        return this.createError(
+          'network',
+          'Cannot reach GitHub',
+          'Check your internet connection or DNS settings.',
+          true
+        )
+      }
+
+      // GitHub API errors
+      if (axiosError.response) {
+        const status = axiosError.response.status
+
+        if (status === 403) {
+          const rateLimitReset = axiosError.response.headers['x-ratelimit-reset']
+          const resetTime = rateLimitReset ? new Date(parseInt(rateLimitReset) * 1000) : null
+          return this.createError(
+            'github',
+            'GitHub API rate limit exceeded',
+            resetTime
+              ? `Try again after ${resetTime.toLocaleTimeString()}`
+              : 'Try again in an hour',
+            true
+          )
+        }
+
+        if (status === 404) {
+          return this.createError(
+            'github',
+            'Release not found',
+            'The tools may have been moved or renamed',
+            false
+          )
+        }
+
+        if (status >= 500) {
+          return this.createError(
+            'github',
+            'GitHub server error',
+            `Server returned status ${status}. Try again later.`,
+            true
+          )
+        }
+      }
+
+      // Generic network error
+      return this.createError('network', 'Network error', axiosError.message, true)
+    }
+
+    // File system errors
+    if (error instanceof Error) {
+      if (error.message.includes('ENOSPC')) {
+        return this.createError(
+          'filesystem',
+          'Not enough disk space',
+          'Free up some space and try again',
+          true
+        )
+      }
+
+      if (error.message.includes('EACCES') || error.message.includes('EPERM')) {
+        return this.createError(
+          'filesystem',
+          'Permission denied',
+          'Try running as administrator or check folder permissions',
+          true
+        )
+      }
+
+      if (error.message.includes('EMFILE')) {
+        return this.createError(
+          'filesystem',
+          'Too many open files',
+          'Close some applications and try again',
+          true
+        )
+      }
+    }
+
+    // Unknown error
+    return this.createError(
+      'unknown',
+      'Unexpected error',
+      error instanceof Error ? error.message : String(error),
+      true
+    )
   }
 
   private async migrateToolsFromOldLocation(): Promise<void> {

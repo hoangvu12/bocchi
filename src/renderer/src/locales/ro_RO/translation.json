@@ -89,7 +89,13 @@
     "required": "CS:LOL Tools necesare",
     "description": "Instrumentele CS:LOL mod sunt necesare pentru a aplica skin-uri. Doriți să le descărcați acum?",
     "downloading": "Se descarcă instrumentele... {{progress}}%",
-    "downloadTools": "Descarcă instrumentele"
+    "downloadTools": "Descarcă instrumentele",
+    "downloadFailed": "Descărcarea a eșuat",
+    "retryDownload": "Încearcă din nou descărcarea",
+    "manualDownload": "Descărcare manuală",
+    "maxRetries": "Numărul maxim de încercări a fost atins",
+    "extractTo": "Extrage în:",
+    "havingTrouble": "Aveți probleme? Puteți, de asemenea:"
   },
   "downloadAll": {
     "title": "Download All Skins",

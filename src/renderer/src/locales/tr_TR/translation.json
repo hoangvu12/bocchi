@@ -89,7 +89,13 @@
     "required": "CS:LOL Tools gerekli",
     "description": "CS:LOL mod araçları skinleri uygulamak için gereklidir. Şimdi indirmek istiyor musunuz?",
     "downloading": "Araçlar indiriliyor... {{progress}}%",
-    "downloadTools": "Araçları indir"
+    "downloadTools": "Araçları indir",
+    "downloadFailed": "İndirme başarısız",
+    "retryDownload": "İndirmeyi yeniden dene",
+    "manualDownload": "Manuel olarak indir",
+    "maxRetries": "Maksimum deneme sayısına ulaşıldı",
+    "extractTo": "Çıkar:",
+    "havingTrouble": "Sorun mu yaşıyorsunuz? Ayrıca yapabilirsiniz:"
   },
   "downloadAll": {
     "title": "Download All Skins",

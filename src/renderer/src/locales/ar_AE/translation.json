@@ -89,7 +89,13 @@
     "required": "أدوات CS:LOL مطلوبة",
     "description": "أدوات تعديل CS:LOL مطلوبة لتطبيق الأشكال. هل تريد تحميلها الآن؟",
     "downloading": "جاري تحميل الأدوات... {{progress}}%",
-    "downloadTools": "تحميل الأدوات"
+    "downloadTools": "تحميل الأدوات",
+    "downloadFailed": "فشل التحميل",
+    "retryDownload": "إعادة المحاولة",
+    "manualDownload": "تحميل يدوي",
+    "maxRetries": "تم الوصول للحد الأقصى من المحاولات",
+    "extractTo": "استخراج إلى:",
+    "havingTrouble": "تواجه مشكلة؟ يمكنك أيضاً:"
   },
   "downloadAll": {
     "title": "Download All Skins",

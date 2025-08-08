@@ -89,7 +89,13 @@
     "required": "CS:LOL Tools Diperlukan",
     "description": "CS:LOL mod tools diperlukan untuk menerapkan skin. Apakah Anda ingin mengunduhnya sekarang?",
     "downloading": "Mengunduh tools... {{progress}}%",
-    "downloadTools": "Unduh Tools"
+    "downloadTools": "Unduh Tools",
+    "downloadFailed": "Unduhan gagal",
+    "retryDownload": "Coba Unduh Lagi",
+    "manualDownload": "Unduh Manual",
+    "maxRetries": "Maksimum percobaan tercapai",
+    "extractTo": "Ekstrak ke:",
+    "havingTrouble": "Mengalami masalah? Anda juga bisa:"
   },
   "downloadAll": {
     "title": "Download All Skins",

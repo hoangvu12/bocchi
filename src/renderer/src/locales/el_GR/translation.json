@@ -89,7 +89,13 @@
     "required": "Απαιτούνται CS:LOL Tools",
     "description": "Τα εργαλεία CS:LOL mod απαιτούνται για την εφαρμογή skins. Θα θέλατε να τα κατεβάσετε τώρα;",
     "downloading": "Λήψη εργαλείων... {{progress}}%",
-    "downloadTools": "Λήψη εργαλείων"
+    "downloadTools": "Λήψη εργαλείων",
+    "downloadFailed": "Η λήψη απέτυχε",
+    "retryDownload": "Επανάληψη λήψης",
+    "manualDownload": "Χειροκίνητη λήψη",
+    "maxRetries": "Φτάσατε το μέγιστο αριθμό προσπαθειών",
+    "extractTo": "Εξαγωγή σε:",
+    "havingTrouble": "Έχετε πρόβλημα; Μπορείτε επίσης:"
   },
   "downloadAll": {
     "title": "Download All Skins",

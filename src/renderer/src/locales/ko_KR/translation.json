@@ -87,7 +87,13 @@
     "required": "CS:LOL 도구 필요",
     "description": "스킨을 적용하려면 CS:LOL 모드 도구가 필요합니다. 지금 다운로드하시겠습니까?",
     "downloading": "도구 다운로드 중... {{progress}}%",
-    "downloadTools": "도구 다운로드"
+    "downloadTools": "도구 다운로드",
+    "downloadFailed": "다운로드 실패",
+    "retryDownload": "다시 다운로드",
+    "manualDownload": "수동으로 다운로드",
+    "maxRetries": "최대 재시도 횟수에 도달했습니다",
+    "extractTo": "압축 해제 위치:",
+    "havingTrouble": "문제가 있나요? 다른 방법도 있습니다:"
   },
   "downloadAll": {
     "title": "모든 스킨 다운로드",

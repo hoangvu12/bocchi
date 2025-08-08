@@ -89,7 +89,13 @@
     "required": "CS:LOL Tools szükséges",
     "description": "A CS:LOL mod eszközök szükségesek a skinek alkalmazásához. Szeretné most letölteni őket?",
     "downloading": "Eszközök letöltése... {{progress}}%",
-    "downloadTools": "Eszközök letöltése"
+    "downloadTools": "Eszközök letöltése",
+    "downloadFailed": "Letöltés sikertelen",
+    "retryDownload": "Letöltés újra",
+    "manualDownload": "Manuális letöltés",
+    "maxRetries": "Maximális próbálkozások száma elérve",
+    "extractTo": "Kibontás ide:",
+    "havingTrouble": "Problémái vannak? Azt is megteheti:"
   },
   "downloadAll": {
     "title": "Download All Skins",

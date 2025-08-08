@@ -89,7 +89,13 @@
     "required": "CS:LOL Tools erforderlich",
     "description": "Die CS:LOL Mod-Tools sind erforderlich, um Skins anzuwenden. Möchten Sie sie jetzt herunterladen?",
     "downloading": "Tools werden heruntergeladen... {{progress}}%",
-    "downloadTools": "Tools herunterladen"
+    "downloadTools": "Tools herunterladen",
+    "downloadFailed": "Download fehlgeschlagen",
+    "retryDownload": "Download wiederholen",
+    "manualDownload": "Manuell herunterladen",
+    "maxRetries": "Maximale Anzahl von Wiederholungen erreicht",
+    "extractTo": "Extrahieren nach:",
+    "havingTrouble": "Haben Sie Probleme? Sie können auch:"
   },
   "downloadAll": {
     "title": "Download All Skins",

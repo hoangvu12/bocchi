@@ -117,12 +117,19 @@ const api = {
 
   // Tools management
   checkToolsExist: () => ipcRenderer.invoke('check-tools-exist'),
-  downloadTools: () => ipcRenderer.invoke('download-tools'),
+  downloadTools: (attempt?: number) => ipcRenderer.invoke('download-tools', attempt),
   getToolsInfo: () => ipcRenderer.invoke('get-tools-info'),
   onToolsDownloadProgress: (callback: (progress: number) => void) => {
     const handler = (_: any, progress: number) => callback(progress)
     ipcRenderer.on('tools-download-progress', handler)
     return () => ipcRenderer.removeListener('tools-download-progress', handler)
+  },
+  onToolsDownloadDetails: (
+    callback: (details: { loaded: number; total: number; speed: number }) => void
+  ) => {
+    const handler = (_: any, details: any) => callback(details)
+    ipcRenderer.on('tools-download-details', handler)
+    return () => ipcRenderer.removeListener('tools-download-details', handler)
   },
 
   // Window controls

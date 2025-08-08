@@ -87,7 +87,13 @@
     "required": "CS:LOLツールが必要です",
     "description": "スキンを適用するにはCS:LOL MODツールが必要です。今すぐダウンロードしますか？",
     "downloading": "ツールをダウンロード中... {{progress}}%",
-    "downloadTools": "ツールをダウンロード"
+    "downloadTools": "ツールをダウンロード",
+    "downloadFailed": "ダウンロードに失敗しました",
+    "retryDownload": "再試行",
+    "manualDownload": "手動でダウンロード",
+    "maxRetries": "最大再試行回数に達しました",
+    "extractTo": "展開先:",
+    "havingTrouble": "問題がありますか？他にもできることがあります："
   },
   "downloadAll": {
     "title": "すべてのスキンをダウンロード",

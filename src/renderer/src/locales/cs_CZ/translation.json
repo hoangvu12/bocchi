@@ -89,7 +89,13 @@
     "required": "Vyžaduje se CS:LOL Tools",
     "description": "Nástroje CS:LOL mod jsou potřebné pro aplikaci skinů. Chcete je nyní stáhnout?",
     "downloading": "Stahuje se nástroje... {{progress}}%",
-    "downloadTools": "Stáhnout nástroje"
+    "downloadTools": "Stáhnout nástroje",
+    "downloadFailed": "Stahování se nezdařilo",
+    "retryDownload": "Opakovat stahování",
+    "manualDownload": "Stáhnout ručně",
+    "maxRetries": "Dosažen maximální počet pokusů",
+    "extractTo": "Rozbalit do:",
+    "havingTrouble": "Máte potíže? Můžete také:"
   },
   "downloadAll": {
     "title": "Download All Skins",

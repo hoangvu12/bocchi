@@ -89,7 +89,13 @@
     "required": "需要 CS:LOL 工具",
     "description": "需要 CS:LOL 模組工具來套用面板。您想要現在下載嗎？",
     "downloading": "正在下載工具... {{progress}}%",
-    "downloadTools": "下載工具"
+    "downloadTools": "下載工具",
+    "downloadFailed": "下載失敗",
+    "retryDownload": "重試下載",
+    "manualDownload": "手動下載",
+    "maxRetries": "已達到最大重試次數",
+    "extractTo": "解壓縮到:",
+    "havingTrouble": "遇到問題？您也可以："
   },
   "downloadAll": {
     "title": "Download All Skins",

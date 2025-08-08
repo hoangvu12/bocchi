@@ -1388,12 +1388,21 @@ function setupIpcHandlers(): void {
 
   ipcMain.handle('download-tools', async (event) => {
     try {
-      await toolsDownloader.downloadAndExtractTools((progress) => {
+      await toolsDownloader.downloadAndExtractTools((progress, details) => {
         event.sender.send('tools-download-progress', progress)
+        if (details) {
+          event.sender.send('tools-download-details', details)
+        }
       })
       return { success: true }
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.message || 'Unknown error',
+        errorType: error.type || 'unknown',
+        errorDetails: error.details,
+        canRetry: error.canRetry !== false
+      }
     }
   })
 

@@ -89,7 +89,13 @@
     "required": "Ferramentas CS:LOL Necessárias",
     "description": "As ferramentas mod CS:LOL são necessárias para aplicar skins. Você gostaria de baixá-las agora?",
     "downloading": "Baixando ferramentas... {{progress}}%",
-    "downloadTools": "Baixar Ferramentas"
+    "downloadTools": "Baixar Ferramentas",
+    "downloadFailed": "Download falhou",
+    "retryDownload": "Tentar novamente",
+    "manualDownload": "Baixar manualmente",
+    "maxRetries": "Número máximo de tentativas atingido",
+    "extractTo": "Extrair para:",
+    "havingTrouble": "Tendo problemas? Você também pode:"
   },
   "downloadAll": {
     "title": "Download All Skins",
