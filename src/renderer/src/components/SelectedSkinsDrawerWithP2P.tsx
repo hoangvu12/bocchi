@@ -14,7 +14,9 @@ import { presetService } from '../services/presetService'
 import { toast } from 'sonner'
 import { presetsAtom, presetDialogOpenAtom, presetCountAtom } from '../store/atoms/presets'
 import { Button } from './ui/button'
-import { BookOpenIcon } from 'lucide-react'
+import { BookOpenIcon, GripVertical } from 'lucide-react'
+import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
+import { arrayMoveImmutable } from 'array-move'
 
 interface ExtendedSelectedSkin extends SelectedSkin {
   customModInfo?: {
@@ -293,6 +295,10 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
 
   const clearAll = () => {
     setSelectedSkins([])
+  }
+
+  const onSortEnd = (oldIndex: number, newIndex: number) => {
+    setSelectedSkins((skins) => arrayMoveImmutable(skins, oldIndex, newIndex))
   }
 
   const getSkinImageUrl = (skin: SelectedSkin) => {
@@ -737,91 +743,150 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             {/* My Skins Tab */}
             {activeTab === 'my-skins' && (
               <>
-                {allSkinsForDisplay.length === 0 ? (
+                {selectedSkins.length === 0 && autoSyncedSkins.length === 0 ? (
                   <div className="text-center py-8 text-text-muted">
                     No skins selected yet. Click on skins above to add them to your selection.
                   </div>
                 ) : (
-                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3">
-                    {allSkinsForDisplay.map((skin, index) => {
-                      const isDownloaded = isSkinDownloaded(skin)
-                      const isAutoSynced = 'isAutoSynced' in skin && (skin as any).isAutoSynced
-                      return (
-                        <div
-                          key={`${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}_${index}`}
-                          className="relative group"
-                        >
-                          <div className="relative aspect-[0.67] overflow-hidden bg-secondary-100 dark:bg-secondary-800 rounded border border-border">
-                            <img
-                              src={getSkinImageUrl(skin)}
-                              alt={getSkinDisplayName(skin)}
-                              className="w-full h-full object-cover"
-                            />
-                            {!isDownloaded && (
-                              <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
-                                <div className="text-[10px] text-white bg-black/75 px-1.5 py-0.5 rounded text-center">
-                                  {t('skins.notDownloaded').split(' ')[0]}
-                                  <br />
-                                  {t('skins.notDownloaded').split(' ')[1]}
+                  <>
+                    {/* Sortable selected skins */}
+                    {selectedSkins.length > 0 && (
+                      <SortableList
+                        onSortEnd={onSortEnd}
+                        className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3"
+                        draggedItemClassName="dragged-skin"
+                      >
+                        {selectedSkins.map((skin, index) => {
+                          const isDownloaded = isSkinDownloaded(skin)
+                          return (
+                            <SortableItem
+                              key={`${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}_${index}`}
+                            >
+                              <div className="relative group">
+                                <div className="relative aspect-[0.67] overflow-hidden bg-secondary-100 dark:bg-secondary-800 rounded border border-border">
+                                  <img
+                                    src={getSkinImageUrl(skin)}
+                                    alt={getSkinDisplayName(skin)}
+                                    className="w-full h-full object-cover pointer-events-none"
+                                  />
+
+                                  {/* Drag handle - centered */}
+                                  <SortableKnob>
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 rounded-lg p-2 cursor-move opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110">
+                                      <GripVertical className="w-4 h-4 text-white" />
+                                    </div>
+                                  </SortableKnob>
+                                  {!isDownloaded && (
+                                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10 pointer-events-none">
+                                      <div className="text-[10px] text-white bg-black/75 px-1.5 py-0.5 rounded text-center">
+                                        {t('skins.notDownloaded').split(' ')[0]}
+                                        <br />
+                                        {t('skins.notDownloaded').split(' ')[1]}
+                                      </div>
+                                    </div>
+                                  )}
+                                  {skin.isAutoSelected && (
+                                    <div className="absolute top-0.5 left-0.5 bg-purple-600 text-white rounded px-1 py-0.5 text-[10px] font-medium shadow-sm z-20">
+                                      {t('skins.autoSelected')}
+                                    </div>
+                                  )}
+                                  <button
+                                    className="absolute top-0.5 right-0.5 w-5 h-5 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20"
+                                    onClick={() => removeSkin(skin)}
+                                    disabled={loading}
+                                  >
+                                    <svg
+                                      className="w-2.5 h-2.5 text-white"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2.5}
+                                        d="M6 18L18 6M6 6l12 12"
+                                      />
+                                    </svg>
+                                  </button>
+                                </div>
+                                <div className="mt-1">
+                                  <p
+                                    className="text-xs leading-tight font-medium text-text-primary truncate"
+                                    title={getSkinDisplayName(skin)}
+                                  >
+                                    {getSkinDisplayName(skin)}
+                                  </p>
                                 </div>
                               </div>
-                            )}
-                            {skin.isAutoSelected && (
-                              <div className="absolute top-0.5 left-0.5 bg-purple-600 text-white rounded px-1 py-0.5 text-[10px] font-medium shadow-sm z-20">
-                                {t('skins.autoSelected')}
-                              </div>
-                            )}
-                            {isAutoSynced && (
-                              <div className="absolute top-1 right-1 bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full flex items-center gap-1 z-20">
-                                <svg
-                                  className="w-2.5 h-2.5"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                >
-                                  <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
-                                </svg>
-                                Sync
-                              </div>
-                            )}
-                            {!isAutoSynced && (
-                              <button
-                                className="absolute top-0.5 right-0.5 w-5 h-5 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20"
-                                onClick={() => removeSkin(skin)}
-                                disabled={loading}
+                            </SortableItem>
+                          )
+                        })}
+                      </SortableList>
+                    )}
+
+                    {/* Non-sortable auto-synced skins */}
+                    {autoSyncedSkins.length > 0 && (
+                      <div
+                        className={`${selectedSkins.length > 0 ? 'mt-4 pt-4 border-t border-border' : ''}`}
+                      >
+                        <p className="text-xs text-text-secondary mb-2">
+                          Auto-synced skins (not reorderable):
+                        </p>
+                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3">
+                          {autoSyncedSkins.map((skin, index) => {
+                            const isDownloaded = isSkinDownloaded(skin)
+                            return (
+                              <div
+                                key={`auto_${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}_${index}`}
+                                className="relative group"
                               >
-                                <svg
-                                  className="w-2.5 h-2.5 text-white"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2.5}
-                                    d="M6 18L18 6M6 6l12 12"
+                                <div className="relative aspect-[0.67] overflow-hidden bg-secondary-100 dark:bg-secondary-800 rounded border border-border">
+                                  <img
+                                    src={getSkinImageUrl(skin)}
+                                    alt={getSkinDisplayName(skin)}
+                                    className="w-full h-full object-cover"
                                   />
-                                </svg>
-                              </button>
-                            )}
-                          </div>
-                          <div className="mt-1">
-                            <p
-                              className="text-xs leading-tight font-medium text-text-primary truncate"
-                              title={getSkinDisplayName(skin)}
-                            >
-                              {getSkinDisplayName(skin)}
-                            </p>
-                            {isAutoSynced && 'fromPeerName' in skin && (
-                              <p className="text-[10px] text-text-secondary truncate">
-                                from {(skin as any).fromPeerName}
-                              </p>
-                            )}
-                          </div>
+                                  {!isDownloaded && (
+                                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
+                                      <div className="text-[10px] text-white bg-black/75 px-1.5 py-0.5 rounded text-center">
+                                        {t('skins.notDownloaded').split(' ')[0]}
+                                        <br />
+                                        {t('skins.notDownloaded').split(' ')[1]}
+                                      </div>
+                                    </div>
+                                  )}
+                                  <div className="absolute top-1 right-1 bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full flex items-center gap-1 z-20">
+                                    <svg
+                                      className="w-2.5 h-2.5"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+                                    </svg>
+                                    Sync
+                                  </div>
+                                </div>
+                                <div className="mt-1">
+                                  <p
+                                    className="text-xs leading-tight font-medium text-text-primary truncate"
+                                    title={getSkinDisplayName(skin)}
+                                  >
+                                    {getSkinDisplayName(skin)}
+                                  </p>
+                                  {'fromPeerName' in skin && (
+                                    <p className="text-[10px] text-text-secondary truncate">
+                                      from {(skin as any).fromPeerName}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            )
+                          })}
                         </div>
-                      )
-                    })}
-                  </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </>
             )}

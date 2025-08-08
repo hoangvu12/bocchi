@@ -143,6 +143,14 @@
     opacity: 0.5;
   }
 
+  /* Dragged skin item styles */
+  .dragged-skin {
+    opacity: 0.3;
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+  }
+
   /* Disable text selection and image dragging in sortable items */
   [data-react-easy-sort-item] {
     user-select: none;
@@ -152,5 +160,10 @@
   [data-react-easy-sort-item] img {
     pointer-events: none;
     -webkit-user-drag: none;
+  }
+
+  /* Ensure drag handle is always visible during drag */
+  [data-react-easy-sort-item]:active .cursor-move {
+    opacity: 1 !important;
   }
 }
