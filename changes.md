@@ -1,18 +1,13 @@
 ### Features
 
-- Better cslol-tools downloader UI
-- Timeout settings - you can now change how long to wait for applying
-- Clearer patcher messages
+- Reorder skins - drag and drop to change skin priority
+- Edit champion assignments for custom mods
+- Check for updates button in settings
+- Auto-select custom skins when viewing champions
+- Disable unavailable skins from lol-skins repository
 
 ### Fixes
 
-- Drag and drop works again
-- Global search now finds custom mods too
-
-### Previous Updates
-
-- Presets
-- Better skins apply logic (faster)
-- Meta file is counted as a skin in Manage skins
-- Better download all skins implementation
-
+- OP.GG features temporarily disabled due to OP.GG removed the data
+- Prevent duplicate imports when reordering skins
+- Remove unnecessary confirmation dialogs
