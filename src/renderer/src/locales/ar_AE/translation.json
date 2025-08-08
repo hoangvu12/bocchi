@@ -33,7 +33,12 @@
     "copy": "نسخ",
     "later": "لاحقاً",
     "skipForNow": "تخطي الآن",
-    "downloadAndInstall": "تحميل وتثبيت"
+    "downloadAndInstall": "تحميل وتثبيت",
+    "multiSelect": "تحديد متعدد",
+    "exitMultiSelect": "إنهاء التحديد المتعدد",
+    "deleteSelected": "حذف المحدد",
+    "selectAll": "تحديد الكل",
+    "clearSelection": "مسح التحديد"
   },
   "nav": {
     "favorites": "المفضلة",

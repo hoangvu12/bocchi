@@ -108,6 +108,10 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   const [, setShowPresetsDialog] = useAtom(presetDialogOpenAtom)
   const presetCount = useAtomValue(presetCountAtom)
 
+  // Multi-select (delete-only) state
+  const [multiSelectMode, setMultiSelectMode] = useState(false)
+  const [multiSelected, setMultiSelected] = useState<Set<string>>(new Set())
+
   // Set phase based on patcher state
   useEffect(() => {
     if (isPatcherRunning && patcherPhase.phase === 'idle') {
@@ -295,11 +299,53 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
 
   const clearAll = () => {
     setSelectedSkins([])
+    if (multiSelectMode) {
+      setMultiSelected(new Set())
+    }
   }
 
   const onSortEnd = (oldIndex: number, newIndex: number) => {
+    if (multiSelectMode) return // disable reordering while multi-select active
     setSelectedSkins((skins) => arrayMoveImmutable(skins, oldIndex, newIndex))
   }
+
+  // Helpers for multi-select
+  const skinKey = (skin: SelectedSkin) =>
+    `${skin.championKey}__${skin.skinId}__${skin.chromaId || ''}__${skin.variantId || ''}`
+
+  const toggleMultiSelectMode = () => {
+    setMultiSelectMode((prev) => {
+      const next = !prev
+      if (!next) {
+        // exiting mode clears current selections
+        setMultiSelected(new Set())
+      }
+      return next
+    })
+  }
+
+  const toggleMultiSelectSkin = (skin: SelectedSkin) => {
+    setMultiSelected((prev) => {
+      const next = new Set(prev)
+      const key = skinKey(skin)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
+      return next
+    })
+  }
+
+  const handleDeleteSelected = () => {
+    if (multiSelected.size === 0) return
+    setSelectedSkins((prev) => prev.filter((s) => !multiSelected.has(skinKey(s))))
+    setMultiSelected(new Set())
+    setMultiSelectMode(false)
+  }
+
+  const selectAllVisible = () => {
+    setMultiSelected(new Set(selectedSkins.map((s) => skinKey(s))))
+  }
+
+  const clearMultiSelection = () => setMultiSelected(new Set())
 
   const getSkinImageUrl = (skin: SelectedSkin) => {
     // Check if it's a variant and we have variant data
@@ -650,7 +696,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
             )}
           </div>
         </div>
-        <div className="flex items-center gap-3" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center gap-3 flex-wrap" onClick={(e) => e.stopPropagation()}>
           <button
             className="px-4 py-2 text-sm text-text-secondary hover:text-text-primary font-medium transition-colors"
             onClick={clearAll}
@@ -658,55 +704,103 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
           >
             {t('actions.clearAll')}
           </button>
+
           <Button
-            variant="secondary"
+            variant={multiSelectMode ? 'secondary' : 'outline'}
             size="sm"
-            onClick={() => setShowSavePresetDialog(true)}
+            onClick={toggleMultiSelectMode}
             disabled={loading || selectedSkins.length === 0}
-            className="bg-surface-secondary hover:bg-secondary-200 dark:hover:bg-secondary-700"
+            className={multiSelectMode ? 'bg-primary-500 text-white hover:bg-primary-600' : ''}
+            title={multiSelectMode ? 'Exit multi-select' : 'Enable multi-select (delete only)'}
           >
-            {t('presets.saveAsPreset')}
+            {multiSelectMode
+              ? t('actions.exitMultiSelect') || 'Exit Multi-Select'
+              : t('actions.multiSelect') || 'Multi-Select'}
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowPresetsDialog(true)}
-            disabled={loading}
-            className="relative"
-          >
-            <BookOpenIcon className="h-4 w-4 mr-2" />
-            {t('presets.title')}
-            {presetCount > 0 && (
-              <Badge
-                variant="secondary"
-                className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-xs"
+
+          {multiSelectMode && (
+            <>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={handleDeleteSelected}
+                disabled={multiSelected.size === 0 || loading}
+                title="Delete selected skins (cannot apply while in multi-select)"
               >
-                {presetCount}
-              </Badge>
-            )}
-          </Button>
-          <button
-            className={`px-6 py-2 font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
-              isPatcherRunning
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-primary-500 hover:bg-primary-600 text-white'
-            }`}
-            onClick={isPatcherRunning ? onStopPatcher : handleApplySkins}
-            disabled={loading || isSmartApplying}
-          >
-            {loading
-              ? isPatcherRunning
-                ? t('patcher.stopping')
-                : t('patcher.applying')
-              : isPatcherRunning
-                ? t('patcher.stopPatcher')
-                : smartApplyEnabled &&
-                    smartApplySummary &&
-                    teamComposition &&
-                    teamComposition.championIds.length > 0
-                  ? t('patcher.apply', { count: smartApplySummary.willApply })
-                  : t('patcher.apply', { count: allSkinsForDisplay.length })}
-          </button>
+                {(t('actions.deleteSelected') || 'Delete Selected') + ` (${multiSelected.size})`}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={selectAllVisible}
+                disabled={loading || multiSelected.size === selectedSkins.length}
+              >
+                {t('actions.selectAll') || 'Select All'}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearMultiSelection}
+                disabled={multiSelected.size === 0}
+              >
+                {t('actions.clearSelection') || 'Clear Selection'}
+              </Button>
+            </>
+          )}
+
+          {!multiSelectMode && (
+            <>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setShowSavePresetDialog(true)}
+                disabled={loading || selectedSkins.length === 0}
+                className="bg-surface-secondary hover:bg-secondary-200 dark:hover:bg-secondary-700"
+              >
+                {t('presets.saveAsPreset')}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowPresetsDialog(true)}
+                disabled={loading}
+                className="relative"
+              >
+                <BookOpenIcon className="h-4 w-4 mr-2" />
+                {t('presets.title')}
+                {presetCount > 0 && (
+                  <Badge
+                    variant="secondary"
+                    className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-xs"
+                  >
+                    {presetCount}
+                  </Badge>
+                )}
+              </Button>
+              <button
+                className={`px-6 py-2 font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
+                  isPatcherRunning
+                    ? 'bg-red-600 hover:bg-red-700 text-white'
+                    : 'bg-primary-500 hover:bg-primary-600 text-white'
+                }`}
+                onClick={isPatcherRunning ? onStopPatcher : handleApplySkins}
+                disabled={loading || isSmartApplying}
+              >
+                {loading
+                  ? isPatcherRunning
+                    ? t('patcher.stopping')
+                    : t('patcher.applying')
+                  : isPatcherRunning
+                    ? t('patcher.stopPatcher')
+                    : smartApplyEnabled &&
+                        smartApplySummary &&
+                        teamComposition &&
+                        teamComposition.championIds.length > 0
+                      ? t('patcher.apply', { count: smartApplySummary.willApply })
+                      : t('patcher.apply', { count: allSkinsForDisplay.length })}
+              </button>
+            </>
+          )}
         </div>
       </div>
 
@@ -749,80 +843,145 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                   </div>
                 ) : (
                   <>
-                    {/* Sortable selected skins */}
+                    {/* Selected skins grid */}
                     {selectedSkins.length > 0 && (
-                      <SortableList
-                        onSortEnd={onSortEnd}
-                        className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3"
-                        draggedItemClassName="dragged-skin"
-                      >
-                        {selectedSkins.map((skin, index) => {
-                          const isDownloaded = isSkinDownloaded(skin)
-                          return (
-                            <SortableItem
-                              key={`${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}_${index}`}
-                            >
-                              <div className="relative group">
-                                <div className="relative aspect-[0.67] overflow-hidden bg-secondary-100 dark:bg-secondary-800 rounded border border-border">
-                                  <img
-                                    src={getSkinImageUrl(skin)}
-                                    alt={getSkinDisplayName(skin)}
-                                    className="w-full h-full object-cover pointer-events-none"
-                                  />
-
-                                  {/* Drag handle - centered */}
-                                  <SortableKnob>
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 rounded-lg p-2 cursor-move opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110">
-                                      <GripVertical className="w-4 h-4 text-white" />
-                                    </div>
-                                  </SortableKnob>
-                                  {!isDownloaded && (
-                                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10 pointer-events-none">
-                                      <div className="text-[10px] text-white bg-black/75 px-1.5 py-0.5 rounded text-center">
-                                        {t('skins.notDownloaded').split(' ')[0]}
-                                        <br />
-                                        {t('skins.notDownloaded').split(' ')[1]}
-                                      </div>
-                                    </div>
-                                  )}
-                                  {skin.isAutoSelected && (
-                                    <div className="absolute top-0.5 left-0.5 bg-purple-600 text-white rounded px-1 py-0.5 text-[10px] font-medium shadow-sm z-20">
-                                      {t('skins.autoSelected')}
-                                    </div>
-                                  )}
-                                  <button
-                                    className="absolute top-0.5 right-0.5 w-5 h-5 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20"
-                                    onClick={() => removeSkin(skin)}
-                                    disabled={loading}
-                                  >
-                                    <svg
-                                      className="w-2.5 h-2.5 text-white"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2.5}
-                                        d="M6 18L18 6M6 6l12 12"
+                      <>
+                        {!multiSelectMode && (
+                          <SortableList
+                            onSortEnd={onSortEnd}
+                            className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3"
+                            draggedItemClassName="dragged-skin"
+                          >
+                            {selectedSkins.map((skin, index) => {
+                              const isDownloaded = isSkinDownloaded(skin)
+                              return (
+                                <SortableItem
+                                  key={`${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}_${index}`}
+                                >
+                                  <div className="relative group">
+                                    <div className="relative aspect-[0.67] overflow-hidden bg-secondary-100 dark:bg-secondary-800 rounded border border-border">
+                                      <img
+                                        src={getSkinImageUrl(skin)}
+                                        alt={getSkinDisplayName(skin)}
+                                        className="w-full h-full object-cover pointer-events-none"
                                       />
-                                    </svg>
-                                  </button>
-                                </div>
-                                <div className="mt-1">
-                                  <p
-                                    className="text-xs leading-tight font-medium text-text-primary truncate"
-                                    title={getSkinDisplayName(skin)}
+
+                                      {/* Drag handle - centered */}
+                                      <SortableKnob>
+                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 rounded-lg p-2 cursor-move opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110">
+                                          <GripVertical className="w-4 h-4 text-white" />
+                                        </div>
+                                      </SortableKnob>
+                                      {!isDownloaded && (
+                                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10 pointer-events-none">
+                                          <div className="text-[10px] text-white bg-black/75 px-1.5 py-0.5 rounded text-center">
+                                            {t('skins.notDownloaded').split(' ')[0]}
+                                            <br />
+                                            {t('skins.notDownloaded').split(' ')[1]}
+                                          </div>
+                                        </div>
+                                      )}
+                                      {skin.isAutoSelected && (
+                                        <div className="absolute top-0.5 left-0.5 bg-purple-600 text-white rounded px-1 py-0.5 text-[10px] font-medium shadow-sm z-20">
+                                          {t('skins.autoSelected')}
+                                        </div>
+                                      )}
+                                      <button
+                                        className="absolute top-0.5 right-0.5 w-5 h-5 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20"
+                                        onClick={() => removeSkin(skin)}
+                                        disabled={loading}
+                                      >
+                                        <svg
+                                          className="w-2.5 h-2.5 text-white"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2.5}
+                                            d="M6 18L18 6M6 6l12 12"
+                                          />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                    <div className="mt-1">
+                                      <p
+                                        className="text-xs leading-tight font-medium text-text-primary truncate"
+                                        title={getSkinDisplayName(skin)}
+                                      >
+                                        {getSkinDisplayName(skin)}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </SortableItem>
+                              )
+                            })}
+                          </SortableList>
+                        )}
+                        {multiSelectMode && (
+                          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3">
+                            {selectedSkins.map((skin, index) => {
+                              const isDownloaded = isSkinDownloaded(skin)
+                              const key = skinKey(skin)
+                              const checked = multiSelected.has(key)
+                              return (
+                                <div
+                                  key={`ms_${skin.championKey}_${skin.skinId}_${skin.chromaId || ''}_${index}`}
+                                  className="relative group"
+                                >
+                                  <div
+                                    className={`relative aspect-[0.67] overflow-hidden bg-secondary-100 dark:bg-secondary-800 rounded border ${
+                                      checked
+                                        ? 'ring-2 ring-primary-500 border-primary-500'
+                                        : 'border-border'
+                                    } cursor-pointer`}
+                                    onClick={() => toggleMultiSelectSkin(skin)}
                                   >
-                                    {getSkinDisplayName(skin)}
-                                  </p>
+                                    <img
+                                      src={getSkinImageUrl(skin)}
+                                      alt={getSkinDisplayName(skin)}
+                                      className="w-full h-full object-cover"
+                                    />
+                                    {!isDownloaded && (
+                                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10 pointer-events-none">
+                                        <div className="text-[10px] text-white bg-black/75 px-1.5 py-0.5 rounded text-center">
+                                          {t('skins.notDownloaded').split(' ')[0]}
+                                          <br />
+                                          {t('skins.notDownloaded').split(' ')[1]}
+                                        </div>
+                                      </div>
+                                    )}
+                                    {skin.isAutoSelected && (
+                                      <div className="absolute top-0.5 left-0.5 bg-purple-600 text-white rounded px-1 py-0.5 text-[10px] font-medium shadow-sm z-20">
+                                        {t('skins.autoSelected')}
+                                      </div>
+                                    )}
+                                    <div
+                                      className={`absolute top-1 right-1 w-5 h-5 rounded-full border-2 flex items-center justify-center text-[10px] font-bold ${
+                                        checked
+                                          ? 'bg-primary-500 border-primary-500 text-white'
+                                          : 'bg-black/50 border-white/70 text-white/70'
+                                      }`}
+                                    >
+                                      {checked ? '✓' : ''}
+                                    </div>
+                                  </div>
+                                  <div className="mt-1">
+                                    <p
+                                      className="text-xs leading-tight font-medium text-text-primary truncate"
+                                      title={getSkinDisplayName(skin)}
+                                    >
+                                      {getSkinDisplayName(skin)}
+                                    </p>
+                                  </div>
                                 </div>
-                              </div>
-                            </SortableItem>
-                          )
-                        })}
-                      </SortableList>
+                              )
+                            })}
+                          </div>
+                        )}
+                      </>
                     )}
 
                     {/* Non-sortable auto-synced skins */}

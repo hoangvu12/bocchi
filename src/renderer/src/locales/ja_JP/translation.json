@@ -32,7 +32,12 @@
     "copy": "コピー",
     "later": "後で",
     "skipForNow": "今はスキップ",
-    "downloadAndInstall": "ダウンロードしてインストール"
+    "downloadAndInstall": "ダウンロードしてインストール",
+    "multiSelect": "複数選択",
+    "exitMultiSelect": "複数選択を終了",
+    "deleteSelected": "選択を削除",
+    "selectAll": "すべて選択",
+    "clearSelection": "選択をクリア"
   },
   "nav": {
     "favorites": "お気に入り",

@@ -33,7 +33,12 @@
     "copy": "Αντιγραφή",
     "later": "Αργότερα",
     "skipForNow": "Παράλειψη για τώρα",
-    "downloadAndInstall": "Λήψη και εγκατάσταση"
+    "downloadAndInstall": "Λήψη και εγκατάσταση",
+    "multiSelect": "Πολλαπλή επιλογή",
+    "exitMultiSelect": "Έξοδος από πολλαπλή επιλογή",
+    "deleteSelected": "Διαγραφή επιλεγμένων",
+    "selectAll": "Επιλογή όλων",
+    "clearSelection": "Εκκαθάριση επιλογής"
   },
   "nav": {
     "favorites": "Αγαπημένα",

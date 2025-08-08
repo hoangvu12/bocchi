@@ -33,7 +33,12 @@
     "copy": "Copy",
     "later": "Later",
     "skipForNow": "Skip for now",
-    "downloadAndInstall": "Download and Install"
+    "downloadAndInstall": "Download and Install",
+    "multiSelect": "Multi-Select",
+    "exitMultiSelect": "Exit Multi-Select",
+    "deleteSelected": "Delete Selected",
+    "selectAll": "Select All",
+    "clearSelection": "Clear Selection"
   },
   "nav": {
     "favorites": "Favorites",

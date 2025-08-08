@@ -32,7 +32,12 @@
     "copy": "Копировать",
     "later": "Позже",
     "skipForNow": "Пропустить сейчас",
-    "downloadAndInstall": "Скачать и установить"
+    "downloadAndInstall": "Скачать и установить",
+    "multiSelect": "Множественный выбор",
+    "exitMultiSelect": "Выйти из множественного выбора",
+    "deleteSelected": "Удалить выбранные",
+    "selectAll": "Выбрать все",
+    "clearSelection": "Очистить выбор"
   },
   "nav": {
     "favorites": "Избранное",

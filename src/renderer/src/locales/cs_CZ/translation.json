@@ -33,7 +33,12 @@
     "copy": "Kopírovat",
     "later": "Později",
     "skipForNow": "Přeskočit prozatím",
-    "downloadAndInstall": "Stáhnout a nainstalovat"
+    "downloadAndInstall": "Stáhnout a nainstalovat",
+    "multiSelect": "Vícenásobný výběr",
+    "exitMultiSelect": "Ukončit vícenásobný výběr",
+    "deleteSelected": "Smazat vybrané",
+    "selectAll": "Vybrat vše",
+    "clearSelection": "Vymazat výběr"
   },
   "nav": {
     "favorites": "Oblíbené",

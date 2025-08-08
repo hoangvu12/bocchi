@@ -33,7 +33,12 @@
     "copy": "Sao chép",
     "later": "Để sau",
     "skipForNow": "Bỏ qua lúc này",
-    "downloadAndInstall": "Tải xuống và cài đặt"
+    "downloadAndInstall": "Tải xuống và cài đặt",
+    "multiSelect": "Chọn nhiều",
+    "exitMultiSelect": "Thoát chọn nhiều",
+    "deleteSelected": "Xóa đã chọn",
+    "selectAll": "Chọn tất cả",
+    "clearSelection": "Bỏ chọn"
   },
   "nav": {
     "favorites": "Yêu thích",

@@ -33,7 +33,12 @@
     "copy": "Salin",
     "later": "Nanti",
     "skipForNow": "Lewati sekarang",
-    "downloadAndInstall": "Unduh dan Install"
+    "downloadAndInstall": "Unduh dan Install",
+    "multiSelect": "Pilih Banyak",
+    "exitMultiSelect": "Keluar Pilih Banyak",
+    "deleteSelected": "Hapus yang Dipilih",
+    "selectAll": "Pilih Semua",
+    "clearSelection": "Hapus Pilihan"
   },
   "nav": {
     "favorites": "Favorit",

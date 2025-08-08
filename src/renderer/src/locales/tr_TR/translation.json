@@ -33,7 +33,12 @@
     "copy": "Kopyala",
     "later": "Sonra",
     "skipForNow": "Şimdilik atla",
-    "downloadAndInstall": "İndir ve kur"
+    "downloadAndInstall": "İndir ve kur",
+    "multiSelect": "Çoklu Seçim",
+    "exitMultiSelect": "Çoklu Seçimden Çık",
+    "deleteSelected": "Seçilenleri Sil",
+    "selectAll": "Tümünü Seç",
+    "clearSelection": "Seçimi Temizle"
   },
   "nav": {
     "favorites": "Favoriler",

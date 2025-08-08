@@ -32,7 +32,12 @@
     "copy": "복사",
     "later": "나중에",
     "skipForNow": "지금은 건너뛰기",
-    "downloadAndInstall": "다운로드 및 설치"
+    "downloadAndInstall": "다운로드 및 설치",
+    "multiSelect": "다중 선택",
+    "exitMultiSelect": "다중 선택 종료",
+    "deleteSelected": "선택 삭제",
+    "selectAll": "모두 선택",
+    "clearSelection": "선택 해제"
   },
   "nav": {
     "favorites": "즐겨찾기",

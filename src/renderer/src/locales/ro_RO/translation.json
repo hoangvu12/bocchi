@@ -33,7 +33,12 @@
     "copy": "Copiază",
     "later": "Mai târziu",
     "skipForNow": "Omite pentru acum",
-    "downloadAndInstall": "Descarcă și instalează"
+    "downloadAndInstall": "Descarcă și instalează",
+    "multiSelect": "Selecție multiplă",
+    "exitMultiSelect": "Ieșire din selecție multiplă",
+    "deleteSelected": "Șterge selectate",
+    "selectAll": "Selectează tot",
+    "clearSelection": "Șterge selecția"
   },
   "nav": {
     "favorites": "Favorite",

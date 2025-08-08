@@ -33,7 +33,12 @@
     "copy": "Copiar",
     "later": "Mais tarde",
     "skipForNow": "Pular por agora",
-    "downloadAndInstall": "Baixar e Instalar"
+    "downloadAndInstall": "Baixar e Instalar",
+    "multiSelect": "Seleção múltipla",
+    "exitMultiSelect": "Sair da seleção múltipla",
+    "deleteSelected": "Excluir selecionados",
+    "selectAll": "Selecionar tudo",
+    "clearSelection": "Limpar seleção"
   },
   "nav": {
     "favorites": "Favoritos",

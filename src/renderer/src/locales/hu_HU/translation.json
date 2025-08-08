@@ -33,7 +33,12 @@
     "copy": "Másolás",
     "later": "Később",
     "skipForNow": "Átugrom most",
-    "downloadAndInstall": "Letöltés és telepítés"
+    "downloadAndInstall": "Letöltés és telepítés",
+    "multiSelect": "Többszörös kijelölés",
+    "exitMultiSelect": "Kilépés a többszörös kijelölésből",
+    "deleteSelected": "Kijelöltek törlése",
+    "selectAll": "Összes kijelölése",
+    "clearSelection": "Kijelölés törlése"
   },
   "nav": {
     "favorites": "Kedvencek",

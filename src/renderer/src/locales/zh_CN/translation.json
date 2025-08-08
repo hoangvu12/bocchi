@@ -32,7 +32,12 @@
     "copy": "复制",
     "later": "稍后",
     "skipForNow": "暂时跳过",
-    "downloadAndInstall": "下载并安装"
+    "downloadAndInstall": "下载并安装",
+    "multiSelect": "多选",
+    "exitMultiSelect": "退出多选",
+    "deleteSelected": "删除选中",
+    "selectAll": "全选",
+    "clearSelection": "清除选择"
   },
   "nav": {
     "favorites": "收藏夹",

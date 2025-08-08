@@ -33,7 +33,12 @@
     "copy": "複製",
     "later": "稍後",
     "skipForNow": "暫時跳過",
-    "downloadAndInstall": "下載並安裝"
+    "downloadAndInstall": "下載並安裝",
+    "multiSelect": "多選",
+    "exitMultiSelect": "退出多選",
+    "deleteSelected": "刪除選中",
+    "selectAll": "全選",
+    "clearSelection": "清除選擇"
   },
   "nav": {
     "favorites": "我的最愛",
