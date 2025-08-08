@@ -31,6 +31,7 @@ export interface SelectedSkin {
   skinName: string
   skinNameEn?: string
   lolSkinsName?: string
+  isInLolSkins?: boolean
   skinNum: number
   chromaId?: string
   variantId?: string

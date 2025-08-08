@@ -58,7 +58,10 @@
     "unfavorite": "Aus Favoriten entfernen",
     "clickToApply": "Klicken Sie auf einen Skin, um ihn sofort anzuwenden",
     "showing_one": "{{count}} Skin angezeigt",
-    "showing_other": "{{count}} Skins angezeigt"
+    "showing_other": "{{count}} Skins angezeigt",
+    "notAvailable": "Nicht verfügbar",
+    "notAvailableMessage": "Dieser Skin ist nicht als Mod verfügbar",
+    "unavailableTooltip": "Dieser Skin hat keine verfügbare Mod-Datei"
   },
   "status": {
     "detectingGame": "Spiel-Pfad wird erkannt...",

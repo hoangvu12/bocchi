@@ -57,7 +57,10 @@
     "unfavorite": "从收藏夹移除",
     "clickToApply": "点击任意皮肤立即应用",
     "showing_one": "显示 {{count}} 个皮肤",
-    "showing_other": "显示 {{count}} 个皮肤"
+    "showing_other": "显示 {{count}} 个皮肤",
+    "notAvailable": "不可用",
+    "notAvailableMessage": "此皮肤无法作为模组使用",
+    "unavailableTooltip": "此皮肤没有可用的模组文件"
   },
   "status": {
     "detectingGame": "正在检测游戏路径...",

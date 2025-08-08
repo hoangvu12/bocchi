@@ -58,7 +58,10 @@
     "unfavorite": "Remover dos favoritos",
     "clickToApply": "Clique em qualquer skin para aplicá-la instantaneamente",
     "showing_one": "Mostrando {{count}} skin",
-    "showing_other": "Mostrando {{count}} skins"
+    "showing_other": "Mostrando {{count}} skins",
+    "notAvailable": "Não disponível",
+    "notAvailableMessage": "Esta skin não está disponível como mod",
+    "unavailableTooltip": "Esta skin não tem um arquivo de mod disponível"
   },
   "status": {
     "detectingGame": "Detectando caminho do jogo...",

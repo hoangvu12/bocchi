@@ -57,7 +57,10 @@
     "unfavorite": "お気に入りから削除",
     "clickToApply": "任意のスキンをクリックして即座に適用",
     "showing_one": "{{count}}個のスキンを表示",
-    "showing_other": "{{count}}個のスキンを表示"
+    "showing_other": "{{count}}個のスキンを表示",
+    "notAvailable": "利用不可",
+    "notAvailableMessage": "このスキンはMODとして利用できません",
+    "unavailableTooltip": "このスキンにはMODファイルがありません"
   },
   "status": {
     "detectingGame": "ゲームパスを検出中...",

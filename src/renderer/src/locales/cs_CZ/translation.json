@@ -58,7 +58,10 @@
     "unfavorite": "Odebrat z oblíbených",
     "clickToApply": "Klikněte na jakýkoli skin pro okamžité použití",
     "showing_one": "Zobrazuje se {{count}} skin",
-    "showing_other": "Zobrazuje se {{count}} skinů"
+    "showing_other": "Zobrazuje se {{count}} skinů",
+    "notAvailable": "Nedostupné",
+    "notAvailableMessage": "Tento skin není dostupný jako mod",
+    "unavailableTooltip": "Tento skin nemá dostupný soubor modu"
   },
   "status": {
     "detectingGame": "Detekuje se cesta ke hře...",

@@ -58,7 +58,10 @@
     "unfavorite": "إزالة من المفضلة",
     "clickToApply": "انقر على أي شكل لتطبيقه فوراً",
     "showing_one": "عرض {{count}} شكل",
-    "showing_other": "عرض {{count}} أشكال"
+    "showing_other": "عرض {{count}} أشكال",
+    "notAvailable": "غير متوفر",
+    "notAvailableMessage": "هذا الشكل غير متوفر كتعديل",
+    "unavailableTooltip": "هذا الشكل لا يحتوي على ملف تعديل متوفر"
   },
   "status": {
     "detectingGame": "جاري اكتشاف مسار اللعبة...",

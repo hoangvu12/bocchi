@@ -57,7 +57,10 @@
     "unfavorite": "Удалить из избранного",
     "clickToApply": "Нажмите на любой скин для мгновенного применения",
     "showing_one": "Показан {{count}} скин",
-    "showing_other": "Показано {{count}} скинов"
+    "showing_other": "Показано {{count}} скинов",
+    "notAvailable": "Недоступно",
+    "notAvailableMessage": "Этот скин недоступен как мод",
+    "unavailableTooltip": "У этого скина нет доступного файла мода"
   },
   "status": {
     "detectingGame": "Определение пути к игре...",

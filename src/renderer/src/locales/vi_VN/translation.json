@@ -57,7 +57,10 @@
     "favorite": "Thêm vào yêu thích",
     "unfavorite": "Xóa khỏi yêu thích",
     "clickToApply": "Nhấp vào trang phục để áp dụng ngay",
-    "showing": "Đang hiển thị {{count}} trang phục"
+    "showing": "Đang hiển thị {{count}} trang phục",
+    "notAvailable": "Không khả dụng",
+    "notAvailableMessage": "Trang phục này không có sẵn dưới dạng mod",
+    "unavailableTooltip": "Trang phục này không có tệp mod khả dụng"
   },
   "status": {
     "detectingGame": "Đang tìm đường dẫn game...",
@@ -396,7 +399,9 @@
       "mythic": "Thần thoại",
       "transcendent": "Siêu việt",
       "exalted": "Tôn quý"
-    }
+    },
+    "availability": "Khả dụng",
+    "showUnavailable": "Hiển thị trang phục không khả dụng"
   },
   "patcher": {
     "applying": "Đang áp dụng...",

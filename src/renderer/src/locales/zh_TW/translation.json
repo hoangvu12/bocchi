@@ -58,7 +58,10 @@
     "unfavorite": "從最愛移除",
     "clickToApply": "點擊任何面板即可立即套用",
     "showing_one": "顯示 {{count}} 個面板",
-    "showing_other": "顯示 {{count}} 個面板"
+    "showing_other": "顯示 {{count}} 個面板",
+    "notAvailable": "無法使用",
+    "notAvailableMessage": "此面板無法作為模組使用",
+    "unavailableTooltip": "此面板沒有可用的模組檔案"
   },
   "status": {
     "detectingGame": "偵測遊戲路徑中...",

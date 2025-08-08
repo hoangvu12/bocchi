@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
+
     steps:
       - name: Checkout Bocchi repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Checkout lol-skins repository
         uses: actions/checkout@v4
         with:
@@ -25,33 +25,33 @@ jobs:
           path: lol-skins-repo
           sparse-checkout: |
             skins
-      
+
       - name: Install tree command
         run: |
           sudo apt-get update
           sudo apt-get install -y tree
-      
+
       - name: Generate directory structure
         run: |
           cd lol-skins-repo
-          
+
           # Generate tree structure for skins directory
           tree --charset=utf-8 -F --dirsfirst -I '.git|.github|README.md|.DS_Store' skins > temp_tree.txt
-          
+
           # Manually create the proper format with └── skins/ as root
           echo "Directory structure:" > ../scripts/lol_skins_directory.txt
           echo "└── skins/" >> ../scripts/lol_skins_directory.txt
-          
+
           # Skip the first line (which is "skins/") and add 4 spaces indentation to remaining lines
           tail -n +2 temp_tree.txt | sed 's/^/    /' >> ../scripts/lol_skins_directory.txt
-          
+
           # Clean up
           rm temp_tree.txt
-          
+
           # Show first 30 lines for verification in logs
           echo "Generated directory structure (first 30 lines):"
           head -30 ../scripts/lol_skins_directory.txt
-      
+
       - name: Check for changes
         id: check_changes
         run: |
@@ -61,7 +61,7 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
             echo "Directory structure has been updated"
           fi
-      
+
       - name: Commit and push changes
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
@@ -72,7 +72,7 @@ jobs:
 
           Auto-generated from darkseal-org/lol-skins repository"
           git push
-      
+
       - name: No changes detected
         if: steps.check_changes.outputs.has_changes != 'true'
         run: echo "No changes detected in directory structure"

@@ -58,7 +58,10 @@
     "unfavorite": "Hapus dari favorit",
     "clickToApply": "Klik skin mana pun untuk langsung menerapkannya",
     "showing_one": "Menampilkan {{count}} skin",
-    "showing_other": "Menampilkan {{count}} skin"
+    "showing_other": "Menampilkan {{count}} skin",
+    "notAvailable": "Tidak Tersedia",
+    "notAvailableMessage": "Skin ini tidak tersedia sebagai mod",
+    "unavailableTooltip": "Skin ini tidak memiliki file mod yang tersedia"
   },
   "status": {
     "detectingGame": "Mendeteksi jalur game...",

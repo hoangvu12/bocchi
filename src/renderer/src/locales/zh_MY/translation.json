@@ -58,7 +58,10 @@
     "unfavorite": "從最愛移除",
     "clickToApply": "點擊任何造型即可立即套用",
     "showing_one": "顯示 {{count}} 個造型",
-    "showing_other": "顯示 {{count}} 個造型"
+    "showing_other": "顯示 {{count}} 個造型",
+    "notAvailable": "不可用",
+    "notAvailableMessage": "此造型無法作為模組使用",
+    "unavailableTooltip": "此造型沒有可用的模組檔案"
   },
   "status": {
     "detectingGame": "偵測遊戲路徑中...",

@@ -58,7 +58,10 @@
     "unfavorite": "Αφαίρεση από αγαπημένα",
     "clickToApply": "Κάντε κλικ σε οποιοδήποτε skin για άμεση εφαρμογή",
     "showing_one": "Εμφανίζεται {{count}} skin",
-    "showing_other": "Εμφανίζονται {{count}} skins"
+    "showing_other": "Εμφανίζονται {{count}} skins",
+    "notAvailable": "Μη διαθέσιμο",
+    "notAvailableMessage": "Αυτό το skin δεν είναι διαθέσιμο ως mod",
+    "unavailableTooltip": "Αυτό το skin δεν έχει διαθέσιμο αρχείο mod"
   },
   "status": {
     "detectingGame": "Εντοπισμός διαδρομής παιχνιδιού...",

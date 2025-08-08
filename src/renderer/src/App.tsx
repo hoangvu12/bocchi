@@ -64,6 +64,7 @@ export interface Skin {
   name: string
   nameEn?: string
   lolSkinsName?: string
+  isInLolSkins?: boolean
   chromas: boolean
   chromaList?: Array<{
     id: number
@@ -677,6 +678,12 @@ function AppContent(): React.JSX.Element {
         return
       }
 
+      // Prevent selection of unavailable skins (unless it's a base skin)
+      if (skin.isInLolSkins === false && skin.num !== 0) {
+        toast.error(t('skin.notAvailableMessage'))
+        return
+      }
+
       // Check for existing selection
       const existingIndex = selectedSkins.findIndex((s) => {
         return (
@@ -699,6 +706,7 @@ function AppContent(): React.JSX.Element {
           skinName: skin.name,
           skinNameEn: skin.nameEn,
           lolSkinsName: skin.lolSkinsName,
+          isInLolSkins: skin.isInLolSkins,
           skinNum: skin.num,
           chromaId: chromaId,
           variantId: variantId,

@@ -58,7 +58,10 @@
     "unfavorite": "ลบออกจากรายการโปรด",
     "clickToApply": "คลิกที่สกินใดก็ได้เพื่อใช้งานทันที",
     "showing_one": "กำลังแสดง {{count}} สกิน",
-    "showing_other": "กำลังแสดง {{count}} สกิน"
+    "showing_other": "กำลังแสดง {{count}} สกิน",
+    "notAvailable": "ไม่พร้อมใช้งาน",
+    "notAvailableMessage": "สกินนี้ไม่พร้อมใช้งานเป็นมอด",
+    "unavailableTooltip": "สกินนี้ไม่มีไฟล์มอดที่พร้อมใช้งาน"
   },
   "status": {
     "detectingGame": "กำลังตรวจจับเส้นทางเกม...",

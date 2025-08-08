@@ -57,7 +57,10 @@
     "unfavorite": "즐겨찾기에서 제거",
     "clickToApply": "스킨을 클릭하여 즉시 적용",
     "showing_one": "{{count}}개 스킨 표시",
-    "showing_other": "{{count}}개 스킨 표시"
+    "showing_other": "{{count}}개 스킨 표시",
+    "notAvailable": "사용할 수 없음",
+    "notAvailableMessage": "이 스킨은 모드로 제공되지 않습니다",
+    "unavailableTooltip": "이 스킨에는 사용 가능한 모드 파일이 없습니다"
   },
   "status": {
     "detectingGame": "게임 경로 감지 중...",

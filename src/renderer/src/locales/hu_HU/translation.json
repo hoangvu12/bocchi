@@ -58,7 +58,10 @@
     "unfavorite": "Eltávolítás a kedvencekből",
     "clickToApply": "Kattintson bármelyik skinre az azonnali alkalmazáshoz",
     "showing_one": "{{count}} skin megjelenítése",
-    "showing_other": "{{count}} skin megjelenítése"
+    "showing_other": "{{count}} skin megjelenítése",
+    "notAvailable": "Nem elérhető",
+    "notAvailableMessage": "Ez a skin nem érhető el modként",
+    "unavailableTooltip": "Ennek a skinnek nincs elérhető mod fájlja"
   },
   "status": {
     "detectingGame": "Játék elérési út keresése...",

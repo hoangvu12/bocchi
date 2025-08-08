@@ -58,7 +58,10 @@
     "unfavorite": "Elimină din favorite",
     "clickToApply": "Faceți clic pe orice skin pentru a-l aplica imediat",
     "showing_one": "Se afișează {{count}} skin",
-    "showing_other": "Se afișează {{count}} skin-uri"
+    "showing_other": "Se afișează {{count}} skin-uri",
+    "notAvailable": "Indisponibil",
+    "notAvailableMessage": "Acest skin nu este disponibil ca mod",
+    "unavailableTooltip": "Acest skin nu are un fișier mod disponibil"
   },
   "status": {
     "detectingGame": "Se detectează calea jocului...",

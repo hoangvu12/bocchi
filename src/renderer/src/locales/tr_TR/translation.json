@@ -58,7 +58,10 @@
     "unfavorite": "Favorilerden kaldır",
     "clickToApply": "Anında uygulamak için herhangi bir skine tıklayın",
     "showing_one": "{{count}} skin gösteriliyor",
-    "showing_other": "{{count}} skin gösteriliyor"
+    "showing_other": "{{count}} skin gösteriliyor",
+    "notAvailable": "Mevcut değil",
+    "notAvailableMessage": "Bu skin mod olarak mevcut değil",
+    "unavailableTooltip": "Bu skinin mevcut bir mod dosyası yok"
   },
   "status": {
     "detectingGame": "Oyun yolu tespit ediliyor...",
