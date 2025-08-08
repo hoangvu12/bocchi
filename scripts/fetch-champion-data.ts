@@ -79,6 +79,7 @@ interface Skin {
   name: string
   nameEn?: string
   lolSkinsName?: string
+  isInLolSkins?: boolean
   chromas: boolean
   chromaList?: Chroma[]
   variants?: {
@@ -676,6 +677,8 @@ function processTieredSkin(skin: CDragonSkin, championId: number, lolSkinsList: 
 
     // Don't try to match base skins (num: 0) with lol-skins
     const match = skinNum === 0 ? null : findBestSkinMatch(tier.name, lolSkinsList)
+    const isBaseSkin = skinNum === 0
+    const hasMatch = match !== null
 
     // Note: Tiers typically don't have their own chromas, but we preserve the structure
     return {
@@ -684,6 +687,7 @@ function processTieredSkin(skin: CDragonSkin, championId: number, lolSkinsList: 
       name: tier.name,
       lolSkinsName:
         match && match.skinInfo.skinName !== tier.name ? match.skinInfo.skinName : undefined,
+      isInLolSkins: isBaseSkin || hasMatch,
       chromas: false, // Tiers usually don't have chromas
       chromaList: undefined,
       rarity: skin.rarity || 'kNoRarity',
@@ -752,6 +756,8 @@ async function fetchChampionDetail(
 
       // Don't try to match base skins (num: 0) with lol-skins
       const match = skinNum === 0 ? null : findBestSkinMatch(skinName, lolSkinsList)
+      const isBaseSkin = skinNum === 0
+      const hasMatch = match !== null
 
       // Process chromas
       let chromaList: Chroma[] | undefined
@@ -774,6 +780,7 @@ async function fetchChampionDetail(
       const englishName = englishSkinNames?.get(skinId)
       const variantLookupName = englishName || skinName
       const variants = SPECIAL_SKIN_VARIANTS[championKey]?.[variantLookupName]
+      const hasVariants = variants !== undefined && variants.items.length > 0
 
       return {
         id: skinId,
@@ -781,6 +788,7 @@ async function fetchChampionDetail(
         name: skinName,
         lolSkinsName:
           match && match.skinInfo.skinName !== skinName ? match.skinInfo.skinName : undefined,
+        isInLolSkins: isBaseSkin || hasMatch || hasVariants,
         chromas: !!(skin.chromas && skin.chromas.length > 0),
         chromaList: chromaList,
         variants: variants,
@@ -854,6 +862,8 @@ async function fetchChampionDetail(
 
         // Don't try to match base skins (num: 0) with lol-skins
         const match = skinNum === 0 ? null : findBestSkinMatch(skinName, lolSkinsList)
+        const isBaseSkin = skinNum === 0
+        const hasMatch = match !== null
 
         // Process chromas
         let chromaList: Chroma[] | undefined
@@ -876,6 +886,7 @@ async function fetchChampionDetail(
         const englishName = englishSkinNames?.get(skinId)
         const variantLookupName = englishName || skinName
         const variants = SPECIAL_SKIN_VARIANTS[championKey]?.[variantLookupName]
+        const hasVariants = variants !== undefined && variants.items.length > 0
 
         return {
           id: skinId,
@@ -883,6 +894,7 @@ async function fetchChampionDetail(
           name: skinName,
           lolSkinsName:
             match && match.skinInfo.skinName !== skinName ? match.skinInfo.skinName : undefined,
+          isInLolSkins: isBaseSkin || hasMatch || hasVariants,
           chromas: !!(skin.chromas && skin.chromas.length > 0),
           chromaList: chromaList,
           variants: variants,

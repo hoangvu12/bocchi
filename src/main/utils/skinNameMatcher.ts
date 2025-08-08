@@ -54,33 +54,65 @@ function parseDirectoryStructure(directoryText: string): Map<string, LolSkinInfo
   const lines = directoryText.split('\n')
 
   let currentChampion = ''
+  let currentPath: string[] = []
 
   for (const line of lines) {
-    // Skip empty lines
-    if (!line.trim()) continue
+    // Skip empty lines and header
+    if (!line.trim() || line.includes('Directory structure:')) continue
 
-    // More flexible pattern - look for any line with indentation followed by text
-    // Check if this is a champion folder (ends with /)
-    const championMatch = line.match(/^\s*[│├└─\s]*([^/│├└─]+)\/\s*$/)
-    if (championMatch) {
-      currentChampion = championMatch[1].trim()
-      skinsMap.set(currentChampion, [])
-      continue
+    // Skip the root "skins/" line
+    if (line.includes('└── skins/')) continue
+
+    // Find the position of the actual branch character (├ or └)
+    const branchPos = Math.max(line.search(/├/), line.search(/└/))
+    if (branchPos === -1) continue
+
+    // Extract content after "── "
+    const contentMatch = line.match(/[├└]──\s+(.+)/)
+    if (!contentMatch) continue
+
+    const content = contentMatch[1].trim()
+    if (!content) continue
+
+    // Calculate depth based on the position of the branch character
+    // Each level adds 4 characters of indentation
+    const depth = Math.floor(branchPos / 4)
+
+    // Check if it's a directory (ends with /)
+    if (content.endsWith('/')) {
+      const dirName = content.slice(0, -1)
+
+      // Update current path based on depth
+      // Trim the path to the current depth level
+      currentPath = currentPath.slice(0, depth)
+      currentPath[depth] = dirName
+
+      if (depth === 1) {
+        // Champion folder (4 spaces indentation)
+        currentChampion = dirName
+        skinsMap.set(currentChampion, [])
+      }
     }
+    // Check if it's a .zip file
+    else if (content.endsWith('.zip')) {
+      // When we encounter a file, we need to trim the path to its parent depth
+      // Files are siblings to directories, so we trim to depth-1
+      currentPath = currentPath.slice(0, depth)
 
-    // Check if this is a skin file (ends with .zip)
-    const skinMatch = line.match(/^\s*[│├└─\s]*(.+\.zip)\s*$/)
-    if (skinMatch && currentChampion) {
-      const fileName = skinMatch[1].trim()
-      const skinName = fileName.slice(0, -4) // Remove .zip extension
+      // Only process skin files (not chromas)
+      // Skin files are at depth 2 (8 spaces) and not under 'chromas' folder
+      if (currentChampion && depth === 2 && !currentPath.includes('chromas')) {
+        const fileName = content
+        const skinName = fileName.slice(0, -4) // Remove .zip extension
 
-      const skins = skinsMap.get(currentChampion) || []
-      skins.push({
-        championName: currentChampion,
-        skinName: skinName,
-        fileName: fileName
-      })
-      skinsMap.set(currentChampion, skins)
+        const skins = skinsMap.get(currentChampion) || []
+        skins.push({
+          championName: currentChampion,
+          skinName: skinName,
+          fileName: fileName
+        })
+        skinsMap.set(currentChampion, skins)
+      }
     }
   }
 
@@ -92,16 +124,8 @@ let cachedLolSkinsData: Map<string, LolSkinInfo[]> | null = null
 
 // Initialize with hardcoded directory structure
 export function initializeLolSkinsData(directoryStructure: string): void {
-  console.log('Parsing directory structure...')
-  console.log('First 200 chars:', directoryStructure.substring(0, 200))
   cachedLolSkinsData = parseDirectoryStructure(directoryStructure)
   console.log(`Initialized lol-skins data with ${cachedLolSkinsData.size} champions`)
-
-  // Debug: Show first champion if any
-  if (cachedLolSkinsData.size > 0) {
-    const firstEntry = Array.from(cachedLolSkinsData.entries())[0]
-    console.log(`First champion: ${firstEntry[0]} with ${firstEntry[1].length} skins`)
-  }
 }
 
 // Get all lol-skins data
