@@ -229,6 +229,11 @@
     "minimizeToTray": {
       "title": "Minimizează în tray",
       "description": "Ascunde aplicația în system tray în loc să o închidă când faceți clic pe butonul de închidere"
+    },
+    "modToolsTimeout": {
+      "title": "Timeout instrumente mod",
+      "description": "Timp maxim de așteptare pentru importul modurilor și crearea overlay-ului",
+      "hint": "Creșteți această valoare dacă aveți multe moduri sau un sistem lent. Reduceți pentru detectarea mai rapidă a erorilor."
     }
   },
   "tray": {

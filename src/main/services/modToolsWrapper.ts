@@ -11,6 +11,7 @@ export class ModToolsWrapper {
   private runningProcess: ChildProcess | null = null
   private mainWindow: BrowserWindow | null = null
   private activeProcesses: ChildProcess[] = []
+  private timeout: number = 300000 // Default 5 minutes in milliseconds
 
   constructor() {
     const toolsDownloader = new ToolsDownloader()
@@ -20,6 +21,10 @@ export class ModToolsWrapper {
     const userData = app.getPath('userData')
     this.profilesPath = path.join(userData, 'profiles')
     this.installedPath = path.join(userData, 'cslol_installed')
+  }
+
+  setToolsTimeout(seconds: number): void {
+    this.timeout = seconds * 1000 // Convert seconds to milliseconds
   }
 
   setMainWindow(window: BrowserWindow) {
@@ -75,7 +80,8 @@ export class ModToolsWrapper {
       let stderr = ''
       const timer = setTimeout(() => {
         process.kill()
-        reject(new Error(`Process timed out after ${timeout}ms`))
+        const timeoutSeconds = Math.round(timeout / 1000)
+        reject(new Error(`Process timed out after ${timeoutSeconds} seconds`))
       }, timeout)
 
       process.stdout.on('data', (data) => {
@@ -224,7 +230,7 @@ export class ModToolsWrapper {
               `--game:${gamePath}`,
               preset.noTFT ? '--noTFT' : ''
             ].filter(Boolean),
-            30000,
+            this.timeout,
             true
           )
 
@@ -273,7 +279,7 @@ export class ModToolsWrapper {
             `[ModToolsWrapper] Executing mkoverlay (Attempt ${attempt}): ${mkoverlayArgs.join(' ')}`
           )
 
-          await this.execToolWithTimeout(this.modToolsPath, mkoverlayArgs, 60000, true)
+          await this.execToolWithTimeout(this.modToolsPath, mkoverlayArgs, this.timeout, true)
 
           overlaySuccess = true
           console.info('[ModToolsWrapper] Overlay created successfully')

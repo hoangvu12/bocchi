@@ -229,6 +229,11 @@
     "minimizeToTray": {
       "title": "Sistem tepsisine küçült",
       "description": "Kapatma düğmesine tıklandığında uygulamayı kapatmak yerine sistem tepsisine gizle"
+    },
+    "modToolsTimeout": {
+      "title": "Mod Araçları Zaman Aşımı",
+      "description": "Mod içe aktarma ve kaplama oluşturma işlemleri için maksimum bekleme süresi",
+      "hint": "Çok sayıda modunuz varsa veya sisteminiz yavaşsa bu değeri artırın. Daha hızlı hata tespiti için azaltın."
     }
   },
   "tray": {

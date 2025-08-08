@@ -67,6 +67,7 @@ export function SettingsDialog({
   const [autoAcceptEnabled, setAutoAcceptEnabled] = useState(false)
   const [autoFixModIssues, setAutoFixModIssues] = useState(false)
   const [minimizeToTray, setMinimizeToTray] = useState(false)
+  const [modToolsTimeout, setModToolsTimeout] = useState(300) // Default 300 seconds
   const [loading, setLoading] = useState(true)
 
   // Atom setters for immediate updates
@@ -165,6 +166,7 @@ export function SettingsDialog({
       setAutoAcceptEnabled(settings.autoAcceptEnabled === true)
       setAutoFixModIssues(settings.autoFixModIssues === true)
       setMinimizeToTray(settings.minimizeToTray === true)
+      setModToolsTimeout(settings.modToolsTimeout || 300) // Default 300 seconds
     } catch (error) {
       console.error('Failed to load settings:', error)
     } finally {
@@ -440,6 +442,16 @@ export function SettingsDialog({
       await window.api.setSettings('minimizeToTray', checked)
     } catch (error) {
       console.error('Failed to save minimize to tray setting:', error)
+    }
+  }
+
+  const handleModToolsTimeoutChange = async (value: number[]) => {
+    const timeout = value[0]
+    setModToolsTimeout(timeout)
+    try {
+      await window.api.setSettings('modToolsTimeout', timeout)
+    } catch (error) {
+      console.error('Failed to save mod tools timeout setting:', error)
     }
   }
 
@@ -823,6 +835,33 @@ export function SettingsDialog({
                 onCheckedChange={handleAutoFixModIssuesChange}
                 disabled={loading}
               />
+            </div>
+
+            {/* Mod Tools Timeout Setting */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between space-x-4">
+                <div className="flex-1">
+                  <h3 className="text-sm font-medium text-text-primary">
+                    {t('settings.modToolsTimeout.title')}
+                  </h3>
+                  <p className="text-xs text-text-secondary mt-1">
+                    {t('settings.modToolsTimeout.description')}
+                  </p>
+                </div>
+                <span className="text-sm font-medium text-text-primary min-w-[3rem] text-right">
+                  {modToolsTimeout}s
+                </span>
+              </div>
+              <Slider
+                value={[modToolsTimeout]}
+                onValueChange={handleModToolsTimeoutChange}
+                min={30}
+                max={600}
+                step={10}
+                disabled={loading}
+                className="w-full"
+              />
+              <p className="text-xs text-text-secondary">{t('settings.modToolsTimeout.hint')}</p>
             </div>
           </TabsContent>
         </Tabs>

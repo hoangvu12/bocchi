@@ -217,6 +217,11 @@
       "title": "Auto-fix mod issues on import",
       "description": "Automatically fix missing health bars, materials, and VFX when importing mods"
     },
+    "modToolsTimeout": {
+      "title": "Mod Tools Timeout",
+      "description": "Maximum time to wait for mod import and overlay creation operations",
+      "hint": "Increase this value if you have many mods or a slow system. Decrease for faster failure detection."
+    },
     "tabs": {
       "general": "General",
       "leagueClient": "League Client",

@@ -214,6 +214,11 @@
     "autoFixModIssues": {
       "title": "Auto-arreglar problemas del mod al importar",
       "description": "Automáticamente arregla barras de vida faltantes, materiales faltantes y efectos VFX al importar mods"
+    },
+    "modToolsTimeout": {
+      "title": "Tiempo de espera de Mod Tools",
+      "description": "Tiempo máximo para esperar la importación de mods y creación de overlay",
+      "hint": "Aumenta este valor si tienes muchos mods o un sistema lento. Disminúyelo para detectar errores más rápido."
     }
   },
   "tray": {

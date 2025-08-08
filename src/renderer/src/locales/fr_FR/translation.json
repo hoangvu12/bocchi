@@ -217,6 +217,11 @@
       "title": "Correction automatique des problèmes de mod à l'importation",
       "description": "Corriger automatiquement les barres de santé manquantes, les matériaux et les VFX lors de l'importation de mods"
     },
+    "modToolsTimeout": {
+      "title": "Délai d'expiration des outils de mod",
+      "description": "Temps maximum d'attente pour l'importation de mods et la création d'overlay",
+      "hint": "Augmentez cette valeur si vous avez beaucoup de mods ou un système lent. Diminuez pour une détection d'erreur plus rapide."
+    },
     "tabs": {
       "general": "Général",
       "leagueClient": "Client League",

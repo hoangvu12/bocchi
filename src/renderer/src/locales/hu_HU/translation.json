@@ -229,6 +229,11 @@
     "minimizeToTray": {
       "title": "Minimalizálás a tálcára",
       "description": "Alkalmazás elrejtése a rendszertálcán a bezárás helyett a bezárás gombra kattintáskor"
+    },
+    "modToolsTimeout": {
+      "title": "Mod eszközök időtúllépés",
+      "description": "Maximális várakozási idő mod importáláshoz és overlay létrehozáshoz",
+      "hint": "Növelje ezt az értéket, ha sok modja van vagy lassú a rendszere. Csökkentse a gyorsabb hibaészleléshez."
     }
   },
   "tray": {

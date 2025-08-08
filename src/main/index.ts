@@ -130,6 +130,10 @@ function createWindow(): void {
     if (mainWindow) {
       updaterService.setMainWindow(mainWindow)
       modToolsWrapper.setMainWindow(mainWindow)
+
+      // Set mod tools timeout from settings
+      const modToolsTimeout = settingsService.get('modToolsTimeout') || 300 // Default 300 seconds
+      modToolsWrapper.setToolsTimeout(modToolsTimeout)
     }
 
     // Check for updates after window is ready
@@ -1443,6 +1447,11 @@ function setupIpcHandlers(): void {
 
   ipcMain.handle('set-settings', async (_, key: string, value: any) => {
     settingsService.set(key, value)
+
+    // If mod tools timeout is being set, update the wrapper
+    if (key === 'modToolsTimeout' && typeof value === 'number') {
+      modToolsWrapper.setToolsTimeout(value)
+    }
 
     // If game path is being set, update the GamePathService cache
     if (key === 'gamePath' && typeof value === 'string') {

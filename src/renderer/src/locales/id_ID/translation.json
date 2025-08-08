@@ -229,6 +229,11 @@
     "minimizeToTray": {
       "title": "Minimalkan ke Tray",
       "description": "Sembunyikan aplikasi ke system tray alih-alih menutup saat mengklik tombol tutup"
+    },
+    "modToolsTimeout": {
+      "title": "Batas Waktu Mod Tools",
+      "description": "Waktu maksimum untuk menunggu impor mod dan pembuatan overlay",
+      "hint": "Tingkatkan nilai ini jika Anda memiliki banyak mod atau sistem yang lambat. Kurangi untuk deteksi kesalahan yang lebih cepat."
     }
   },
   "tray": {

@@ -229,6 +229,11 @@
     "minimizeToTray": {
       "title": "Minimizza nell'area di notifica",
       "description": "Nascondi app nell'area di notifica sistema invece di chiudere quando clicchi il pulsante chiudi"
+    },
+    "modToolsTimeout": {
+      "title": "Timeout strumenti mod",
+      "description": "Tempo massimo di attesa per l'importazione di mod e la creazione di overlay",
+      "hint": "Aumenta questo valore se hai molte mod o un sistema lento. Diminuiscilo per un rilevamento errori più rapido."
     }
   },
   "tray": {

@@ -214,6 +214,11 @@
     "autoFixModIssues": {
       "title": "インポート時にMODの問題を自動修正",
       "description": "MODをインポートする際に不足しているヘルスバー、マテリアル、VFXエフェクトを自動的に修正"
+    },
+    "modToolsTimeout": {
+      "title": "Mod Toolsのタイムアウト",
+      "description": "MODのインポートとオーバーレイ作成の最大待機時間",
+      "hint": "多くのMODがある場合やシステムが遅い場合は、この値を増やしてください。エラー検出を速くする場合は減らしてください。"
     }
   },
   "tray": {

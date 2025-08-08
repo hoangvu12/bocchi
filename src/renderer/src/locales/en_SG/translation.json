@@ -229,6 +229,11 @@
     "minimizeToTray": {
       "title": "Minimise to Tray",
       "description": "Hide the app to system tray instead of closing when clicking the close button"
+    },
+    "modToolsTimeout": {
+      "title": "Mod Tools Timeout",
+      "description": "Maximum time to wait for mod import and overlay creation operations",
+      "hint": "Increase this value if you have many mods or a slow system. Decrease for faster failure detection."
     }
   },
   "tray": {

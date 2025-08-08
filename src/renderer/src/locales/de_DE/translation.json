@@ -217,6 +217,11 @@
       "title": "Mod-Probleme beim Import automatisch reparieren",
       "description": "Automatisch fehlende Lebensbalken, Materialien und VFX beim Import von Mods reparieren"
     },
+    "modToolsTimeout": {
+      "title": "Mod-Tools-Zeitüberschreitung",
+      "description": "Maximale Wartezeit für Mod-Import und Overlay-Erstellung",
+      "hint": "Erhöhen Sie diesen Wert, wenn Sie viele Mods haben oder ein langsames System. Verringern Sie ihn für schnellere Fehlererkennung."
+    },
     "tabs": {
       "general": "Allgemein",
       "leagueClient": "League Client",

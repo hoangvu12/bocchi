@@ -229,6 +229,11 @@
     "minimizeToTray": {
       "title": "最小化到系統匣",
       "description": "點擊關閉按鈕時將應用程式隱藏到系統匣而不是關閉"
+    },
+    "modToolsTimeout": {
+      "title": "模組工具逾時時間",
+      "description": "模組匯入和建立覆蓋層的最大等待時間",
+      "hint": "如果您有很多模組或系統較慢，請增加此值。減少此值可更快偵測錯誤。"
     }
   },
   "tray": {

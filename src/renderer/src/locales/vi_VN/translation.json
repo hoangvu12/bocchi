@@ -216,6 +216,11 @@
       "title": "Tự động sửa lỗi mod khi nhập",
       "description": "Tự động sửa lỗi thanh máu thiếu, vật liệu thiếu và hiệu ứng VFX khi nhập mod"
     },
+    "modToolsTimeout": {
+      "title": "Thời gian chờ Mod Tools",
+      "description": "Thời gian tối đa để chờ nhập mod và tạo overlay",
+      "hint": "Tăng giá trị này nếu bạn có nhiều mod hoặc hệ thống chậm. Giảm để phát hiện lỗi nhanh hơn."
+    },
     "tabs": {
       "general": "Chung",
       "leagueClient": "League Client",

@@ -198,6 +198,11 @@
     "autoFixModIssues": {
       "title": "导入时自动修复模组问题",
       "description": "导入模组时自动修复缺失的血条、材质和VFX效果"
+    },
+    "modToolsTimeout": {
+      "title": "模组工具超时时间",
+      "description": "模组导入和创建覆盖层的最大等待时间",
+      "hint": "如果您有很多模组或系统较慢，请增加此值。减少此值可更快检测错误。"
     }
   },
   "tray": {
