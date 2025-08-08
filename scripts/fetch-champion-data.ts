@@ -656,13 +656,15 @@ async function fetchChampionDetail(
     const detailData = detailResponse.data
 
     // Use lookup map for faster champion folder finding
-    const normalizedName = detailData.name.toLowerCase()
+    // For non-English languages, use the alias (champion key) which is always in English
+    const nameForLookup = language !== 'en_US' ? detailData.alias : detailData.name
+    const normalizedName = nameForLookup.toLowerCase()
     let championFolder = championNameLookup.get(normalizedName)
 
     if (!championFolder) {
       // Fallback to original method if not in lookup
       championFolder =
-        findChampionFolder(detailData.name, Array.from(lolSkinsData.keys())) || undefined
+        findChampionFolder(nameForLookup, Array.from(lolSkinsData.keys())) || undefined
     }
 
     const lolSkinsList = championFolder ? lolSkinsData.get(championFolder) || [] : []
@@ -764,13 +766,15 @@ async function fetchChampionDetail(
       const detailData = detailResponse.data
 
       // Use lookup map for faster champion folder finding
-      const normalizedName = detailData.name.toLowerCase()
+      // Always use the alias (champion key) which is in English
+      const nameForLookup = detailData.alias
+      const normalizedName = nameForLookup.toLowerCase()
       let championFolder = championNameLookup.get(normalizedName)
 
       if (!championFolder) {
         // Fallback to original method if not in lookup
         championFolder =
-          findChampionFolder(detailData.name, Array.from(lolSkinsData.keys())) || undefined
+          findChampionFolder(nameForLookup, Array.from(lolSkinsData.keys())) || undefined
       }
 
       const lolSkinsList = championFolder ? lolSkinsData.get(championFolder) || [] : []
