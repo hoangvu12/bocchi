@@ -48,15 +48,11 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
       async (filePaths: string[]) => {
         setIsImporting(true)
 
-        console.log('handleBatchImport called with paths:', filePaths)
-
         const results: Array<{ filePath: string; success: boolean; error?: string }> = []
 
         for (let i = 0; i < filePaths.length; i++) {
           const filePath = filePaths[i]
           const fileName = filePath.split(/[\\/]/).pop() || ''
-
-          console.log(`Processing file ${i + 1}:`, filePath)
 
           setBatchProgress((prev) => ({
             ...prev,

@@ -572,6 +572,7 @@ function AppContent(): React.JSX.Element {
               onEditCustomSkin={handleEditCustomSkin}
               onSkinClick={handleSkinClick}
               selectedSkins={selectedSkins}
+              fileUploadRef={fileUploadRef}
             />
           </div>
         ) : (

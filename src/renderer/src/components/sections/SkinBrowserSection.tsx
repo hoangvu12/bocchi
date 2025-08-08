@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { useAtom, useSetAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -28,17 +27,18 @@ interface SkinBrowserSectionProps {
   onEditCustomSkin: (skinPath: string, currentName: string) => Promise<void>
   onSkinClick: (champion: Champion, skin: Skin, chromaId?: string) => void
   selectedSkins: any[]
+  fileUploadRef: React.MutableRefObject<any>
 }
 
 export function SkinBrowserSection({
   loading,
   onEditCustomSkin,
   onSkinClick,
-  selectedSkins
+  selectedSkins,
+  fileUploadRef
 }: SkinBrowserSectionProps) {
   const { t } = useTranslation()
   const { championData } = useChampionData()
-  const fileUploadRef = useRef<any>(null)
 
   const [filters, setFilters] = useAtom(filtersAtom)
   const [skinSearchQuery, setSkinSearchQuery] = useAtom(skinSearchQueryAtom)
