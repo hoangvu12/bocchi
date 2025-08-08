@@ -192,12 +192,65 @@ export const displaySkinsAtom = atom((get) => {
   if (isSearchingGlobally) {
     // Global search across all champions
     const searchLower = skinSearchQuery.toLowerCase()
+
+    // Search regular skins
     championData.champions.forEach((champion) => {
       champion.skins.forEach((skin) => {
         if (skin.num !== 0 && skin.name.toLowerCase().includes(searchLower)) {
           allSkins.push({ champion, skin })
         }
       })
+    })
+
+    // Search custom mods
+    downloadedSkins.forEach((downloadedSkin) => {
+      if (downloadedSkin.skinName.includes('[User]')) {
+        // Remove [User] prefix and extension for search
+        const cleanName = downloadedSkin.skinName
+          .replace('[User] ', '')
+          .replace(/\.(wad|zip|fantome|wad\.client)$/i, '')
+
+        // Check if the clean name matches the search query
+        if (cleanName.toLowerCase().includes(searchLower)) {
+          // Find or create champion for this mod
+          let champion: Champion | undefined
+
+          if (downloadedSkin.championName && downloadedSkin.championName !== 'Custom') {
+            champion = championData.champions.find(
+              (c) => c.key.toLowerCase() === downloadedSkin.championName.toLowerCase()
+            )
+          }
+
+          if (!champion) {
+            champion = {
+              id: -1,
+              key: 'Custom',
+              name: 'Custom',
+              nameEn: 'Custom',
+              title: 'Imported Mods',
+              image: '',
+              skins: [],
+              tags: []
+            }
+          }
+
+          // Create custom skin object
+          const customSkin: Skin = {
+            id: `custom_${downloadedSkin.skinName}`,
+            num: -1,
+            name: cleanName,
+            nameEn: cleanName,
+            chromas: false,
+            rarity: 'kNoRarity',
+            rarityGemPath: null,
+            isLegacy: false,
+            skinType: 'custom',
+            description: 'Custom imported mod'
+          }
+
+          allSkins.push({ champion, skin: customSkin })
+        }
+      }
     })
   } else if (selectedChampion) {
     // Show skins for selected champion
