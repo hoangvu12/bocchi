@@ -167,15 +167,32 @@ export class ModToolsWrapper {
         return { success: false, message: 'No skins selected' }
       }
 
-      // Get list of already imported mods
-      const existingMods = new Set<string>()
+      // Map existing mods by their base name (without mod_X_ prefix)
+      // Track ALL occurrences to handle duplicates
+      const existingModsMap = new Map<string, string[]>() // baseName -> [folderNames]
+      const foldersToDelete = new Set<string>()
+
       try {
         const installedDirs = await fs.readdir(this.installedPath)
         for (const dir of installedDirs) {
           const metaPath = path.join(this.installedPath, dir, 'META', 'info.json')
           try {
             await fs.access(metaPath)
-            existingMods.add(dir)
+            // Extract base name from folder (remove mod_X_ prefix)
+            const match = dir.match(/^mod_\d+_(.+)$/)
+            if (match) {
+              const baseName = match[1]
+              const existing = existingModsMap.get(baseName) || []
+              existing.push(dir)
+              existingModsMap.set(baseName, existing)
+              console.debug(`[ModToolsWrapper] Found existing mod: ${dir} (${baseName})`)
+            } else if (dir.startsWith('temp_')) {
+              // Clean up any leftover temp folders from previous failed operations
+              console.warn(`[ModToolsWrapper] Cleaning up temp folder: ${dir}`)
+              await fs
+                .rm(path.join(this.installedPath, dir), { recursive: true, force: true })
+                .catch(() => {})
+            }
           } catch {
             // Not a valid mod directory, skip
           }
@@ -184,49 +201,155 @@ export class ModToolsWrapper {
         // Installed directory doesn't exist yet
       }
 
-      console.info(`[ModToolsWrapper] Found ${existingMods.size} already imported mods`)
+      // Handle duplicates: keep only one instance of each mod (prefer lowest index)
+      for (const [baseName, folders] of existingModsMap.entries()) {
+        if (folders.length > 1) {
+          console.warn(
+            `[ModToolsWrapper] Found ${folders.length} duplicates for ${baseName}: ${folders.join(', ')}`
+          )
+
+          // Sort by index (mod_0 comes before mod_1, etc.)
+          folders.sort((a, b) => {
+            const indexA = parseInt(a.match(/^mod_(\d+)_/)?.[1] || '999')
+            const indexB = parseInt(b.match(/^mod_(\d+)_/)?.[1] || '999')
+            return indexA - indexB
+          })
+
+          // Keep the first one, mark others for deletion
+          const toKeep = folders[0]
+          for (let i = 1; i < folders.length; i++) {
+            foldersToDelete.add(folders[i])
+            console.info(
+              `[ModToolsWrapper] Will delete duplicate: ${folders[i]} (keeping ${toKeep})`
+            )
+          }
+
+          // Update map to only keep the one we're keeping
+          existingModsMap.set(baseName, [toKeep])
+        }
+      }
+
+      // Delete duplicate folders
+      if (foldersToDelete.size > 0) {
+        console.info(`[ModToolsWrapper] Deleting ${foldersToDelete.size} duplicate mod folders`)
+        for (const folderName of foldersToDelete) {
+          try {
+            await fs.rm(path.join(this.installedPath, folderName), { recursive: true, force: true })
+            console.debug(`[ModToolsWrapper] Deleted duplicate: ${folderName}`)
+          } catch (error) {
+            console.error(
+              `[ModToolsWrapper] Failed to delete duplicate folder ${folderName}:`,
+              error
+            )
+          }
+        }
+      }
+
+      console.info(`[ModToolsWrapper] Found ${existingModsMap.size} already imported mods`)
       console.info(`[ModToolsWrapper] Processing ${validSkinMods.length} skins`)
 
-      // Import skins sequentially, skipping already imported ones
-      const importedModNames: string[] = []
-      let skippedCount = 0
+      // Plan operations: determine what needs to be renamed vs imported
+      const renameOperations: Array<{ from: string; to: string; tempName: string }> = []
+      const importOperations: Array<{ modPath: string; targetName: string; index: number }> = []
+      const finalModNames: string[] = []
 
       for (let index = 0; index < validSkinMods.length; index++) {
         const modPath = validSkinMods[index]
         const baseName = path.basename(modPath, path.extname(modPath)).trim()
-        const modName = `mod_${index}_${baseName}`
+        const targetModName = `mod_${index}_${baseName}`
 
+        // Check if this mod already exists (after duplicate cleanup, should only have one)
+        const existingFolders = existingModsMap.get(baseName)
+        if (existingFolders && existingFolders.length > 0) {
+          const currentModName = existingFolders[0] // After cleanup, should only have one
+          if (currentModName !== targetModName) {
+            // Need to rename
+            const tempName = `temp_${Date.now()}_${index}_${baseName}`
+            renameOperations.push({
+              from: currentModName,
+              to: targetModName,
+              tempName: tempName
+            })
+            console.info(`[ModToolsWrapper] Will rename: ${currentModName} -> ${targetModName}`)
+          } else {
+            console.info(`[ModToolsWrapper] Mod already in correct position: ${targetModName}`)
+          }
+          finalModNames.push(targetModName)
+        } else {
+          // Need to import
+          importOperations.push({
+            modPath: modPath,
+            targetName: targetModName,
+            index: index
+          })
+          finalModNames.push(targetModName)
+          console.info(`[ModToolsWrapper] Will import: ${baseName} as ${targetModName}`)
+        }
+      }
+
+      // Execute rename operations using temp names to avoid conflicts
+      if (renameOperations.length > 0) {
+        console.info(`[ModToolsWrapper] Executing ${renameOperations.length} rename operations`)
+
+        // Phase 1: Rename to temp names
+        for (const op of renameOperations) {
+          try {
+            if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+              this.mainWindow.webContents.send('import-progress', {
+                current: 0,
+                total: validSkinMods.length,
+                name: op.from,
+                phase: 'renaming'
+              })
+            }
+
+            const fromPath = path.join(this.installedPath, op.from)
+            const tempPath = path.join(this.installedPath, op.tempName)
+            await fs.rename(fromPath, tempPath)
+            console.debug(`[ModToolsWrapper] Renamed to temp: ${op.from} -> ${op.tempName}`)
+          } catch (error) {
+            console.error(`[ModToolsWrapper] Failed to rename to temp: ${op.from}`, error)
+            throw error
+          }
+        }
+
+        // Phase 2: Rename from temp names to final names
+        for (const op of renameOperations) {
+          try {
+            const tempPath = path.join(this.installedPath, op.tempName)
+            const toPath = path.join(this.installedPath, op.to)
+            await fs.rename(tempPath, toPath)
+            console.debug(`[ModToolsWrapper] Renamed to final: ${op.tempName} -> ${op.to}`)
+          } catch (error) {
+            console.error(`[ModToolsWrapper] Failed to rename from temp: ${op.tempName}`, error)
+            throw error
+          }
+        }
+      }
+
+      // Execute import operations for new skins
+      for (const op of importOperations) {
         // Report progress
         if (this.mainWindow && !this.mainWindow.isDestroyed()) {
           this.mainWindow.webContents.send('import-progress', {
-            current: index + 1,
+            current: op.index + 1,
             total: validSkinMods.length,
-            name: baseName,
+            name: path.basename(op.modPath, path.extname(op.modPath)),
             phase: 'importing'
           })
         }
 
-        // Check if this mod is already imported
-        if (existingMods.has(modName)) {
-          console.info(
-            `[ModToolsWrapper] Skipping already imported mod ${index + 1}/${validSkinMods.length}: ${baseName}`
-          )
-          importedModNames.push(modName)
-          skippedCount++
-          continue
-        }
-
         try {
           console.info(
-            `[ModToolsWrapper] Importing ${index + 1}/${validSkinMods.length}: ${baseName}`
+            `[ModToolsWrapper] Importing ${op.index + 1}/${validSkinMods.length}: ${op.targetName}`
           )
 
           await this.execToolWithTimeout(
             this.modToolsPath,
             [
               'import',
-              path.normalize(modPath),
-              path.normalize(path.join(this.installedPath, modName)),
+              path.normalize(op.modPath),
+              path.normalize(path.join(this.installedPath, op.targetName)),
               `--game:${gamePath}`,
               preset.noTFT ? '--noTFT' : ''
             ].filter(Boolean),
@@ -234,20 +357,26 @@ export class ModToolsWrapper {
             true
           )
 
-          importedModNames.push(modName)
-          console.info(`[ModToolsWrapper] Successfully imported: ${baseName}`)
+          console.info(`[ModToolsWrapper] Successfully imported: ${op.targetName}`)
         } catch (error) {
-          console.error(`[ModToolsWrapper] Failed to import skin ${index + 1}:`, error)
+          console.error(`[ModToolsWrapper] Failed to import skin ${op.index + 1}:`, error)
           // Continue with other skins even if one fails
+          // Remove from final list if import failed
+          const failedIndex = finalModNames.indexOf(op.targetName)
+          if (failedIndex !== -1) {
+            finalModNames.splice(failedIndex, 1)
+          }
         }
       }
+
+      const importedModNames = finalModNames
 
       if (importedModNames.length === 0) {
         throw new Error('Failed to import any skins')
       }
 
       console.info(
-        `[ModToolsWrapper] Import complete. Imported: ${importedModNames.length - skippedCount}, Skipped: ${skippedCount}`
+        `[ModToolsWrapper] Operations complete. Renamed: ${renameOperations.length}, Imported: ${importOperations.length}, Total: ${importedModNames.length}`
       )
 
       const profileName = `preset_${preset.id}`
