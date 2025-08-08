@@ -33,16 +33,21 @@ jobs:
       
       - name: Generate directory structure
         run: |
+          # Stay in the parent directory to get the └── skins/ format
           cd lol-skins-repo
           
-          # Generate tree structure with Unicode box-drawing characters
-          # --charset=utf-8 ensures proper box characters
-          # -F adds / to directories
-          # --dirsfirst shows directories before files
-          tree --charset=utf-8 -F --dirsfirst -I '.git|.github|README.md|.DS_Store' skins > ../scripts/lol_skins_directory.txt
+          # Generate tree from parent directory to show └── skins/
+          # This creates the proper indentation with the root symbol
+          tree --charset=utf-8 -F --dirsfirst -I '.git|.github|README.md|.DS_Store' -d -L 0 . > temp_root.txt
+          tree --charset=utf-8 -F --dirsfirst -I '.git|.github|README.md|.DS_Store' skins > temp_tree.txt
           
-          # Add header
-          echo "Directory structure:" | cat - ../scripts/lol_skins_directory.txt > temp && mv temp ../scripts/lol_skins_directory.txt
+          # Manually create the proper format
+          echo "Directory structure:" > ../scripts/lol_skins_directory.txt
+          echo "└── skins/" >> ../scripts/lol_skins_directory.txt
+          # Add 4 spaces indentation to each line of the tree output
+          tail -n +2 temp_tree.txt | sed 's/^/    /' >> ../scripts/lol_skins_directory.txt
+          
+          rm temp_root.txt temp_tree.txt
           
           # Show first 30 lines for verification in logs
           echo "Generated directory structure (first 30 lines):"
