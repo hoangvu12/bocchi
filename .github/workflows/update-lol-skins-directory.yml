@@ -35,9 +35,11 @@ jobs:
         run: |
           cd lol-skins-repo
           
-          # Generate tree structure exactly like the example
-          # No file sizes, no extra info, just the structure
-          tree --dirsfirst -I '.git|.github|README.md|.DS_Store' skins > ../scripts/lol_skins_directory.txt
+          # Generate tree structure with Unicode box-drawing characters
+          # --charset=utf-8 ensures proper box characters
+          # -F adds / to directories
+          # --dirsfirst shows directories before files
+          tree --charset=utf-8 -F --dirsfirst -I '.git|.github|README.md|.DS_Store' skins > ../scripts/lol_skins_directory.txt
           
           # Add header
           echo "Directory structure:" | cat - ../scripts/lol_skins_directory.txt > temp && mv temp ../scripts/lol_skins_directory.txt
