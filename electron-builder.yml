@@ -2,6 +2,23 @@ appId: com.bocchi.app
 productName: Bocchi
 directories:
   buildResources: build
+fileAssociations:
+  - ext: wad
+    name: 'League of Legends WAD File'
+    description: 'League of Legends WAD archive'
+    role: Editor
+  - ext: wad.client
+    name: 'League of Legends Client WAD'
+    description: 'League of Legends client WAD archive'
+    role: Editor
+  - ext: zip
+    name: 'League Skin Archive'
+    description: 'League of Legends skin mod archive'
+    role: Editor
+  - ext: fantome
+    name: 'Fantome Skin File'
+    description: 'Fantome mod file for League of Legends'
+    role: Editor
 files:
   - '!**/.vscode/*'
   - '!src/*'

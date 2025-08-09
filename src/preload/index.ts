@@ -63,6 +63,16 @@ const api = {
   // File path helper
   getPathForFile: (file: File) => webUtils.getPathForFile(file),
 
+  // File association handlers
+  notifyRendererReady: () => ipcRenderer.invoke('renderer-ready'),
+  getPendingFiles: () => ipcRenderer.invoke('get-pending-files'),
+  clearPendingFiles: () => ipcRenderer.invoke('clear-pending-files'),
+  onFilesToImport: (callback: (filePaths: string[]) => void) => {
+    const handler = (_: any, filePaths: string[]) => callback(filePaths)
+    ipcRenderer.on('files-to-import', handler)
+    return () => ipcRenderer.removeListener('files-to-import', handler)
+  },
+
   // Patcher controls
   runPatcher: (gamePath: string, selectedSkins: string[]) =>
     ipcRenderer.invoke('run-patcher', gamePath, selectedSkins),

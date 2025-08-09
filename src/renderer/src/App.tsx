@@ -648,6 +648,55 @@ function AppContent(): React.JSX.Element {
     }
   }, [selectedSkins, setSelectedSkins, setStatusMessage, t])
 
+  // Handle file association imports
+  useEffect(() => {
+    // Notify main process that renderer is ready
+    window.api.notifyRendererReady()
+
+    // Function to check and process pending files with retry
+    const checkPendingFiles = async (retryCount = 0) => {
+      const files = await window.api.getPendingFiles()
+
+      if (files.length > 0) {
+        if (fileUploadRef.current) {
+          // Ref is ready, process files
+          fileUploadRef.current.handleDroppedFiles(files)
+          // Clear pending files after successful processing
+          window.api.clearPendingFiles()
+        } else if (retryCount < 10) {
+          // Ref not ready yet, retry after a short delay
+          setTimeout(() => checkPendingFiles(retryCount + 1), 100)
+        }
+      }
+    }
+
+    // Check for pending files after a short delay to ensure components are mounted
+    setTimeout(() => checkPendingFiles(), 500)
+
+    // Listen for files opened while app is running
+    const unsubscribe = window.api.onFilesToImport((filePaths) => {
+      if (fileUploadRef.current) {
+        fileUploadRef.current.handleDroppedFiles(filePaths)
+      } else {
+        // If ref not ready, retry a few times
+        let retries = 0
+        const retryInterval = setInterval(() => {
+          if (fileUploadRef.current || retries >= 10) {
+            if (fileUploadRef.current) {
+              fileUploadRef.current.handleDroppedFiles(filePaths)
+            }
+            clearInterval(retryInterval)
+          }
+          retries++
+        }, 100)
+      }
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [])
+
   // Clean up auto-selected skins when leaving champion select or disabling auto-selection
   useEffect(() => {
     return () => {

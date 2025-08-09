@@ -114,6 +114,12 @@ export interface IApi {
   // File path helper
   getPathForFile: (file: File) => string
 
+  // File association handlers
+  notifyRendererReady: () => Promise<{ success: boolean }>
+  getPendingFiles: () => Promise<string[]>
+  clearPendingFiles: () => Promise<{ success: boolean }>
+  onFilesToImport: (callback: (filePaths: string[]) => void) => () => void
+
   runPatcher: (
     gamePath: string,
     selectedSkins: string[]

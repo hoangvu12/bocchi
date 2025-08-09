@@ -72,6 +72,45 @@ let currentChampionId: number | null = null
 let mainWindow: BrowserWindow | null = null
 let tray: Tray | null = null
 
+// Queue for files opened before renderer is ready
+const pendingFilesToImport: Set<string> = new Set()
+let rendererReady = false
+
+// Helper function to check if file is a supported skin file
+function isSupportedSkinFile(filePath: string): boolean {
+  if (!filePath) return false
+  const lowercasePath = filePath.toLowerCase()
+  return (
+    lowercasePath.endsWith('.wad.client') ||
+    lowercasePath.endsWith('.wad') ||
+    lowercasePath.endsWith('.zip') ||
+    lowercasePath.endsWith('.fantome')
+  )
+}
+
+// Helper function to process file paths and send to renderer
+function sendFilesToRenderer(filePaths: string[]): void {
+  if (!mainWindow) return
+
+  const validFiles = filePaths.filter((filePath) => {
+    if (!isSupportedSkinFile(filePath)) return false
+    try {
+      return fs.existsSync(filePath)
+    } catch {
+      return false
+    }
+  })
+
+  if (validFiles.length > 0) {
+    if (rendererReady) {
+      mainWindow.webContents.send('files-to-import', validFiles)
+    } else {
+      // Queue files if renderer isn't ready
+      validFiles.forEach((file) => pendingFilesToImport.add(file))
+    }
+  }
+}
+
 // Request single instance lock
 const gotTheLock = app.requestSingleInstanceLock()
 
@@ -80,8 +119,11 @@ if (!gotTheLock) {
   app.quit()
 } else {
   // Handle second instance attempt
-  app.on('second-instance', () => {
-    // Someone tried to run a second instance, focus our window instead
+  app.on('second-instance', (_event, commandLine) => {
+    // Extract file paths from command line arguments
+    const filePaths = commandLine.slice(1).filter(isSupportedSkinFile)
+
+    // Focus our window
     if (mainWindow) {
       if (mainWindow.isMinimized()) {
         mainWindow.restore()
@@ -90,6 +132,11 @@ if (!gotTheLock) {
         mainWindow.show()
       }
       mainWindow.focus()
+
+      // Send files to renderer
+      if (filePaths.length > 0) {
+        sendFilesToRenderer(filePaths)
+      }
     }
   })
 }
@@ -404,6 +451,18 @@ function createTray(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+// Handle file open on macOS
+app.on('open-file', (event, filePath) => {
+  event.preventDefault()
+  if (isSupportedSkinFile(filePath)) {
+    if (mainWindow && rendererReady) {
+      sendFilesToRenderer([filePath])
+    } else {
+      pendingFilesToImport.add(filePath)
+    }
+  }
+})
+
 if (gotTheLock) {
   app.whenReady().then(async () => {
     // Set app user model id for windows
@@ -411,6 +470,11 @@ if (gotTheLock) {
 
     // Initialize migration service
     await skinMigrationService.initialize()
+
+    // Process command line files (Windows/Linux)
+    // Skip first arg (executable path) and look for skin files
+    const initialFiles = process.argv.slice(1).filter(isSupportedSkinFile)
+    initialFiles.forEach((file) => pendingFilesToImport.add(file))
 
     // Default open or close DevTools by F12 in development
     // and ignore CommandOrControl + R in production.
@@ -1988,6 +2052,31 @@ function setupIpcHandlers(): void {
       }
     }
   )
+
+  // File association handlers
+  ipcMain.handle('renderer-ready', () => {
+    rendererReady = true
+
+    // Send any pending files to the renderer
+    if (pendingFilesToImport.size > 0 && mainWindow) {
+      const files = Array.from(pendingFilesToImport)
+      pendingFilesToImport.clear()
+      mainWindow.webContents.send('files-to-import', files)
+    }
+
+    return { success: true }
+  })
+
+  ipcMain.handle('get-pending-files', () => {
+    const files = Array.from(pendingFilesToImport)
+    // Don't clear here - let the renderer confirm they were processed
+    return files
+  })
+
+  ipcMain.handle('clear-pending-files', () => {
+    pendingFilesToImport.clear()
+    return { success: true }
+  })
 }
 
 // Show overlay with auto-selected skin data
