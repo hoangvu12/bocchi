@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "إلغاء",
   "success": "نجح",
@@ -361,7 +363,17 @@
     "manageDownloaded": "إدارة الأشكال المحملة",
     "downloadedCount": "الأشكال المحملة ({{count}})",
     "allSkins": "جميع الأشكال",
-    "autoSelected": "تلقائي"
+    "autoSelected": "تلقائي",
+    "generateMetadata": "توليد البيانات الوصفية",
+    "generating": "جاري التوليد...",
+    "checkForUpdates": "التحقق من التحديثات",
+    "checking": "جاري التحقق...",
+    "updateAvailable": "تحديث متاح",
+    "update": "تحديث",
+    "updating": "جاري التحديث...",
+    "updateAll": "تحديث الكل ({{count}})",
+    "updatingCount": "جاري تحديث {{count}}...",
+    "downloadedBeforeTracking": "تم التحميل قبل تتبع التحديث"
   },
   "filters": {
     "title": "المرشحات والترتيب",
@@ -396,7 +408,9 @@
       "mythic": "أسطوري",
       "transcendent": "متسامي",
       "exalted": "عالي"
-    }
+    },
+    "availability": "التوفر",
+    "showUnavailable": "إظهار المظاهر غير المتاحة"
   },
   "patcher": {
     "applying": "جاري التطبيق...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "هل أنت متأكد من حذف جميع الأشكال؟ هذا الإجراء لا يمكن التراجع عنه.",
     "confirmDeleteChampion": "هل أنت متأكد من حذف جميع الأشكال لـ {{champion}}؟ هذا الإجراء لا يمكن التراجع عنه."
+  },
+  "importMethod": {
+    "title": "استيراد تعديل مخصص",
+    "description": "اختر كيف تريد استيراد التعديل المخصص الخاص بك",
+    "fileTab": "من ملف",
+    "urlTab": "من رابط",
+    "dropFiles": "اسحب الملفات هنا",
+    "or": "أو",
+    "browseFiles": "تصفح الملفات",
+    "supportedFormats": "الصيغ المدعومة:",
+    "enterDirectUrl": "أدخل رابط التحميل المباشر",
+    "directUrlPlaceholder": "https://example.com/mod.zip",
+    "enterUrl": "الرجاء إدخال رابط",
+    "invalidUrl": "رابط غير صالح. الرجاء توفير رابط تحميل مباشر لملف التعديل",
+    "downloadFailed": "فشل تحميل التعديل",
+    "downloading": "جاري التحميل...",
+    "download": "تحميل واستيراد",
+    "directDownloadNote": "يتم دعم روابط التحميل المباشر فقط",
+    "clipboardError": "فشل قراءة الحافظة"
   }
 }

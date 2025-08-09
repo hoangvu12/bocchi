@@ -38,7 +38,9 @@
     "exitMultiSelect": "Exit Multi-Select",
     "deleteSelected": "Delete Selected",
     "selectAll": "Select All",
-    "clearSelection": "Clear Selection"
+    "clearSelection": "Clear Selection",
+    "minimize": "Minimise",
+    "maximize": "Maximise"
   },
   "nav": {
     "favorites": "Favourites",
@@ -312,7 +314,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "Cancel",
   "success": "Success",
@@ -361,7 +365,17 @@
     "manageDownloaded": "Manage downloaded skins",
     "downloadedCount": "Downloaded Skins ({{count}})",
     "allSkins": "All Skins",
-    "autoSelected": "Auto"
+    "autoSelected": "Auto",
+    "generateMetadata": "Generate Metadata",
+    "generating": "Generating...",
+    "checkForUpdates": "Check for Updates",
+    "checking": "Checking...",
+    "updateAvailable": "Update Available",
+    "update": "Update",
+    "updating": "Updating...",
+    "updateAll": "Update All ({{count}})",
+    "updatingCount": "Updating {{count}}...",
+    "downloadedBeforeTracking": "Downloaded before update tracking"
   },
   "filters": {
     "title": "Filters & Sort",
@@ -396,7 +410,9 @@
       "mythic": "Mythic",
       "transcendent": "Transcendent",
       "exalted": "Exalted"
-    }
+    },
+    "availability": "Availability",
+    "showUnavailable": "Show unavailable skins"
   },
   "patcher": {
     "applying": "Applying...",
@@ -532,5 +548,24 @@
   "confirmations": {
     "confirmDeleteAll": "Are you sure you want to delete all skins? This action cannot be undone.",
     "confirmDeleteChampion": "Are you sure you want to delete all skins for {{champion}}? This action cannot be undone."
+  },
+  "importMethod": {
+    "title": "Import Custom Mod",
+    "description": "Choose how you want to import your custom mod",
+    "fileTab": "From File",
+    "urlTab": "From URL",
+    "dropFiles": "Drop files here",
+    "or": "or",
+    "browseFiles": "Browse Files",
+    "supportedFormats": "Supported formats:",
+    "enterDirectUrl": "Enter direct download URL",
+    "directUrlPlaceholder": "https://example.com/mod.zip",
+    "enterUrl": "Please enter a URL",
+    "invalidUrl": "Invalid URL. Please provide a direct download link to a mod file",
+    "downloadFailed": "Failed to download mod",
+    "downloading": "Downloading...",
+    "download": "Download & Import",
+    "directDownloadNote": "Only direct download links are supported",
+    "clipboardError": "Failed to read clipboard"
   }
 }

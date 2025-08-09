@@ -65,7 +65,9 @@
     "showing": "Đang hiển thị {{count}} trang phục",
     "notAvailable": "Không khả dụng",
     "notAvailableMessage": "Trang phục này không có sẵn dưới dạng mod",
-    "unavailableTooltip": "Trang phục này không có tệp mod khả dụng"
+    "unavailableTooltip": "Trang phục này không có tệp mod khả dụng",
+    "showing_one": "Đang hiển thị {{count}} trang phục",
+    "showing_other": "Đang hiển thị {{count}} trang phục"
   },
   "status": {
     "detectingGame": "Đang tìm đường dẫn game...",
@@ -369,7 +371,13 @@
     "updating": "Đang cập nhật...",
     "updateAll": "Cập nhật tất cả ({{count}})",
     "updatingCount": "Đang cập nhật {{count}}...",
-    "downloadedBeforeTracking": "Đã tải xuống trước khi theo dõi cập nhật"
+    "downloadedBeforeTracking": "Đã tải xuống trước khi theo dõi cập nhật",
+    "selected_one": "{{count}} skin selected",
+    "selected_other": "{{count}} skins selected",
+    "chromas_one": "{{count}} chroma available",
+    "chromas_other": "{{count}} chromas available",
+    "chooseChroma_one": "Choose from {{count}} available chroma",
+    "chooseChroma_other": "Choose from {{count}} available chromas"
   },
   "filters": {
     "title": "Bộ lọc & Sắp xếp",
@@ -413,7 +421,9 @@
     "stopping": "Đang dừng...",
     "stopPatcher": "Dừng Patcher",
     "apply": "Áp dụng {{count}} trang phục",
-    "messages": "Thông báo từ Patcher:"
+    "messages": "Thông báo từ Patcher:",
+    "apply_one": "Apply {{count}} Skin",
+    "apply_other": "Apply {{count}} Skins"
   },
   "presets": {
     "title": "Bộ cài đặt sẵn",
@@ -475,7 +485,9 @@
     "joinRoom": "Tham gia phòng",
     "roomId": "Phòng: {{id}}",
     "copyRoomId": "Sao chép mã phòng",
-    "members": "{{count}} thành viên"
+    "members": "{{count}} thành viên",
+    "members_one": "{{count}} member",
+    "members_other": "{{count}} members"
   },
   "fileTransfer": {
     "incoming": "Chuyển tệp đến",
@@ -526,7 +538,8 @@
     "applying": "Đang áp dụng {{count}} trang phục cho: {{champions}}",
     "success": "Đã áp dụng {{applied}} trong {{total}} trang phục",
     "failed": "Không thể áp dụng trang phục",
-    "noSkinsToApply": "Không có trang phục nào để áp dụng cho đội của bạn"
+    "noSkinsToApply": "Không có trang phục nào để áp dụng cho đội của bạn",
+    "noSkinsForTeam": "No skins selected for your team champions"
   },
   "errors": {
     "generic": "Đã xảy ra lỗi",
@@ -539,5 +552,24 @@
   "confirmations": {
     "confirmDeleteAll": "Bạn có chắc chắn muốn xóa tất cả trang phục? Hành động này không thể hoàn tác.",
     "confirmDeleteChampion": "Bạn có chắc chắn muốn xóa tất cả trang phục của {{champion}}? Hành động này không thể hoàn tác."
+  },
+  "importMethod": {
+    "title": "Nhập Mod Tùy Chỉnh",
+    "description": "Chọn cách bạn muốn nhập mod tùy chỉnh của mình",
+    "fileTab": "Từ Tệp",
+    "urlTab": "Từ URL",
+    "dropFiles": "Thả tệp vào đây",
+    "or": "hoặc",
+    "browseFiles": "Duyệt Tệp",
+    "supportedFormats": "Định dạng được hỗ trợ:",
+    "enterDirectUrl": "Nhập URL tải xuống trực tiếp",
+    "directUrlPlaceholder": "https://example.com/mod.zip",
+    "enterUrl": "Vui lòng nhập URL",
+    "invalidUrl": "URL không hợp lệ. Vui lòng cung cấp liên kết tải xuống trực tiếp đến tệp mod",
+    "downloadFailed": "Không thể tải xuống mod",
+    "downloading": "Đang tải xuống...",
+    "download": "Tải xuống & Nhập",
+    "directDownloadNote": "Chỉ hỗ trợ liên kết tải xuống trực tiếp",
+    "clipboardError": "Không thể đọc clipboard"
   }
 }

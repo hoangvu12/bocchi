@@ -311,8 +311,10 @@
     "saveChanges": "Salvar Alterações"
   },
   "common": {
-    "cancel": "Cancel",
-    "close": "Close"
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "save": "Salvar",
+    "saving": "Salvando..."
   },
   "cancel": "Cancelar",
   "success": "Sucesso",
@@ -361,7 +363,17 @@
     "manageDownloaded": "Gerenciar skins baixadas",
     "downloadedCount": "Skins Baixadas ({{count}})",
     "allSkins": "Todas as Skins",
-    "autoSelected": "Auto"
+    "autoSelected": "Auto",
+    "generateMetadata": "Gerar Metadados",
+    "generating": "Gerando...",
+    "checkForUpdates": "Verificar atualizações",
+    "checking": "Verificando...",
+    "updateAvailable": "Atualização disponível",
+    "update": "Atualizar",
+    "updating": "Atualizando...",
+    "updateAll": "Atualizar tudo ({{count}})",
+    "updatingCount": "Atualizando {{count}}...",
+    "downloadedBeforeTracking": "Baixado antes do rastreamento de atualização"
   },
   "filters": {
     "title": "Filtros e Ordenação",
@@ -396,7 +408,9 @@
       "mythic": "Mítica",
       "transcendent": "Transcendente",
       "exalted": "Exaltada"
-    }
+    },
+    "availability": "Disponibilidade",
+    "showUnavailable": "Mostrar skins não disponíveis"
   },
   "patcher": {
     "applying": "Aplicando...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "Tem certeza de que deseja excluir todas as skins? Esta ação não pode ser desfeita.",
     "confirmDeleteChampion": "Tem certeza de que deseja excluir todas as skins de {{champion}}? Esta ação não pode ser desfeita."
+  },
+  "importMethod": {
+    "title": "Importar Mod Personalizado",
+    "description": "Escolha como você deseja importar seu mod personalizado",
+    "fileTab": "Do Arquivo",
+    "urlTab": "Da URL",
+    "dropFiles": "Solte os arquivos aqui",
+    "or": "ou",
+    "browseFiles": "Procurar Arquivos",
+    "supportedFormats": "Formatos suportados:",
+    "enterDirectUrl": "Digite a URL de download direto",
+    "directUrlPlaceholder": "https://exemplo.com/mod.zip",
+    "enterUrl": "Por favor, digite uma URL",
+    "invalidUrl": "URL inválida. Por favor, forneça um link de download direto para um arquivo mod",
+    "downloadFailed": "Falha ao baixar mod",
+    "downloading": "Baixando...",
+    "download": "Baixar e Importar",
+    "directDownloadNote": "Apenas links de download direto são suportados",
+    "clipboardError": "Falha ao ler área de transferência"
   }
 }

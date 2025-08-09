@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "Annulla",
   "success": "Successo",
@@ -361,7 +363,17 @@
     "manageDownloaded": "Gestisci skin scaricate",
     "downloadedCount": "Skin scaricate ({{count}})",
     "allSkins": "Tutte le skin",
-    "autoSelected": "Auto"
+    "autoSelected": "Auto",
+    "generateMetadata": "Genera Metadata",
+    "generating": "Generazione...",
+    "checkForUpdates": "Controlla aggiornamenti",
+    "checking": "Controllo...",
+    "updateAvailable": "Aggiornamento disponibile",
+    "update": "Aggiorna",
+    "updating": "Aggiornamento...",
+    "updateAll": "Aggiorna tutto ({{count}})",
+    "updatingCount": "Aggiornamento {{count}}...",
+    "downloadedBeforeTracking": "Scaricato prima del tracciamento aggiornamenti"
   },
   "filters": {
     "title": "Filtri e ordinamento",
@@ -396,7 +408,9 @@
       "mythic": "Mythic",
       "transcendent": "Transcendent",
       "exalted": "Exalted"
-    }
+    },
+    "availability": "Disponibilità",
+    "showUnavailable": "Mostra skin non disponibili"
   },
   "patcher": {
     "applying": "Applicando...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "Sei sicuro di voler eliminare tutte le skin? Questa azione non può essere annullata.",
     "confirmDeleteChampion": "Sei sicuro di voler eliminare tutte le skin per {{champion}}? Questa azione non può essere annullata."
+  },
+  "importMethod": {
+    "title": "Importa Mod Personalizzata",
+    "description": "Scegli come vuoi importare la tua mod personalizzata",
+    "fileTab": "Da File",
+    "urlTab": "Da URL",
+    "dropFiles": "Rilascia i file qui",
+    "or": "o",
+    "browseFiles": "Sfoglia File",
+    "supportedFormats": "Formati supportati:",
+    "enterDirectUrl": "Inserisci URL di download diretto",
+    "directUrlPlaceholder": "https://esempio.com/mod.zip",
+    "enterUrl": "Per favore inserisci un URL",
+    "invalidUrl": "URL non valido. Fornisci un link di download diretto a un file mod",
+    "downloadFailed": "Download della mod fallito",
+    "downloading": "Download in corso...",
+    "download": "Scarica e Importa",
+    "directDownloadNote": "Sono supportati solo link di download diretti",
+    "clipboardError": "Impossibile leggere gli appunti"
   }
 }

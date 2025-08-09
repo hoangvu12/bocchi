@@ -37,7 +37,8 @@
     "exitMultiSelect": "Выйти из множественного выбора",
     "deleteSelected": "Удалить выбранные",
     "selectAll": "Выбрать все",
-    "clearSelection": "Очистить выбор"
+    "clearSelection": "Очистить выбор",
+    "cancel": "Отмена"
   },
   "nav": {
     "favorites": "Избранное",
@@ -89,7 +90,8 @@
     "deletedSkin": "Удален скин: {{name}}",
     "failedToDeleteMod": "Не удалось удалить мод: {{error}}",
     "failedToDeleteSkin": "Не удалось удалить скин: {{error}}",
-    "autoSelectedSkinsCleanedUp": "Очищено {{count}} автоматически выбранных скинов"
+    "autoSelectedSkinsCleanedUp": "Очищено {{count}} автоматически выбранных скинов",
+    "autoAcceptedMatch": "Матч принят автоматически!"
   },
   "tools": {
     "required": "Требуются инструменты CS:LOL",
@@ -237,6 +239,23 @@
     "applicationUpdate": {
       "title": "Обновления приложения",
       "description": "Текущая версия: {{version}}"
+    },
+    "autoAccept": {
+      "title": "Автопринятие матча",
+      "description": "Автоматически принимать проверку готовности при нахождении матча"
+    },
+    "tabs": {
+      "general": "Общие",
+      "leagueClient": "Клиент League",
+      "skinManagement": "Управление скинами"
+    },
+    "randomSkinSelection": {
+      "title": "Случайный выбор скина",
+      "none": "Отключено"
+    },
+    "minimizeToTray": {
+      "title": "Свернуть в трей",
+      "description": "Скрывать приложение в системный трей вместо закрытия при нажатии кнопки закрытия"
     }
   },
   "tray": {
@@ -304,8 +323,10 @@
     "saveChanges": "Сохранить изменения"
   },
   "common": {
-    "cancel": "Cancel",
-    "close": "Close"
+    "cancel": "Отмена",
+    "close": "Закрыть",
+    "save": "Сохранить",
+    "saving": "Сохранение..."
   },
   "cancel": "Отмена",
   "success": "Успешно",
@@ -399,7 +420,9 @@
       "mythic": "Мифический",
       "transcendent": "Запредельный",
       "exalted": "Возвышенный"
-    }
+    },
+    "availability": "Availability",
+    "showUnavailable": "Show unavailable skins"
   },
   "patcher": {
     "applying": "Применение...",
@@ -528,5 +551,24 @@
   "confirmations": {
     "confirmDeleteAll": "Вы уверены, что хотите удалить все скины? Это действие нельзя отменить.",
     "confirmDeleteChampion": "Вы уверены, что хотите удалить все скины для {{champion}}? Это действие нельзя отменить."
+  },
+  "importMethod": {
+    "title": "Импорт пользовательского мода",
+    "description": "Выберите способ импорта вашего пользовательского мода",
+    "fileTab": "Из файла",
+    "urlTab": "Из URL",
+    "dropFiles": "Перетащите файлы сюда",
+    "or": "или",
+    "browseFiles": "Обзор файлов",
+    "supportedFormats": "Поддерживаемые форматы:",
+    "enterDirectUrl": "Введите прямую ссылку для скачивания",
+    "directUrlPlaceholder": "https://example.com/mod.zip",
+    "enterUrl": "Пожалуйста, введите URL",
+    "invalidUrl": "Неверный URL. Пожалуйста, предоставьте прямую ссылку на файл мода",
+    "downloadFailed": "Не удалось скачать мод",
+    "downloading": "Загрузка...",
+    "download": "Скачать и импортировать",
+    "directDownloadNote": "Поддерживаются только прямые ссылки для скачивания",
+    "clipboardError": "Не удалось прочитать буфер обмена"
   }
 }

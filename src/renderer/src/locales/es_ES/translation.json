@@ -37,7 +37,8 @@
     "exitMultiSelect": "Salir de selección múltiple",
     "deleteSelected": "Eliminar seleccionados",
     "selectAll": "Seleccionar todo",
-    "clearSelection": "Limpiar selección"
+    "clearSelection": "Limpiar selección",
+    "cancel": "Cancelar"
   },
   "nav": {
     "favorites": "Favoritos",
@@ -89,7 +90,8 @@
     "deletedSkin": "Skin eliminado: {{name}}",
     "failedToDeleteMod": "Error al eliminar mod: {{error}}",
     "failedToDeleteSkin": "Error al eliminar skin: {{error}}",
-    "autoSelectedSkinsCleanedUp": "Se limpiaron {{count}} skins seleccionados automáticamente"
+    "autoSelectedSkinsCleanedUp": "Se limpiaron {{count}} skins seleccionados automáticamente",
+    "autoAcceptedMatch": "¡Partida aceptada automáticamente!"
   },
   "tools": {
     "required": "Se requieren herramientas CS:LOL",
@@ -166,21 +168,21 @@
       "description": "Aceptar automáticamente la verificación de listo cuando se encuentre una partida"
     },
     "autoPick": {
-      "title": "Selección automática",
-      "description": "Seleccionar campeones automáticamente durante la selección de campeón",
-      "force": "Forzar selección",
-      "forceDescription": "Anular selección del equipo y elegir aunque ya esté seleccionado",
-      "championPriority": "Lista de prioridad de selección"
+      "title": "Selección Automática",
+      "description": "Seleccionar automáticamente campeones durante la selección de campeón",
+      "force": "Forzar Selección",
+      "forceDescription": "Anular selecciones del equipo y seleccionar incluso si ya está seleccionado",
+      "championPriority": "Lista de Prioridad de Selección"
     },
     "autoBan": {
-      "title": "Baneo automático",
-      "description": "Banear campeones automáticamente durante la selección de campeón",
-      "force": "Forzar baneo",
-      "forceDescription": "Anular intención del equipo y banear aunque un compañero quiera jugarlo",
-      "championPriority": "Lista de prioridad de baneos"
+      "title": "Baneo Automático",
+      "description": "Banear automáticamente campeones durante la selección de campeón",
+      "force": "Forzar Baneo",
+      "forceDescription": "Anular intención del equipo y banear incluso si un compañero quiere jugar",
+      "championPriority": "Lista de Prioridad de Baneo"
     },
     "selectChampion": "Seleccionar campeón",
-    "addChampion": "Agregar campeón",
+    "addChampion": "Añadir Campeón",
     "smartApply": {
       "title": "Aplicación inteligente",
       "description": "Solo cargar skins para los campeones de tu equipo (reduce el tiempo de carga)"
@@ -237,6 +239,23 @@
     "applicationUpdate": {
       "title": "Actualizaciones de la aplicación",
       "description": "Versión actual: {{version}}"
+    },
+    "autoAccept": {
+      "title": "Auto Aceptar Partida",
+      "description": "Aceptar automáticamente la verificación de listo cuando se encuentra una partida"
+    },
+    "tabs": {
+      "general": "General",
+      "leagueClient": "Cliente de League",
+      "skinManagement": "Gestión de Aspectos"
+    },
+    "randomSkinSelection": {
+      "title": "Selección Aleatoria de Aspecto",
+      "none": "Deshabilitado"
+    },
+    "minimizeToTray": {
+      "title": "Minimizar a la Bandeja",
+      "description": "Ocultar la aplicación en la bandeja del sistema en lugar de cerrar al hacer clic en el botón de cerrar"
     }
   },
   "tray": {
@@ -304,8 +323,10 @@
     "saveChanges": "Guardar Cambios"
   },
   "common": {
-    "cancel": "Cancel",
-    "close": "Close"
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "saving": "Guardando..."
   },
   "cancel": "Cancelar",
   "success": "Éxito",
@@ -354,7 +375,17 @@
     "manageDownloaded": "Administrar skins descargados",
     "downloadedCount": "Skins descargados ({{count}})",
     "allSkins": "Todos los skins",
-    "autoSelected": "Auto"
+    "autoSelected": "Auto",
+    "generateMetadata": "Generate Metadata",
+    "generating": "Generating...",
+    "checkForUpdates": "Check for Updates",
+    "checking": "Checking...",
+    "updateAvailable": "Update Available",
+    "update": "Update",
+    "updating": "Updating...",
+    "updateAll": "Update All ({{count}})",
+    "updatingCount": "Updating {{count}}...",
+    "downloadedBeforeTracking": "Downloaded before update tracking"
   },
   "filters": {
     "title": "Filtros y ordenamiento",
@@ -389,7 +420,9 @@
       "mythic": "Mítica",
       "transcendent": "Trascendente",
       "exalted": "Exaltada"
-    }
+    },
+    "availability": "Availability",
+    "showUnavailable": "Show unavailable skins"
   },
   "patcher": {
     "applying": "Aplicando...",
@@ -518,5 +551,24 @@
   "confirmations": {
     "confirmDeleteAll": "¿Estás seguro de que quieres eliminar todos los skins? Esta acción no se puede deshacer.",
     "confirmDeleteChampion": "¿Estás seguro de que quieres eliminar todos los skins de {{champion}}? Esta acción no se puede deshacer."
+  },
+  "importMethod": {
+    "title": "Importar Mod Personalizado",
+    "description": "Elige cómo quieres importar tu mod personalizado",
+    "fileTab": "Desde Archivo",
+    "urlTab": "Desde URL",
+    "dropFiles": "Arrastra archivos aquí",
+    "or": "o",
+    "browseFiles": "Buscar Archivos",
+    "supportedFormats": "Formatos soportados:",
+    "enterDirectUrl": "Introduce URL de descarga directa",
+    "directUrlPlaceholder": "https://ejemplo.com/mod.zip",
+    "enterUrl": "Por favor introduce una URL",
+    "invalidUrl": "URL inválida. Por favor proporciona un enlace de descarga directa a un archivo mod",
+    "downloadFailed": "Error al descargar mod",
+    "downloading": "Descargando...",
+    "download": "Descargar e Importar",
+    "directDownloadNote": "Solo se admiten enlaces de descarga directa",
+    "clipboardError": "Error al leer el portapapeles"
   }
 }

@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "ยกเลิก",
   "success": "สำเร็จ",
@@ -361,7 +363,17 @@
     "manageDownloaded": "จัดการสกินที่ดาวน์โหลด",
     "downloadedCount": "สกินที่ดาวน์โหลดแล้ว ({{count}})",
     "allSkins": "สกินทั้งหมด",
-    "autoSelected": "อัตโนมัติ"
+    "autoSelected": "อัตโนมัติ",
+    "generateMetadata": "สร้างข้อมูลเมตา",
+    "generating": "กำลังสร้าง...",
+    "checkForUpdates": "ตรวจสอบการอัปเดต",
+    "checking": "กำลังตรวจสอบ...",
+    "updateAvailable": "มีอัปเดต",
+    "update": "อัปเดต",
+    "updating": "กำลังอัปเดต...",
+    "updateAll": "อัปเดตทั้งหมด ({{count}})",
+    "updatingCount": "กำลังอัปเดต {{count}}...",
+    "downloadedBeforeTracking": "ดาวน์โหลดก่อนการติดตามอัปเดต"
   },
   "filters": {
     "title": "ตัวกรอง & เรียงลำดับ",
@@ -396,7 +408,9 @@
       "mythic": "Mythic",
       "transcendent": "Transcendent",
       "exalted": "Exalted"
-    }
+    },
+    "availability": "ความพร้อมใช้งาน",
+    "showUnavailable": "แสดงสกินที่ไม่พร้อมใช้งาน"
   },
   "patcher": {
     "applying": "กำลังใช้งาน...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "คุณแน่ใจหรือไม่ที่จะลบสกินทั้งหมด? การกระทำนี้ไม่สามารถยกเลิกได้",
     "confirmDeleteChampion": "คุณแน่ใจหรือไม่ที่จะลบสกินทั้งหมดสำหรับ {{champion}}? การกระทำนี้ไม่สามารถยกเลิกได้"
+  },
+  "importMethod": {
+    "title": "นำเข้า Mod แบบกำหนดเอง",
+    "description": "เลือกวิธีที่คุณต้องการนำเข้า mod แบบกำหนดเอง",
+    "fileTab": "จากไฟล์",
+    "urlTab": "จาก URL",
+    "dropFiles": "ลากไฟล์มาที่นี่",
+    "or": "หรือ",
+    "browseFiles": "เรียกดูไฟล์",
+    "supportedFormats": "รูปแบบที่รองรับ:",
+    "enterDirectUrl": "ใส่ URL ดาวน์โหลดโดยตรง",
+    "directUrlPlaceholder": "https://example.com/mod.zip",
+    "enterUrl": "กรุณาใส่ URL",
+    "invalidUrl": "URL ไม่ถูกต้อง กรุณาใส่ลิงก์ดาวน์โหลดโดยตรงไปยังไฟล์ mod",
+    "downloadFailed": "ดาวน์โหลด mod ล้มเหลว",
+    "downloading": "กำลังดาวน์โหลด...",
+    "download": "ดาวน์โหลดและนำเข้า",
+    "directDownloadNote": "รองรับเฉพาะลิงก์ดาวน์โหลดโดยตรงเท่านั้น",
+    "clipboardError": "อ่านคลิปบอร์ดล้มเหลว"
   }
 }

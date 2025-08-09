@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "Ακύρωση",
   "success": "Επιτυχία",
@@ -361,7 +363,17 @@
     "manageDownloaded": "Διαχείριση ληφθέντων skins",
     "downloadedCount": "Ληφθέντα skins ({{count}})",
     "allSkins": "Όλα τα skins",
-    "autoSelected": "Αυτόματο"
+    "autoSelected": "Αυτόματο",
+    "generateMetadata": "Δημιουργία Μεταδεδομένων",
+    "generating": "Δημιουργία...",
+    "checkForUpdates": "Έλεγχος για ενημερώσεις",
+    "checking": "Έλεγχος...",
+    "updateAvailable": "Διαθέσιμη ενημέρωση",
+    "update": "Ενημέρωση",
+    "updating": "Ενημέρωση...",
+    "updateAll": "Ενημέρωση όλων ({{count}})",
+    "updatingCount": "Ενημέρωση {{count}}...",
+    "downloadedBeforeTracking": "Λήφθηκε πριν την παρακολούθηση ενημερώσεων"
   },
   "filters": {
     "title": "Φίλτρα & Ταξινόμηση",
@@ -396,7 +408,9 @@
       "mythic": "Mythic",
       "transcendent": "Transcendent",
       "exalted": "Exalted"
-    }
+    },
+    "availability": "Διαθεσιμότητα",
+    "showUnavailable": "Εμφάνιση μη διαθέσιμων skins"
   },
   "patcher": {
     "applying": "Εφαρμογή...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "Είστε βέβαιοι ότι θέλετε να διαγράψετε όλα τα skins; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
     "confirmDeleteChampion": "Είστε βέβαιοι ότι θέλετε να διαγράψετε όλα τα skins για τον {{champion}}; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί."
+  },
+  "importMethod": {
+    "title": "Εισαγωγή Προσαρμοσμένου Mod",
+    "description": "Επιλέξτε πώς θέλετε να εισάγετε το προσαρμοσμένο mod σας",
+    "fileTab": "Από Αρχείο",
+    "urlTab": "Από URL",
+    "dropFiles": "Σύρετε αρχεία εδώ",
+    "or": "ή",
+    "browseFiles": "Περιήγηση Αρχείων",
+    "supportedFormats": "Υποστηριζόμενες μορφές:",
+    "enterDirectUrl": "Εισάγετε άμεσο URL λήψης",
+    "directUrlPlaceholder": "https://paradeigma.com/mod.zip",
+    "enterUrl": "Παρακαλώ εισάγετε ένα URL",
+    "invalidUrl": "Μη έγκυρο URL. Παρακαλώ δώστε έναν άμεσο σύνδεσμο λήψης για αρχείο mod",
+    "downloadFailed": "Αποτυχία λήψης mod",
+    "downloading": "Λήψη...",
+    "download": "Λήψη και Εισαγωγή",
+    "directDownloadNote": "Υποστηρίζονται μόνο άμεσοι σύνδεσμοι λήψης",
+    "clipboardError": "Αποτυχία ανάγνωσης πρόχειρου"
   }
 }

@@ -37,7 +37,8 @@
     "exitMultiSelect": "다중 선택 종료",
     "deleteSelected": "선택 삭제",
     "selectAll": "모두 선택",
-    "clearSelection": "선택 해제"
+    "clearSelection": "선택 해제",
+    "cancel": "취소"
   },
   "nav": {
     "favorites": "즐겨찾기",
@@ -89,7 +90,8 @@
     "deletedSkin": "스킨 삭제됨: {{name}}",
     "failedToDeleteMod": "모드 삭제 실패: {{error}}",
     "failedToDeleteSkin": "스킨 삭제 실패: {{error}}",
-    "autoSelectedSkinsCleanedUp": "자동 선택된 스킨 {{count}}개 정리됨"
+    "autoSelectedSkinsCleanedUp": "자동 선택된 스킨 {{count}}개 정리됨",
+    "autoAcceptedMatch": "매치가 자동으로 수락되었습니다!"
   },
   "tools": {
     "required": "CS:LOL 도구 필요",
@@ -237,6 +239,23 @@
     "applicationUpdate": {
       "title": "애플리케이션 업데이트",
       "description": "현재 버전: {{version}}"
+    },
+    "autoAccept": {
+      "title": "자동 매치 수락",
+      "description": "매치가 발견되면 준비 확인을 자동으로 수락"
+    },
+    "tabs": {
+      "general": "일반",
+      "leagueClient": "리그 클라이언트",
+      "skinManagement": "스킨 관리"
+    },
+    "randomSkinSelection": {
+      "title": "무작위 스킨 선택",
+      "none": "비활성화"
+    },
+    "minimizeToTray": {
+      "title": "트레이로 최소화",
+      "description": "닫기 버튼을 클릭할 때 앱을 닫는 대신 시스템 트레이로 숨기기"
     }
   },
   "tray": {
@@ -304,8 +323,10 @@
     "saveChanges": "변경사항 저장"
   },
   "common": {
-    "cancel": "Cancel",
-    "close": "Close"
+    "cancel": "취소",
+    "close": "닫기",
+    "save": "저장",
+    "saving": "저장 중..."
   },
   "cancel": "취소",
   "success": "성공",
@@ -399,7 +420,9 @@
       "mythic": "신화급",
       "transcendent": "초월급",
       "exalted": "숭고급"
-    }
+    },
+    "availability": "Availability",
+    "showUnavailable": "Show unavailable skins"
   },
   "patcher": {
     "applying": "적용 중...",
@@ -528,5 +551,24 @@
   "confirmations": {
     "confirmDeleteAll": "정말로 모든 스킨을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
     "confirmDeleteChampion": "정말로 {{champion}}의 모든 스킨을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
+  },
+  "importMethod": {
+    "title": "커스텀 모드 가져오기",
+    "description": "커스텀 모드를 가져올 방법을 선택하세요",
+    "fileTab": "파일에서",
+    "urlTab": "URL에서",
+    "dropFiles": "여기에 파일을 드롭",
+    "or": "또는",
+    "browseFiles": "파일 찾아보기",
+    "supportedFormats": "지원되는 형식:",
+    "enterDirectUrl": "직접 다운로드 URL 입력",
+    "directUrlPlaceholder": "https://example.com/mod.zip",
+    "enterUrl": "URL을 입력하세요",
+    "invalidUrl": "잘못된 URL입니다. 모드 파일에 대한 직접 다운로드 링크를 제공하세요",
+    "downloadFailed": "모드 다운로드 실패",
+    "downloading": "다운로드 중...",
+    "download": "다운로드 및 가져오기",
+    "directDownloadNote": "직접 다운로드 링크만 지원됩니다",
+    "clipboardError": "클립보드 읽기 실패"
   }
 }

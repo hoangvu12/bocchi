@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "取消",
   "success": "成功",
@@ -361,7 +363,17 @@
     "manageDownloaded": "管理已下載的面板",
     "downloadedCount": "已下載的面板（{{count}}）",
     "allSkins": "所有面板",
-    "autoSelected": "自動"
+    "autoSelected": "自動",
+    "generateMetadata": "產生中繼資料",
+    "generating": "產生中...",
+    "checkForUpdates": "檢查更新",
+    "checking": "檢查中...",
+    "updateAvailable": "有可用更新",
+    "update": "更新",
+    "updating": "更新中...",
+    "updateAll": "全部更新 ({{count}})",
+    "updatingCount": "更新中 {{count}}...",
+    "downloadedBeforeTracking": "在更新追蹤前下載"
   },
   "filters": {
     "title": "篩選器和排序",
@@ -396,7 +408,9 @@
       "mythic": "神話",
       "transcendent": "超凡",
       "exalted": "昇華"
-    }
+    },
+    "availability": "可用性",
+    "showUnavailable": "顯示不可用的造型"
   },
   "patcher": {
     "applying": "正在套用...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "您確定要刪除所有面板嗎？此操作無法復原。",
     "confirmDeleteChampion": "您確定要刪除 {{champion}} 的所有面板嗎？此操作無法復原。"
+  },
+  "importMethod": {
+    "title": "匯入自訂模組",
+    "description": "選擇您要匯入自訂模組的方式",
+    "fileTab": "從檔案",
+    "urlTab": "從網址",
+    "dropFiles": "將檔案拖放到這裡",
+    "or": "或",
+    "browseFiles": "瀏覽檔案",
+    "supportedFormats": "支援的格式：",
+    "enterDirectUrl": "輸入直接下載網址",
+    "directUrlPlaceholder": "https://example.com/mod.zip",
+    "enterUrl": "請輸入網址",
+    "invalidUrl": "網址無效。請提供模組檔案的直接下載連結",
+    "downloadFailed": "下載模組失敗",
+    "downloading": "下載中...",
+    "download": "下載並匯入",
+    "directDownloadNote": "僅支援直接下載連結",
+    "clipboardError": "讀取剪貼簿失敗"
   }
 }

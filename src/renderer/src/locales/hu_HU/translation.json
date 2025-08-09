@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "Mégse",
   "success": "Siker",
@@ -361,7 +363,17 @@
     "manageDownloaded": "Letöltött skinek kezelése",
     "downloadedCount": "Letöltött skinek ({{count}})",
     "allSkins": "Összes skin",
-    "autoSelected": "Automatikus"
+    "autoSelected": "Automatikus",
+    "generateMetadata": "Metaadatok generálása",
+    "generating": "Generálás...",
+    "checkForUpdates": "Frissítések keresése",
+    "checking": "Ellenőrzés...",
+    "updateAvailable": "Frissítés elérhető",
+    "update": "Frissítés",
+    "updating": "Frissítés...",
+    "updateAll": "Összes frissítése ({{count}})",
+    "updatingCount": "{{count}} frissítése...",
+    "downloadedBeforeTracking": "Letöltve a frissítéskövetés előtt"
   },
   "filters": {
     "title": "Szűrők és rendezés",
@@ -396,7 +408,9 @@
       "mythic": "Mythic",
       "transcendent": "Transcendent",
       "exalted": "Exalted"
-    }
+    },
+    "availability": "Elérhetőség",
+    "showUnavailable": "Nem elérhető skinek megjelenítése"
   },
   "patcher": {
     "applying": "Alkalmazás...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "Biztosan törölni szeretné az összes skint? Ez a művelet nem visszavonható.",
     "confirmDeleteChampion": "Biztosan törölni szeretné az összes skint {{champion}} számára? Ez a művelet nem visszavonható."
+  },
+  "importMethod": {
+    "title": "Egyéni Mod Importálása",
+    "description": "Válassza ki, hogyan szeretné importálni az egyéni modját",
+    "fileTab": "Fájlból",
+    "urlTab": "URL-ből",
+    "dropFiles": "Húzza ide a fájlokat",
+    "or": "vagy",
+    "browseFiles": "Fájlok tallózása",
+    "supportedFormats": "Támogatott formátumok:",
+    "enterDirectUrl": "Adja meg a közvetlen letöltési URL-t",
+    "directUrlPlaceholder": "https://pelda.com/mod.zip",
+    "enterUrl": "Kérjük, adjon meg egy URL-t",
+    "invalidUrl": "Érvénytelen URL. Kérjük, adjon meg egy közvetlen letöltési linket a mod fájlhoz",
+    "downloadFailed": "A mod letöltése sikertelen",
+    "downloading": "Letöltés...",
+    "download": "Letöltés és importálás",
+    "directDownloadNote": "Csak közvetlen letöltési linkek támogatottak",
+    "clipboardError": "Nem sikerült beolvasni a vágólapot"
   }
 }

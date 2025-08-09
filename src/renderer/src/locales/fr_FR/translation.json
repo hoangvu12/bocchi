@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "Annuler",
   "success": "Succès",
@@ -361,7 +363,17 @@
     "manageDownloaded": "Gérer les skins téléchargés",
     "downloadedCount": "Skins téléchargés ({{count}})",
     "allSkins": "Tous les skins",
-    "autoSelected": "Auto"
+    "autoSelected": "Auto",
+    "generateMetadata": "Générer les Métadonnées",
+    "generating": "Génération...",
+    "checkForUpdates": "Vérifier les mises à jour",
+    "checking": "Vérification...",
+    "updateAvailable": "Mise à jour disponible",
+    "update": "Mettre à jour",
+    "updating": "Mise à jour...",
+    "updateAll": "Tout mettre à jour ({{count}})",
+    "updatingCount": "Mise à jour de {{count}}...",
+    "downloadedBeforeTracking": "Téléchargé avant le suivi des mises à jour"
   },
   "filters": {
     "title": "Filtres et tri",
@@ -396,7 +408,9 @@
       "mythic": "Mythic",
       "transcendent": "Transcendent",
       "exalted": "Exalted"
-    }
+    },
+    "availability": "Disponibilité",
+    "showUnavailable": "Afficher les skins non disponibles"
   },
   "patcher": {
     "applying": "Application...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "Êtes-vous sûr de vouloir supprimer tous les skins ? Cette action ne peut pas être annulée.",
     "confirmDeleteChampion": "Êtes-vous sûr de vouloir supprimer tous les skins pour {{champion}} ? Cette action ne peut pas être annulée."
+  },
+  "importMethod": {
+    "title": "Importer un Mod Personnalisé",
+    "description": "Choisissez comment vous voulez importer votre mod personnalisé",
+    "fileTab": "Depuis un Fichier",
+    "urlTab": "Depuis une URL",
+    "dropFiles": "Déposez les fichiers ici",
+    "or": "ou",
+    "browseFiles": "Parcourir les Fichiers",
+    "supportedFormats": "Formats supportés :",
+    "enterDirectUrl": "Entrez l'URL de téléchargement direct",
+    "directUrlPlaceholder": "https://exemple.com/mod.zip",
+    "enterUrl": "Veuillez entrer une URL",
+    "invalidUrl": "URL invalide. Veuillez fournir un lien de téléchargement direct vers un fichier mod",
+    "downloadFailed": "Échec du téléchargement du mod",
+    "downloading": "Téléchargement...",
+    "download": "Télécharger et Importer",
+    "directDownloadNote": "Seuls les liens de téléchargement direct sont supportés",
+    "clipboardError": "Échec de la lecture du presse-papiers"
   }
 }

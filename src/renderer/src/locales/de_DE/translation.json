@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "Abbrechen",
   "success": "Erfolg",
@@ -361,7 +363,17 @@
     "manageDownloaded": "Heruntergeladene Skins verwalten",
     "downloadedCount": "Heruntergeladene Skins ({{count}})",
     "allSkins": "Alle Skins",
-    "autoSelected": "Auto"
+    "autoSelected": "Auto",
+    "generateMetadata": "Metadaten generieren",
+    "generating": "Generieren...",
+    "checkForUpdates": "Nach Updates suchen",
+    "checking": "Überprüfung...",
+    "updateAvailable": "Update verfügbar",
+    "update": "Aktualisieren",
+    "updating": "Aktualisierung...",
+    "updateAll": "Alle aktualisieren ({{count}})",
+    "updatingCount": "Aktualisiere {{count}}...",
+    "downloadedBeforeTracking": "Vor der Update-Verfolgung heruntergeladen"
   },
   "filters": {
     "title": "Filter & Sortierung",
@@ -396,7 +408,9 @@
       "mythic": "Mythic",
       "transcendent": "Transcendent",
       "exalted": "Exalted"
-    }
+    },
+    "availability": "Verfügbarkeit",
+    "showUnavailable": "Nicht verfügbare Skins anzeigen"
   },
   "patcher": {
     "applying": "Anwenden...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "Sind Sie sicher, dass Sie alle Skins löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
     "confirmDeleteChampion": "Sind Sie sicher, dass Sie alle Skins für {{champion}} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+  "importMethod": {
+    "title": "Benutzerdefinierten Mod importieren",
+    "description": "Wählen Sie, wie Sie Ihren benutzerdefinierten Mod importieren möchten",
+    "fileTab": "Aus Datei",
+    "urlTab": "Aus URL",
+    "dropFiles": "Dateien hier ablegen",
+    "or": "oder",
+    "browseFiles": "Dateien durchsuchen",
+    "supportedFormats": "Unterstützte Formate:",
+    "enterDirectUrl": "Direkte Download-URL eingeben",
+    "directUrlPlaceholder": "https://beispiel.com/mod.zip",
+    "enterUrl": "Bitte geben Sie eine URL ein",
+    "invalidUrl": "Ungültige URL. Bitte geben Sie einen direkten Download-Link zu einer Mod-Datei an",
+    "downloadFailed": "Mod-Download fehlgeschlagen",
+    "downloading": "Herunterladen...",
+    "download": "Herunterladen und importieren",
+    "directDownloadNote": "Nur direkte Download-Links werden unterstützt",
+    "clipboardError": "Zwischenablage konnte nicht gelesen werden"
   }
 }

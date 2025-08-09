@@ -37,7 +37,8 @@
     "exitMultiSelect": "Salir de selección múltiple",
     "deleteSelected": "Eliminar seleccionados",
     "selectAll": "Seleccionar todo",
-    "clearSelection": "Limpiar selección"
+    "clearSelection": "Limpiar selección",
+    "cancel": "Cancelar"
   },
   "nav": {
     "favorites": "Favoritos",
@@ -89,7 +90,8 @@
     "deletedSkin": "Skin eliminado: {{name}}",
     "failedToDeleteMod": "Error al eliminar mod: {{error}}",
     "failedToDeleteSkin": "Error al eliminar skin: {{error}}",
-    "autoSelectedSkinsCleanedUp": "Se limpiaron {{count}} skins seleccionados automáticamente"
+    "autoSelectedSkinsCleanedUp": "Se limpiaron {{count}} skins seleccionados automáticamente",
+    "autoAcceptedMatch": "¡Partida aceptada automáticamente!"
   },
   "tools": {
     "required": "Se requieren herramientas CS:LOL",
@@ -237,6 +239,23 @@
     "applicationUpdate": {
       "title": "Actualizaciones de la aplicación",
       "description": "Versión actual: {{version}}"
+    },
+    "autoAccept": {
+      "title": "Auto Aceptar Partida",
+      "description": "Aceptar automáticamente la verificación de listo cuando se encuentra una partida"
+    },
+    "tabs": {
+      "general": "General",
+      "leagueClient": "Cliente de League",
+      "skinManagement": "Gestión de Skins"
+    },
+    "randomSkinSelection": {
+      "title": "Selección Aleatoria de Skin",
+      "none": "Deshabilitado"
+    },
+    "minimizeToTray": {
+      "title": "Minimizar a la Bandeja",
+      "description": "Ocultar la aplicación en la bandeja del sistema en lugar de cerrar al hacer clic en el botón de cerrar"
     }
   },
   "tray": {
@@ -401,7 +420,9 @@
       "mythic": "Mítica",
       "transcendent": "Trascendente",
       "exalted": "Exaltada"
-    }
+    },
+    "availability": "Availability",
+    "showUnavailable": "Show unavailable skins"
   },
   "patcher": {
     "applying": "Aplicando...",
@@ -530,5 +551,24 @@
   "confirmations": {
     "confirmDeleteAll": "¿Estás seguro de que querés eliminar todos los skins? Esta acción no se puede deshacer.",
     "confirmDeleteChampion": "¿Estás seguro de que querés eliminar todos los skins de {{champion}}? Esta acción no se puede deshacer."
+  },
+  "importMethod": {
+    "title": "Importar Mod Personalizado",
+    "description": "Elige cómo quieres importar tu mod personalizado",
+    "fileTab": "Desde Archivo",
+    "urlTab": "Desde URL",
+    "dropFiles": "Arrastra archivos aquí",
+    "or": "o",
+    "browseFiles": "Buscar Archivos",
+    "supportedFormats": "Formatos soportados:",
+    "enterDirectUrl": "Ingresa URL de descarga directa",
+    "directUrlPlaceholder": "https://ejemplo.com/mod.zip",
+    "enterUrl": "Por favor ingresa una URL",
+    "invalidUrl": "URL inválida. Por favor proporciona un enlace de descarga directa a un archivo mod",
+    "downloadFailed": "Error al descargar mod",
+    "downloading": "Descargando...",
+    "download": "Descargar e Importar",
+    "directDownloadNote": "Solo se admiten enlaces de descarga directa",
+    "clipboardError": "Error al leer el portapapeles"
   }
 }

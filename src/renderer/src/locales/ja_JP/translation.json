@@ -37,7 +37,8 @@
     "exitMultiSelect": "複数選択を終了",
     "deleteSelected": "選択を削除",
     "selectAll": "すべて選択",
-    "clearSelection": "選択をクリア"
+    "clearSelection": "選択をクリア",
+    "cancel": "キャンセル"
   },
   "nav": {
     "favorites": "お気に入り",
@@ -89,7 +90,8 @@
     "deletedSkin": "スキンを削除しました: {{name}}",
     "failedToDeleteMod": "MODの削除に失敗しました: {{error}}",
     "failedToDeleteSkin": "スキンの削除に失敗しました: {{error}}",
-    "autoSelectedSkinsCleanedUp": "自動選択されたスキン{{count}}個をクリーンアップしました"
+    "autoSelectedSkinsCleanedUp": "自動選択されたスキン{{count}}個をクリーンアップしました",
+    "autoAcceptedMatch": "マッチが自動的に承認されました！"
   },
   "tools": {
     "required": "CS:LOLツールが必要です",
@@ -237,6 +239,23 @@
     "applicationUpdate": {
       "title": "アプリケーションアップデート",
       "description": "現在のバージョン: {{version}}"
+    },
+    "autoAccept": {
+      "title": "自動マッチ承認",
+      "description": "マッチが見つかった時に準備確認を自動的に承認する"
+    },
+    "tabs": {
+      "general": "一般",
+      "leagueClient": "リーグクライアント",
+      "skinManagement": "スキン管理"
+    },
+    "randomSkinSelection": {
+      "title": "ランダムスキン選択",
+      "none": "無効"
+    },
+    "minimizeToTray": {
+      "title": "トレイに最小化",
+      "description": "閉じるボタンをクリックした時、アプリを閉じる代わりにシステムトレイに隠す"
     }
   },
   "tray": {
@@ -304,8 +323,10 @@
     "saveChanges": "変更を保存"
   },
   "common": {
-    "cancel": "Cancel",
-    "close": "Close"
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "save": "保存",
+    "saving": "保存中..."
   },
   "cancel": "キャンセル",
   "success": "成功",
@@ -399,7 +420,9 @@
       "mythic": "ミシック",
       "transcendent": "超越",
       "exalted": "崇高"
-    }
+    },
+    "availability": "Availability",
+    "showUnavailable": "Show unavailable skins"
   },
   "patcher": {
     "applying": "適用中...",
@@ -528,5 +551,24 @@
   "confirmations": {
     "confirmDeleteAll": "本当にすべてのスキンを削除しますか？この操作は元に戻せません。",
     "confirmDeleteChampion": "本当に{{champion}}のすべてのスキンを削除しますか？この操作は元に戻せません。"
+  },
+  "importMethod": {
+    "title": "カスタムModをインポート",
+    "description": "カスタムModのインポート方法を選択してください",
+    "fileTab": "ファイルから",
+    "urlTab": "URLから",
+    "dropFiles": "ここにファイルをドロップ",
+    "or": "または",
+    "browseFiles": "ファイルを参照",
+    "supportedFormats": "サポートされている形式:",
+    "enterDirectUrl": "直接ダウンロードURLを入力",
+    "directUrlPlaceholder": "https://example.com/mod.zip",
+    "enterUrl": "URLを入力してください",
+    "invalidUrl": "無効なURL。Modファイルへの直接ダウンロードリンクを提供してください",
+    "downloadFailed": "Modのダウンロードに失敗しました",
+    "downloading": "ダウンロード中...",
+    "download": "ダウンロード＆インポート",
+    "directDownloadNote": "直接ダウンロードリンクのみサポートされています",
+    "clipboardError": "クリップボードの読み取りに失敗しました"
   }
 }

@@ -311,8 +311,10 @@
     "saveChanges": "Salvează modificările"
   },
   "common": {
-    "cancel": "Cancel",
-    "close": "Close"
+    "cancel": "Anulează",
+    "close": "Închide",
+    "save": "Salvează",
+    "saving": "Se salvează..."
   },
   "cancel": "Anulează",
   "success": "Succes",
@@ -361,7 +363,17 @@
     "manageDownloaded": "Gestionează skin-urile descărcate",
     "downloadedCount": "Skin-uri descărcate ({{count}})",
     "allSkins": "Toate skin-urile",
-    "autoSelected": "Auto"
+    "autoSelected": "Auto",
+    "generateMetadata": "Generează Metadata",
+    "generating": "Se generează...",
+    "checkForUpdates": "Verifică actualizări",
+    "checking": "Se verifică...",
+    "updateAvailable": "Actualizare disponibilă",
+    "update": "Actualizează",
+    "updating": "Se actualizează...",
+    "updateAll": "Actualizează tot ({{count}})",
+    "updatingCount": "Se actualizează {{count}}...",
+    "downloadedBeforeTracking": "Descărcat înainte de urmărirea actualizărilor"
   },
   "filters": {
     "title": "Filtre și sortare",
@@ -391,12 +403,14 @@
     "rarity": "Raritate",
     "rarities": {
       "epic": "Epic",
-      "legendary": "Legendary",
-      "ultimate": "Ultimate",
-      "mythic": "Mythic",
+      "legendary": "Legendar",
+      "ultimate": "Suprem",
+      "mythic": "Mitic",
       "transcendent": "Transcendent",
-      "exalted": "Exalted"
-    }
+      "exalted": "Înălțat"
+    },
+    "availability": "Disponibilitate",
+    "showUnavailable": "Arată skin-urile indisponibile"
   },
   "patcher": {
     "applying": "Se aplică...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "Sunteți sigur că doriți să ștergeți toate skin-urile? Această acțiune nu poate fi anulată.",
     "confirmDeleteChampion": "Sunteți sigur că doriți să ștergeți toate skin-urile pentru {{champion}}? Această acțiune nu poate fi anulată."
+  },
+  "importMethod": {
+    "title": "Importă Mod Personalizat",
+    "description": "Alege cum vrei să imporți modul tău personalizat",
+    "fileTab": "Din Fișier",
+    "urlTab": "Din URL",
+    "dropFiles": "Trage fișierele aici",
+    "or": "sau",
+    "browseFiles": "Răsfoiește Fișiere",
+    "supportedFormats": "Formate suportate:",
+    "enterDirectUrl": "Introdu URL-ul de descărcare directă",
+    "directUrlPlaceholder": "https://exemplu.com/mod.zip",
+    "enterUrl": "Te rog introdu un URL",
+    "invalidUrl": "URL invalid. Te rog furnizează un link de descărcare directă către un fișier mod",
+    "downloadFailed": "Descărcarea modului a eșuat",
+    "downloading": "Se descarcă...",
+    "download": "Descarcă și Importă",
+    "directDownloadNote": "Doar link-urile de descărcare directă sunt suportate",
+    "clipboardError": "Citirea clipboard-ului a eșuat"
   }
 }

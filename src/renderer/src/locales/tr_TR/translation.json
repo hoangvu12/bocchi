@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "İptal",
   "success": "Başarılı",
@@ -361,7 +363,17 @@
     "manageDownloaded": "İndirilmiş skinleri yönet",
     "downloadedCount": "İndirilmiş skinler ({{count}})",
     "allSkins": "Tüm skinler",
-    "autoSelected": "Otomatik"
+    "autoSelected": "Otomatik",
+    "generateMetadata": "Meta Veri Oluştur",
+    "generating": "Oluşturuluyor...",
+    "checkForUpdates": "Güncellemeleri kontrol et",
+    "checking": "Kontrol ediliyor...",
+    "updateAvailable": "Güncelleme mevcut",
+    "update": "Güncelle",
+    "updating": "Güncelleniyor...",
+    "updateAll": "Tümünü güncelle ({{count}})",
+    "updatingCount": "{{count}} güncelleniyor...",
+    "downloadedBeforeTracking": "Güncelleme takibinden önce indirildi"
   },
   "filters": {
     "title": "Filtreler ve sıralama",
@@ -396,7 +408,9 @@
       "mythic": "Mythic",
       "transcendent": "Transcendent",
       "exalted": "Exalted"
-    }
+    },
+    "availability": "Kullanılabilirlik",
+    "showUnavailable": "Kullanılamayan kostümleri göster"
   },
   "patcher": {
     "applying": "Uygulanıyor...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "Tüm skinleri silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
     "confirmDeleteChampion": "{{champion}} için tüm skinleri silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+  },
+  "importMethod": {
+    "title": "Özel Mod İçe Aktar",
+    "description": "Özel modunuzu nasıl içe aktarmak istediğinizi seçin",
+    "fileTab": "Dosyadan",
+    "urlTab": "URL'den",
+    "dropFiles": "Dosyaları buraya bırakın",
+    "or": "veya",
+    "browseFiles": "Dosyalara Göz At",
+    "supportedFormats": "Desteklenen formatlar:",
+    "enterDirectUrl": "Doğrudan indirme URL'sini girin",
+    "directUrlPlaceholder": "https://ornek.com/mod.zip",
+    "enterUrl": "Lütfen bir URL girin",
+    "invalidUrl": "Geçersiz URL. Lütfen mod dosyasına doğrudan indirme bağlantısı sağlayın",
+    "downloadFailed": "Mod indirilemedi",
+    "downloading": "İndiriliyor...",
+    "download": "İndir ve İçe Aktar",
+    "directDownloadNote": "Yalnızca doğrudan indirme bağlantıları desteklenir",
+    "clipboardError": "Pano okunamadı"
   }
 }

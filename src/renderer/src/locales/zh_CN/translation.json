@@ -37,7 +37,8 @@
     "exitMultiSelect": "退出多选",
     "deleteSelected": "删除选中",
     "selectAll": "全选",
-    "clearSelection": "清除选择"
+    "clearSelection": "清除选择",
+    "cancel": "取消"
   },
   "nav": {
     "favorites": "收藏夹",
@@ -89,7 +90,8 @@
     "deletedSkin": "已删除皮肤：{{name}}",
     "failedToDeleteMod": "删除模组失败：{{error}}",
     "failedToDeleteSkin": "删除皮肤失败：{{error}}",
-    "autoSelectedSkinsCleanedUp": "已清理 {{count}} 个自动选择的皮肤"
+    "autoSelectedSkinsCleanedUp": "已清理 {{count}} 个自动选择的皮肤",
+    "autoAcceptedMatch": "已自动接受对局！"
   },
   "tools": {
     "required": "需要 CS:LOL 工具",
@@ -221,6 +223,39 @@
     "applicationUpdate": {
       "title": "应用程序更新",
       "description": "当前版本：{{version}}"
+    },
+    "autoAccept": {
+      "title": "自动接受对局",
+      "description": "找到对局时自动接受准备检查"
+    },
+    "autoPick": {
+      "title": "自动选择",
+      "description": "在英雄选择期间自动选择英雄",
+      "force": "强制选择",
+      "forceDescription": "覆盖队伍选择，即使已被选择也要选择",
+      "championPriority": "选择优先级列表"
+    },
+    "autoBan": {
+      "title": "自动禁用",
+      "description": "在英雄选择期间自动禁用英雄",
+      "force": "强制禁用",
+      "forceDescription": "覆盖队伍意图，即使队友想玩也要禁用",
+      "championPriority": "禁用优先级列表"
+    },
+    "selectChampion": "选择英雄",
+    "addChampion": "添加英雄",
+    "tabs": {
+      "general": "常规",
+      "leagueClient": "英雄联盟客户端",
+      "skinManagement": "皮肤管理"
+    },
+    "randomSkinSelection": {
+      "title": "随机皮肤选择",
+      "none": "已禁用"
+    },
+    "minimizeToTray": {
+      "title": "最小化到托盘",
+      "description": "点击关闭按钮时将应用隐藏到系统托盘而不是关闭"
     }
   },
   "tray": {
@@ -385,7 +420,9 @@
       "mythic": "神话",
       "transcendent": "超凡",
       "exalted": "至臻"
-    }
+    },
+    "availability": "Availability",
+    "showUnavailable": "Show unavailable skins"
   },
   "patcher": {
     "applying": "应用中...",
@@ -514,5 +551,24 @@
   "confirmations": {
     "confirmDeleteAll": "您确定要删除所有皮肤吗？此操作不可撤销。",
     "confirmDeleteChampion": "您确定要删除{{champion}}的所有皮肤吗？此操作不可撤销。"
+  },
+  "importMethod": {
+    "title": "导入自定义模组",
+    "description": "选择您要导入自定义模组的方式",
+    "fileTab": "从文件",
+    "urlTab": "从URL",
+    "dropFiles": "将文件拖放到这里",
+    "or": "或",
+    "browseFiles": "浏览文件",
+    "supportedFormats": "支持的格式：",
+    "enterDirectUrl": "输入直接下载URL",
+    "directUrlPlaceholder": "https://example.com/mod.zip",
+    "enterUrl": "请输入URL",
+    "invalidUrl": "URL无效。请提供模组文件的直接下载链接",
+    "downloadFailed": "下载模组失败",
+    "downloading": "下载中...",
+    "download": "下载并导入",
+    "directDownloadNote": "仅支持直接下载链接",
+    "clipboardError": "读取剪贴板失败"
   }
 }

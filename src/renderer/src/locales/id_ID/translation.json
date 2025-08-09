@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "Batal",
   "success": "Berhasil",
@@ -361,7 +363,17 @@
     "manageDownloaded": "Kelola skin yang diunduh",
     "downloadedCount": "Skin Terunduh ({{count}})",
     "allSkins": "Semua Skin",
-    "autoSelected": "Otomatis"
+    "autoSelected": "Otomatis",
+    "generateMetadata": "Buat Metadata",
+    "generating": "Membuat...",
+    "checkForUpdates": "Periksa pembaruan",
+    "checking": "Memeriksa...",
+    "updateAvailable": "Pembaruan tersedia",
+    "update": "Perbarui",
+    "updating": "Memperbarui...",
+    "updateAll": "Perbarui semua ({{count}})",
+    "updatingCount": "Memperbarui {{count}}...",
+    "downloadedBeforeTracking": "Diunduh sebelum pelacakan pembaruan"
   },
   "filters": {
     "title": "Filter & Urutkan",
@@ -396,7 +408,9 @@
       "mythic": "Mythic",
       "transcendent": "Transcendent",
       "exalted": "Exalted"
-    }
+    },
+    "availability": "Ketersediaan",
+    "showUnavailable": "Tampilkan skin yang tidak tersedia"
   },
   "patcher": {
     "applying": "Menerapkan...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "Apakah Anda yakin ingin menghapus semua skin? Tindakan ini tidak dapat dibatalkan.",
     "confirmDeleteChampion": "Apakah Anda yakin ingin menghapus semua skin untuk {{champion}}? Tindakan ini tidak dapat dibatalkan."
+  },
+  "importMethod": {
+    "title": "Impor Mod Kustom",
+    "description": "Pilih cara Anda ingin mengimpor mod kustom Anda",
+    "fileTab": "Dari File",
+    "urlTab": "Dari URL",
+    "dropFiles": "Seret file ke sini",
+    "or": "atau",
+    "browseFiles": "Telusuri File",
+    "supportedFormats": "Format yang didukung:",
+    "enterDirectUrl": "Masukkan URL unduhan langsung",
+    "directUrlPlaceholder": "https://contoh.com/mod.zip",
+    "enterUrl": "Silakan masukkan URL",
+    "invalidUrl": "URL tidak valid. Harap berikan tautan unduhan langsung ke file mod",
+    "downloadFailed": "Gagal mengunduh mod",
+    "downloading": "Mengunduh...",
+    "download": "Unduh dan Impor",
+    "directDownloadNote": "Hanya tautan unduhan langsung yang didukung",
+    "clipboardError": "Gagal membaca clipboard"
   }
 }

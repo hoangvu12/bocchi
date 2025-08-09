@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "取消",
   "success": "成功",
@@ -361,7 +363,17 @@
     "manageDownloaded": "管理已下載的造型",
     "downloadedCount": "已下載的造型（{{count}}）",
     "allSkins": "所有造型",
-    "autoSelected": "自動"
+    "autoSelected": "自動",
+    "generateMetadata": "生成元数据",
+    "generating": "生成中...",
+    "checkForUpdates": "检查更新",
+    "checking": "检查中...",
+    "updateAvailable": "有可用更新",
+    "update": "更新",
+    "updating": "更新中...",
+    "updateAll": "全部更新 ({{count}})",
+    "updatingCount": "更新中 {{count}}...",
+    "downloadedBeforeTracking": "在更新跟踪前下载"
   },
   "filters": {
     "title": "篩選器和排序",
@@ -396,7 +408,9 @@
       "mythic": "神話",
       "transcendent": "超越",
       "exalted": "昇華"
-    }
+    },
+    "availability": "可用性",
+    "showUnavailable": "显示不可用的皮肤"
   },
   "patcher": {
     "applying": "正在套用...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "您確定要刪除所有造型嗎？此操作無法復原。",
     "confirmDeleteChampion": "您確定要刪除 {{champion}} 的所有造型嗎？此操作無法復原。"
+  },
+  "importMethod": {
+    "title": "导入自定义模组",
+    "description": "选择您要导入自定义模组的方式",
+    "fileTab": "从文件",
+    "urlTab": "从URL",
+    "dropFiles": "将文件拖放到这里",
+    "or": "或",
+    "browseFiles": "浏览文件",
+    "supportedFormats": "支持的格式：",
+    "enterDirectUrl": "输入直接下载URL",
+    "directUrlPlaceholder": "https://example.com/mod.zip",
+    "enterUrl": "请输入URL",
+    "invalidUrl": "URL无效。请提供模组文件的直接下载链接",
+    "downloadFailed": "下载模组失败",
+    "downloading": "下载中...",
+    "download": "下载并导入",
+    "directDownloadNote": "仅支持直接下载链接",
+    "clipboardError": "读取剪贴板失败"
   }
 }

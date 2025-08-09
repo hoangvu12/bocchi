@@ -311,8 +311,10 @@
     "saveChanges": "Zapisz zmiany"
   },
   "common": {
-    "cancel": "Cancel",
-    "close": "Close"
+    "cancel": "Anuluj",
+    "close": "Zamknij",
+    "save": "Zapisz",
+    "saving": "Zapisywanie..."
   },
   "cancel": "Anuluj",
   "success": "Sukces",
@@ -361,7 +363,17 @@
     "manageDownloaded": "Zarządzaj pobranymi skinami",
     "downloadedCount": "Pobrane skiny ({{count}})",
     "allSkins": "Wszystkie skiny",
-    "autoSelected": "Auto"
+    "autoSelected": "Auto",
+    "generateMetadata": "Generuj Metadane",
+    "generating": "Generowanie...",
+    "checkForUpdates": "Sprawdź aktualizacje",
+    "checking": "Sprawdzanie...",
+    "updateAvailable": "Dostępna aktualizacja",
+    "update": "Aktualizuj",
+    "updating": "Aktualizowanie...",
+    "updateAll": "Aktualizuj wszystko ({{count}})",
+    "updatingCount": "Aktualizowanie {{count}}...",
+    "downloadedBeforeTracking": "Pobrano przed śledzeniem aktualizacji"
   },
   "filters": {
     "title": "Filtry i sortowanie",
@@ -390,13 +402,15 @@
     "totalGamesAsc": "Najrzadziej grane",
     "rarity": "Rzadkość",
     "rarities": {
-      "epic": "Epic",
-      "legendary": "Legendary",
-      "ultimate": "Ultimate",
-      "mythic": "Mythic",
-      "transcendent": "Transcendent",
-      "exalted": "Exalted"
-    }
+      "epic": "Epicki",
+      "legendary": "Legendarny",
+      "ultimate": "Ostateczny",
+      "mythic": "Mityczny",
+      "transcendent": "Transcendentny",
+      "exalted": "Wyniesiony"
+    },
+    "availability": "Dostępność",
+    "showUnavailable": "Pokaż niedostępne skiny"
   },
   "patcher": {
     "applying": "Stosowanie...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "Czy na pewno chcesz usunąć wszystkie skiny? Tej akcji nie można cofnąć.",
     "confirmDeleteChampion": "Czy na pewno chcesz usunąć wszystkie skiny dla {{champion}}? Tej akcji nie można cofnąć."
+  },
+  "importMethod": {
+    "title": "Importuj Niestandardowy Mod",
+    "description": "Wybierz sposób importowania niestandardowego moda",
+    "fileTab": "Z Pliku",
+    "urlTab": "Z URL",
+    "dropFiles": "Upuść pliki tutaj",
+    "or": "lub",
+    "browseFiles": "Przeglądaj Pliki",
+    "supportedFormats": "Obsługiwane formaty:",
+    "enterDirectUrl": "Wprowadź bezpośredni URL pobierania",
+    "directUrlPlaceholder": "https://przyklad.com/mod.zip",
+    "enterUrl": "Proszę wprowadzić URL",
+    "invalidUrl": "Nieprawidłowy URL. Proszę podać bezpośredni link do pliku moda",
+    "downloadFailed": "Nie udało się pobrać moda",
+    "downloading": "Pobieranie...",
+    "download": "Pobierz i Importuj",
+    "directDownloadNote": "Obsługiwane są tylko bezpośrednie linki do pobierania",
+    "clipboardError": "Nie udało się odczytać schowka"
   }
 }

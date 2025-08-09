@@ -312,7 +312,9 @@
   },
   "common": {
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "save": "Save",
+    "saving": "Saving..."
   },
   "cancel": "Zrušit",
   "success": "Úspěch",
@@ -361,7 +363,17 @@
     "manageDownloaded": "Spravovat stažené skiny",
     "downloadedCount": "Stažené skiny ({{count}})",
     "allSkins": "Všechny skiny",
-    "autoSelected": "Auto"
+    "autoSelected": "Auto",
+    "generateMetadata": "Generovat metadata",
+    "generating": "Generování...",
+    "checkForUpdates": "Zkontrolovat aktualizace",
+    "checking": "Kontrola...",
+    "updateAvailable": "Dostupná aktualizace",
+    "update": "Aktualizovat",
+    "updating": "Aktualizace...",
+    "updateAll": "Aktualizovat vše ({{count}})",
+    "updatingCount": "Aktualizace {{count}}...",
+    "downloadedBeforeTracking": "Staženo před sledováním aktualizací"
   },
   "filters": {
     "title": "Filtry a řazení",
@@ -396,7 +408,9 @@
       "mythic": "Mythic",
       "transcendent": "Transcendent",
       "exalted": "Exalted"
-    }
+    },
+    "availability": "Dostupnost",
+    "showUnavailable": "Zobrazit nedostupné skiny"
   },
   "patcher": {
     "applying": "Aplikuje se...",
@@ -532,5 +546,24 @@
   "confirmations": {
     "confirmDeleteAll": "Jste si jisti, že chcete smazat všechny skiny? Tuto akci nelze vrátit zpět.",
     "confirmDeleteChampion": "Jste si jisti, že chcete smazat všechny skiny pro {{champion}}? Tuto akci nelze vrátit zpět."
+  },
+  "importMethod": {
+    "title": "Importovat vlastní mod",
+    "description": "Vyberte, jak chcete importovat váš vlastní mod",
+    "fileTab": "Ze souboru",
+    "urlTab": "Z URL",
+    "dropFiles": "Přetáhněte soubory sem",
+    "or": "nebo",
+    "browseFiles": "Procházet soubory",
+    "supportedFormats": "Podporované formáty:",
+    "enterDirectUrl": "Zadejte přímou URL pro stažení",
+    "directUrlPlaceholder": "https://priklad.com/mod.zip",
+    "enterUrl": "Prosím zadejte URL",
+    "invalidUrl": "Neplatná URL. Prosím poskytněte přímý odkaz ke stažení souboru modu",
+    "downloadFailed": "Stažení modu selhalo",
+    "downloading": "Stahování...",
+    "download": "Stáhnout a importovat",
+    "directDownloadNote": "Jsou podporovány pouze přímé odkazy ke stažení",
+    "clipboardError": "Nepodařilo se přečíst schránku"
   }
 }
