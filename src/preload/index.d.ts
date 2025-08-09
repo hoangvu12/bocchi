@@ -93,6 +93,18 @@ export interface IApi {
     }>
   }>
   validateSkinFile: (filePath: string) => Promise<{ valid: boolean; error?: string }>
+  extractModInfo: (filePath: string) => Promise<{
+    success: boolean
+    info?: {
+      name?: string
+      author?: string
+      description?: string
+      version?: string
+      champion?: string
+      hasImage?: boolean
+    }
+    error?: string
+  }>
   browseSkinFile: () => Promise<{ success: boolean; filePath?: string }>
   browseSkinFiles: () => Promise<{ success: boolean; filePaths?: string[] }>
   browseImageFile: () => Promise<{ success: boolean; filePath?: string }>

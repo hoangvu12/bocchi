@@ -597,6 +597,15 @@ function setupIpcHandlers(): void {
     }
   })
 
+  ipcMain.handle('extract-mod-info', async (_, filePath: string) => {
+    try {
+      const result = await fileImportService.extractModInfo(filePath)
+      return result
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
   ipcMain.handle('browse-skin-file', async () => {
     const result = await dialog.showOpenDialog({
       properties: ['openFile'],

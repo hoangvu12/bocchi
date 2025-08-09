@@ -53,6 +53,7 @@ const api = {
   importSkinFilesBatch: (filePaths: string[]) =>
     ipcRenderer.invoke('import-skin-files-batch', filePaths),
   validateSkinFile: (filePath: string) => ipcRenderer.invoke('validate-skin-file', filePath),
+  extractModInfo: (filePath: string) => ipcRenderer.invoke('extract-mod-info', filePath),
   browseSkinFile: () => ipcRenderer.invoke('browse-skin-file'),
   browseSkinFiles: () => ipcRenderer.invoke('browse-skin-files'),
   browseImageFile: () => ipcRenderer.invoke('browse-image-file'),

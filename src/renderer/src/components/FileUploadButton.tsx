@@ -2,7 +2,7 @@ import React, { useState, forwardRef, useImperativeHandle, useCallback, useEffec
 import { useTranslation } from 'react-i18next'
 import { Upload, Loader2, X, Image } from 'lucide-react'
 import type { Champion } from '../App'
-import { getChampionDisplayName } from '../utils/championUtils'
+import { getChampionDisplayName, detectChampionFromText } from '../utils/championUtils'
 import { Switch } from './ui/switch'
 
 interface FileUploadButtonProps {
@@ -72,8 +72,58 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
               continue
             }
 
-            // Import with default options (auto-detect)
-            const result = await window.api.importSkinFile(filePath, {})
+            // Try to extract mod info for better champion detection
+            const importOptions: any = {}
+            try {
+              const modInfo = await window.api.extractModInfo(filePath)
+              if (modInfo.success && modInfo.info) {
+                // Use extracted name if available
+                if (modInfo.info.name) {
+                  importOptions.skinName = modInfo.info.name
+                }
+
+                // Try to detect champion - prioritize explicit champion field
+                let detectedChampion = ''
+
+                // 1. FIRST PRIORITY: Check if champion is explicitly provided in info.json
+                if (modInfo.info?.champion) {
+                  // Direct match with champion key or name
+                  const found = champions.find(
+                    (c) =>
+                      c.key.toLowerCase() === modInfo.info?.champion?.toLowerCase() ||
+                      getChampionDisplayName(c).toLowerCase() ===
+                        modInfo.info?.champion?.toLowerCase()
+                  )
+                  if (found) {
+                    detectedChampion = found.key
+                  } else {
+                    // If no direct match, still use the champion field value
+                    // It might be a valid champion key we don't have in our list
+                    detectedChampion = modInfo.info.champion
+                  }
+                }
+
+                // 2. SECOND PRIORITY: Try to detect from name and description
+                if (!detectedChampion && (modInfo.info.name || modInfo.info.description)) {
+                  const textToSearch = `${modInfo.info.name || ''} ${modInfo.info.description || ''}`
+                  detectedChampion = detectChampionFromText(textToSearch, champions)
+                }
+
+                // 3. LAST PRIORITY: Try file name
+                if (!detectedChampion) {
+                  detectedChampion = detectChampionFromText(fileName, champions)
+                }
+
+                if (detectedChampion) {
+                  importOptions.championName = detectedChampion
+                }
+              }
+            } catch (error) {
+              console.warn('Failed to extract mod info for batch import:', error)
+            }
+
+            // Import with extracted options or default
+            const result = await window.api.importSkinFile(filePath, importOptions)
 
             // Fix mod issues if requested and import was successful
             if (result.success && fixModIssues && result.skinInfo?.localPath) {
@@ -109,25 +159,89 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
           onSkinImported()
         }
       },
-      [onSkinImported, fixModIssues]
+      [fixModIssues, champions, onSkinImported]
+    )
+
+    // Function to extract and auto-populate mod info
+    const extractAndPopulateModInfo = useCallback(
+      async (filePath: string) => {
+        try {
+          const result = await window.api.extractModInfo(filePath)
+
+          if (result.success && result.info) {
+            // Auto-populate custom name if available
+            if (result.info.name) {
+              setCustomName(result.info.name)
+            }
+
+            // Try to detect champion - prioritize explicit champion field
+            let detectedChampion = ''
+
+            // 1. FIRST PRIORITY: Check if champion is explicitly provided in info.json
+            if (result.info?.champion) {
+              // Direct match with champion key or name
+              const found = champions.find(
+                (c) =>
+                  c.key.toLowerCase() === result.info?.champion?.toLowerCase() ||
+                  getChampionDisplayName(c).toLowerCase() === result.info?.champion?.toLowerCase()
+              )
+              if (found) {
+                detectedChampion = found.key
+              } else {
+                // If no direct match, still use the champion field value
+                // It might be a valid champion key we don't have in our list
+                detectedChampion = result.info.champion
+              }
+            }
+
+            // 2. SECOND PRIORITY: Try to detect from name and description
+            if (!detectedChampion && (result.info.name || result.info.description)) {
+              const textToSearch = `${result.info.name || ''} ${result.info.description || ''}`
+              detectedChampion = detectChampionFromText(textToSearch, champions)
+            }
+
+            // 3. LAST PRIORITY: Try file name as fallback
+            if (!detectedChampion) {
+              const fileName = filePath.split(/[\\/]/).pop() || ''
+              detectedChampion = detectChampionFromText(fileName, champions)
+            }
+
+            if (detectedChampion) {
+              setSelectedChampion(detectedChampion)
+            }
+          } else {
+            // Fallback to old behavior if extraction fails
+            const fileName = filePath.split(/[\\/]/).pop() || ''
+            const match = fileName.match(/^([A-Za-z]+)[-_\s]/i)
+            if (match && champions.find((c) => c.key === match[1])) {
+              setSelectedChampion(match[1])
+            }
+          }
+        } catch (error) {
+          console.error('Failed to extract mod info:', error)
+          // Fallback to old behavior
+          const fileName = filePath.split(/[\\/]/).pop() || ''
+          const match = fileName.match(/^([A-Za-z]+)[-_\s]/i)
+          if (match && champions.find((c) => c.key === match[1])) {
+            setSelectedChampion(match[1])
+          }
+        }
+      },
+      [champions]
     )
 
     // Expose handleDroppedFiles method to parent
     useImperativeHandle(
       ref,
       () => ({
-        handleDroppedFiles: (filePaths: string[]) => {
+        handleDroppedFiles: async (filePaths: string[]) => {
           if (filePaths.length === 1) {
             setSelectedFile(filePaths[0])
-
-            // Try to extract champion name from file path
-            const fileName = filePaths[0].split(/[\\/]/).pop() || ''
-            const match = fileName.match(/^([A-Za-z]+)[-_\s]/i)
-            if (match && champions.find((c) => c.key === match[1])) {
-              setSelectedChampion(match[1])
-            }
-
             setError('')
+
+            // Extract and populate mod info
+            await extractAndPopulateModInfo(filePaths[0])
+
             setShowDialog(true)
           } else if (filePaths.length > 1) {
             // Multiple files dropped
@@ -142,7 +256,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
           }
         }
       }),
-      [champions, handleBatchImport]
+      [handleBatchImport, extractAndPopulateModInfo]
     )
 
     const handleBrowseMultipleFiles = async () => {
@@ -151,15 +265,11 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
         if (result.filePaths.length === 1) {
           // Single file, show normal dialog
           setSelectedFile(result.filePaths[0])
-
-          // Try to extract champion name from file path
-          const fileName = result.filePaths[0].split(/[\\/]/).pop() || ''
-          const match = fileName.match(/^([A-Za-z]+)[-_\s]/i)
-          if (match && champions.find((c) => c.key === match[1])) {
-            setSelectedChampion(match[1])
-          }
-
           setError('')
+
+          // Extract and populate mod info
+          await extractAndPopulateModInfo(result.filePaths[0])
+
           setShowDialog(true)
         } else {
           // Multiple files, show batch dialog
@@ -262,15 +372,11 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
 
           if (filePaths.length === 1) {
             setSelectedFile(filePaths[0])
-
-            // Try to extract champion name from file path
-            const fileName = filePaths[0].split(/[\\/]/).pop() || ''
-            const match = fileName.match(/^([A-Za-z]+)[-_\s]/i)
-            if (match && champions.find((c) => c.key === match[1])) {
-              setSelectedChampion(match[1])
-            }
-
             setError('')
+
+            // Extract and populate mod info
+            await extractAndPopulateModInfo(filePaths[0])
+
             setShowDialog(true)
           } else {
             // Multiple files dropped

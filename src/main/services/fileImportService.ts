@@ -229,16 +229,52 @@ export class FileImportService {
         throw new Error('Invalid mod structure: META/info.json not found')
       }
 
-      // Handle custom image if provided
+      const infoContent = await fs.readFile(metaInfoPath, 'utf-8')
+      const info = JSON.parse(infoContent)
+
+      // Handle custom image if provided, otherwise extract from mod
+      let imageExtracted = false
       if (options.imagePath) {
         const imageDir = path.join(tempExtractPath, 'IMAGE')
         await fs.mkdir(imageDir, { recursive: true })
         const imageExt = path.extname(options.imagePath)
         await fs.copyFile(options.imagePath, path.join(imageDir, `preview${imageExt}`))
-      }
+        imageExtracted = true
+      } else {
+        // Try to extract image from mod if not provided
+        const imageExtensions = ['png', 'jpg', 'jpeg', 'webp']
 
-      const infoContent = await fs.readFile(metaInfoPath, 'utf-8')
-      const info = JSON.parse(infoContent)
+        // First check if IMAGE/preview already exists (some mods extract it directly)
+        for (const ext of imageExtensions) {
+          const existingImagePath = path.join(tempExtractPath, 'IMAGE', `preview.${ext}`)
+          if (await this.fileExists(existingImagePath)) {
+            imageExtracted = true
+            break
+          }
+        }
+
+        // If not found, try to extract from META folder
+        if (!imageExtracted) {
+          for (const ext of imageExtensions) {
+            // Check for META/image.ext or META/preview.ext
+            const possiblePaths = [`META/image.${ext}`, `META/preview.${ext}`]
+            for (const imagePath of possiblePaths) {
+              const imageEntry = zip.getEntry(imagePath)
+              if (imageEntry) {
+                const imageDir = path.join(tempExtractPath, 'IMAGE')
+                await fs.mkdir(imageDir, { recursive: true })
+                const imageData = zip.readFile(imageEntry)
+                if (imageData) {
+                  await fs.writeFile(path.join(imageDir, `preview.${ext}`), imageData)
+                  imageExtracted = true
+                  break
+                }
+              }
+            }
+            if (imageExtracted) break
+          }
+        }
+      }
 
       // If championName is provided (even as empty string), use it. Otherwise try to detect.
       let championName = options.championName
@@ -466,6 +502,91 @@ export class FileImportService {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error'
+      }
+    }
+  }
+
+  async extractModInfo(filePath: string): Promise<{
+    success: boolean
+    info?: {
+      name?: string
+      author?: string
+      description?: string
+      version?: string
+      champion?: string
+      hasImage?: boolean
+    }
+    error?: string
+  }> {
+    try {
+      const fileType = await this.detectFileType(filePath)
+
+      if (fileType === 'wad') {
+        // WAD files don't have info.json, return basic info
+        const fileName = path.basename(filePath)
+        const baseName = fileName.endsWith('.wad.client')
+          ? fileName.slice(0, -11)
+          : path.basename(filePath, '.wad')
+
+        return {
+          success: true,
+          info: {
+            name: baseName,
+            description: `Imported from ${fileName}`,
+            hasImage: false
+          }
+        }
+      } else if (fileType === 'zip' || fileType === 'fantome') {
+        // Extract info.json from zip/fantome files
+        const zip = new AdmZip(filePath)
+        const infoEntry = zip.getEntry('META/info.json')
+
+        // Check for preview image
+        const imageExtensions = ['png', 'jpg', 'jpeg', 'webp']
+        let hasImage = false
+        for (const ext of imageExtensions) {
+          if (zip.getEntry(`META/image.${ext}`) || zip.getEntry(`META/preview.${ext}`)) {
+            hasImage = true
+            break
+          }
+        }
+
+        if (!infoEntry) {
+          // No info.json found, return basic info
+          const fileName = path.basename(filePath, path.extname(filePath))
+          return {
+            success: true,
+            info: {
+              name: fileName,
+              hasImage
+            }
+          }
+        }
+
+        const infoContent = zip.readAsText(infoEntry)
+        const info = JSON.parse(infoContent)
+
+        return {
+          success: true,
+          info: {
+            name: info.Name || info.name,
+            author: info.Author || info.author,
+            description: info.Description || info.description,
+            version: info.Version || info.version,
+            champion: info.Champion || info.champion,
+            hasImage
+          }
+        }
+      }
+
+      return {
+        success: false,
+        error: 'Unsupported file type'
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to extract mod info'
       }
     }
   }
