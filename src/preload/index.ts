@@ -55,6 +55,8 @@ const api = {
   validateSkinFile: (filePath: string) => ipcRenderer.invoke('validate-skin-file', filePath),
   extractModInfo: (filePath: string) => ipcRenderer.invoke('extract-mod-info', filePath),
   browseSkinFile: () => ipcRenderer.invoke('browse-skin-file'),
+  // URL download
+  downloadFromUrl: (url: string) => ipcRenderer.invoke('download-from-url', url),
   browseSkinFiles: () => ipcRenderer.invoke('browse-skin-files'),
   browseImageFile: () => ipcRenderer.invoke('browse-image-file'),
 

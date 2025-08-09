@@ -29,6 +29,7 @@ import {
 } from './services/translationService'
 import { SkinInfo } from './types'
 import { PresetService } from './services/presetService'
+import { urlDownloadService } from './services/urlDownloadService'
 // Import SelectedSkin type from renderer atoms
 interface SelectedSkin {
   championKey: string
@@ -423,6 +424,7 @@ if (gotTheLock) {
     await favoritesService.initialize()
     await fileImportService.initialize()
     await presetService.initialize()
+    await urlDownloadService.initialize()
 
     // Initialize translation service with saved language
     const savedLanguage = settingsService.get('language') || 'en_US'
@@ -600,6 +602,15 @@ function setupIpcHandlers(): void {
   ipcMain.handle('extract-mod-info', async (_, filePath: string) => {
     try {
       const result = await fileImportService.extractModInfo(filePath)
+      return result
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+  // URL download handler
+  ipcMain.handle('download-from-url', async (_, url: string) => {
+    try {
+      const result = await urlDownloadService.downloadFromUrl(url)
       return result
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }

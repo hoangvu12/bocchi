@@ -142,6 +142,28 @@ export class FileImportService {
     if (ext === '.zip') return 'zip'
     if (ext === '.fantome') return 'fantome'
 
+    // If no extension or unknown extension, try to detect by file signature
+    try {
+      const fileHandle = await fs.open(filePath, 'r')
+      const buffer = Buffer.alloc(4)
+      await fileHandle.read(buffer, 0, 4, 0)
+      await fileHandle.close()
+
+      // Check for ZIP signature (PK\x03\x04 or PK\x05\x06)
+      if (buffer[0] === 0x50 && buffer[1] === 0x4b && (buffer[2] === 0x03 || buffer[2] === 0x05)) {
+        console.log(`Detected ZIP file by signature: ${filePath}`)
+        return 'zip'
+      }
+
+      // Check for WAD signature (RW)
+      if (buffer[0] === 0x52 && buffer[1] === 0x57) {
+        console.log(`Detected WAD file by signature: ${filePath}`)
+        return 'wad'
+      }
+    } catch (error) {
+      console.error('Error detecting file type by signature:', error)
+    }
+
     return 'unknown'
   }
 

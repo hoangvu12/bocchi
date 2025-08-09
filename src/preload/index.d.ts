@@ -108,6 +108,8 @@ export interface IApi {
   browseSkinFile: () => Promise<{ success: boolean; filePath?: string }>
   browseSkinFiles: () => Promise<{ success: boolean; filePaths?: string[] }>
   browseImageFile: () => Promise<{ success: boolean; filePath?: string }>
+  // URL download
+  downloadFromUrl: (url: string) => Promise<{ success: boolean; filePath?: string; error?: string }>
 
   // File path helper
   getPathForFile: (file: File) => string

@@ -4,6 +4,7 @@ import { Upload, Loader2, X, Image } from 'lucide-react'
 import type { Champion } from '../App'
 import { getChampionDisplayName, detectChampionFromText } from '../utils/championUtils'
 import { Switch } from './ui/switch'
+import { ImportMethodDialog } from './ImportMethodDialog'
 
 interface FileUploadButtonProps {
   champions: Champion[]
@@ -19,6 +20,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
     const { t } = useTranslation()
     const [isImporting, setIsImporting] = useState(false)
     const [showDialog, setShowDialog] = useState(false)
+    const [showMethodDialog, setShowMethodDialog] = useState(false)
     const [selectedFile, setSelectedFile] = useState<string>('')
     const [selectedChampion, setSelectedChampion] = useState<string>('')
     const [customName, setCustomName] = useState<string>('')
@@ -235,6 +237,9 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
       ref,
       () => ({
         handleDroppedFiles: async (filePaths: string[]) => {
+          // Close the import method dialog if it's open
+          setShowMethodDialog(false)
+
           if (filePaths.length === 1) {
             setSelectedFile(filePaths[0])
             setError('')
@@ -259,32 +264,32 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
       [handleBatchImport, extractAndPopulateModInfo]
     )
 
-    const handleBrowseMultipleFiles = async () => {
-      const result = await window.api.browseSkinFiles()
-      if (result.success && result.filePaths && result.filePaths.length > 0) {
-        if (result.filePaths.length === 1) {
-          // Single file, show normal dialog
-          setSelectedFile(result.filePaths[0])
-          setError('')
+    const handleFileSelected = useCallback(
+      async (filePath: string) => {
+        setSelectedFile(filePath)
+        setError('')
 
-          // Extract and populate mod info
-          await extractAndPopulateModInfo(result.filePaths[0])
+        // Extract and populate mod info
+        await extractAndPopulateModInfo(filePath)
 
-          setShowDialog(true)
-        } else {
-          // Multiple files, show batch dialog
-          setBatchProgress({
-            current: 0,
-            total: result.filePaths.length,
-            currentFile: '',
-            results: []
-          })
-          setShowBatchDialog(true)
-          // Start batch import immediately
-          handleBatchImport(result.filePaths)
-        }
-      }
-    }
+        setShowDialog(true)
+      },
+      [extractAndPopulateModInfo]
+    )
+
+    const handleMultipleFilesSelected = useCallback(
+      (filePaths: string[]) => {
+        setBatchProgress({
+          current: 0,
+          total: filePaths.length,
+          currentFile: '',
+          results: []
+        })
+        setShowBatchDialog(true)
+        handleBatchImport(filePaths)
+      },
+      [handleBatchImport]
+    )
 
     const handleImport = async () => {
       if (!selectedFile) {
@@ -414,7 +419,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
       <>
         <div onDrop={handleDrop} onDragOver={handleDragOver} className="inline-block">
           <button
-            onClick={handleBrowseMultipleFiles}
+            onClick={() => setShowMethodDialog(true)}
             className="px-4 py-2.5 text-sm bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary font-medium rounded-lg transition-all duration-200 border border-border hover:border-border-strong shadow-sm hover:shadow-md dark:shadow-none disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             disabled={isImporting}
           >
@@ -426,6 +431,13 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
             {t('fileUpload.uploadButton')}
           </button>
         </div>
+
+        <ImportMethodDialog
+          open={showMethodDialog}
+          onClose={() => setShowMethodDialog(false)}
+          onFileSelected={handleFileSelected}
+          onMultipleFilesSelected={handleMultipleFilesSelected}
+        />
 
         {showDialog && (
           <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
