@@ -2,7 +2,7 @@ import { app } from 'electron'
 import axios, { AxiosError } from 'axios'
 import * as fs from 'fs'
 import * as path from 'path'
-import AdmZip from 'adm-zip'
+import * as StreamZip from 'node-stream-zip'
 
 export interface DownloadProgress {
   loaded: number
@@ -146,33 +146,30 @@ export class ToolsDownloader {
       }
 
       // Extract the zip with validation
-      let zip: AdmZip
+      const extractPath = path.join(tempDir, 'extracted')
+      const zip = new StreamZip.async({ file: zipPath })
+
       try {
-        zip = new AdmZip(zipPath)
         // Test zip integrity
-        const entries = zip.getEntries()
-        if (entries.length === 0) {
+        const entries = await zip.entries()
+        const entryCount = Object.keys(entries).length
+        if (entryCount === 0) {
           throw new Error('ZIP archive is empty')
         }
-      } catch (error) {
-        throw this.createError(
-          'extraction',
-          'Failed to read ZIP file',
-          error instanceof Error ? error.message : 'Archive may be corrupted',
-          true
-        )
-      }
 
-      const extractPath = path.join(tempDir, 'extracted')
-      try {
-        zip.extractAllTo(extractPath, true)
+        // Extract all files
+        await zip.extract(null, extractPath)
       } catch (error) {
         throw this.createError(
           'extraction',
-          'Failed to extract ZIP file',
+          error instanceof Error && error.message.includes('empty')
+            ? 'ZIP archive is empty'
+            : 'Failed to extract ZIP file',
           error instanceof Error ? error.message : 'Extraction failed',
           true
         )
+      } finally {
+        await zip.close()
       }
 
       // Find the cslol-tools folder

@@ -1,7 +1,7 @@
 import fs from 'fs/promises'
 import path from 'path'
 import { app } from 'electron'
-import AdmZip from 'adm-zip'
+import * as StreamZip from 'node-stream-zip'
 import { SkinInfo } from '../types'
 
 export interface ImportResult {
@@ -243,8 +243,13 @@ export class FileImportService {
     try {
       await fs.mkdir(tempExtractPath, { recursive: true })
 
-      const zip = new AdmZip(zipPath)
-      zip.extractAllTo(tempExtractPath, true)
+      // Use StreamZip for extraction to handle large files
+      const zip = new StreamZip.async({ file: zipPath })
+      try {
+        await zip.extract(null, tempExtractPath)
+      } finally {
+        await zip.close()
+      }
 
       const metaInfoPath = path.join(tempExtractPath, 'META', 'info.json')
       if (!(await this.fileExists(metaInfoPath))) {
@@ -254,49 +259,14 @@ export class FileImportService {
       const infoContent = await fs.readFile(metaInfoPath, 'utf-8')
       const info = JSON.parse(infoContent)
 
-      // Handle custom image if provided, otherwise extract from mod
-      let imageExtracted = false
+      // Handle custom image if provided
       if (options.imagePath) {
         const imageDir = path.join(tempExtractPath, 'IMAGE')
         await fs.mkdir(imageDir, { recursive: true })
         const imageExt = path.extname(options.imagePath)
         await fs.copyFile(options.imagePath, path.join(imageDir, `preview${imageExt}`))
-        imageExtracted = true
-      } else {
-        // Try to extract image from mod if not provided
-        const imageExtensions = ['png', 'jpg', 'jpeg', 'webp']
-
-        // First check if IMAGE/preview already exists (some mods extract it directly)
-        for (const ext of imageExtensions) {
-          const existingImagePath = path.join(tempExtractPath, 'IMAGE', `preview.${ext}`)
-          if (await this.fileExists(existingImagePath)) {
-            imageExtracted = true
-            break
-          }
-        }
-
-        // If not found, try to extract from META folder
-        if (!imageExtracted) {
-          for (const ext of imageExtensions) {
-            // Check for META/image.ext or META/preview.ext
-            const possiblePaths = [`META/image.${ext}`, `META/preview.${ext}`]
-            for (const imagePath of possiblePaths) {
-              const imageEntry = zip.getEntry(imagePath)
-              if (imageEntry) {
-                const imageDir = path.join(tempExtractPath, 'IMAGE')
-                await fs.mkdir(imageDir, { recursive: true })
-                const imageData = zip.readFile(imageEntry)
-                if (imageData) {
-                  await fs.writeFile(path.join(imageDir, `preview.${ext}`), imageData)
-                  imageExtracted = true
-                  break
-                }
-              }
-            }
-            if (imageExtracted) break
-          }
-        }
       }
+      // Note: Images are already extracted to tempExtractPath by zip.extract()
 
       // If championName is provided (even as empty string), use it. Otherwise try to detect.
       let championName = options.championName
@@ -559,45 +529,51 @@ export class FileImportService {
           }
         }
       } else if (fileType === 'zip' || fileType === 'fantome') {
-        // Extract info.json from zip/fantome files
-        const zip = new AdmZip(filePath)
-        const infoEntry = zip.getEntry('META/info.json')
+        // Extract info.json from zip/fantome files using StreamZip
+        const zip = new StreamZip.async({ file: filePath })
+        try {
+          const entries = await zip.entries()
+          const infoEntry = entries['META/info.json']
 
-        // Check for preview image
-        const imageExtensions = ['png', 'jpg', 'jpeg', 'webp']
-        let hasImage = false
-        for (const ext of imageExtensions) {
-          if (zip.getEntry(`META/image.${ext}`) || zip.getEntry(`META/preview.${ext}`)) {
-            hasImage = true
-            break
+          // Check for preview image
+          const imageExtensions = ['png', 'jpg', 'jpeg', 'webp']
+          let hasImage = false
+          for (const ext of imageExtensions) {
+            if (entries[`META/image.${ext}`] || entries[`META/preview.${ext}`]) {
+              hasImage = true
+              break
+            }
           }
-        }
 
-        if (!infoEntry) {
-          // No info.json found, return basic info
-          const fileName = path.basename(filePath, path.extname(filePath))
+          if (!infoEntry) {
+            // No info.json found, return basic info
+            const fileName = path.basename(filePath, path.extname(filePath))
+            return {
+              success: true,
+              info: {
+                name: fileName,
+                hasImage
+              }
+            }
+          }
+
+          const infoData = await zip.entryData('META/info.json')
+          const infoContent = infoData.toString('utf8')
+          const info = JSON.parse(infoContent)
+
           return {
             success: true,
             info: {
-              name: fileName,
+              name: info.Name || info.name,
+              author: info.Author || info.author,
+              description: info.Description || info.description,
+              version: info.Version || info.version,
+              champion: info.Champion || info.champion,
               hasImage
             }
           }
-        }
-
-        const infoContent = zip.readAsText(infoEntry)
-        const info = JSON.parse(infoContent)
-
-        return {
-          success: true,
-          info: {
-            name: info.Name || info.name,
-            author: info.Author || info.author,
-            description: info.Description || info.description,
-            version: info.Version || info.version,
-            champion: info.Champion || info.champion,
-            hasImage
-          }
+        } finally {
+          await zip.close()
         }
       }
 
