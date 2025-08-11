@@ -91,7 +91,10 @@
     "deletedSkin": "ลบสกิน: {{name}}",
     "failedToDeleteMod": "ไม่สามารถลบมอด: {{error}}",
     "failedToDeleteSkin": "ไม่สามารถลบสกิน: {{error}}",
-    "autoSelectedSkinsCleanedUp": "ล้างสกินที่เลือกอัตโนมัติ {{count}} สกิน"
+    "autoSelectedSkinsCleanedUp": "ล้างสกินที่เลือกอัตโนมัติ {{count}} สกิน",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "จำเป็นต้องใช้ CS:LOL Tools",
@@ -418,7 +421,9 @@
     "stopPatcher": "หยุด Patcher",
     "apply_one": "ใช้ {{count}} สกิน",
     "apply_other": "ใช้ {{count}} สกิน",
-    "messages": "ข้อความ Patcher:"
+    "messages": "ข้อความ Patcher:",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "พรีเซ็ต",

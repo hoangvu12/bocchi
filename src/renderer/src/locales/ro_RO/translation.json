@@ -91,7 +91,10 @@
     "deletedSkin": "Skin șters: {{name}}",
     "failedToDeleteMod": "Nu s-a putut șterge mod-ul: {{error}}",
     "failedToDeleteSkin": "Nu s-a putut șterge skin-ul: {{error}}",
-    "autoSelectedSkinsCleanedUp": "{{count}} skin-uri selectate automat au fost curățate"
+    "autoSelectedSkinsCleanedUp": "{{count}} skin-uri selectate automat au fost curățate",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "CS:LOL Tools necesare",
@@ -418,7 +421,9 @@
     "stopPatcher": "Oprește patcher-ul",
     "apply_one": "Aplică {{count}} skin",
     "apply_other": "Aplică {{count}} skin-uri",
-    "messages": "Mesajele patcher-ului:"
+    "messages": "Mesajele patcher-ului:",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "Presetări",

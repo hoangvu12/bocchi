@@ -77,6 +77,9 @@
     "applied": "Applied {{name}} successfully!",
     "stopping": "Stopping patcher...",
     "stopped": "Patcher stopped",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}",
     "error": "Error: {{message}}",
     "fetchingData": "Fetching champion data...",
     "autoAcceptedMatch": "Match automatically accepted!",
@@ -433,6 +436,8 @@
   "patcher": {
     "applying": "Applying...",
     "stopping": "Stopping...",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel",
     "stopPatcher": "Stop Patcher",
     "apply_one": "Apply {{count}} Skin",
     "apply_other": "Apply {{count}} Skins",

@@ -91,7 +91,10 @@
     "deletedSkin": "Skin dihapus: {{name}}",
     "failedToDeleteMod": "Gagal menghapus mod: {{error}}",
     "failedToDeleteSkin": "Gagal menghapus skin: {{error}}",
-    "autoSelectedSkinsCleanedUp": "Membersihkan {{count}} skin yang dipilih otomatis"
+    "autoSelectedSkinsCleanedUp": "Membersihkan {{count}} skin yang dipilih otomatis",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "CS:LOL Tools Diperlukan",
@@ -418,7 +421,9 @@
     "stopPatcher": "Hentikan Patcher",
     "apply_one": "Terapkan {{count}} Skin",
     "apply_other": "Terapkan {{count}} Skin",
-    "messages": "Pesan Patcher:"
+    "messages": "Pesan Patcher:",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "Preset",

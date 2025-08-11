@@ -77,6 +77,9 @@
     "applied": "¡{{name}} aplicado exitosamente!",
     "stopping": "Deteniendo patcher...",
     "stopped": "Patcher detenido",
+    "cancelling": "Cancelando operación...",
+    "cancelled": "Operación cancelada",
+    "failedToCancel": "Error al cancelar: {{error}}",
     "error": "Error: {{message}}",
     "fetchingData": "Obteniendo datos de campeones...",
     "dataFetched": "¡Se obtuvieron datos de {{count}} campeones exitosamente!",
@@ -427,6 +430,8 @@
   "patcher": {
     "applying": "Aplicando...",
     "stopping": "Deteniendo...",
+    "cancelling": "Cancelando...",
+    "cancelApply": "Cancelar",
     "stopPatcher": "Detener patcher",
     "apply_one": "Aplicar {{count}} skin",
     "apply_other": "Aplicar {{count}} skins",

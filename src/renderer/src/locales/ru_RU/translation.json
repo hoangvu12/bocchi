@@ -77,6 +77,9 @@
     "applied": "{{name}} успешно применен!",
     "stopping": "Остановка патчера...",
     "stopped": "Патчер остановлен",
+    "cancelling": "Отмена операции...",
+    "cancelled": "Операция отменена",
+    "failedToCancel": "Не удалось отменить: {{error}}",
     "error": "Ошибка: {{message}}",
     "fetchingData": "Получение данных чемпионов...",
     "dataFetched": "Успешно получены данные для {{count}} чемпионов!",
@@ -427,6 +430,8 @@
   "patcher": {
     "applying": "Применение...",
     "stopping": "Остановка...",
+    "cancelling": "Отмена...",
+    "cancelApply": "Отменить",
     "stopPatcher": "Остановить патчер",
     "apply_one": "Применить {{count}} скин",
     "apply_other": "Применить {{count}} скинов",

@@ -77,6 +77,9 @@
     "applied": "{{name}}を正常に適用しました！",
     "stopping": "パッチャーを停止中...",
     "stopped": "パッチャーが停止しました",
+    "cancelling": "操作をキャンセル中...",
+    "cancelled": "操作がキャンセルされました",
+    "failedToCancel": "キャンセルに失敗しました: {{error}}",
     "error": "エラー: {{message}}",
     "fetchingData": "チャンピオンデータを取得中...",
     "dataFetched": "{{count}}個のチャンピオンのデータを正常に取得しました！",
@@ -427,6 +430,8 @@
   "patcher": {
     "applying": "適用中...",
     "stopping": "停止中...",
+    "cancelling": "キャンセル中...",
+    "cancelApply": "キャンセル",
     "stopPatcher": "パッチャーを停止",
     "apply_one": "{{count}}個のスキンを適用",
     "apply_other": "{{count}}個のスキンを適用",

@@ -91,7 +91,10 @@
     "failedToDeleteMod": "Error al eliminar mod: {{error}}",
     "failedToDeleteSkin": "Error al eliminar skin: {{error}}",
     "autoSelectedSkinsCleanedUp": "Se limpiaron {{count}} skins seleccionados automáticamente",
-    "autoAcceptedMatch": "¡Partida aceptada automáticamente!"
+    "autoAcceptedMatch": "¡Partida aceptada automáticamente!",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "Se requieren herramientas CS:LOL",
@@ -430,7 +433,9 @@
     "stopPatcher": "Detener patcher",
     "apply_one": "Aplicar {{count}} skin",
     "apply_other": "Aplicar {{count}} skins",
-    "messages": "Mensajes del patcher:"
+    "messages": "Mensajes del patcher:",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "Configuraciones predeterminadas",

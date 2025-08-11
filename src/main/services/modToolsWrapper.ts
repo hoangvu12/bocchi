@@ -12,6 +12,10 @@ export class ModToolsWrapper {
   private mainWindow: BrowserWindow | null = null
   private activeProcesses: ChildProcess[] = []
   private timeout: number = 300000 // Default 5 minutes in milliseconds
+  private isCancelled: boolean = false
+  private currentOperation: ChildProcess | null = null
+  private applyInProgress: boolean = false
+  private importedMods: string[] = [] // Track successfully imported mods for cleanup
 
   constructor() {
     const toolsDownloader = new ToolsDownloader()
@@ -75,14 +79,42 @@ export class ModToolsWrapper {
     sendProgress: boolean = false
   ): Promise<string> {
     return new Promise((resolve, reject) => {
+      // Check if cancelled before starting
+      if (this.isCancelled) {
+        reject(new Error('Operation cancelled by user'))
+        return
+      }
+
       const process = spawn(command, args)
+      this.currentOperation = process
+      this.activeProcesses.push(process)
+
       let stdout = ''
       let stderr = ''
+      let cancelled = false
+
       const timer = setTimeout(() => {
-        process.kill()
-        const timeoutSeconds = Math.round(timeout / 1000)
-        reject(new Error(`Process timed out after ${timeoutSeconds} seconds`))
+        if (!cancelled) {
+          process.kill()
+          this.cleanupProcess(process)
+          this.currentOperation = null
+          const timeoutSeconds = Math.round(timeout / 1000)
+          reject(new Error(`Process timed out after ${timeoutSeconds} seconds`))
+        }
       }, timeout)
+
+      // Check for cancellation periodically
+      const cancellationChecker = setInterval(() => {
+        if (this.isCancelled && !cancelled) {
+          cancelled = true
+          clearInterval(cancellationChecker)
+          clearTimeout(timer)
+          process.kill()
+          this.cleanupProcess(process)
+          this.currentOperation = null
+          reject(new Error('Operation cancelled by user'))
+        }
+      }, 100) // Check every 100ms
 
       process.stdout.on('data', (data) => {
         const output = data.toString()
@@ -118,20 +150,34 @@ export class ModToolsWrapper {
 
       process.on('close', (code) => {
         clearTimeout(timer)
-        if (code === 0) {
+        clearInterval(cancellationChecker)
+        this.cleanupProcess(process)
+        this.currentOperation = null
+
+        if (cancelled) {
+          reject(new Error('Operation cancelled by user'))
+        } else if (code === 0) {
           resolve(stdout)
         } else {
           reject(new Error(`Process exited with code ${code}: ${stderr}`))
         }
       })
+
       process.on('error', (err) => {
         clearTimeout(timer)
+        clearInterval(cancellationChecker)
+        this.cleanupProcess(process)
+        this.currentOperation = null
         reject(err)
       })
     })
   }
 
   async applyPreset(preset: any): Promise<{ success: boolean; message: string }> {
+    this.isCancelled = false
+    this.applyInProgress = true
+    this.importedMods = []
+
     try {
       const toolsExist = await this.checkModToolsExist()
       if (!toolsExist) {
@@ -287,6 +333,11 @@ export class ModToolsWrapper {
         }
       }
 
+      // Check for cancellation before rename operations
+      if (this.isCancelled) {
+        throw new Error('Operation cancelled by user')
+      }
+
       // Execute rename operations using temp names to avoid conflicts
       if (renameOperations.length > 0) {
         console.info(`[ModToolsWrapper] Executing ${renameOperations.length} rename operations`)
@@ -329,6 +380,10 @@ export class ModToolsWrapper {
 
       // Execute import operations for new skins
       for (const op of importOperations) {
+        // Check for cancellation before each import
+        if (this.isCancelled) {
+          throw new Error('Operation cancelled by user')
+        }
         // Report progress
         if (this.mainWindow && !this.mainWindow.isDestroyed()) {
           this.mainWindow.webContents.send('import-progress', {
@@ -358,6 +413,7 @@ export class ModToolsWrapper {
           )
 
           console.info(`[ModToolsWrapper] Successfully imported: ${op.targetName}`)
+          this.importedMods.push(op.targetName)
         } catch (error) {
           console.error(`[ModToolsWrapper] Failed to import skin ${op.index + 1}:`, error)
           // Continue with other skins even if one fails
@@ -383,6 +439,11 @@ export class ModToolsWrapper {
       const profilePath = path.join(this.profilesPath, profileName)
       const profileConfigPath = `${profilePath}.config`
       const modsParameter = importedModNames.join('/')
+
+      // Check for cancellation before creating overlay
+      if (this.isCancelled) {
+        throw new Error('Operation cancelled by user')
+      }
 
       console.info('[ModToolsWrapper] Creating overlay...')
       let overlaySuccess = false
@@ -429,6 +490,11 @@ export class ModToolsWrapper {
       }
 
       await new Promise((resolve) => setTimeout(resolve, 200))
+
+      // Check for cancellation before starting runoverlay
+      if (this.isCancelled) {
+        throw new Error('Operation cancelled by user')
+      }
 
       console.info('[ModToolsWrapper] Starting runoverlay process...')
       this.runningProcess = spawn(
@@ -491,9 +557,17 @@ export class ModToolsWrapper {
         }
       })
 
+      this.applyInProgress = false
       return { success: true, message: 'Preset applied successfully' }
     } catch (error) {
       console.error('Failed to apply preset:', error)
+      this.applyInProgress = false
+
+      // Send cancellation status to renderer if cancelled
+      if (this.isCancelled && this.mainWindow && !this.mainWindow.isDestroyed()) {
+        this.mainWindow.webContents.send('apply-cancelled')
+      }
+
       return { success: false, message: error instanceof Error ? error.message : 'Unknown error' }
     }
   }
@@ -531,5 +605,62 @@ export class ModToolsWrapper {
       console.error('[ModToolsWrapper] Failed to clear imported mods cache:', error)
       throw error
     }
+  }
+
+  async cancelApply(): Promise<{ success: boolean; message: string }> {
+    if (!this.applyInProgress) {
+      return { success: false, message: 'No apply operation in progress' }
+    }
+
+    console.info('[ModToolsWrapper] Cancelling apply operation...')
+    this.isCancelled = true
+
+    // Kill current operation if running
+    if (this.currentOperation) {
+      console.info('[ModToolsWrapper] Killing current operation')
+      this.currentOperation.kill()
+      this.currentOperation = null
+    }
+
+    // Kill all active processes
+    for (const process of this.activeProcesses) {
+      if (!process.killed) {
+        process.kill()
+      }
+    }
+    this.activeProcesses = []
+
+    // Force kill all mod-tools processes
+    await this.forceKillModTools()
+
+    // Optionally cleanup partially imported mods
+    if (this.importedMods.length > 0) {
+      console.info(
+        `[ModToolsWrapper] Cleaning up ${this.importedMods.length} partially imported mods`
+      )
+      for (const modName of this.importedMods) {
+        try {
+          const modPath = path.join(this.installedPath, modName)
+          await fs.rm(modPath, { recursive: true, force: true }).catch(() => {})
+        } catch (error) {
+          console.warn(`[ModToolsWrapper] Failed to cleanup ${modName}:`, error)
+        }
+      }
+    }
+
+    // Reset state
+    this.applyInProgress = false
+    this.importedMods = []
+
+    // Notify renderer
+    if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+      this.mainWindow.webContents.send('patcher-status', 'Apply operation cancelled')
+    }
+
+    return { success: true, message: 'Apply operation cancelled successfully' }
+  }
+
+  isApplying(): boolean {
+    return this.applyInProgress
   }
 }

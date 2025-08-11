@@ -1003,6 +1003,19 @@ function setupIpcHandlers(): void {
     }
   })
 
+  ipcMain.handle('cancel-apply', async () => {
+    try {
+      const result = await modToolsWrapper.cancelApply()
+      return result
+    } catch (error) {
+      return { success: false, message: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('is-applying', async () => {
+    return modToolsWrapper.isApplying()
+  })
+
   // Smart apply handler - applies only team-relevant skins
   ipcMain.handle(
     'smart-apply-skins',

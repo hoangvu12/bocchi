@@ -91,7 +91,10 @@
     "deletedSkin": "已刪除面板：{{name}}",
     "failedToDeleteMod": "無法刪除模組：{{error}}",
     "failedToDeleteSkin": "無法刪除面板：{{error}}",
-    "autoSelectedSkinsCleanedUp": "清理了 {{count}} 個自動選擇的面板"
+    "autoSelectedSkinsCleanedUp": "清理了 {{count}} 個自動選擇的面板",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "需要 CS:LOL 工具",
@@ -418,7 +421,9 @@
     "stopPatcher": "停止修補程式",
     "apply_one": "套用 {{count}} 個面板",
     "apply_other": "套用 {{count}} 個面板",
-    "messages": "修補程式訊息："
+    "messages": "修補程式訊息：",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "預設配置",

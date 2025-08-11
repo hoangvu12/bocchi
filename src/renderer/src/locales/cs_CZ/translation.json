@@ -91,7 +91,10 @@
     "deletedSkin": "Smazán skin: {{name}}",
     "failedToDeleteMod": "Nepodařilo se smazat mód: {{error}}",
     "failedToDeleteSkin": "Nepodařilo se smazat skin: {{error}}",
-    "autoSelectedSkinsCleanedUp": "Vyčištěno {{count}} automaticky vybraných skinů"
+    "autoSelectedSkinsCleanedUp": "Vyčištěno {{count}} automaticky vybraných skinů",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "Vyžaduje se CS:LOL Tools",
@@ -418,7 +421,9 @@
     "stopPatcher": "Zastavit patcher",
     "apply_one": "Aplikovat {{count}} skin",
     "apply_other": "Aplikovat {{count}} skinů",
-    "messages": "Zprávy patcheru:"
+    "messages": "Zprávy patcheru:",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "Předvolby",

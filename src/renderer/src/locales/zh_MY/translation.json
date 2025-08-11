@@ -91,7 +91,10 @@
     "deletedSkin": "已刪除造型：{{name}}",
     "failedToDeleteMod": "無法刪除模組：{{error}}",
     "failedToDeleteSkin": "無法刪除造型：{{error}}",
-    "autoSelectedSkinsCleanedUp": "清理了 {{count}} 個自動選擇的造型"
+    "autoSelectedSkinsCleanedUp": "清理了 {{count}} 個自動選擇的造型",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "需要 CS:LOL 工具",
@@ -418,7 +421,9 @@
     "stopPatcher": "停止修補器",
     "apply_one": "套用 {{count}} 個造型",
     "apply_other": "套用 {{count}} 個造型",
-    "messages": "修補器訊息："
+    "messages": "修補器訊息：",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "預設配置",

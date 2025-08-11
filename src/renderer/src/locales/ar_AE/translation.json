@@ -91,7 +91,10 @@
     "deletedSkin": "تم حذف الشكل: {{name}}",
     "failedToDeleteMod": "فشل حذف التعديل: {{error}}",
     "failedToDeleteSkin": "فشل حذف الشكل: {{error}}",
-    "autoSelectedSkinsCleanedUp": "تم تنظيف {{count}} أشكال مختارة تلقائياً"
+    "autoSelectedSkinsCleanedUp": "تم تنظيف {{count}} أشكال مختارة تلقائياً",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "أدوات CS:LOL مطلوبة",
@@ -418,7 +421,9 @@
     "stopPatcher": "إيقاف المطبق",
     "apply_one": "تطبيق {{count}} شكل",
     "apply_other": "تطبيق {{count}} أشكال",
-    "messages": "رسائل المطبق:"
+    "messages": "رسائل المطبق:",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "الإعدادات المسبقة",

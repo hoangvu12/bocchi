@@ -91,7 +91,10 @@
     "deletedSkin": "Skin silindi: {{name}}",
     "failedToDeleteMod": "Mod silinemedi: {{error}}",
     "failedToDeleteSkin": "Skin silinemedi: {{error}}",
-    "autoSelectedSkinsCleanedUp": "{{count}} otomatik seçilmiş skin temizlendi"
+    "autoSelectedSkinsCleanedUp": "{{count}} otomatik seçilmiş skin temizlendi",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "CS:LOL Tools gerekli",
@@ -418,7 +421,9 @@
     "stopPatcher": "Yama programını durdur",
     "apply_one": "{{count}} skin uygula",
     "apply_other": "{{count}} skin uygula",
-    "messages": "Yama programı mesajları:"
+    "messages": "Yama programı mesajları:",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "Ön Ayarlar",

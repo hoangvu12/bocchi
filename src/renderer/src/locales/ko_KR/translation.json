@@ -77,6 +77,9 @@
     "applied": "{{name}}이(가) 성공적으로 적용되었습니다!",
     "stopping": "패처 중지 중...",
     "stopped": "패처가 중지되었습니다",
+    "cancelling": "작업 취소 중...",
+    "cancelled": "작업이 취소되었습니다",
+    "failedToCancel": "취소 실패: {{error}}",
     "error": "오류: {{message}}",
     "fetchingData": "챔피언 데이터 가져오는 중...",
     "dataFetched": "{{count}}개 챔피언의 데이터를 성공적으로 가져왔습니다!",
@@ -427,6 +430,8 @@
   "patcher": {
     "applying": "적용 중...",
     "stopping": "중지 중...",
+    "cancelling": "취소 중...",
+    "cancelApply": "취소",
     "stopPatcher": "패처 중지",
     "apply_one": "{{count}}개 스킨 적용",
     "apply_other": "{{count}}개 스킨 적용",

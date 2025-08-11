@@ -31,7 +31,8 @@ export const loadingStatesAtom = atom({
   isApplyingSkins: false,
   isDeletingSkin: false,
   isStoppingPatcher: false,
-  isUpdatingChampionData: false
+  isUpdatingChampionData: false,
+  isCancellingApply: false
 })
 
 // Derived atom for overall loading state

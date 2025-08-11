@@ -127,7 +127,7 @@ function AppContent(): React.JSX.Element {
     loadDownloadedSkins,
     applySelectedSkins
   } = useSkinManagement()
-  const { isPatcherRunning, stopPatcher } = usePatcherControl()
+  const { isPatcherRunning, stopPatcher, cancelApply, isCancellingApply } = usePatcherControl()
 
   // Initialize P2P skin sync
   useP2PSkinSync(downloadedSkins)
@@ -822,8 +822,10 @@ function AppContent(): React.JSX.Element {
         <SelectedSkinsDrawer
           onApplySkins={applySelectedSkins}
           onStopPatcher={stopPatcher}
+          onCancelApply={cancelApply}
           loading={loading}
           isPatcherRunning={isPatcherRunning}
+          isCancellingApply={isCancellingApply}
           downloadedSkins={downloadedSkins}
           championData={championData || undefined}
           statusMessage={statusMessage}

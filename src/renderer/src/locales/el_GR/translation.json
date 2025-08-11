@@ -91,7 +91,10 @@
     "deletedSkin": "Διαγράφηκε skin: {{name}}",
     "failedToDeleteMod": "Αποτυχία διαγραφής mod: {{error}}",
     "failedToDeleteSkin": "Αποτυχία διαγραφής skin: {{error}}",
-    "autoSelectedSkinsCleanedUp": "Καθαρίστηκαν {{count}} αυτόματα επιλεγμένα skins"
+    "autoSelectedSkinsCleanedUp": "Καθαρίστηκαν {{count}} αυτόματα επιλεγμένα skins",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "Απαιτούνται CS:LOL Tools",
@@ -418,7 +421,9 @@
     "stopPatcher": "Διακοπή patcher",
     "apply_one": "Εφαρμογή {{count}} skin",
     "apply_other": "Εφαρμογή {{count}} skins",
-    "messages": "Μηνύματα patcher:"
+    "messages": "Μηνύματα patcher:",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "Προεπιλογές",

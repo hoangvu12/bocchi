@@ -91,7 +91,10 @@
     "deletedSkin": "Skin gelöscht: {{name}}",
     "failedToDeleteMod": "Mod konnte nicht gelöscht werden: {{error}}",
     "failedToDeleteSkin": "Skin konnte nicht gelöscht werden: {{error}}",
-    "autoSelectedSkinsCleanedUp": "{{count}} automatisch ausgewählte Skins bereinigt"
+    "autoSelectedSkinsCleanedUp": "{{count}} automatisch ausgewählte Skins bereinigt",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "CS:LOL Tools erforderlich",
@@ -418,7 +421,9 @@
     "stopPatcher": "Patcher stoppen",
     "apply_one": "{{count}} Skin anwenden",
     "apply_other": "{{count}} Skins anwenden",
-    "messages": "Patcher-Nachrichten:"
+    "messages": "Patcher-Nachrichten:",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "Voreinstellungen",

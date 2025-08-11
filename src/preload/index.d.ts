@@ -126,6 +126,8 @@ export interface IApi {
   ) => Promise<{ success: boolean; message?: string }>
   stopPatcher: () => Promise<{ success: boolean; error?: string }>
   isPatcherRunning: () => Promise<boolean>
+  cancelApply: () => Promise<{ success: boolean; message?: string }>
+  isApplying: () => Promise<boolean>
   fetchChampionData: (
     language?: string
   ) => Promise<{ success: boolean; message: string; championCount?: number }>

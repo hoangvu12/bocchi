@@ -78,6 +78,8 @@ const api = {
     ipcRenderer.invoke('run-patcher', gamePath, selectedSkins),
   stopPatcher: () => ipcRenderer.invoke('stop-patcher'),
   isPatcherRunning: () => ipcRenderer.invoke('is-patcher-running'),
+  cancelApply: () => ipcRenderer.invoke('cancel-apply'),
+  isApplying: () => ipcRenderer.invoke('is-applying'),
   smartApplySkins: (
     gamePath: string,
     selectedSkins: any[],

@@ -78,6 +78,9 @@
     "applied": "Đã áp dụng {{name}} thành công!",
     "stopping": "Đang dừng patcher...",
     "stopped": "Đã dừng patcher",
+    "cancelling": "Đang hủy thao tác...",
+    "cancelled": "Đã hủy thao tác",
+    "failedToCancel": "Không thể hủy: {{error}}",
     "error": "Lỗi: {{message}}",
     "fetchingData": "Đang tải dữ liệu tướng...",
     "autoAcceptedMatch": "Đã tự động chấp nhận trận đấu!",
@@ -419,6 +422,8 @@
   "patcher": {
     "applying": "Đang áp dụng...",
     "stopping": "Đang dừng...",
+    "cancelling": "Đang hủy...",
+    "cancelApply": "Hủy",
     "stopPatcher": "Dừng Patcher",
     "apply": "Áp dụng {{count}} trang phục",
     "messages": "Thông báo từ Patcher:",

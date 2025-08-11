@@ -44,8 +44,10 @@ interface ExtendedMember extends Omit<P2PRoomMember, 'activeSkins'> {
 interface SelectedSkinsDrawerProps {
   onApplySkins: () => void
   onStopPatcher: () => void
+  onCancelApply: () => void
   loading: boolean
   isPatcherRunning: boolean
+  isCancellingApply: boolean
   downloadedSkins: Array<{ championName: string; skinName: string; localPath?: string }>
   championData?: {
     champions: Array<{
@@ -84,8 +86,10 @@ interface SelectedSkinsDrawerProps {
 export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
   onApplySkins,
   onStopPatcher,
+  onCancelApply,
   loading,
   isPatcherRunning,
+  isCancellingApply,
   downloadedSkins,
   championData,
   errorMessage,
@@ -858,23 +862,33 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                 className={`px-6 py-2 font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${
                   isPatcherRunning
                     ? 'bg-red-600 hover:bg-red-700 text-white'
-                    : 'bg-primary-500 hover:bg-primary-600 text-white'
+                    : loading && !isCancellingApply
+                      ? 'bg-orange-600 hover:bg-orange-700 text-white'
+                      : 'bg-primary-500 hover:bg-primary-600 text-white'
                 }`}
-                onClick={isPatcherRunning ? onStopPatcher : handleApplySkins}
-                disabled={loading || isSmartApplying}
+                onClick={
+                  isPatcherRunning
+                    ? onStopPatcher
+                    : loading && !isPatcherRunning
+                      ? onCancelApply
+                      : handleApplySkins
+                }
+                disabled={isSmartApplying || isCancellingApply}
               >
-                {loading
-                  ? isPatcherRunning
-                    ? t('patcher.stopping')
-                    : t('patcher.applying')
-                  : isPatcherRunning
-                    ? t('patcher.stopPatcher')
-                    : smartApplyEnabled &&
-                        smartApplySummary &&
-                        teamComposition &&
-                        teamComposition.championIds.length > 0
-                      ? t('patcher.apply', { count: smartApplySummary.willApply })
-                      : t('patcher.apply', { count: allSkinsForDisplay.length })}
+                {isCancellingApply
+                  ? t('patcher.cancelling')
+                  : loading
+                    ? isPatcherRunning
+                      ? t('patcher.stopping')
+                      : t('patcher.cancelApply')
+                    : isPatcherRunning
+                      ? t('patcher.stopPatcher')
+                      : smartApplyEnabled &&
+                          smartApplySummary &&
+                          teamComposition &&
+                          teamComposition.championIds.length > 0
+                        ? t('patcher.apply', { count: smartApplySummary.willApply })
+                        : t('patcher.apply', { count: allSkinsForDisplay.length })}
               </button>
             </>
           )}

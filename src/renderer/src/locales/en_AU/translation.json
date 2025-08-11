@@ -93,7 +93,10 @@
     "deletedSkin": "Deleted skin: {{name}}",
     "failedToDeleteMod": "Failed to delete mod: {{error}}",
     "failedToDeleteSkin": "Failed to delete skin: {{error}}",
-    "autoSelectedSkinsCleanedUp": "Cleaned up {{count}} auto-selected skins"
+    "autoSelectedSkinsCleanedUp": "Cleaned up {{count}} auto-selected skins",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "CS:LOL Tools Required",
@@ -420,7 +423,9 @@
     "stopPatcher": "Stop Patcher",
     "apply_one": "Apply {{count}} Skin",
     "apply_other": "Apply {{count}} Skins",
-    "messages": "Patcher Messages:"
+    "messages": "Patcher Messages:",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "Presets",

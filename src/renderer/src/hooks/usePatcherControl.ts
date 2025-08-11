@@ -48,6 +48,27 @@ export function usePatcherControl() {
     }
   }, [t, setIsPatcherRunning, setStatusMessage, setLoadingStates])
 
+  const cancelApply = useCallback(async () => {
+    setLoadingStates((prev) => ({ ...prev, isCancellingApply: true }))
+    setStatusMessage(t('status.cancelling'))
+
+    try {
+      const result = await window.api.cancelApply()
+      if (result.success) {
+        setStatusMessage(t('status.cancelled'))
+        setIsPatcherRunning(false)
+      } else {
+        setStatusMessage(t('status.failedToCancel', { error: result.message || 'Unknown error' }))
+      }
+    } catch (error) {
+      setStatusMessage(
+        `Error cancelling: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, isCancellingApply: false }))
+    }
+  }, [t, setIsPatcherRunning, setStatusMessage, setLoadingStates])
+
   // Check patcher status on mount
   useEffect(() => {
     checkPatcherStatus()
@@ -158,6 +179,8 @@ export function usePatcherControl() {
     isPatcherRunning,
     checkPatcherStatus,
     stopPatcher,
-    isStoppingPatcher: loadingStates.isStoppingPatcher
+    cancelApply,
+    isStoppingPatcher: loadingStates.isStoppingPatcher,
+    isCancellingApply: loadingStates.isCancellingApply
   }
 }

@@ -91,7 +91,10 @@
     "deletedSkin": "Skin törölve: {{name}}",
     "failedToDeleteMod": "Nem sikerült törölni a modot: {{error}}",
     "failedToDeleteSkin": "Nem sikerült törölni a skint: {{error}}",
-    "autoSelectedSkinsCleanedUp": "{{count}} automatikusan kiválasztott skin törölve"
+    "autoSelectedSkinsCleanedUp": "{{count}} automatikusan kiválasztott skin törölve",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}"
   },
   "tools": {
     "required": "CS:LOL Tools szükséges",
@@ -418,7 +421,9 @@
     "stopPatcher": "Patcher leállítása",
     "apply_one": "{{count}} skin alkalmazása",
     "apply_other": "{{count}} skin alkalmazása",
-    "messages": "Patcher üzenetek:"
+    "messages": "Patcher üzenetek:",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel"
   },
   "presets": {
     "title": "Előbeállítások",
