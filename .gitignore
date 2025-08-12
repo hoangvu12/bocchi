@@ -6,4 +6,4 @@ out
 *.log*
 
 .env
-data/
+/data/

@@ -19,7 +19,7 @@
     "build:win": "npm run build && electron-builder --win",
     "fetch-champion-data": "bun run scripts/fetch-champion-data.ts",
     "fetch-champion-data:force": "bun run scripts/fetch-champion-data.ts --force",
-    "fetch-champion-data:no-winrates": "bun run scripts/fetch-champion-data.ts --skip-winrates"
+    "fetch-champion-data:sequential": "bun run scripts/fetch-champion-data.ts --sequential"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
