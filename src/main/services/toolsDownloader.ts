@@ -22,12 +22,28 @@ export class ToolsDownloader {
   private toolsPath: string
   private multiRitoFixesPath: string
   private multiRitoFixesVersionPath: string
+  private ritoddstexPath: string
+  private ritoddstexVersionPath: string
+  private imageMagickPath: string
+  private imageMagickVersionPath: string
 
   constructor() {
     // Store tools in user data directory so they persist across app updates
     this.toolsPath = path.join(app.getPath('userData'), 'cslol-tools')
     this.multiRitoFixesPath = path.join(app.getPath('userData'), 'MultiRitoFixes.exe')
     this.multiRitoFixesVersionPath = path.join(app.getPath('userData'), 'multiritofix-version.txt')
+    this.ritoddstexPath = path.join(app.getPath('userData'), 'tools', 'ritoddstex', 'tex2dds.exe')
+    this.ritoddstexVersionPath = path.join(
+      app.getPath('userData'),
+      'tools',
+      'ritoddstex-version.txt'
+    )
+    this.imageMagickPath = path.join(app.getPath('userData'), 'tools', 'magick', 'magick.exe')
+    this.imageMagickVersionPath = path.join(
+      app.getPath('userData'),
+      'tools',
+      'imagemagick-version.txt'
+    )
 
     // Migrate tools from old location if they exist
     this.migrateToolsFromOldLocation()
@@ -387,6 +403,235 @@ export class ToolsDownloader {
 
   getMultiRitoFixesPath(): string {
     return this.multiRitoFixesPath
+  }
+
+  // Ritoddstex methods
+  async checkRitoddstexExist(): Promise<boolean> {
+    try {
+      await fs.promises.access(this.ritoddstexPath, fs.constants.F_OK)
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  async getRitoddstexLatestVersion(): Promise<{
+    downloadUrl: string
+    version: string
+  }> {
+    try {
+      const response = await axios.get(
+        'https://api.github.com/repos/Morilli/Ritoddstex/releases/latest',
+        {
+          headers: {
+            Accept: 'application/vnd.github.v3+json'
+          }
+        }
+      )
+
+      const release = response.data
+      // Find the tex2dds.exe asset
+      const asset = release.assets.find((a: any) => a.name === 'tex2dds.exe')
+
+      if (!asset) {
+        throw new Error('Could not find tex2dds.exe in Ritoddstex release')
+      }
+
+      return {
+        downloadUrl: asset.browser_download_url,
+        version: release.tag_name
+      }
+    } catch (error) {
+      throw new Error(
+        `Failed to get Ritoddstex release info: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
+    }
+  }
+
+  async downloadRitoddstex(onProgress?: (progress: number) => void): Promise<void> {
+    try {
+      const { downloadUrl, version } = await this.getRitoddstexLatestVersion()
+
+      // Create ritoddstex directory if it doesn't exist
+      const toolsDir = path.dirname(this.ritoddstexPath)
+      await fs.promises.mkdir(toolsDir, { recursive: true })
+
+      // Download the file (tex2dds.exe is downloaded directly, no extraction needed)
+      const response = await axios.get(downloadUrl, {
+        responseType: 'stream',
+        onDownloadProgress: (progressEvent) => {
+          if (progressEvent.total && onProgress) {
+            const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100)
+            onProgress(progress)
+          }
+        }
+      })
+
+      // Save to file (as tex2dds.exe in the ritoddstex folder)
+      const writer = fs.createWriteStream(this.ritoddstexPath)
+      response.data.pipe(writer)
+
+      await new Promise<void>((resolve, reject) => {
+        writer.on('finish', () => resolve())
+        writer.on('error', reject)
+      })
+
+      // Save version info
+      await fs.promises.writeFile(this.ritoddstexVersionPath, version)
+    } catch (error) {
+      throw new Error(
+        `Failed to download Ritoddstex: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
+    }
+  }
+
+  async getRitoddstexVersion(): Promise<string | null> {
+    try {
+      const version = await fs.promises.readFile(this.ritoddstexVersionPath, 'utf-8')
+      return version.trim()
+    } catch {
+      return null
+    }
+  }
+
+  async checkRitoddstexUpdate(): Promise<boolean> {
+    try {
+      const currentVersion = await this.getRitoddstexVersion()
+      if (!currentVersion) return true // No version file means we should download
+
+      const { version: latestVersion } = await this.getRitoddstexLatestVersion()
+      return currentVersion !== latestVersion
+    } catch {
+      return false // If we can't check, assume no update needed
+    }
+  }
+
+  getRitoddstexPath(): string {
+    return this.ritoddstexPath
+  }
+
+  // ImageMagick methods
+  async checkImageMagickExist(): Promise<boolean> {
+    try {
+      await fs.promises.access(this.imageMagickPath, fs.constants.F_OK)
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  async downloadImageMagick(onProgress?: (progress: number) => void): Promise<void> {
+    try {
+      // ImageMagick portable version URL (direct download)
+      // Using the latest Q16 64-bit portable version
+      const downloadUrl =
+        'https://imagemagick.org/archive/binaries/ImageMagick-7.1.2-1-portable-Q16-x64.zip'
+      const version = '7.1.2-1'
+
+      // Create tools directory if it doesn't exist
+      const toolsDir = path.dirname(this.imageMagickPath)
+      await fs.promises.mkdir(toolsDir, { recursive: true })
+
+      // Download the zip file
+      const tempZipPath = path.join(toolsDir, 'imagemagick-temp.zip')
+
+      const response = await axios.get(downloadUrl, {
+        responseType: 'stream',
+        onDownloadProgress: (progressEvent) => {
+          if (progressEvent.total && onProgress) {
+            const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100)
+            onProgress(progress)
+          }
+        }
+      })
+
+      // Save to temp file
+      const writer = fs.createWriteStream(tempZipPath)
+      response.data.pipe(writer)
+
+      await new Promise<void>((resolve, reject) => {
+        writer.on('finish', () => resolve())
+        writer.on('error', reject)
+      })
+
+      // Extract the zip
+      const zip = new StreamZip.async({ file: tempZipPath })
+      try {
+        // Extract to a temp directory first
+        const tempExtractDir = path.join(toolsDir, 'temp-extract')
+        await fs.promises.mkdir(tempExtractDir, { recursive: true })
+        await zip.extract(null, tempExtractDir)
+
+        // Find the ImageMagick folder (it should be something like ImageMagick-7.1.2-1-portable-Q16-x64)
+        const extractedFolders = await fs.promises.readdir(tempExtractDir)
+        const imageMagickFolder = extractedFolders.find(
+          (folder) => folder.startsWith('ImageMagick-') && folder.includes('portable')
+        )
+
+        if (!imageMagickFolder) {
+          throw new Error('ImageMagick folder not found in extracted archive')
+        }
+
+        // Move all files from the ImageMagick subfolder to the magick directory
+        const sourcePath = path.join(tempExtractDir, imageMagickFolder)
+        const magickDir = path.dirname(this.imageMagickPath)
+
+        // Create the magick directory if it doesn't exist
+        await fs.promises.mkdir(magickDir, { recursive: true })
+
+        // Copy all files from source to destination
+        const files = await fs.promises.readdir(sourcePath)
+        for (const file of files) {
+          const srcFile = path.join(sourcePath, file)
+          const destFile = path.join(magickDir, file)
+          const stat = await fs.promises.stat(srcFile)
+
+          if (stat.isDirectory()) {
+            await this.copyDirectory(srcFile, destFile)
+          } else {
+            await fs.promises.copyFile(srcFile, destFile)
+          }
+        }
+
+        // Clean up temp extract directory
+        await fs.promises.rm(tempExtractDir, { recursive: true, force: true })
+
+        // Verify magick.exe exists after extraction
+        const magickExists = await fs.promises
+          .access(this.imageMagickPath)
+          .then(() => true)
+          .catch(() => false)
+
+        if (!magickExists) {
+          throw new Error('magick.exe not found after extraction')
+        }
+      } finally {
+        await zip.close()
+      }
+
+      // Clean up temp file
+      await fs.promises.unlink(tempZipPath)
+
+      // Save version info
+      await fs.promises.writeFile(this.imageMagickVersionPath, version)
+    } catch (error) {
+      throw new Error(
+        `Failed to download ImageMagick: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
+    }
+  }
+
+  async getImageMagickVersion(): Promise<string | null> {
+    try {
+      const version = await fs.promises.readFile(this.imageMagickVersionPath, 'utf-8')
+      return version.trim()
+    } catch {
+      return null
+    }
+  }
+
+  getImageMagickPath(): string {
+    return this.imageMagickPath
   }
 
   private createError(

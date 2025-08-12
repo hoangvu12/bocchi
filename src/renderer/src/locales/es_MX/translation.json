@@ -259,6 +259,10 @@
     "minimizeToTray": {
       "title": "Minimizar a la Bandeja",
       "description": "Ocultar la aplicación en la bandeja del sistema en lugar de cerrar al hacer clic en el botón de cerrar"
+    },
+    "autoExtractImages": {
+      "title": "Extraer Imágenes de Vista Previa Automáticamente",
+      "description": "Extrae automáticamente imágenes de vista previa de archivos WAD al importar skins (requiere herramientas de conversión)"
     }
   },
   "tray": {
@@ -295,6 +299,9 @@
     "previewImage": "Imagen de vista previa",
     "browseImage": "Explorar",
     "noImageSelected": "No se seleccionó ninguna imagen",
+    "extractImage": "Extraer Imagen",
+    "extractingImage": "Extrayendo...",
+    "extractImageError": "Error al extraer imagen: {{error}}",
     "batchImportTitle": "Importando múltiples archivos",
     "importingProgress": "Importando {{current}} de {{total}} archivos...",
     "batchComplete": "¡Importación completa!",

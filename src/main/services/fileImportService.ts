@@ -3,6 +3,10 @@ import path from 'path'
 import { app } from 'electron'
 import * as StreamZip from 'node-stream-zip'
 import { SkinInfo } from '../types'
+import { WADParser, WADChunk } from './wadParser'
+import { TextureExtractor } from './textureExtractor'
+import { ImageConverter } from './imageConverter'
+import { SettingsService } from './settingsService'
 
 export interface ImportResult {
   success: boolean
@@ -33,12 +37,14 @@ export class FileImportService {
   private modsDir: string
   private tempDir: string
   private modFilesDir: string
+  private settingsService: SettingsService
 
   constructor() {
     const userData = app.getPath('userData')
     this.modsDir = path.join(userData, 'mods')
-    this.tempDir = path.join(userData, 'temp-imports')
+    this.tempDir = path.join(app.getPath('temp'), 'bocchi-temp')
     this.modFilesDir = path.join(userData, 'mod-files')
+    this.settingsService = SettingsService.getInstance()
   }
 
   async initialize(): Promise<void> {
@@ -205,6 +211,25 @@ export class FileImportService {
         await fs.mkdir(imageDir, { recursive: true })
         const imageExt = path.extname(options.imagePath)
         await fs.copyFile(options.imagePath, path.join(imageDir, `preview${imageExt}`))
+      } else {
+        // Try to extract image from WAD file if no custom image provided
+        // Check if automatic extraction is enabled
+        const autoExtract = this.settingsService.get('autoExtractImages')
+        if (autoExtract) {
+          const extractedImage = await this.extractImageFromWAD(tempExtractPath)
+          if (extractedImage) {
+            const imageDir = path.join(tempExtractPath, 'IMAGE')
+            await fs.mkdir(imageDir, { recursive: true })
+            const destPath = path.join(imageDir, 'preview.png')
+            await fs.copyFile(extractedImage, destPath)
+
+            // Clean up the temp directory containing the extracted PNG
+            const tempDirToClean = path.dirname(extractedImage)
+            if (tempDirToClean.includes('bocchi-temp')) {
+              await fs.rm(tempDirToClean, { recursive: true, force: true }).catch(() => {})
+            }
+          }
+        }
       }
 
       const modFolderName = championName ? `${championName}_${skinName}` : `Custom_${skinName}`
@@ -265,6 +290,25 @@ export class FileImportService {
         await fs.mkdir(imageDir, { recursive: true })
         const imageExt = path.extname(options.imagePath)
         await fs.copyFile(options.imagePath, path.join(imageDir, `preview${imageExt}`))
+      } else {
+        // Try to extract image from WAD files if no custom image provided
+        // Check if automatic extraction is enabled
+        const autoExtract = this.settingsService.get('autoExtractImages')
+        if (autoExtract) {
+          const extractedImage = await this.extractImageFromWAD(tempExtractPath)
+          if (extractedImage) {
+            const imageDir = path.join(tempExtractPath, 'IMAGE')
+            await fs.mkdir(imageDir, { recursive: true })
+            const destPath = path.join(imageDir, 'preview.png')
+            await fs.copyFile(extractedImage, destPath)
+
+            // Clean up the temp directory containing the extracted PNG
+            const tempDirToClean = path.dirname(extractedImage)
+            if (tempDirToClean.includes('bocchi-temp')) {
+              await fs.rm(tempDirToClean, { recursive: true, force: true }).catch(() => {})
+            }
+          }
+        }
       }
       // Note: Images are already extracted to tempExtractPath by zip.extract()
 
@@ -585,6 +629,164 @@ export class FileImportService {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Failed to extract mod info'
+      }
+    }
+  }
+
+  private async extractImageFromWAD(modPath: string): Promise<string | null> {
+    try {
+      // Try to extract champion name from the mod path or metadata
+      let championName: string | undefined
+
+      // Try from folder name (e.g., "Ahri_SkinName" or "Custom_SkinName")
+      const folderName = path.basename(modPath)
+      const folderParts = folderName.split('_')
+      if (folderParts.length > 0 && folderParts[0] !== 'Custom') {
+        championName = folderParts[0]
+      }
+
+      // Try from META/info.json if available
+      const metaInfoPath = path.join(modPath, 'META', 'info.json')
+      if (await this.fileExists(metaInfoPath)) {
+        try {
+          const infoContent = await fs.readFile(metaInfoPath, 'utf-8')
+          const info = JSON.parse(infoContent)
+          if (info.Champion) {
+            championName = info.Champion
+          }
+        } catch {
+          // Ignore JSON parsing errors
+        }
+      }
+
+      console.log(`Extracting image for champion: ${championName || 'unknown'}`)
+
+      // Find WAD files in the mod directory
+      const wadDir = path.join(modPath, 'WAD')
+      if (!(await this.fileExists(wadDir))) {
+        return null
+      }
+
+      const wadFiles = await fs.readdir(wadDir)
+      const wadFile = wadFiles.find(
+        (f) => f.endsWith('.wad') || f.endsWith('.wad.client') || f.endsWith('.fantome')
+      )
+
+      if (!wadFile) {
+        return null
+      }
+
+      const wadPath = path.join(wadDir, wadFile)
+      const fileBuffer = await fs.readFile(wadPath)
+
+      // Parse WAD file
+      const wadParser = new WADParser(fileBuffer)
+      const header = wadParser.parseHeader()
+      const chunks = wadParser.parseChunks(header)
+
+      // Create texture extractor - pass the buffer, not the parser
+      const textureExtractor = new TextureExtractor(fileBuffer, chunks)
+
+      // Try to find loading screen textures with champion name hint
+      let textureChunk: WADChunk | null = null
+      const loadingScreenTextures = textureExtractor.findLoadingScreenTextures(championName)
+      if (loadingScreenTextures.length > 0) {
+        textureChunk = loadingScreenTextures[0]
+      }
+
+      if (!textureChunk) {
+        console.log('No loading screen texture (308x560) found in WAD')
+        return null
+      }
+
+      // Extract TEX file to temp location
+      const tempDir = path.join(this.tempDir, `extract_${Date.now()}`)
+      await fs.mkdir(tempDir, { recursive: true })
+      const texPath = await textureExtractor.extractTexFile(textureChunk, tempDir)
+
+      // Convert to PNG
+      const imageConverter = new ImageConverter()
+
+      // Ensure tools are available (will download if needed)
+      try {
+        await imageConverter.ensureToolsAvailable((message) => {
+          console.log('Tool download:', message)
+        })
+      } catch (error) {
+        console.error('Failed to download conversion tools:', error)
+        await fs.rm(tempDir, { recursive: true, force: true }).catch(() => {})
+        return null
+      }
+
+      const pngPath = await imageConverter.convertTexToPNG(texPath)
+
+      // Don't clean up temp directory here, as the PNG is still in it
+      // The caller will handle cleanup after copying the file
+
+      return pngPath
+    } catch (error) {
+      console.error('Failed to extract image from WAD:', error)
+      return null
+    }
+  }
+
+  async extractImageForCustomSkin(modPath: string): Promise<{ success: boolean; error?: string }> {
+    try {
+      const stat = await fs.stat(modPath)
+
+      // Determine the metadata folder based on file/directory structure
+      let metadataPath: string
+      if (stat.isFile()) {
+        // New structure: mod file
+        const fileName = path.basename(modPath, path.extname(modPath))
+        metadataPath = path.join(this.modsDir, fileName)
+      } else if (stat.isDirectory()) {
+        // Legacy structure: mod folder
+        metadataPath = modPath
+      } else {
+        return { success: false, error: 'Invalid mod path' }
+      }
+
+      // Check if metadata folder exists
+      if (!(await this.fileExists(metadataPath))) {
+        return { success: false, error: 'Mod metadata not found' }
+      }
+
+      // Extract image from WAD
+      const extractedImage = await this.extractImageFromWAD(metadataPath)
+      if (!extractedImage) {
+        return { success: false, error: 'No loading screen texture (308x560) found in WAD files' }
+      }
+
+      // Move extracted image to IMAGE folder
+      const imageDir = path.join(metadataPath, 'IMAGE')
+      await fs.mkdir(imageDir, { recursive: true })
+
+      // Remove old preview images
+      const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp']
+      for (const ext of imageExtensions) {
+        try {
+          await fs.unlink(path.join(imageDir, `preview${ext}`))
+        } catch {
+          // Continue to next extension
+        }
+      }
+
+      // Copy the extracted image (rename doesn't work across drives)
+      const destPath = path.join(imageDir, 'preview.png')
+      await fs.copyFile(extractedImage, destPath)
+
+      // Clean up the entire temp directory (the PNG is in a temp folder)
+      const tempDirToClean = path.dirname(extractedImage)
+      if (tempDirToClean.includes('bocchi-temp')) {
+        await fs.rm(tempDirToClean, { recursive: true, force: true }).catch(() => {})
+      }
+
+      return { success: true }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to extract image'
       }
     }
   }

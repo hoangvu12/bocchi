@@ -14,6 +14,10 @@ import { settingsService } from './services/settingsService'
 import { UpdaterService } from './services/updaterService'
 import { FileImportService } from './services/fileImportService'
 import { ImageService } from './services/imageService'
+import * as StreamZip from 'node-stream-zip'
+import { WADParser } from './services/wadParser'
+import { TextureExtractor } from './services/textureExtractor'
+import { ImageConverter } from './services/imageConverter'
 import { lcuConnector } from './services/lcuConnector'
 import { gameflowMonitor } from './services/gameflowMonitor'
 import { teamCompositionMonitor } from './services/teamCompositionMonitor'
@@ -1889,6 +1893,207 @@ function setupIpcHandlers(): void {
       return result
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  // Extract image from custom skin
+  ipcMain.handle('extract-image-for-custom-skin', async (_, modPath: string) => {
+    try {
+      const result = await fileImportService.extractImageForCustomSkin(modPath)
+      return result
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  // Read image file as base64 for preview
+  ipcMain.handle('read-image-as-base64', async (_, imagePath: string) => {
+    try {
+      const imageBuffer = await fs.promises.readFile(imagePath)
+      const base64 = imageBuffer.toString('base64')
+      const ext = path.extname(imagePath).toLowerCase().slice(1)
+      const mimeType = ext === 'jpg' ? 'jpeg' : ext
+      const dataUrl = `data:image/${mimeType};base64,${base64}`
+      return { success: true, data: dataUrl }
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Failed to read image' 
+      }
+    }
+  })
+
+  // Extract image from mod file (before import)
+  ipcMain.handle('extract-image-from-mod', async (event, modFilePath: string) => {
+    try {
+      // Send status updates to renderer
+      const sendStatus = (status: string) => {
+        event.sender.send('extract-image-status', status)
+      }
+
+      // Check if tools are available first
+      sendStatus('Checking for required tools...')
+      const toolsExist = await toolsDownloader.checkToolsExist()
+      if (!toolsExist) {
+        // Download tools automatically with progress reporting
+        sendStatus('Downloading cslol-tools (mod-tools.exe) for mod extraction...')
+        try {
+          await toolsDownloader.downloadAndExtractTools((progress, details) => {
+            // Send progress to renderer
+            event.sender.send('tools-download-progress', progress)
+            if (details) {
+              event.sender.send('tools-download-details', details)
+              // Update status with download details
+              const mb = (size: number) => (size / (1024 * 1024)).toFixed(1)
+              sendStatus(`Downloading cslol-tools: ${mb(details.loaded)}MB / ${mb(details.total)}MB (${progress}%)`)
+            }
+          })
+        } catch (error) {
+          return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Failed to download required tools'
+          }
+        }
+      }
+
+      // Create a temporary extraction to get the image
+      const tempDir = path.join(app.getPath('temp'), 'bocchi-extract-temp', `extract_${Date.now()}`)
+      await fs.promises.mkdir(tempDir, { recursive: true })
+
+      try {
+        // Extract the mod file to temp location
+        sendStatus('Analyzing mod file...')
+        const fileType = await fileImportService['detectFileType'](modFilePath)
+
+        if (fileType === 'wad') {
+          // For WAD files, we can extract directly
+          sendStatus('Reading WAD file...')
+          const fileBuffer = await fs.promises.readFile(modFilePath)
+
+          sendStatus('Analyzing WAD contents...')
+          const wadParser = new WADParser(fileBuffer)
+          const header = wadParser.parseHeader()
+          const chunks = wadParser.parseChunks(header)
+
+          // Try to detect champion name from filename
+          const fileName = path.basename(modFilePath)
+          let championName: string | undefined
+          const match = fileName.match(/^([A-Za-z]+)[-_\s]/i)
+          if (match) {
+            championName = match[1]
+          }
+
+          sendStatus('Searching for preview image (308x560 texture)...')
+          const textureExtractor = new TextureExtractor(fileBuffer, chunks)
+          const loadingScreenTextures = textureExtractor.findLoadingScreenTextures(championName)
+
+          if (loadingScreenTextures.length === 0) {
+            throw new Error('No loading screen texture (308x560) found in WAD file')
+          }
+
+          sendStatus('Extracting texture data...')
+          const texPath = await textureExtractor.extractTexFile(loadingScreenTextures[0], tempDir)
+
+          // Convert to PNG
+          const imageConverter = new ImageConverter()
+          await imageConverter.ensureToolsAvailable(sendStatus)
+          sendStatus('Converting texture to PNG...')
+          const pngPath = await imageConverter.convertTexToPNG(texPath)
+
+          return { success: true, imagePath: pngPath }
+        } else if (fileType === 'zip' || fileType === 'fantome') {
+          // For ZIP/Fantome files, extract and look for WAD files
+          sendStatus('Opening mod archive...')
+          const zip = new StreamZip.async({ file: modFilePath })
+
+          try {
+            sendStatus('Extracting files from archive...')
+            await zip.extract(null, tempDir)
+
+            // Look for WAD files in the extracted content
+            sendStatus('Searching for WAD files in archive...')
+            const wadDir = path.join(tempDir, 'WAD')
+            if (
+              await fs.promises
+                .access(wadDir)
+                .then(() => true)
+                .catch(() => false)
+            ) {
+              const wadFiles = await fs.promises.readdir(wadDir)
+              const wadFile = wadFiles.find((f) => f.endsWith('.wad') || f.endsWith('.wad.client'))
+
+              if (wadFile) {
+                const wadPath = path.join(wadDir, wadFile)
+                const fileBuffer = await fs.promises.readFile(wadPath)
+
+                const wadParser = new WADParser(fileBuffer)
+                const header = wadParser.parseHeader()
+                const chunks = wadParser.parseChunks(header)
+
+                // Try to get champion name from info.json
+                let championName: string | undefined
+                const infoPath = path.join(tempDir, 'META', 'info.json')
+                if (
+                  await fs.promises
+                    .access(infoPath)
+                    .then(() => true)
+                    .catch(() => false)
+                ) {
+                  const info = JSON.parse(await fs.promises.readFile(infoPath, 'utf-8'))
+                  championName = info.Champion || info.champion
+                }
+
+                // Fallback to filename
+                if (!championName) {
+                  const fileName = path.basename(modFilePath)
+                  const match = fileName.match(/^([A-Za-z]+)[-_\s]/i)
+                  if (match) {
+                    championName = match[1]
+                  }
+                }
+
+                sendStatus('Searching for preview image (308x560 texture)...')
+                const textureExtractor = new TextureExtractor(fileBuffer, chunks)
+                const loadingScreenTextures =
+                  textureExtractor.findLoadingScreenTextures(championName)
+
+                if (loadingScreenTextures.length === 0) {
+                  throw new Error('No loading screen texture (308x560) found in mod file')
+                }
+
+                sendStatus('Extracting texture file...')
+                const texPath = await textureExtractor.extractTexFile(
+                  loadingScreenTextures[0],
+                  tempDir
+                )
+
+                // Convert to PNG
+                const imageConverter = new ImageConverter()
+                await imageConverter.ensureToolsAvailable(sendStatus)
+                sendStatus('Converting texture to PNG...')
+                const pngPath = await imageConverter.convertTexToPNG(texPath)
+
+                return { success: true, imagePath: pngPath }
+              }
+            }
+
+            throw new Error('No WAD files found in the mod archive')
+          } finally {
+            await zip.close()
+          }
+        } else {
+          throw new Error('Unsupported file type for image extraction')
+        }
+      } catch (error) {
+        // Clean up temp directory on error
+        await fs.promises.rm(tempDir, { recursive: true, force: true }).catch(() => {})
+        throw error
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to extract image from mod file'
+      }
     }
   })
 

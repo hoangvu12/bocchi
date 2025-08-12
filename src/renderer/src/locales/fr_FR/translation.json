@@ -255,6 +255,10 @@
     "minimizeToTray": {
       "title": "Minimiser dans la barre des tâches",
       "description": "Masquer l'application dans la barre des tâches système au lieu de la fermer lors du clic sur le bouton fermer"
+    },
+    "autoExtractImages": {
+      "title": "Extraire automatiquement les images d'aperçu",
+      "description": "Extraire automatiquement les images d'aperçu des fichiers WAD lors de l'importation de skins (nécessite des outils de conversion)"
     }
   },
   "tray": {
@@ -283,6 +287,9 @@
     "previewImage": "Image d'aperçu",
     "browseImage": "Parcourir",
     "noImageSelected": "Aucune image sélectionnée",
+    "extractImage": "Extraire l'image",
+    "extractingImage": "Extraction...",
+    "extractImageError": "Échec de l'extraction de l'image : {{error}}",
     "batchImportTitle": "Importation de plusieurs fichiers",
     "importingProgress": "Importation de {{current}} sur {{total}} fichiers...",
     "batchComplete": "Importation terminée !",

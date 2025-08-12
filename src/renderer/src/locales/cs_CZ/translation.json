@@ -247,6 +247,10 @@
       "title": "Minimalizovat do systray",
       "description": "Skrýt aplikaci do systémové lišty místo zavření při kliknutí na zavřít"
     },
+    "autoExtractImages": {
+      "title": "Automaticky extrahovat náhledy obrázků",
+      "description": "Automaticky extrahovat náhledy obrázků z WAD souborů při importu skinů (vyžaduje konverzní nástroje)"
+    },
     "modToolsTimeout": {
       "title": "Časový limit nástrojů modů",
       "description": "Maximální doba čekání na import modů a vytvoření překryvu",
@@ -283,6 +287,9 @@
     "previewImage": "Náhled obrázku",
     "browseImage": "Procházet",
     "noImageSelected": "Nebyl vybrán žádný obrázek",
+    "extractImage": "Extrahovat obrázek",
+    "extractingImage": "Extrahuje se...",
+    "extractImageError": "Nepodařilo se extrahovat obrázek: {{error}}",
     "batchImportTitle": "Importování více souborů",
     "importingProgress": "Importuje se {{current}} z {{total}} souborů...",
     "batchComplete": "Import dokončen!",

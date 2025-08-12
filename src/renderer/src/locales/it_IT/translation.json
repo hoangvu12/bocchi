@@ -247,6 +247,10 @@
       "title": "Minimizza nell'area di notifica",
       "description": "Nascondi app nell'area di notifica sistema invece di chiudere quando clicchi il pulsante chiudi"
     },
+    "autoExtractImages": {
+      "title": "Estrai automaticamente immagini di anteprima",
+      "description": "Estrae automaticamente immagini di anteprima dai file WAD durante l'importazione di skin (richiede strumenti di conversione)"
+    },
     "modToolsTimeout": {
       "title": "Timeout strumenti mod",
       "description": "Tempo massimo di attesa per l'importazione di mod e la creazione di overlay",
@@ -283,6 +287,9 @@
     "previewImage": "Immagine anteprima",
     "browseImage": "Sfoglia",
     "noImageSelected": "Nessuna immagine selezionata",
+    "extractImage": "Estrai immagine",
+    "extractingImage": "Estrazione...",
+    "extractImageError": "Impossibile estrarre immagine: {{error}}",
     "batchImportTitle": "Importando file multipli",
     "importingProgress": "Importando {{current}} di {{total}} file...",
     "batchComplete": "Importazione completata!",

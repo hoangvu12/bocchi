@@ -252,6 +252,10 @@
       "title": "In System-Tray minimieren",
       "description": "App in System-Tray verstecken anstatt zu schließen beim Klicken auf Schließen-Button"
     },
+    "autoExtractImages": {
+      "title": "Vorschaubilder automatisch extrahieren",
+      "description": "Automatisch Vorschaubilder aus WAD-Dateien beim Importieren von Skins extrahieren (erfordert Konvertierungstools)"
+    },
     "applicationUpdate": {
       "title": "Anwendung Updates",
       "description": "Aktuelle Version: {{version}}"
@@ -283,6 +287,9 @@
     "previewImage": "Vorschaubild",
     "browseImage": "Durchsuchen",
     "noImageSelected": "Kein Bild ausgewählt",
+    "extractImage": "Bild extrahieren",
+    "extractingImage": "Extrahiert...",
+    "extractImageError": "Bild konnte nicht extrahiert werden: {{error}}",
     "batchImportTitle": "Mehrere Dateien importieren",
     "importingProgress": "Importiere {{current}} von {{total}} Dateien...",
     "batchComplete": "Import abgeschlossen!",

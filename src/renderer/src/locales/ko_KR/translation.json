@@ -259,6 +259,10 @@
     "minimizeToTray": {
       "title": "트레이로 최소화",
       "description": "닫기 버튼을 클릭할 때 앱을 닫는 대신 시스템 트레이로 숨기기"
+    },
+    "autoExtractImages": {
+      "title": "미리보기 이미지 자동 추출",
+      "description": "스킨을 가져올 때 WAD 파일에서 미리보기 이미지를 자동으로 추출 (변환 도구 필요)"
     }
   },
   "tray": {
@@ -295,6 +299,9 @@
     "previewImage": "미리보기 이미지",
     "browseImage": "찾아보기",
     "noImageSelected": "선택된 이미지가 없습니다",
+    "extractImage": "이미지 추출",
+    "extractingImage": "추출 중...",
+    "extractImageError": "이미지 추출 실패: {{error}}",
     "batchImportTitle": "여러 파일 가져오기",
     "importingProgress": "{{total}}개 중 {{current}}번째 파일 가져오는 중...",
     "batchComplete": "가져오기 완료!",

@@ -247,6 +247,10 @@
       "title": "ย่อเล็กสุดไปที่ Tray",
       "description": "ซ่อนแอปไปที่ system tray แทนการปิดเมื่อคลิกปุ่มปิด"
     },
+    "autoExtractImages": {
+      "title": "แยกภาพตัวอย่างโดยอัตโนมัติ",
+      "description": "แยกภาพตัวอย่างจากไฟล์ WAD โดยอัตโนมัติเมื่อนำเข้าสกิน (ต้องใช้เครื่องมือแปลง)"
+    },
     "modToolsTimeout": {
       "title": "หมดเวลาเครื่องมือม็อด",
       "description": "เวลาสูงสุดในการรอการนำเข้าม็อดและการสร้างโอเวอร์เลย์",
@@ -283,6 +287,9 @@
     "previewImage": "ภาพตัวอย่าง",
     "browseImage": "เรียกดู",
     "noImageSelected": "ไม่ได้เลือกภาพ",
+    "extractImage": "แยกภาพ",
+    "extractingImage": "กำลังแยก...",
+    "extractImageError": "ไม่สามารถแยกภาพ: {{error}}",
     "batchImportTitle": "กำลังนำเข้าไฟล์หลายไฟล์",
     "importingProgress": "กำลังนำเข้า {{current}} จาก {{total}} ไฟล์...",
     "batchComplete": "นำเข้าเสร็จสิ้น!",

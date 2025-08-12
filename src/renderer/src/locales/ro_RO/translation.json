@@ -247,6 +247,10 @@
       "title": "Minimizează în tray",
       "description": "Ascunde aplicația în system tray în loc să o închidă când faceți clic pe butonul de închidere"
     },
+    "autoExtractImages": {
+      "title": "Extrage automat imaginile de previzualizare",
+      "description": "Extrage automat imaginile de previzualizare din fișierele WAD când importă skin-uri (necesită instrumente de conversie)"
+    },
     "modToolsTimeout": {
       "title": "Timeout instrumente mod",
       "description": "Timp maxim de așteptare pentru importul modurilor și crearea overlay-ului",
@@ -283,6 +287,9 @@
     "previewImage": "Imagine de previzualizare",
     "browseImage": "Navighează",
     "noImageSelected": "Nicio imagine selectată",
+    "extractImage": "Extrage imaginea",
+    "extractingImage": "Se extrage...",
+    "extractImageError": "Nu s-a putut extrage imaginea: {{error}}",
     "batchImportTitle": "Importarea mai multor fișiere",
     "importingProgress": "Se importă {{current}} din {{total}} fișiere...",
     "batchComplete": "Importul a fost finalizat!",

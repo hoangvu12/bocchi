@@ -1,10 +1,11 @@
-import React, { useState, forwardRef, useImperativeHandle, useCallback, useEffect } from 'react'
+import { FileImage, Image, Loader2, Upload, X } from 'lucide-react'
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Upload, Loader2, X, Image } from 'lucide-react'
 import type { Champion } from '../App'
-import { getChampionDisplayName, detectChampionFromText } from '../utils/championUtils'
-import { Switch } from './ui/switch'
+import { useToolsManagement } from '../hooks/useToolsManagement'
+import { detectChampionFromText, getChampionDisplayName } from '../utils/championUtils'
 import { ImportMethodDialog } from './ImportMethodDialog'
+import { Switch } from './ui/switch'
 
 interface FileUploadButtonProps {
   champions: Champion[]
@@ -13,6 +14,15 @@ interface FileUploadButtonProps {
 
 export interface FileUploadButtonRef {
   handleDroppedFiles: (filePaths: string[]) => void
+}
+
+// Format bytes to human readable
+const formatBytes = (bytes: number) => {
+  if (bytes === 0) return '0 B'
+  const k = 1024
+  const sizes = ['B', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return `${(bytes / Math.pow(k, i)).toFixed(1)} ${sizes[i]}`
 }
 
 export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButtonProps>(
@@ -27,6 +37,14 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
     const [selectedImage, setSelectedImage] = useState<string>('')
     const [error, setError] = useState<string>('')
     const [fixModIssues, setFixModIssues] = useState<boolean>(false)
+    const [isExtractingImage, setIsExtractingImage] = useState<boolean>(false)
+    const [extractionError, setExtractionError] = useState<string>('')
+    const [extractionStatus, setExtractionStatus] = useState<string>('')
+    const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('')
+
+    // Tools management
+    const { downloadingTools, toolsDownloadProgress, downloadSpeed, downloadSize } =
+      useToolsManagement()
 
     // Load auto-fix setting when dialog opens
     useEffect(() => {
@@ -36,6 +54,42 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
         })
       }
     }, [showDialog])
+
+    // Listen to extraction status updates
+    useEffect(() => {
+      const unsubscribe = window.api.onExtractImageStatus((status) => {
+        setExtractionStatus(status)
+      })
+
+      return () => {
+        unsubscribe()
+      }
+    }, [])
+
+    // Load image preview when selectedImage changes
+    useEffect(() => {
+      const loadImagePreview = async () => {
+        if (selectedImage) {
+          try {
+            // Read the image as base64 data URL
+            const result = await window.api.readImageAsBase64(selectedImage)
+            if (result.success && result.data) {
+              setImagePreviewUrl(result.data)
+            } else {
+              console.error('Failed to load image preview:', result.error)
+              setImagePreviewUrl('')
+            }
+          } catch (error) {
+            console.error('Error loading image preview:', error)
+            setImagePreviewUrl('')
+          }
+        } else {
+          setImagePreviewUrl('')
+        }
+      }
+
+      loadImagePreview()
+    }, [selectedImage])
 
     // Batch import states
     const [showBatchDialog, setShowBatchDialog] = useState(false)
@@ -232,6 +286,40 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
       [champions]
     )
 
+    // Auto-extract image when dialog opens with a file selected
+    useEffect(() => {
+      const autoExtractImage = async () => {
+        if (showDialog && selectedFile && !selectedImage) {
+          const autoExtract = await window.api.getSettings('autoExtractImages')
+          if (autoExtract) {
+            // Automatically extract the image
+            setIsExtractingImage(true)
+            setExtractionError('')
+            setExtractionStatus('')
+
+            try {
+              const extractResult = await window.api.extractImageFromMod(selectedFile)
+
+              if (extractResult.success && extractResult.imagePath) {
+                setSelectedImage(extractResult.imagePath)
+                setExtractionStatus('')
+              } else {
+                // Don't show error for auto-extraction, just silently fail
+                console.log('Auto-extraction failed:', extractResult.error)
+              }
+            } catch (error) {
+              console.log('Auto-extraction error:', error)
+            } finally {
+              setIsExtractingImage(false)
+              setExtractionStatus('')
+            }
+          }
+        }
+      }
+
+      autoExtractImage()
+    }, [showDialog, selectedFile, selectedImage])
+
     // Expose handleDroppedFiles method to parent
     useImperativeHandle(
       ref,
@@ -243,11 +331,14 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
           if (filePaths.length === 1) {
             setSelectedFile(filePaths[0])
             setError('')
+            setSelectedImage('') // Clear any previous image
+            setExtractionError('') // Clear any previous extraction error
 
-            // Extract and populate mod info
-            await extractAndPopulateModInfo(filePaths[0])
-
+            // Show dialog immediately
             setShowDialog(true)
+
+            // Extract and populate mod info in the background
+            extractAndPopulateModInfo(filePaths[0])
           } else if (filePaths.length > 1) {
             // Multiple files dropped
             setBatchProgress({
@@ -268,11 +359,14 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
       async (filePath: string) => {
         setSelectedFile(filePath)
         setError('')
+        setSelectedImage('') // Clear any previous image
+        setExtractionError('') // Clear any previous extraction error
 
-        // Extract and populate mod info
-        await extractAndPopulateModInfo(filePath)
-
+        // Show dialog immediately
         setShowDialog(true)
+
+        // Extract and populate mod info in the background
+        extractAndPopulateModInfo(filePath)
       },
       [extractAndPopulateModInfo]
     )
@@ -290,6 +384,36 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
       },
       [handleBatchImport]
     )
+
+    const handleExtractImage = async () => {
+      if (!selectedFile) return
+
+      setIsExtractingImage(true)
+      setExtractionError('')
+      setExtractionStatus('')
+
+      try {
+        const result = await window.api.extractImageFromMod(selectedFile)
+
+        if (result.success && result.imagePath) {
+          setSelectedImage(result.imagePath)
+          setExtractionStatus('')
+        } else {
+          setExtractionError(
+            result.error || t('fileUpload.extractImageError', { error: 'Unknown error' })
+          )
+        }
+      } catch (error) {
+        setExtractionError(
+          t('fileUpload.extractImageError', {
+            error: error instanceof Error ? error.message : 'Unknown error'
+          })
+        )
+      } finally {
+        setIsExtractingImage(false)
+        setExtractionStatus('')
+      }
+    }
 
     const handleImport = async () => {
       if (!selectedFile) {
@@ -332,6 +456,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
           setSelectedChampion('')
           setCustomName('')
           setSelectedImage('')
+          setImagePreviewUrl('')
           setFixModIssues(false)
         } else {
           setError(result.error || t('fileUpload.importFailed'))
@@ -378,11 +503,14 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
           if (filePaths.length === 1) {
             setSelectedFile(filePaths[0])
             setError('')
+            setSelectedImage('') // Clear any previous image
+            setExtractionError('') // Clear any previous extraction error
 
-            // Extract and populate mod info
-            await extractAndPopulateModInfo(filePaths[0])
-
+            // Show dialog immediately
             setShowDialog(true)
+
+            // Extract and populate mod info in the background
+            extractAndPopulateModInfo(filePaths[0])
           } else {
             // Multiple files dropped
             setBatchProgress({
@@ -411,7 +539,11 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
         setSelectedChampion('')
         setCustomName('')
         setSelectedImage('')
+        setImagePreviewUrl('')
         setFixModIssues(false)
+        setExtractionError('')
+        setExtractionStatus('')
+        setIsExtractingImage(false)
       }
     }
 
@@ -516,28 +648,120 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                     {t('fileUpload.previewImage')}{' '}
                     <span className="text-text-muted font-normal">(Optional)</span>
                   </label>
-                  <div className="flex gap-2">
+                  <div className="space-y-2">
                     <input
                       type="text"
-                      value={selectedImage.split(/[\\/]/).pop() || ''}
+                      value={
+                        downloadingTools
+                          ? t('tools.downloadingTools')
+                          : isExtractingImage && extractionStatus
+                            ? extractionStatus
+                            : selectedImage.split(/[\\/]/).pop() || ''
+                      }
                       disabled
                       placeholder={t('fileUpload.noImageSelected')}
-                      className="flex-1 px-3 py-2 text-sm bg-secondary-100 dark:bg-secondary-900 border border-border rounded-lg text-text-primary placeholder-text-muted"
+                      className="w-full px-3 py-2 text-sm bg-secondary-100 dark:bg-secondary-900 border border-border rounded-lg text-text-primary placeholder-text-muted"
                     />
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        const result = await window.api.browseImageFile()
-                        if (result.success && result.filePath) {
-                          setSelectedImage(result.filePath)
-                        }
-                      }}
-                      className="px-4 py-2 text-sm bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary font-medium rounded-lg transition-all duration-200 border border-border flex items-center gap-2"
-                    >
-                      <Image className="h-4 w-4" />
-                      {t('fileUpload.browseImage')}
-                    </button>
+                    {downloadingTools && (
+                      <div className="bg-secondary-100 dark:bg-secondary-900 rounded-lg p-3 space-y-2">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-text-secondary">{t('tools.downloading')}</span>
+                          <span className="text-text-primary font-medium">
+                            {Math.round(toolsDownloadProgress)}%
+                          </span>
+                        </div>
+                        <div className="w-full bg-secondary-200 dark:bg-secondary-800 rounded-full h-2">
+                          <div
+                            className="bg-primary-500 h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${toolsDownloadProgress}%` }}
+                          />
+                        </div>
+                        {downloadSpeed > 0 && (
+                          <div className="flex items-center justify-between text-xs text-text-secondary">
+                            <span>{formatBytes(downloadSpeed)}/s</span>
+                            <span>
+                              {formatBytes(downloadSize.loaded)} / {formatBytes(downloadSize.total)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {/* Image Preview or Extraction Status */}
+                    {(selectedImage || isExtractingImage) && (
+                      <div className="bg-secondary-100 dark:bg-secondary-900 rounded-lg p-3 flex items-center justify-center min-h-[144px]">
+                        {isExtractingImage ? (
+                          <div className="text-center">
+                            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2 text-primary-500" />
+                            <p className="text-xs text-text-secondary">
+                              {extractionStatus || t('fileUpload.extractingImage')}
+                            </p>
+                          </div>
+                        ) : imagePreviewUrl ? (
+                          <img
+                            src={imagePreviewUrl}
+                            alt="Preview"
+                            className="max-h-32 max-w-full rounded-md object-contain"
+                            onError={(e) => {
+                              console.error('Failed to load preview image:', imagePreviewUrl)
+                              // Try alternative approach - hide the broken image
+                              const target = e.currentTarget as HTMLImageElement
+                              target.style.display = 'none'
+                              // Show placeholder text instead
+                              const parent = target.parentElement
+                              if (parent) {
+                                const placeholder = document.createElement('div')
+                                placeholder.className = 'text-xs text-text-muted text-center'
+                                placeholder.innerHTML = `
+                                  <div class="mb-1">✓ Image extracted</div>
+                                  <div class="text-xs opacity-60">${selectedImage.split(/[\\/]/).pop()}</div>
+                                `
+                                parent.appendChild(placeholder)
+                              }
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                    )}
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const result = await window.api.browseImageFile()
+                          if (result.success && result.filePath) {
+                            setSelectedImage(result.filePath)
+                            setExtractionError('') // Clear any extraction errors when manually selecting
+                          }
+                        }}
+                        className="flex-1 px-4 py-2 text-sm bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary font-medium rounded-lg transition-all duration-200 border border-border flex items-center justify-center gap-2"
+                      >
+                        <Image className="h-4 w-4" />
+                        {t('fileUpload.browseImage')}
+                      </button>
+                      {selectedFile && !selectedImage && (
+                        <button
+                          type="button"
+                          onClick={handleExtractImage}
+                          disabled={isExtractingImage}
+                          className="flex-1 px-4 py-2 text-sm bg-green-600 hover:bg-green-700 disabled:bg-green-800 disabled:opacity-50 text-white font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
+                        >
+                          {isExtractingImage ? (
+                            <>
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              {extractionStatus || t('fileUpload.extractingImage')}
+                            </>
+                          ) : (
+                            <>
+                              <FileImage className="h-4 w-4" />
+                              {t('fileUpload.extractImage')}
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
                   </div>
+                  {extractionError && (
+                    <p className="mt-2 text-xs text-state-error">{extractionError}</p>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-between space-x-4">

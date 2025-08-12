@@ -252,6 +252,10 @@
       "title": "Minimize to Tray",
       "description": "Hide the app to system tray instead of closing when clicking the close button"
     },
+    "autoExtractImages": {
+      "title": "Auto Extract Preview Images",
+      "description": "Automatically extract preview images from WAD files when importing skins (requires conversion tools)"
+    },
     "applicationUpdate": {
       "title": "Application Updates",
       "description": "Current version: {{version}}"
@@ -283,6 +287,9 @@
     "previewImage": "Preview Image",
     "browseImage": "Browse",
     "noImageSelected": "No image selected",
+    "extractImage": "Extract Image",
+    "extractingImage": "Extracting...",
+    "extractImageError": "Failed to extract image: {{error}}",
     "batchImportTitle": "Importing Multiple Files",
     "importingProgress": "Importing {{current}} of {{total}} files...",
     "batchComplete": "Import Complete!",
@@ -394,7 +401,10 @@
     "updating": "Updating...",
     "updateAll": "Update All ({{count}})",
     "updatingCount": "Updating {{count}}...",
-    "downloadedBeforeTracking": "Downloaded before update tracking"
+    "downloadedBeforeTracking": "Downloaded before update tracking",
+    "extractingImage": "Extracting preview image...",
+    "imageExtracted": "Preview image extracted successfully",
+    "imageExtractionFailed": "Failed to extract preview image"
   },
   "filters": {
     "title": "Filters & Sort",

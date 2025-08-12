@@ -247,6 +247,10 @@
       "title": "Sistem tepsisine küçült",
       "description": "Kapatma düğmesine tıklandığında uygulamayı kapatmak yerine sistem tepsisine gizle"
     },
+    "autoExtractImages": {
+      "title": "Otomatik Önizleme Resimlerini Çıkar",
+      "description": "Skinleri içe aktarırken WAD dosyalarından otomatik olarak önizleme resimlerini çıkar (dönüştürme araçları gerektirir)"
+    },
     "modToolsTimeout": {
       "title": "Mod Araçları Zaman Aşımı",
       "description": "Mod içe aktarma ve kaplama oluşturma işlemleri için maksimum bekleme süresi",
@@ -283,6 +287,9 @@
     "previewImage": "Önizleme resmi",
     "browseImage": "Gözat",
     "noImageSelected": "Seçili resim yok",
+    "extractImage": "Resmi Çıkar",
+    "extractingImage": "Çıkarılıyor...",
+    "extractImageError": "Resim çıkarılamadı: {{error}}",
     "batchImportTitle": "Birden çok dosya içe aktarılıyor",
     "importingProgress": "{{current}} / {{total}} dosya içe aktarılıyor...",
     "batchComplete": "İçe aktarma tamamlandı!",

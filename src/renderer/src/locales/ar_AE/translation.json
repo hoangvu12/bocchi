@@ -247,6 +247,10 @@
       "title": "تصغير إلى صينية النظام",
       "description": "إخفاء التطبيق في صينية النظام بدلاً من الإغلاق عند النقر على زر الإغلاق"
     },
+    "autoExtractImages": {
+      "title": "استخراج صور المعاينة تلقائياً",
+      "description": "استخراج صور المعاينة تلقائياً من ملفات WAD عند استيراد الأشكال (يتطلب أدوات التحويل)"
+    },
     "modToolsTimeout": {
       "title": "مهلة أدوات التعديل",
       "description": "الحد الأقصى للوقت للانتظار لاستيراد التعديلات وإنشاء الطبقة",
@@ -283,6 +287,9 @@
     "previewImage": "صورة المعاينة",
     "browseImage": "استعراض",
     "noImageSelected": "لم يتم اختيار صورة",
+    "extractImage": "استخراج الصورة",
+    "extractingImage": "جاري الاستخراج...",
+    "extractImageError": "فشل استخراج الصورة: {{error}}",
     "batchImportTitle": "استيراد ملفات متعددة",
     "importingProgress": "جاري الاستيراد {{current}} من {{total}} ملف...",
     "batchComplete": "اكتمل الاستيراد!",

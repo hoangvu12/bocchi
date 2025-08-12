@@ -247,6 +247,10 @@
       "title": "Minimalizuj do zasobnika",
       "description": "Ukryj aplikację w zasobniku systemowym zamiast zamykania przy kliknięciu przycisku zamknij"
     },
+    "autoExtractImages": {
+      "title": "Automatyczne wyodrębnianie obrazów podglądu",
+      "description": "Automatycznie wyodrębniaj obrazy podglądu z plików WAD podczas importowania skinów (wymaga narzędzi konwersji)"
+    },
     "modToolsTimeout": {
       "title": "Limit czasu narzędzi modów",
       "description": "Maksymalny czas oczekiwania na import modów i tworzenie nakładki",
@@ -283,6 +287,9 @@
     "previewImage": "Obraz podglądu",
     "browseImage": "Przeglądaj",
     "noImageSelected": "Nie wybrano obrazu",
+    "extractImage": "Wyodrębnij obraz",
+    "extractingImage": "Wyodrębnianie...",
+    "extractImageError": "Nie udało się wyodrębnić obrazu: {{error}}",
     "batchImportTitle": "Importowanie wielu plików",
     "importingProgress": "Importowanie {{current}} z {{total}} plików...",
     "batchComplete": "Import zakończony!",

@@ -247,6 +247,10 @@
       "title": "最小化到系統匣",
       "description": "點擊關閉按鈕時將應用程式隱藏到系統匣而不是關閉"
     },
+    "autoExtractImages": {
+      "title": "自動提取預覽圖片",
+      "description": "匯入造型時自動從 WAD 檔案中提取預覽圖片（需要轉換工具）"
+    },
     "modToolsTimeout": {
       "title": "模组工具超时时间",
       "description": "模组导入和创建覆盖层的最大等待时间",
@@ -283,6 +287,9 @@
     "previewImage": "預覽圖片",
     "browseImage": "瀏覽",
     "noImageSelected": "未選擇圖片",
+    "extractImage": "提取圖片",
+    "extractingImage": "提取中...",
+    "extractImageError": "提取圖片失敗：{{error}}",
     "batchImportTitle": "正在匯入多個檔案",
     "importingProgress": "正在匯入 {{current}} / {{total}} 個檔案...",
     "batchComplete": "匯入完成！",

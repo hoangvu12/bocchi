@@ -236,6 +236,12 @@ export interface IApi {
     newImagePath?: string
   ) => Promise<{ success: boolean; error?: string }>
   deleteCustomSkin: (modPath: string) => Promise<{ success: boolean; error?: string }>
+  extractImageForCustomSkin: (modPath: string) => Promise<{ success: boolean; error?: string }>
+  extractImageFromMod: (
+    modFilePath: string
+  ) => Promise<{ success: boolean; imagePath?: string; error?: string; requiresTools?: boolean }>
+  onExtractImageStatus: (callback: (status: string) => void) => () => void
+  readImageAsBase64: (imagePath: string) => Promise<{ success: boolean; data?: string; error?: string }>
 
   // Patcher events
   onPatcherStatus: (callback: (status: string) => void) => () => void

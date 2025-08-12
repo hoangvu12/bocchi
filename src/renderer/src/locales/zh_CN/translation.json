@@ -259,6 +259,10 @@
     "minimizeToTray": {
       "title": "最小化到托盘",
       "description": "点击关闭按钮时将应用隐藏到系统托盘而不是关闭"
+    },
+    "autoExtractImages": {
+      "title": "自动提取预览图片",
+      "description": "导入皮肤时自动从WAD文件中提取预览图片（需要转换工具）"
     }
   },
   "tray": {
@@ -295,6 +299,9 @@
     "previewImage": "预览图片",
     "browseImage": "浏览",
     "noImageSelected": "未选择图片",
+    "extractImage": "提取图片",
+    "extractingImage": "提取中...",
+    "extractImageError": "提取图片失败: {{error}}",
     "batchImportTitle": "导入多个文件",
     "importingProgress": "正在导入第 {{current}} 个，共 {{total}} 个文件...",
     "batchComplete": "导入完成！",

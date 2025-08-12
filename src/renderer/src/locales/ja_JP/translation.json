@@ -259,6 +259,10 @@
     "minimizeToTray": {
       "title": "トレイに最小化",
       "description": "閉じるボタンをクリックした時、アプリを閉じる代わりにシステムトレイに隠す"
+    },
+    "autoExtractImages": {
+      "title": "プレビュー画像の自動抽出",
+      "description": "スキンをインポートする際にWADファイルからプレビュー画像を自動的に抽出（変換ツールが必要）"
     }
   },
   "tray": {
@@ -295,6 +299,9 @@
     "previewImage": "プレビュー画像",
     "browseImage": "参照",
     "noImageSelected": "画像が選択されていません",
+    "extractImage": "画像を抽出",
+    "extractingImage": "抽出中...",
+    "extractImageError": "画像の抽出に失敗しました: {{error}}",
     "batchImportTitle": "複数ファイルのインポート",
     "importingProgress": "{{total}}個中{{current}}個目のファイルをインポート中...",
     "batchComplete": "インポート完了！",

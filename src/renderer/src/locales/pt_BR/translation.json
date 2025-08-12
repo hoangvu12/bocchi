@@ -252,6 +252,10 @@
       "title": "Minimizar para Bandeja",
       "description": "Ocultar o aplicativo na bandeja do sistema em vez de fechar ao clicar no botão fechar"
     },
+    "autoExtractImages": {
+      "title": "Extrair Imagens de Pré-visualização Automaticamente",
+      "description": "Extrair automaticamente imagens de pré-visualização dos arquivos WAD ao importar skins (requer ferramentas de conversão)"
+    },
     "applicationUpdate": {
       "title": "Atualizações do aplicativo",
       "description": "Versão atual: {{version}}"
@@ -283,6 +287,9 @@
     "previewImage": "Imagem de Pré-visualização",
     "browseImage": "Navegar",
     "noImageSelected": "Nenhuma imagem selecionada",
+    "extractImage": "Extrair Imagem",
+    "extractingImage": "Extraindo...",
+    "extractImageError": "Falha ao extrair imagem: {{error}}",
     "batchImportTitle": "Importando Múltiplos Arquivos",
     "importingProgress": "Importando {{current}} de {{total}} arquivos...",
     "batchComplete": "Importação Completa!",

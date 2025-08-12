@@ -208,6 +208,16 @@ const api = {
     newImagePath?: string
   ) => ipcRenderer.invoke('edit-custom-skin', modPath, newName, newChampionKey, newImagePath),
   deleteCustomSkin: (modPath: string) => ipcRenderer.invoke('delete-custom-skin', modPath),
+  extractImageForCustomSkin: (modPath: string) =>
+    ipcRenderer.invoke('extract-image-for-custom-skin', modPath),
+  extractImageFromMod: (modFilePath: string) =>
+    ipcRenderer.invoke('extract-image-from-mod', modFilePath),
+  onExtractImageStatus: (callback: (status: string) => void) => {
+    const handler = (_: any, status: string) => callback(status)
+    ipcRenderer.on('extract-image-status', handler)
+    return () => ipcRenderer.removeListener('extract-image-status', handler)
+  },
+  readImageAsBase64: (imagePath: string) => ipcRenderer.invoke('read-image-as-base64', imagePath),
 
   // Skin update management
   checkSkinUpdates: (skinPaths?: string[]) => ipcRenderer.invoke('check-skin-updates', skinPaths),

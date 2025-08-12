@@ -44,6 +44,7 @@
     "electron-overlay-window": "^3.3.0",
     "electron-updater": "^6.3.9",
     "framer-motion": "^12.23.3",
+    "fzstd": "^0.1.1",
     "i18next": "^25.2.1",
     "i18next-electron-fs-backend": "^3.0.3",
     "jotai": "^2.12.5",
@@ -61,7 +62,8 @@
     "tailwind-merge": "^3.3.1",
     "tar": "^7.4.3",
     "uuid": "^11.1.0",
-    "ws": "^8.18.3"
+    "ws": "^8.18.3",
+    "xxhash-addon": "^2.0.3"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",

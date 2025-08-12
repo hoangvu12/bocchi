@@ -253,6 +253,10 @@
       "title": "Thu nhỏ vào khay hệ thống",
       "description": "Ẩn ứng dụng vào khay hệ thống thay vì đóng khi nhấn nút đóng"
     },
+    "autoExtractImages": {
+      "title": "Tự Động Trích Xuất Ảnh Xem Trước",
+      "description": "Tự động trích xuất ảnh xem trước từ tệp WAD khi nhập trang phục (cần công cụ chuyển đổi)"
+    },
     "applicationUpdate": {
       "title": "Cập nhật ứng dụng",
       "description": "Phiên bản hiện tại: {{version}}"
@@ -284,6 +288,9 @@
     "previewImage": "Ảnh Xem Trước",
     "browseImage": "Duyệt",
     "noImageSelected": "Chưa chọn ảnh",
+    "extractImage": "Trích Xuất Ảnh",
+    "extractingImage": "Đang trích xuất...",
+    "extractImageError": "Không thể trích xuất ảnh: {{error}}",
     "batchImportTitle": "Đang Nhập Nhiều Tệp",
     "importingProgress": "Đang nhập {{current}} trong {{total}} tệp...",
     "batchComplete": "Hoàn Thành Nhập!",

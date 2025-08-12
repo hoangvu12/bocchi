@@ -74,6 +74,7 @@ export function SettingsDialog({
   const [autoAcceptEnabled, setAutoAcceptEnabled] = useState(false)
   const [autoFixModIssues, setAutoFixModIssues] = useState(false)
   const [minimizeToTray, setMinimizeToTray] = useState(false)
+  const [autoExtractImages, setAutoExtractImages] = useState(false)
   const [modToolsTimeout, setModToolsTimeout] = useState(300) // Default 300 seconds
   const [loading, setLoading] = useState(true)
 
@@ -134,6 +135,9 @@ export function SettingsDialog({
         case 'minimizeToTray':
           setMinimizeToTray(value)
           break
+        case 'autoExtractImages':
+          setAutoExtractImages(value)
+          break
       }
     }
 
@@ -173,6 +177,7 @@ export function SettingsDialog({
       setAutoAcceptEnabled(settings.autoAcceptEnabled === true)
       setAutoFixModIssues(settings.autoFixModIssues === true)
       setMinimizeToTray(settings.minimizeToTray === true)
+      setAutoExtractImages(settings.autoExtractImages === true)
       setModToolsTimeout(settings.modToolsTimeout || 300) // Default 300 seconds
     } catch (error) {
       console.error('Failed to load settings:', error)
@@ -452,6 +457,15 @@ export function SettingsDialog({
     }
   }
 
+  const handleAutoExtractImagesChange = async (checked: boolean) => {
+    setAutoExtractImages(checked)
+    try {
+      await window.api.setSettings('autoExtractImages', checked)
+    } catch (error) {
+      console.error('Failed to save auto extract images setting:', error)
+    }
+  }
+
   const handleCheckForUpdates = useCallback(async () => {
     setIsCheckingForUpdates(true)
     try {
@@ -549,6 +563,23 @@ export function SettingsDialog({
               <Switch
                 checked={minimizeToTray}
                 onCheckedChange={handleMinimizeToTrayChange}
+                disabled={loading}
+              />
+            </div>
+
+            {/* Auto Extract Images Setting */}
+            <div className="flex items-center justify-between space-x-4">
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.autoExtractImages.title')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.autoExtractImages.description')}
+                </p>
+              </div>
+              <Switch
+                checked={autoExtractImages}
+                onCheckedChange={handleAutoExtractImagesChange}
                 disabled={loading}
               />
             </div>

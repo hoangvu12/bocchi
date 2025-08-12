@@ -587,7 +587,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                       <Button
                         variant="destructive"
                         size="icon"
-                        className="absolute top-10 right-2 w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 shadow-lg"
+                        className="absolute top-18 right-2 w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 shadow-lg"
                         onClick={(e) => {
                           e.stopPropagation()
                           if (confirm(`Are you sure you want to delete "${skin.name}"?`)) {

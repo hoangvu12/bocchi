@@ -40,6 +40,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Setup MSBuild (if needed for native modules)
+        uses: microsoft/setup-msbuild@v2
+
       - name: Install dependencies
         run: pnpm install
 

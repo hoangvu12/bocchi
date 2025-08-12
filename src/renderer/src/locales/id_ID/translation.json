@@ -247,6 +247,10 @@
       "title": "Minimalkan ke Tray",
       "description": "Sembunyikan aplikasi ke system tray alih-alih menutup saat mengklik tombol tutup"
     },
+    "autoExtractImages": {
+      "title": "Ekstrak Gambar Pratinjau Otomatis",
+      "description": "Otomatis mengekstrak gambar pratinjau dari file WAD saat mengimpor skin (memerlukan tools konversi)"
+    },
     "modToolsTimeout": {
       "title": "Batas Waktu Mod Tools",
       "description": "Waktu maksimum untuk menunggu impor mod dan pembuatan overlay",
@@ -283,6 +287,9 @@
     "previewImage": "Gambar Pratinjau",
     "browseImage": "Telusuri",
     "noImageSelected": "Tidak ada gambar yang dipilih",
+    "extractImage": "Ekstrak Gambar",
+    "extractingImage": "Mengekstrak...",
+    "extractImageError": "Gagal mengekstrak gambar: {{error}}",
     "batchImportTitle": "Mengimpor Beberapa File",
     "importingProgress": "Mengimpor {{current}} dari {{total}} file...",
     "batchComplete": "Impor Selesai!",

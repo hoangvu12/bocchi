@@ -247,6 +247,10 @@
       "title": "Minimalizálás a tálcára",
       "description": "Alkalmazás elrejtése a rendszertálcán a bezárás helyett a bezárás gombra kattintáskor"
     },
+    "autoExtractImages": {
+      "title": "Előnézeti képek automatikus kinyerelese",
+      "description": "Előnézeti képek automatikus kinyerelese WAD fájlokból skinek importálásakor (konverziós eszközöket igényel)"
+    },
     "modToolsTimeout": {
       "title": "Mod eszközök időtúllépés",
       "description": "Maximális várakozási idő mod importáláshoz és overlay létrehozáshoz",
@@ -283,6 +287,9 @@
     "previewImage": "Előnézeti kép",
     "browseImage": "Tallózás",
     "noImageSelected": "Nincs kiválasztott kép",
+    "extractImage": "Kép kinyerese",
+    "extractingImage": "Kinyerelés...",
+    "extractImageError": "Kép kinyerelese sikertelen: {{error}}",
     "batchImportTitle": "Több fájl importálása",
     "importingProgress": "{{current}} / {{total}} fájl importálása...",
     "batchComplete": "Importálás befejezve!",

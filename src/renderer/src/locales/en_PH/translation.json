@@ -77,6 +77,9 @@
     "applied": "Applied {{name}} successfully!",
     "stopping": "Stopping patcher...",
     "stopped": "Patcher stopped",
+    "cancelling": "Cancelling operation...",
+    "cancelled": "Operation cancelled",
+    "failedToCancel": "Failed to cancel: {{error}}",
     "error": "Error: {{message}}",
     "fetchingData": "Fetching champion data...",
     "autoAcceptedMatch": "Match automatically accepted!",
@@ -91,10 +94,7 @@
     "deletedSkin": "Deleted skin: {{name}}",
     "failedToDeleteMod": "Failed to delete mod: {{error}}",
     "failedToDeleteSkin": "Failed to delete skin: {{error}}",
-    "autoSelectedSkinsCleanedUp": "Cleaned up {{count}} auto-selected skins",
-    "cancelling": "Cancelling operation...",
-    "cancelled": "Operation cancelled",
-    "failedToCancel": "Failed to cancel: {{error}}"
+    "autoSelectedSkinsCleanedUp": "Cleaned up {{count}} auto-selected skins"
   },
   "tools": {
     "required": "CS:LOL Tools Required",
@@ -234,6 +234,11 @@
       "title": "Auto-fix mod issues on import",
       "description": "Automatically fix missing health bars, materials, and VFX when importing mods"
     },
+    "modToolsTimeout": {
+      "title": "Mod Tools Timeout",
+      "description": "Maximum time to wait for mod import and overlay creation operations",
+      "hint": "Increase this value if you have many mods or a slow system. Decrease for faster failure detection."
+    },
     "tabs": {
       "general": "General",
       "leagueClient": "League Client",
@@ -247,10 +252,9 @@
       "title": "Minimize to Tray",
       "description": "Hide the app to system tray instead of closing when clicking the close button"
     },
-    "modToolsTimeout": {
-      "title": "Mod Tools Timeout",
-      "description": "Maximum time to wait for mod import and overlay creation operations",
-      "hint": "Increase this value if you have many mods or a slow system. Decrease for faster failure detection."
+    "autoExtractImages": {
+      "title": "Auto Extract Preview Images",
+      "description": "Automatically extract preview images from WAD files when importing skins (requires conversion tools)"
     },
     "applicationUpdate": {
       "title": "Application Updates",
@@ -261,9 +265,9 @@
     "show": "Show Bocchi",
     "hide": "Hide Bocchi",
     "language": "Language",
+    "checkForUpdates": "Check for Updates",
     "openSettings": "Open Settings",
-    "quit": "Quit Bocchi",
-    "checkForUpdates": "Check for Updates"
+    "quit": "Quit Bocchi"
   },
   "fileUpload": {
     "uploadButton": "Upload Custom Mod",
@@ -283,6 +287,9 @@
     "previewImage": "Preview Image",
     "browseImage": "Browse",
     "noImageSelected": "No image selected",
+    "extractImage": "Extract Image",
+    "extractingImage": "Extracting...",
+    "extractImageError": "Failed to extract image: {{error}}",
     "batchImportTitle": "Importing Multiple Files",
     "importingProgress": "Importing {{current}} of {{total}} files...",
     "batchComplete": "Import Complete!",
@@ -292,6 +299,25 @@
     "close": "Close",
     "fixModIssues": "Fix mod issues",
     "fixModIssuesDescription": "Fixes missing health bars, materials, and VFX"
+  },
+  "importMethod": {
+    "title": "Import Custom Mod",
+    "description": "Choose how you want to import your custom mod",
+    "fileTab": "From File",
+    "urlTab": "From URL",
+    "dropFiles": "Drop files here",
+    "or": "or",
+    "browseFiles": "Browse Files",
+    "supportedFormats": "Supported formats:",
+    "enterDirectUrl": "Enter direct download URL",
+    "directUrlPlaceholder": "https://example.com/mod.zip",
+    "enterUrl": "Please enter a URL",
+    "invalidUrl": "Invalid URL. Please provide a direct download link to a mod file",
+    "downloadFailed": "Failed to download mod",
+    "downloading": "Downloading...",
+    "download": "Download & Import",
+    "directDownloadNote": "Only direct download links are supported",
+    "clipboardError": "Failed to read clipboard"
   },
   "editCustomSkin": {
     "title": "Edit Custom Mod",
@@ -319,7 +345,6 @@
     "save": "Save",
     "saving": "Saving..."
   },
-  "cancel": "Cancel",
   "success": "Success",
   "error": "Error",
   "update": {
@@ -328,14 +353,14 @@
     "whatsNew": "What's New",
     "downloading": "Downloading...",
     "updateNow": "Update Now",
-    "championDataAvailable": "Champion Data Update Available",
-    "championDataDescription": "A new version of champion data is available. This update includes the latest champions, skins, and other game content.",
-    "currentVersion": "Current version: ",
-    "updating": "Updating...",
     "checkForUpdates": "Check for Updates",
     "checking": "Checking for updates...",
     "noUpdates": "You're on the latest version!",
-    "error": "Failed to check for updates"
+    "error": "Failed to check for updates",
+    "championDataAvailable": "Champion Data Update Available",
+    "championDataDescription": "A new version of champion data is available. This update includes the latest champions, skins, and other game content.",
+    "currentVersion": "Current version: ",
+    "updating": "Updating..."
   },
   "skins": {
     "selected_one": "{{count}} skin selected",
@@ -376,7 +401,10 @@
     "updating": "Updating...",
     "updateAll": "Update All ({{count}})",
     "updatingCount": "Updating {{count}}...",
-    "downloadedBeforeTracking": "Downloaded before update tracking"
+    "downloadedBeforeTracking": "Downloaded before update tracking",
+    "extractingImage": "Extracting preview image...",
+    "imageExtracted": "Preview image extracted successfully",
+    "imageExtractionFailed": "Failed to extract preview image"
   },
   "filters": {
     "title": "Filters & Sort",
@@ -418,12 +446,12 @@
   "patcher": {
     "applying": "Applying...",
     "stopping": "Stopping...",
+    "cancelling": "Cancelling...",
+    "cancelApply": "Cancel",
     "stopPatcher": "Stop Patcher",
     "apply_one": "Apply {{count}} Skin",
     "apply_other": "Apply {{count}} Skins",
-    "messages": "Patcher Messages:",
-    "cancelling": "Cancelling...",
-    "cancelApply": "Cancel"
+    "messages": "Patcher Messages:"
   },
   "presets": {
     "title": "Presets",
@@ -551,24 +579,5 @@
   "confirmations": {
     "confirmDeleteAll": "Are you sure you want to delete all skins? This action cannot be undone.",
     "confirmDeleteChampion": "Are you sure you want to delete all skins for {{champion}}? This action cannot be undone."
-  },
-  "importMethod": {
-    "title": "Import Custom Mod",
-    "description": "Choose how you want to import your custom mod",
-    "fileTab": "From File",
-    "urlTab": "From URL",
-    "dropFiles": "Drop files here",
-    "or": "or",
-    "browseFiles": "Browse Files",
-    "supportedFormats": "Supported formats:",
-    "enterDirectUrl": "Enter direct download URL",
-    "directUrlPlaceholder": "https://example.com/mod.zip",
-    "enterUrl": "Please enter a URL",
-    "invalidUrl": "Invalid URL. Please provide a direct download link to a mod file",
-    "downloadFailed": "Failed to download mod",
-    "downloading": "Downloading...",
-    "download": "Download & Import",
-    "directDownloadNote": "Only direct download links are supported",
-    "clipboardError": "Failed to read clipboard"
   }
 }

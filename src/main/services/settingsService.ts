@@ -7,6 +7,7 @@ interface Settings {
   theme?: 'dark' | 'light'
   gamePath?: string
   minimizeToTray?: boolean
+  autoExtractImages?: boolean
   [key: string]: any
 }
 

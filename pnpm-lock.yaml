@@ -74,6 +74,9 @@ importers:
       framer-motion:
         specifier: ^12.23.3
         version: 12.23.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      fzstd:
+        specifier: ^0.1.1
+        version: 0.1.1
       i18next:
         specifier: ^25.2.1
         version: 25.3.2(typescript@5.9.2)
@@ -92,6 +95,9 @@ importers:
       node-stream-zip:
         specifier: ^1.15.0
         version: 1.15.0
+      pako:
+        specifier: ^2.1.0
+        version: 2.1.0
       peerjs:
         specifier: ^1.5.5
         version: 1.5.5
@@ -128,6 +134,9 @@ importers:
       ws:
         specifier: ^8.18.3
         version: 8.18.3
+      xxhash-addon:
+        specifier: ^2.0.3
+        version: 2.0.3
     devDependencies:
       '@electron-toolkit/eslint-config-prettier':
         specifier: ^3.0.0
@@ -2332,6 +2341,9 @@ packages:
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
 
+  fzstd@0.1.1:
+    resolution: {integrity: sha512-dkuVSOKKwh3eas5VkJy1AW1vFpet8TA/fGmVA5krThl8YcOVE/8ZIoEA1+U1vEn5ckxxhLirSdY837azmbaNHA==}
+
   gauge@4.0.4:
     resolution: {integrity: sha512-f9m+BEN5jkg6a0fZjleidjN51VE1X+mPFQ2DJ0uv1V39oCLCbsGe6yjbBnp7eK7z/+GAon99a3nHuqbuuthyPg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
@@ -3245,6 +3257,9 @@ packages:
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
 
+  pako@2.1.0:
+    resolution: {integrity: sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==}
+
   parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
@@ -4152,6 +4167,10 @@ packages:
   xmlbuilder@15.1.1:
     resolution: {integrity: sha512-yMqGBqtXyeN1e3TGYvgNgDVZ3j84W4cwkOXQswghol6APgZWaff9lnbvN7MHYJOiXsvGPXtjTYJEiC9J2wv9Eg==}
     engines: {node: '>=8.0'}
+
+  xxhash-addon@2.0.3:
+    resolution: {integrity: sha512-MIL+yTvK2HaVHe1VXfVtXd884pakIaNbjuNHAqIhVFrye87+ZCn0s3RSafqiYB1ASqrZoGsm8URjPiupGLuP+A==}
+    engines: {node: '>=8.6.0 <9.0.0 || >=10.0.0'}
 
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
@@ -6632,6 +6651,8 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
+  fzstd@0.1.1: {}
+
   gauge@4.0.4:
     dependencies:
       aproba: 2.1.0
@@ -7717,6 +7738,8 @@ snapshots:
 
   package-json-from-dist@1.0.1: {}
 
+  pako@2.1.0: {}
+
   parent-module@1.0.1:
     dependencies:
       callsites: 3.1.0
@@ -8747,6 +8770,8 @@ snapshots:
   ws@8.18.3: {}
 
   xmlbuilder@15.1.1: {}
+
+  xxhash-addon@2.0.3: {}
 
   y18n@5.0.8: {}
 
