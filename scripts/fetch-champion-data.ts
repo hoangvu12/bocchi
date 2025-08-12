@@ -588,6 +588,9 @@ function buildChampionNameLookup(championFolders: string[]): Map<string, string>
       lookup.set('chogath', folder)
       lookup.set('cho gath', folder)
     }
+    if (folder === 'Wukong') {
+      lookup.set('monkeyking', folder) // CDragon uses MonkeyKing as alias
+    }
     // Add more special cases as needed
   })
 
