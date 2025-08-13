@@ -47,6 +47,7 @@ export interface SkinInfo {
   sharedBy?: string
   metadata?: SkinMetadata
   updateInfo?: SkinUpdateInfo
+  author?: string // Author for custom/user mods
 }
 
 export interface P2PRoom {

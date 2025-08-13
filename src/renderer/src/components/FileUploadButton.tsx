@@ -34,6 +34,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
     const [selectedFile, setSelectedFile] = useState<string>('')
     const [selectedChampion, setSelectedChampion] = useState<string>('')
     const [customName, setCustomName] = useState<string>('')
+    const [customAuthor, setCustomAuthor] = useState<string>('')
     const [selectedImage, setSelectedImage] = useState<string>('')
     const [error, setError] = useState<string>('')
     const [fixModIssues, setFixModIssues] = useState<boolean>(false)
@@ -138,6 +139,11 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                   importOptions.skinName = modInfo.info.name
                 }
 
+                // Use extracted author if available
+                if (modInfo.info.author) {
+                  importOptions.author = modInfo.info.author
+                }
+
                 // Try to detect champion - prioritize explicit champion field
                 let detectedChampion = ''
 
@@ -228,6 +234,11 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
             // Auto-populate custom name if available
             if (result.info.name) {
               setCustomName(result.info.name)
+            }
+
+            // Auto-populate author if available
+            if (result.info.author) {
+              setCustomAuthor(result.info.author)
             }
 
             // Try to detect champion - prioritize explicit champion field
@@ -437,6 +448,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
         const result = await window.api.importSkinFile(selectedFile, {
           championName: selectedChampion, // Pass empty string as-is, don't convert to undefined
           skinName: customName || undefined,
+          author: customAuthor || undefined,
           imagePath: selectedImage || undefined
         })
 
@@ -455,6 +467,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
           setSelectedFile('')
           setSelectedChampion('')
           setCustomName('')
+          setCustomAuthor('')
           setSelectedImage('')
           setImagePreviewUrl('')
           setFixModIssues(false)
@@ -538,6 +551,7 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
         setSelectedFile('')
         setSelectedChampion('')
         setCustomName('')
+        setCustomAuthor('')
         setSelectedImage('')
         setImagePreviewUrl('')
         setFixModIssues(false)
@@ -639,6 +653,20 @@ export const FileUploadButton = forwardRef<FileUploadButtonRef, FileUploadButton
                     value={customName}
                     onChange={(e) => setCustomName(e.target.value)}
                     placeholder={t('fileUpload.customNamePlaceholder')}
+                    className="w-full px-3 py-2 text-sm bg-secondary-100 dark:bg-secondary-900 border border-border rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-text-primary mb-1">
+                    {t('fileUpload.author')}{' '}
+                    <span className="text-text-muted font-normal">(Optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={customAuthor}
+                    onChange={(e) => setCustomAuthor(e.target.value)}
+                    placeholder={t('fileUpload.authorPlaceholder')}
                     className="w-full px-3 py-2 text-sm bg-secondary-100 dark:bg-secondary-900 border border-border rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                 </div>

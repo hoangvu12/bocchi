@@ -287,7 +287,8 @@ export const displaySkinsAtom = atom((get) => {
           rarityGemPath: null,
           isLegacy: false,
           skinType: 'custom',
-          description: 'Custom imported mod'
+          description: 'Custom imported mod',
+          author: downloadedSkin.author
         }
 
         if (
@@ -349,7 +350,8 @@ export const displaySkinsAtom = atom((get) => {
           rarityGemPath: null,
           isLegacy: false,
           skinType: 'custom',
-          description: 'Custom imported mod'
+          description: 'Custom imported mod',
+          author: downloadedSkin.author
         }
 
         if (!showFavoritesOnly || isSkinOrChromaFavorited(favorites, champion.key, customSkin.id)) {
@@ -402,7 +404,8 @@ export const displaySkinsAtom = atom((get) => {
           rarityGemPath: null,
           isLegacy: false,
           skinType: 'custom',
-          description: 'Custom imported mod'
+          description: 'Custom imported mod',
+          author: downloadedSkin.author
         }
 
         allSkins.push({ champion, skin: customSkin })

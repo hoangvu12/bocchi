@@ -363,12 +363,25 @@ export class SkinDownloader {
             const championName = parts[0]
             const skinName = parts.slice(1).join('_')
             const ext = path.extname(modFile)
+
+            // Try to get author from metadata
+            let author: string | undefined
+            try {
+              const metadataPath = path.join(this.modsDir, nameWithoutExt, 'META', 'info.json')
+              const infoContent = await fs.readFile(metadataPath, 'utf-8')
+              const info = JSON.parse(infoContent)
+              author = info.Author || info.author
+            } catch {
+              // No metadata or parse error
+            }
+
             skins.push({
               championName,
               skinName: `[User] ${skinName}${ext}`,
               url: `file://${modFilePath}`,
               localPath: modFilePath,
-              source: 'user'
+              source: 'user',
+              author
             })
             seenPaths.add(modFilePath)
           }
@@ -400,12 +413,24 @@ export class SkinDownloader {
             }
             // Only add if no corresponding mod file exists (legacy mod)
             if (!hasModFile) {
+              // Try to get author from metadata
+              let author: string | undefined
+              try {
+                const metadataPath = path.join(modPath, 'META', 'info.json')
+                const infoContent = await fs.readFile(metadataPath, 'utf-8')
+                const info = JSON.parse(infoContent)
+                author = info.Author || info.author
+              } catch {
+                // No metadata or parse error
+              }
+
               skins.push({
                 championName,
                 skinName: `[User] ${skinName}`,
                 url: `file://${modPath}`,
                 localPath: modPath,
-                source: 'user'
+                source: 'user',
+                author
               })
               seenPaths.add(modPath)
             }

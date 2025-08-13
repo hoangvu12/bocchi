@@ -30,6 +30,7 @@ export interface BatchImportResult {
 export interface FileImportOptions {
   championName?: string
   skinName?: string
+  author?: string
   imagePath?: string
 }
 
@@ -193,7 +194,7 @@ export class FileImportService {
       await fs.mkdir(metaDir, { recursive: true })
 
       const infoJson = {
-        Author: 'User Import',
+        Author: options.author || 'User Import',
         Description: `Imported from ${path.basename(wadPath)}`,
         Name: skinName.trim(), // Ensure no trailing spaces in metadata
         Version: '1.0.0'
@@ -283,6 +284,13 @@ export class FileImportService {
 
       const infoContent = await fs.readFile(metaInfoPath, 'utf-8')
       const info = JSON.parse(infoContent)
+
+      // Update author if provided in options
+      if (options.author) {
+        info.Author = options.author
+        // Write back the updated info
+        await fs.writeFile(metaInfoPath, JSON.stringify(info, null, 2))
+      }
 
       // Handle custom image if provided
       if (options.imagePath) {

@@ -278,6 +278,8 @@
     "championPlaceholder": "No specific champion",
     "customName": "Custom Name",
     "customNamePlaceholder": "Enter skin name...",
+    "author": "Author",
+    "authorPlaceholder": "Enter author name...",
     "importing": "Importing...",
     "import": "Import",
     "noFileSelected": "No file selected",

@@ -48,7 +48,7 @@ const api = {
   // File import
   importSkinFile: (
     filePath: string,
-    options?: { championName?: string; skinName?: string; imagePath?: string }
+    options?: { championName?: string; skinName?: string; author?: string; imagePath?: string }
   ) => ipcRenderer.invoke('import-skin-file', filePath, options),
   importSkinFilesBatch: (filePaths: string[]) =>
     ipcRenderer.invoke('import-skin-files-batch', filePaths),

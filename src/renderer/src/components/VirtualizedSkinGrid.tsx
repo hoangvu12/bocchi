@@ -254,6 +254,10 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
               <div className="flex-1">
                 <p className="font-medium text-text-primary">{skin.name}</p>
                 <p className="text-sm text-text-secondary">{champion.name}</p>
+                {/* Show author for custom mods */}
+                {isUserSkin && skin.author && (
+                  <p className="text-xs text-text-tertiary">by {skin.author}</p>
+                )}
                 {!isAvailable && (
                   <span className="inline-block mt-1 px-2 py-0.5 bg-red-500/10 text-red-500 text-xs rounded">
                     {t('skin.notAvailable')}
@@ -449,7 +453,11 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
               <div className="absolute top-2 left-2 px-2 py-1 bg-black bg-opacity-75 backdrop-blur-sm rounded-lg text-xs text-white font-medium transform transition-all duration-300 group-hover:scale-105">
-                {champion.name}
+                <div>{champion.name}</div>
+                {/* Show author for custom mods in grid view */}
+                {isUserSkin && skin.author && (
+                  <div className="text-[10px] text-white/80 mt-0.5">by {skin.author}</div>
+                )}
               </div>
               {isSelected && (
                 <div className="absolute top-2 right-2 w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center shadow-lg transform transition-all duration-300 group-hover:scale-110">
@@ -623,6 +631,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
             >
               <p
                 className={`${viewMode === 'spacious' ? 'text-base' : viewMode === 'comfortable' ? 'text-sm' : 'text-xs'} font-semibold text-charcoal-900 dark:text-charcoal-100 truncate`}
+                title={skin.name}
               >
                 {skin.name}
               </p>

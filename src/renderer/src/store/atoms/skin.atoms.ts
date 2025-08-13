@@ -5,6 +5,7 @@ export interface DownloadedSkin {
   skinName: string
   url: string
   localPath?: string
+  author?: string // Author for custom/user mods
 }
 
 // Downloaded skins atom

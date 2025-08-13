@@ -78,7 +78,7 @@ export interface IApi {
   // File import
   importSkinFile: (
     filePath: string,
-    options?: { championName?: string; skinName?: string; imagePath?: string }
+    options?: { championName?: string; skinName?: string; author?: string; imagePath?: string }
   ) => Promise<{ success: boolean; skinInfo?: SkinInfo; error?: string }>
   importSkinFilesBatch: (filePaths: string[]) => Promise<{
     success: boolean
@@ -241,7 +241,9 @@ export interface IApi {
     modFilePath: string
   ) => Promise<{ success: boolean; imagePath?: string; error?: string; requiresTools?: boolean }>
   onExtractImageStatus: (callback: (status: string) => void) => () => void
-  readImageAsBase64: (imagePath: string) => Promise<{ success: boolean; data?: string; error?: string }>
+  readImageAsBase64: (
+    imagePath: string
+  ) => Promise<{ success: boolean; data?: string; error?: string }>
 
   // Patcher events
   onPatcherStatus: (callback: (status: string) => void) => () => void

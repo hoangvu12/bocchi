@@ -92,6 +92,7 @@ export interface Skin {
   winRate?: number
   pickRate?: number
   totalGames?: number
+  author?: string // Author for custom/user mods
 }
 
 function AppContent(): React.JSX.Element {

@@ -1916,9 +1916,9 @@ function setupIpcHandlers(): void {
       const dataUrl = `data:image/${mimeType};base64,${base64}`
       return { success: true, data: dataUrl }
     } catch (error) {
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Failed to read image' 
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to read image'
       }
     }
   })
@@ -1945,7 +1945,9 @@ function setupIpcHandlers(): void {
               event.sender.send('tools-download-details', details)
               // Update status with download details
               const mb = (size: number) => (size / (1024 * 1024)).toFixed(1)
-              sendStatus(`Downloading cslol-tools: ${mb(details.loaded)}MB / ${mb(details.total)}MB (${progress}%)`)
+              sendStatus(
+                `Downloading cslol-tools: ${mb(details.loaded)}MB / ${mb(details.total)}MB (${progress}%)`
+              )
             }
           })
         } catch (error) {
