@@ -1,4 +1,3 @@
-### Features
+### Fix
 
-- Custom mods now show author (new mods, old one probably won't show)
-- Extract loading screen image from the custom mod
+- Clear skin cache button (use this if the skins aren't still updated in the app)
