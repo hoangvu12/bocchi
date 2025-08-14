@@ -240,6 +240,16 @@
       "description": "Thời gian tối đa để chờ nhập mod và tạo overlay",
       "hint": "Tăng giá trị này nếu bạn có nhiều mod hoặc hệ thống chậm. Giảm để phát hiện lỗi nhanh hơn."
     },
+    "cacheManagement": {
+      "title": "Quản Lý Bộ Nhớ Đệm Trang Phục",
+      "description": "Quản lý các tệp trang phục được lưu đệm để áp dụng mod nhanh hơn",
+      "info": "Bộ nhớ đệm chứa {{count}} mod sử dụng {{size}} MB",
+      "clearCache": "Xóa Bộ Nhớ Đệm",
+      "clearing": "Đang xóa...",
+      "confirmClear": "Bạn có chắc chắn muốn xóa bộ nhớ đệm trang phục? Điều này sẽ buộc tất cả trang phục phải được nhập lại lần áp dụng tiếp theo, có thể mất nhiều thời gian hơn.",
+      "clearSuccess": "Đã xóa bộ nhớ đệm trang phục thành công",
+      "clearError": "Không thể xóa bộ nhớ đệm trang phục"
+    },
     "tabs": {
       "general": "Chung",
       "leagueClient": "League Client",

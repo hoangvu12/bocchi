@@ -12,6 +12,7 @@
       "Bash(npm run lint:*)",
       "Bash(find:*)"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "acceptEdits"
   }
 }

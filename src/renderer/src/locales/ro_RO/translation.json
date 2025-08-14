@@ -256,6 +256,16 @@
       "description": "Timp maxim de așteptare pentru importul modurilor și crearea overlay-ului",
       "hint": "Creșteți această valoare dacă aveți multe moduri sau un sistem lent. Reduceți pentru detectarea mai rapidă a erorilor."
     },
+    "cacheManagement": {
+      "title": "Gestionarea Cache-ului de Skin-uri",
+      "description": "Gestionați fișierele de skin-uri din cache utilizate pentru aplicarea mai rapidă a modurilor",
+      "info": "Cache-ul conține {{count}} mod(uri) folosind {{size}} MB",
+      "clearCache": "Golește Cache-ul",
+      "clearing": "Se golește...",
+      "confirmClear": "Sigur doriți să goliți cache-ul de skin-uri? Aceasta va forța toate skin-urile să fie reimportate la următoarea aplicare, ceea ce poate dura mai mult.",
+      "clearSuccess": "Cache-ul de skin-uri a fost golit cu succes",
+      "clearError": "Eșec la golirea cache-ului de skin-uri"
+    },
     "applicationUpdate": {
       "title": "Actualizări aplicație",
       "description": "Versiunea curentă: {{version}}"

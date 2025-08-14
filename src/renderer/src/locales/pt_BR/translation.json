@@ -239,6 +239,16 @@
       "description": "Tempo máximo para aguardar importação de mods e criação de overlay",
       "hint": "Aumente este valor se você tem muitos mods ou um sistema lento. Diminua para detecção de erros mais rápida."
     },
+    "cacheManagement": {
+      "title": "Gerenciamento de Cache de Skins",
+      "description": "Gerenciar os arquivos de skins em cache usados para aplicação de mods mais rápida",
+      "info": "Cache contém {{count}} mod(s) usando {{size}} MB",
+      "clearCache": "Limpar Cache",
+      "clearing": "Limpando...",
+      "confirmClear": "Tem certeza de que deseja limpar o cache de skins? Isso forçará todas as skins a serem reimportadas na próxima aplicação, o que pode demorar mais.",
+      "clearSuccess": "Cache de skins limpo com sucesso",
+      "clearError": "Falha ao limpar cache de skins"
+    },
     "tabs": {
       "general": "Geral",
       "leagueClient": "Cliente do League",

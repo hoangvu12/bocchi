@@ -256,6 +256,16 @@
       "description": "Maximální doba čekání na import modů a vytvoření překryvu",
       "hint": "Zvyšte tuto hodnotu, pokud máte mnoho modů nebo pomalý systém. Snižte pro rychlejší detekci chyb."
     },
+    "cacheManagement": {
+      "title": "Správa cache skinů",
+      "description": "Spravovat cached soubory skinů používané pro rychlejší aplikaci modů",
+      "info": "Cache obsahuje {{count}} mod(ů) používající {{size}} MB",
+      "clearCache": "Vymazat cache",
+      "clearing": "Mazání...",
+      "confirmClear": "Jste si jisti, že chcete vymazat cache skinů? To donutí všechny skiny k opětovnému importu při příštím použití, což může trvat déle.",
+      "clearSuccess": "Cache skinů byl úspěšně vymazán",
+      "clearError": "Nepodařilo se vymazat cache skinů"
+    },
     "applicationUpdate": {
       "title": "Aktualizace aplikace",
       "description": "Aktuální verze: {{version}}"

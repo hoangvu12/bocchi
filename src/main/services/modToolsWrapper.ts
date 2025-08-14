@@ -607,6 +607,84 @@ export class ModToolsWrapper {
     }
   }
 
+  async clearSkinCache(skinName: string): Promise<void> {
+    try {
+      console.info(`[ModToolsWrapper] Clearing cache for skin: ${skinName}`)
+
+      // Remove file extension if present
+      const baseName = path.basename(skinName, path.extname(skinName)).trim()
+
+      // Read all directories in the installed path
+      const installedDirs = await fs.readdir(this.installedPath).catch(() => [])
+
+      // Find and remove any cached versions of this skin
+      let clearedCount = 0
+      for (const dir of installedDirs) {
+        // Check if this directory is for the skin we want to clear
+        // It could be named like "mod_0_skinname" or just contain the skin name
+        if (dir.includes(baseName)) {
+          const dirPath = path.join(this.installedPath, dir)
+          try {
+            await fs.rm(dirPath, { recursive: true, force: true })
+            console.info(`[ModToolsWrapper] Cleared cached mod: ${dir}`)
+            clearedCount++
+          } catch (error) {
+            console.warn(`[ModToolsWrapper] Failed to clear ${dir}:`, error)
+          }
+        }
+      }
+
+      if (clearedCount > 0) {
+        console.info(
+          `[ModToolsWrapper] Successfully cleared ${clearedCount} cached version(s) of ${skinName}`
+        )
+      } else {
+        console.info(`[ModToolsWrapper] No cached versions found for ${skinName}`)
+      }
+    } catch (error) {
+      console.error(`[ModToolsWrapper] Failed to clear cache for ${skinName}:`, error)
+      // Don't throw - this is a non-critical operation
+    }
+  }
+
+  async getCacheInfo(): Promise<{ exists: boolean; modCount: number; sizeInMB: number }> {
+    try {
+      await fs.access(this.installedPath)
+
+      const dirs = await fs.readdir(this.installedPath)
+      let totalSize = 0
+      let modCount = 0
+
+      for (const dir of dirs) {
+        const dirPath = path.join(this.installedPath, dir)
+        const stats = await fs.stat(dirPath)
+
+        if (stats.isDirectory()) {
+          modCount++
+          // Estimate directory size (simplified - just counts direct files)
+          const files = await fs.readdir(dirPath, { withFileTypes: true }).catch(() => [])
+          for (const file of files) {
+            if (file.isFile()) {
+              const filePath = path.join(dirPath, file.name)
+              const fileStats = await fs.stat(filePath).catch(() => null)
+              if (fileStats) {
+                totalSize += fileStats.size
+              }
+            }
+          }
+        }
+      }
+
+      return {
+        exists: true,
+        modCount,
+        sizeInMB: Math.round((totalSize / (1024 * 1024)) * 10) / 10 // Round to 1 decimal
+      }
+    } catch {
+      return { exists: false, modCount: 0, sizeInMB: 0 }
+    }
+  }
+
   async cancelApply(): Promise<{ success: boolean; message: string }> {
     if (!this.applyInProgress) {
       return { success: false, message: 'No apply operation in progress' }

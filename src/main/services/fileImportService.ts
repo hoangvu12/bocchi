@@ -7,6 +7,7 @@ import { WADParser, WADChunk } from './wadParser'
 import { TextureExtractor } from './textureExtractor'
 import { ImageConverter } from './imageConverter'
 import { SettingsService } from './settingsService'
+import { ModToolsWrapper } from './modToolsWrapper'
 
 export interface ImportResult {
   success: boolean
@@ -39,6 +40,7 @@ export class FileImportService {
   private tempDir: string
   private modFilesDir: string
   private settingsService: SettingsService
+  private modToolsWrapper: ModToolsWrapper
 
   constructor() {
     const userData = app.getPath('userData')
@@ -46,6 +48,7 @@ export class FileImportService {
     this.tempDir = path.join(app.getPath('temp'), 'bocchi-temp')
     this.modFilesDir = path.join(userData, 'mod-files')
     this.settingsService = SettingsService.getInstance()
+    this.modToolsWrapper = new ModToolsWrapper()
   }
 
   async initialize(): Promise<void> {
@@ -511,6 +514,10 @@ export class FileImportService {
         }
       }
 
+      // Clear the skin from cache when edited to ensure changes are applied
+      const skinName = path.basename(modPath, path.extname(modPath))
+      await this.modToolsWrapper.clearSkinCache(skinName)
+
       return { success: true }
     } catch (error) {
       return {
@@ -523,6 +530,9 @@ export class FileImportService {
   async deleteCustomSkin(modPath: string): Promise<{ success: boolean; error?: string }> {
     try {
       const stat = await fs.stat(modPath)
+
+      // Extract the skin name for cache clearing
+      const skinName = path.basename(modPath, path.extname(modPath))
 
       if (stat.isFile()) {
         // New structure: delete the mod file
@@ -540,6 +550,9 @@ export class FileImportService {
         // Legacy structure: delete the mod folder
         await fs.rm(modPath, { recursive: true, force: true })
       }
+
+      // Clear the skin from the mod tools cache
+      await this.modToolsWrapper.clearSkinCache(skinName)
 
       return { success: true }
     } catch (error) {

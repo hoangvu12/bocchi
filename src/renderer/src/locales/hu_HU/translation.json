@@ -256,6 +256,16 @@
       "description": "Maximális várakozási idő mod importáláshoz és overlay létrehozáshoz",
       "hint": "Növelje ezt az értéket, ha sok modja van vagy lassú a rendszere. Csökkentse a gyorsabb hibaészleléshez."
     },
+    "cacheManagement": {
+      "title": "Skin Cache Kezelés",
+      "description": "A gyorsabb mod alkalmazáshoz használt cache-elt skin fájlok kezelése",
+      "info": "A cache {{count}} mod(ot) tartalmaz, {{size}} MB-ot használva",
+      "clearCache": "Cache Törlése",
+      "clearing": "Törlés...",
+      "confirmClear": "Biztos benne, hogy törölni szeretné a skin cache-t? Ez arra kényszeríti az összes skint, hogy a következő alkalmazáskor újra importálódjanak, ami tovább tarthat.",
+      "clearSuccess": "Skin cache sikeresen törölve",
+      "clearError": "Nem sikerült törölni a skin cache-t"
+    },
     "applicationUpdate": {
       "title": "Alkalmazás frissítések",
       "description": "Jelenlegi verzió: {{version}}"

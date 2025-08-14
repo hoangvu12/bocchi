@@ -239,6 +239,16 @@
       "description": "Maximale Wartezeit für Mod-Import und Overlay-Erstellung",
       "hint": "Erhöhen Sie diesen Wert, wenn Sie viele Mods haben oder ein langsames System. Verringern Sie ihn für schnellere Fehlererkennung."
     },
+    "cacheManagement": {
+      "title": "Skin-Cache-Verwaltung",
+      "description": "Verwaltung der zwischengespeicherten Skin-Dateien für schnellere Mod-Anwendung",
+      "info": "Cache enthält {{count}} Mod(s) mit {{size}} MB",
+      "clearCache": "Cache leeren",
+      "clearing": "Leere...",
+      "confirmClear": "Sind Sie sicher, dass Sie den Skin-Cache leeren möchten? Dies führt dazu, dass alle Skins beim nächsten Anwenden erneut importiert werden müssen, was länger dauern kann.",
+      "clearSuccess": "Skin-Cache erfolgreich geleert",
+      "clearError": "Fehler beim Leeren des Skin-Caches"
+    },
     "tabs": {
       "general": "Allgemein",
       "leagueClient": "League Client",

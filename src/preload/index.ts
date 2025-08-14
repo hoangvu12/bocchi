@@ -80,6 +80,11 @@ const api = {
   isPatcherRunning: () => ipcRenderer.invoke('is-patcher-running'),
   cancelApply: () => ipcRenderer.invoke('cancel-apply'),
   isApplying: () => ipcRenderer.invoke('is-applying'),
+
+  // Cache management
+  clearSkinCache: (skinName: string) => ipcRenderer.invoke('clear-skin-cache', skinName),
+  clearAllSkinsCache: () => ipcRenderer.invoke('clear-all-skins-cache'),
+  getCacheInfo: () => ipcRenderer.invoke('get-cache-info'),
   smartApplySkins: (
     gamePath: string,
     selectedSkins: any[],

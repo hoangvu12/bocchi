@@ -1007,6 +1007,33 @@ function setupIpcHandlers(): void {
     }
   })
 
+  ipcMain.handle('clear-skin-cache', async (_, skinName: string) => {
+    try {
+      await modToolsWrapper.clearSkinCache(skinName)
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('clear-all-skins-cache', async () => {
+    try {
+      await modToolsWrapper.clearImportedModsCache()
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('get-cache-info', async () => {
+    try {
+      const info = await modToolsWrapper.getCacheInfo()
+      return { success: true, data: info }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
   ipcMain.handle('cancel-apply', async () => {
     try {
       const result = await modToolsWrapper.cancelApply()

@@ -1,5 +1,5 @@
 import { useAtom, useSetAtom } from 'jotai'
-import { ChevronDown, Gamepad2, Package, Settings, Monitor, RefreshCw } from 'lucide-react'
+import { ChevronDown, Gamepad2, Package, Settings, Monitor, RefreshCw, Trash2 } from 'lucide-react'
 import { useEffect, useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
@@ -77,6 +77,12 @@ export function SettingsDialog({
   const [autoExtractImages, setAutoExtractImages] = useState(false)
   const [modToolsTimeout, setModToolsTimeout] = useState(300) // Default 300 seconds
   const [loading, setLoading] = useState(true)
+  const [cacheInfo, setCacheInfo] = useState<{
+    exists: boolean
+    modCount: number
+    sizeInMB: number
+  } | null>(null)
+  const [isClearingCache, setIsClearingCache] = useState(false)
 
   // Atom setters for immediate updates
   const setLeagueClientEnabledAtom = useSetAtom(leagueClientEnabledAtom)
@@ -99,6 +105,7 @@ export function SettingsDialog({
   useEffect(() => {
     if (isOpen) {
       loadSettings()
+      loadCacheInfo()
     }
   }, [isOpen])
 
@@ -496,6 +503,40 @@ export function SettingsDialog({
     }
   }
 
+  const loadCacheInfo = async () => {
+    try {
+      const result = await window.api.getCacheInfo()
+      if (result.success && result.data) {
+        setCacheInfo(result.data)
+      }
+    } catch (error) {
+      console.error('Failed to load cache info:', error)
+    }
+  }
+
+  const handleClearCache = async () => {
+    if (!confirm(t('settings.cacheManagement.confirmClear'))) {
+      return
+    }
+
+    setIsClearingCache(true)
+    try {
+      const result = await window.api.clearAllSkinsCache()
+      if (result.success) {
+        toast.success(t('settings.cacheManagement.clearSuccess'))
+        // Reload cache info
+        await loadCacheInfo()
+      } else {
+        toast.error(t('settings.cacheManagement.clearError'))
+      }
+    } catch (error) {
+      console.error('Failed to clear cache:', error)
+      toast.error(t('settings.cacheManagement.clearError'))
+    } finally {
+      setIsClearingCache(false)
+    }
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px]">
@@ -563,23 +604,6 @@ export function SettingsDialog({
               <Switch
                 checked={minimizeToTray}
                 onCheckedChange={handleMinimizeToTrayChange}
-                disabled={loading}
-              />
-            </div>
-
-            {/* Auto Extract Images Setting */}
-            <div className="flex items-center justify-between space-x-4">
-              <div className="flex-1">
-                <h3 className="text-sm font-medium text-text-primary">
-                  {t('settings.autoExtractImages.title')}
-                </h3>
-                <p className="text-xs text-text-secondary mt-1">
-                  {t('settings.autoExtractImages.description')}
-                </p>
-              </div>
-              <Switch
-                checked={autoExtractImages}
-                onCheckedChange={handleAutoExtractImagesChange}
                 disabled={loading}
               />
             </div>
@@ -878,6 +902,23 @@ export function SettingsDialog({
           </TabsContent>
 
           <TabsContent value="skin-management" className="space-y-6 mt-6">
+            {/* Auto Extract Images Setting */}
+            <div className="flex items-center justify-between space-x-4">
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-text-primary">
+                  {t('settings.autoExtractImages.title')}
+                </h3>
+                <p className="text-xs text-text-secondary mt-1">
+                  {t('settings.autoExtractImages.description')}
+                </p>
+              </div>
+              <Switch
+                checked={autoExtractImages}
+                onCheckedChange={handleAutoExtractImagesChange}
+                disabled={loading}
+              />
+            </div>
+
             {/* Allow Multiple Skins Per Champion Setting */}
             <div className="flex items-center justify-between space-x-4">
               <div className="flex-1">
@@ -937,6 +978,47 @@ export function SettingsDialog({
                 className="w-full"
               />
               <p className="text-xs text-text-secondary">{t('settings.modToolsTimeout.hint')}</p>
+            </div>
+
+            {/* Cache Management */}
+            <div className="space-y-4 border-t pt-4">
+              <div className="flex items-center justify-between space-x-4">
+                <div className="flex-1">
+                  <h3 className="text-sm font-medium text-text-primary">
+                    {t('settings.cacheManagement.title')}
+                  </h3>
+                  <p className="text-xs text-text-secondary mt-1">
+                    {t('settings.cacheManagement.description')}
+                  </p>
+                  {cacheInfo && cacheInfo.exists && (
+                    <p className="text-xs text-text-muted mt-2">
+                      {t('settings.cacheManagement.info', {
+                        count: cacheInfo.modCount,
+                        size: cacheInfo.sizeInMB
+                      })}
+                    </p>
+                  )}
+                </div>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleClearCache}
+                  disabled={isClearingCache || loading || !cacheInfo?.exists}
+                  className="flex items-center gap-2"
+                >
+                  {isClearingCache ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      {t('settings.cacheManagement.clearing')}
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="w-3.5 h-3.5" />
+                      {t('settings.cacheManagement.clearCache')}
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </TabsContent>
         </Tabs>

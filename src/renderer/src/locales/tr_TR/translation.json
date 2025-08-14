@@ -256,6 +256,16 @@
       "description": "Mod içe aktarma ve kaplama oluşturma işlemleri için maksimum bekleme süresi",
       "hint": "Çok sayıda modunuz varsa veya sisteminiz yavaşsa bu değeri artırın. Daha hızlı hata tespiti için azaltın."
     },
+    "cacheManagement": {
+      "title": "Skin Önbellek Yönetimi",
+      "description": "Daha hızlı mod uygulaması için kullanılan önbelleğe alınmış skin dosyalarını yönetin",
+      "info": "Önbellek {{size}} MB kullanan {{count}} mod(lar) içeriyor",
+      "clearCache": "Önbelleği Temizle",
+      "clearing": "Temizleniyor...",
+      "confirmClear": "Skin önbelleğini temizlemek istediğinizden emin misiniz? Bu, tüm skinlerin bir sonraki uygulamada yeniden içe aktarılmasını zorlayacaktır ve bu daha uzun sürebilir.",
+      "clearSuccess": "Skin önbelleği başarıyla temizlendi",
+      "clearError": "Skin önbelleği temizlenemedi"
+    },
     "applicationUpdate": {
       "title": "Uygulama Güncellemeleri",
       "description": "Geçerli sürüm: {{version}}"

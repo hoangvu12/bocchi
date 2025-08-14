@@ -256,6 +256,16 @@
       "description": "Tempo massimo di attesa per l'importazione di mod e la creazione di overlay",
       "hint": "Aumenta questo valore se hai molte mod o un sistema lento. Diminuiscilo per un rilevamento errori più rapido."
     },
+    "cacheManagement": {
+      "title": "Gestione cache skin",
+      "description": "Gestisci i file di skin memorizzati nella cache usati per un'applicazione mod più veloce",
+      "info": "La cache contiene {{count}} mod utilizzando {{size}} MB",
+      "clearCache": "Svuota cache",
+      "clearing": "Svuotamento...",
+      "confirmClear": "Sei sicuro di voler svuotare la cache delle skin? Questo forzerà tutte le skin ad essere reimportate alla prossima applicazione, il che potrebbe richiedere più tempo.",
+      "clearSuccess": "Cache skin svuotata con successo",
+      "clearError": "Impossibile svuotare la cache skin"
+    },
     "applicationUpdate": {
       "title": "Aggiornamenti dell'applicazione",
       "description": "Versione corrente: {{version}}"

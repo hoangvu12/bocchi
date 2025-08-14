@@ -10,6 +10,7 @@ import { SkinInfo, SkinMetadata, SkinUpdateInfo } from '../types'
 import { githubApiService } from './githubApiService'
 import { skinMetadataService } from './skinMetadataService'
 import { skinMigrationService } from './skinMigrationService'
+import { ModToolsWrapper } from './modToolsWrapper'
 
 interface BulkDownloadProgress {
   phase: 'downloading' | 'extracting' | 'processing' | 'completed'
@@ -41,12 +42,14 @@ export class SkinDownloader {
   private cacheDir: string
   private modsDir: string
   private modFilesDir: string
+  private modToolsWrapper: ModToolsWrapper
 
   constructor() {
     const userData = app.getPath('userData')
     this.cacheDir = path.join(userData, 'downloaded-skins')
     this.modsDir = path.join(userData, 'mods')
     this.modFilesDir = path.join(userData, 'mod-files')
+    this.modToolsWrapper = new ModToolsWrapper()
   }
 
   async initialize(): Promise<void> {
@@ -456,6 +459,9 @@ export class SkinDownloader {
         console.warn(`Failed to delete metadata for ${zipPath}:`, error)
       }
 
+      // Clear the skin from the mod tools cache
+      await this.modToolsWrapper.clearSkinCache(skinName)
+
       // Clean up empty champion directory
       const championDir = path.join(this.cacheDir, championName)
       const files = await fs.readdir(championDir)
@@ -551,6 +557,9 @@ export class SkinDownloader {
     try {
       // Delete the old skin file (but keep metadata for comparison)
       await fs.unlink(skinInfo.localPath)
+
+      // Clear the skin from the mod tools cache to force re-import
+      await this.modToolsWrapper.clearSkinCache(skinInfo.skinName)
 
       // Re-download the skin
       const updatedSkin = await this.downloadSkin(skinInfo.url)

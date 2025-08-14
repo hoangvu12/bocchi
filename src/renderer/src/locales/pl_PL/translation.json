@@ -256,6 +256,16 @@
       "description": "Maksymalny czas oczekiwania na import modów i tworzenie nakładki",
       "hint": "Zwiększ tę wartość, jeśli masz wiele modów lub wolny system. Zmniejsz dla szybszego wykrywania błędów."
     },
+    "cacheManagement": {
+      "title": "Zarządzanie cache'em skinów",
+      "description": "Zarządzaj plikami cache skinów używanymi do szybszego stosowania modów",
+      "info": "Cache zawiera {{count}} mod(ów) zajmujących {{size}} MB",
+      "clearCache": "Wyczyść cache",
+      "clearing": "Czyszczenie...",
+      "confirmClear": "Czy na pewno chcesz wyczyścić cache skinów? Spowoduje to wymuszenie ponownego importowania wszystkich skinów przy następnym zastosowaniu, co może potrwać dłużej.",
+      "clearSuccess": "Cache skinów został pomyślnie wyczyszczony",
+      "clearError": "Nie udało się wyczyścić cache'u skinów"
+    },
     "applicationUpdate": {
       "title": "Aktualizacje aplikacji",
       "description": "Bieżąca wersja: {{version}}"

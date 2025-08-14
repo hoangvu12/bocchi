@@ -239,6 +239,16 @@
       "description": "모드 가져오기 및 오버레이 생성을 위한 최대 대기 시간",
       "hint": "모드가 많거나 시스템이 느린 경우 이 값을 늘리세요. 더 빠른 오류 감지를 위해서는 줄이세요."
     },
+    "cacheManagement": {
+      "title": "스킨 캐시 관리",
+      "description": "빠른 모드 적용을 위해 사용되는 캐시된 스킨 파일 관리",
+      "info": "캐시에 {{count}}개의 모드가 포함되어 있으며 {{size}}MB를 사용합니다",
+      "clearCache": "캐시 지우기",
+      "clearing": "지우는 중...",
+      "confirmClear": "스킨 캐시를 지우시겠습니까? 다음 적용 시 모든 스킨을 다시 가져와야 하므로 시간이 더 오래 걸릴 수 있습니다.",
+      "clearSuccess": "스킨 캐시가 성공적으로 지워졌습니다",
+      "clearError": "스킨 캐시 지우기 실패"
+    },
     "applicationUpdate": {
       "title": "애플리케이션 업데이트",
       "description": "현재 버전: {{version}}"

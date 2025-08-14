@@ -256,6 +256,16 @@
       "description": "模組匯入和建立覆蓋層的最大等待時間",
       "hint": "如果您有很多模組或系統較慢，請增加此值。減少此值可更快偵測錯誤。"
     },
+    "cacheManagement": {
+      "title": "面板快取管理",
+      "description": "管理用於更快模組套用的快取面板檔案",
+      "info": "快取包含 {{count}} 個模組，使用 {{size}} MB",
+      "clearCache": "清除快取",
+      "clearing": "清除中...",
+      "confirmClear": "您確定要清除面板快取嗎？這將強制在下次套用時重新匯入所有面板，可能需要更長時間。",
+      "clearSuccess": "面板快取清除成功",
+      "clearError": "清除面板快取失敗"
+    },
     "applicationUpdate": {
       "title": "應用程式更新",
       "description": "目前版本：{{version}}"

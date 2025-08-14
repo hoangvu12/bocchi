@@ -256,6 +256,16 @@
       "description": "模组导入和创建覆盖层的最大等待时间",
       "hint": "如果您有很多模组或系统较慢，请增加此值。减少此值可更快检测错误。"
     },
+    "cacheManagement": {
+      "title": "造型缓存管理",
+      "description": "管理用于更快应用模组的缓存造型文件",
+      "info": "缓存包含 {{count}} 个模组，使用 {{size}} MB",
+      "clearCache": "清除缓存",
+      "clearing": "清除中...",
+      "confirmClear": "您确定要清除造型缓存吗？这将强制所有造型在下次应用时重新导入，可能需要更长时间。",
+      "clearSuccess": "造型缓存清除成功",
+      "clearError": "清除造型缓存失败"
+    },
     "applicationUpdate": {
       "title": "应用程序更新",
       "description": "当前版本：{{version}}"

@@ -256,6 +256,16 @@
       "description": "Waktu maksimum untuk menunggu impor mod dan pembuatan overlay",
       "hint": "Tingkatkan nilai ini jika Anda memiliki banyak mod atau sistem yang lambat. Kurangi untuk deteksi kesalahan yang lebih cepat."
     },
+    "cacheManagement": {
+      "title": "Manajemen Cache Skin",
+      "description": "Kelola file skin yang di-cache untuk aplikasi mod yang lebih cepat",
+      "info": "Cache berisi {{count}} mod menggunakan {{size}} MB",
+      "clearCache": "Bersihkan Cache",
+      "clearing": "Membersihkan...",
+      "confirmClear": "Apakah Anda yakin ingin menghapus cache skin? Ini akan memaksa semua skin untuk diimpor ulang pada penerapan berikutnya, yang mungkin memakan waktu lebih lama.",
+      "clearSuccess": "Cache skin berhasil dibersihkan",
+      "clearError": "Gagal membersihkan cache skin"
+    },
     "applicationUpdate": {
       "title": "Pembaruan Aplikasi",
       "description": "Versi saat ini: {{version}}"

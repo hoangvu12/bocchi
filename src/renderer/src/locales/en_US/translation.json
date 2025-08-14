@@ -239,6 +239,16 @@
       "description": "Maximum time to wait for mod import and overlay creation operations",
       "hint": "Increase this value if you have many mods or a slow system. Decrease for faster failure detection."
     },
+    "cacheManagement": {
+      "title": "Skin Cache Management",
+      "description": "Manage the cached skin files used for faster mod application",
+      "info": "Cache contains {{count}} mod(s) using {{size}} MB",
+      "clearCache": "Clear Cache",
+      "clearing": "Clearing...",
+      "confirmClear": "Are you sure you want to clear the skin cache? This will force all skins to be re-imported on the next apply, which may take longer.",
+      "clearSuccess": "Skin cache cleared successfully",
+      "clearError": "Failed to clear skin cache"
+    },
     "tabs": {
       "general": "General",
       "leagueClient": "League Client",

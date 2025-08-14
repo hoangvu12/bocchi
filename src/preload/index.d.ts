@@ -128,6 +128,15 @@ export interface IApi {
   isPatcherRunning: () => Promise<boolean>
   cancelApply: () => Promise<{ success: boolean; message?: string }>
   isApplying: () => Promise<boolean>
+
+  // Cache management
+  clearSkinCache: (skinName: string) => Promise<{ success: boolean; error?: string }>
+  clearAllSkinsCache: () => Promise<{ success: boolean; error?: string }>
+  getCacheInfo: () => Promise<{
+    success: boolean
+    data?: { exists: boolean; modCount: number; sizeInMB: number }
+    error?: string
+  }>
   fetchChampionData: (
     language?: string
   ) => Promise<{ success: boolean; message: string; championCount?: number }>
