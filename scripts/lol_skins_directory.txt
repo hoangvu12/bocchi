@@ -148,6 +148,7 @@ Directory structure:
     │   ├── Dynasty Ahri.zip
     │   ├── Elderwood Ahri.zip
     │   ├── Foxfire Ahri.zip
+    │   ├── Immortalized Legend Ahri - Faker.zip
     │   ├── K DA ALL OUT Ahri.zip
     │   ├── K DA Ahri.zip
     │   ├── Midnight Ahri.zip
@@ -3135,6 +3136,7 @@ Directory structure:
     │   ├── Bullet Angel Kai'Sa.zip
     │   ├── Dark Star Kai'Sa.zip
     │   ├── Heavenscale Kai'Sa.zip
+    │   ├── Immortalized Legend Kai'Sa - Uzi.zip
     │   ├── Inkshadow Kai'Sa.zip
     │   ├── K DA ALL OUT Kai'Sa.zip
     │   ├── K DA Kai'Sa.zip
@@ -4290,6 +4292,16 @@ Directory structure:
     │   ├── Wicked Lulu.zip
     │   └── Winter Wonder Lulu.zip
     ├── Lux/
+    │   ├── Elementalist Forms/
+    │   │   ├── Lux Elementalist Air.zip
+    │   │   ├── Lux Elementalist Dark.zip
+    │   │   ├── Lux Elementalist Fire.zip
+    │   │   ├── Lux Elementalist Ice.zip
+    │   │   ├── Lux Elementalist Magma.zip
+    │   │   ├── Lux Elementalist Mystic.zip
+    │   │   ├── Lux Elementalist Nature.zip
+    │   │   ├── Lux Elementalist Storm.zip
+    │   │   └── Lux Elementalist Water.zip
     │   ├── chromas/
     │   │   ├── Empyrean Lux/
     │   │   │   ├── Empyrean Lux 99043.zip
@@ -4809,7 +4821,8 @@ Directory structure:
     │   ├── Old God Mordekaiser.zip
     │   ├── PROJECT Mordekaiser.zip
     │   ├── Pentakill III Lost Chapter Mordekaiser.zip
-    │   └── Pentakill Mordekaiser.zip
+    │   ├── Pentakill Mordekaiser.zip
+    │   └── Sahn-Uzal Mordekaiser.zip
     ├── Morgana/
     │   ├── chromas/
     │   │   ├── Bewitching Morgana/
@@ -9489,4 +9502,4 @@ Directory structure:
         ├── Street Demons Zyra.zip
         └── Wildfire Zyra.zip
     
-    1278 directories, 8211 files
+    1279 directories, 8223 files
