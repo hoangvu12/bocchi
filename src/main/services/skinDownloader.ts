@@ -52,6 +52,28 @@ export class SkinDownloader {
     this.modToolsWrapper = new ModToolsWrapper()
   }
 
+  private async moveFile(source: string, destination: string): Promise<void> {
+    try {
+      // First try rename (works if same device)
+      await fs.rename(source, destination)
+    } catch (error: any) {
+      if (error.code === 'EXDEV') {
+        // Cross-device, so copy then delete
+        // For directories, use recursive copy
+        const stat = await fs.stat(source)
+        if (stat.isDirectory()) {
+          await fs.cp(source, destination, { recursive: true })
+          await fs.rm(source, { recursive: true, force: true })
+        } else {
+          await fs.copyFile(source, destination)
+          await fs.unlink(source)
+        }
+      } else {
+        throw error
+      }
+    }
+  }
+
   async initialize(): Promise<void> {
     await fs.mkdir(this.cacheDir, { recursive: true })
     await fs.mkdir(this.modsDir, { recursive: true })
@@ -289,7 +311,7 @@ export class SkinDownloader {
               // Check if decoded folder already exists
               const decodedExists = existsSync(decodedChampionPath)
               if (!decodedExists) {
-                await fs.rename(championPath, decodedChampionPath)
+                await this.moveFile(championPath, decodedChampionPath)
                 console.log(`Migrated folder: ${championFolder} -> ${decodedChampionName}`)
               } else {
                 console.warn(

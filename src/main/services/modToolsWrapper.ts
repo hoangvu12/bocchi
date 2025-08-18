@@ -48,6 +48,28 @@ export class ModToolsWrapper {
     return filePath.toLowerCase().includes('onedrive')
   }
 
+  private async moveFile(source: string, destination: string): Promise<void> {
+    try {
+      // First try rename (works if same device)
+      await fs.rename(source, destination)
+    } catch (error: any) {
+      if (error.code === 'EXDEV') {
+        // Cross-device, so copy then delete
+        // For directories, use recursive copy
+        const stat = await fs.stat(source)
+        if (stat.isDirectory()) {
+          await fs.cp(source, destination, { recursive: true })
+          await fs.rm(source, { recursive: true, force: true })
+        } else {
+          await fs.copyFile(source, destination)
+          await fs.unlink(source)
+        }
+      } else {
+        throw error
+      }
+    }
+  }
+
   private async forceKillModTools(): Promise<void> {
     return new Promise((resolve) => {
       const process = spawn('taskkill', ['/F', '/IM', 'mod-tools.exe'])
@@ -356,7 +378,7 @@ export class ModToolsWrapper {
 
             const fromPath = path.join(this.installedPath, op.from)
             const tempPath = path.join(this.installedPath, op.tempName)
-            await fs.rename(fromPath, tempPath)
+            await this.moveFile(fromPath, tempPath)
             console.debug(`[ModToolsWrapper] Renamed to temp: ${op.from} -> ${op.tempName}`)
           } catch (error) {
             console.error(`[ModToolsWrapper] Failed to rename to temp: ${op.from}`, error)
@@ -369,7 +391,7 @@ export class ModToolsWrapper {
           try {
             const tempPath = path.join(this.installedPath, op.tempName)
             const toPath = path.join(this.installedPath, op.to)
-            await fs.rename(tempPath, toPath)
+            await this.moveFile(tempPath, toPath)
             console.debug(`[ModToolsWrapper] Renamed to final: ${op.tempName} -> ${op.to}`)
           } catch (error) {
             console.error(`[ModToolsWrapper] Failed to rename from temp: ${op.tempName}`, error)

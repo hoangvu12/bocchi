@@ -60,6 +60,28 @@ export class FileImportService {
     await this.cleanupTrailingSpaces()
   }
 
+  private async moveFile(source: string, destination: string): Promise<void> {
+    try {
+      // First try rename (works if same device)
+      await fs.rename(source, destination)
+    } catch (error: any) {
+      if (error.code === 'EXDEV') {
+        // Cross-device, so copy then delete
+        // For directories, use recursive copy
+        const stat = await fs.stat(source)
+        if (stat.isDirectory()) {
+          await fs.cp(source, destination, { recursive: true })
+          await fs.rm(source, { recursive: true, force: true })
+        } else {
+          await fs.copyFile(source, destination)
+          await fs.unlink(source)
+        }
+      } else {
+        throw error
+      }
+    }
+  }
+
   async importFile(filePath: string, options: FileImportOptions = {}): Promise<ImportResult> {
     try {
       const fileType = await this.detectFileType(filePath)
@@ -243,7 +265,7 @@ export class FileImportService {
         await fs.rm(finalPath, { recursive: true, force: true })
       }
 
-      await fs.rename(tempExtractPath, finalPath)
+      await this.moveFile(tempExtractPath, finalPath)
 
       // Copy the original .wad file to mod-files directory
       const modFileName = `${modFolderName}.wad`
@@ -341,7 +363,7 @@ export class FileImportService {
         await fs.rm(finalPath, { recursive: true, force: true })
       }
 
-      await fs.rename(tempExtractPath, finalPath)
+      await this.moveFile(tempExtractPath, finalPath)
 
       // Copy the original mod file to mod-files directory
       const ext = path.extname(zipPath)
@@ -438,7 +460,7 @@ export class FileImportService {
 
         // Rename the mod file if name changed
         if (modPath !== newModPath) {
-          await fs.rename(modPath, newModPath)
+          await this.moveFile(modPath, newModPath)
         }
 
         // Update metadata folder
@@ -447,7 +469,7 @@ export class FileImportService {
 
         if (await this.fileExists(oldMetadataPath)) {
           if (oldMetadataPath !== newMetadataPath) {
-            await fs.rename(oldMetadataPath, newMetadataPath)
+            await this.moveFile(oldMetadataPath, newMetadataPath)
           }
 
           // Update image in metadata folder if provided
@@ -489,7 +511,7 @@ export class FileImportService {
 
         // Rename the folder if name changed
         if (modPath !== newModPath) {
-          await fs.rename(modPath, newModPath)
+          await this.moveFile(modPath, newModPath)
         }
 
         // Update the image if provided
