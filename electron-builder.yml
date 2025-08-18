@@ -11,6 +11,10 @@ fileAssociations:
     name: 'League of Legends Client WAD'
     description: 'League of Legends client WAD archive'
     role: Editor
+  - ext: zip
+    name: 'League Skin Archive'
+    description: 'League of Legends skin mod archive'
+    role: Editor
   - ext: fantome
     name: 'Fantome Skin File'
     description: 'Fantome mod file for League of Legends'
