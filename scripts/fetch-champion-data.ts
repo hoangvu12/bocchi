@@ -69,13 +69,24 @@ class OptimizedChampionDataFetcher {
     return englishSkinNames
   }
 
+  private buildEnglishChampionNamesMap(champions: ChampionData['champions']): Map<number, string> {
+    const englishChampionNames = new Map<number, string>()
+
+    champions.forEach((champion) => {
+      englishChampionNames.set(champion.id, champion.name)
+    })
+
+    return englishChampionNames
+  }
+
   private async fetchLanguageDataParallel(
     language: string,
     version: string,
     lolSkinsData: Map<string, any[]>,
     championFolders: string[],
     englishSkinNames: Map<string, string>,
-    englishChampions?: ChampionData['champions']
+    englishChampions?: ChampionData['champions'],
+    englishChampionNames?: Map<number, string>
   ): Promise<{ champions: ChampionData['champions']; chromaData: Record<string, Chroma[]> }> {
     this.progressService.startLanguage(language, championFolders.length)
 
@@ -93,7 +104,8 @@ class OptimizedChampionDataFetcher {
           console.clear()
           console.log(this.progressService.getFormattedProgress())
         }
-      }
+      },
+      englishChampionNames
     )
 
     // Add English names for non-English languages
@@ -147,6 +159,7 @@ class OptimizedChampionDataFetcher {
 
     // Fetch English first if needed (for name mapping)
     let englishSkinNames: Map<string, string> = new Map()
+    let englishChampionNames: Map<number, string> = new Map()
     let englishChampions: ChampionData['champions'] | undefined
 
     if (!allData['en_US'] && languagesToFetch.includes('en_US')) {
@@ -161,6 +174,7 @@ class OptimizedChampionDataFetcher {
 
       englishChampions = englishResult.champions
       englishSkinNames = this.buildEnglishSkinNamesMap(englishChampions)
+      englishChampionNames = this.buildEnglishChampionNamesMap(englishChampions)
       Object.assign(allChromaData, englishResult.chromaData)
 
       allData['en_US'] = {
@@ -177,6 +191,7 @@ class OptimizedChampionDataFetcher {
     } else if (allData['en_US']) {
       englishChampions = allData['en_US'].champions
       englishSkinNames = this.buildEnglishSkinNamesMap(englishChampions)
+      englishChampionNames = this.buildEnglishChampionNamesMap(englishChampions)
     }
 
     // Fetch all other languages in parallel
@@ -196,7 +211,8 @@ class OptimizedChampionDataFetcher {
               lolSkinsData,
               championFolders,
               englishSkinNames,
-              englishChampions
+              englishChampions,
+              englishChampionNames
             )
 
             return {

@@ -47,7 +47,8 @@ export class OptimizedChampionService {
     language: string,
     lolSkinsData: Map<string, any[]>,
     championNameLookup: Map<string, string>,
-    englishSkinNames?: Map<string, string>
+    englishSkinNames?: Map<string, string>,
+    englishChampionName?: string
   ): Promise<{ champion: Champion; chromaData: Record<string, Chroma[]> }> {
     const championId = parseInt(championBasic.key)
     const locale = normalizeLocale(language)
@@ -62,7 +63,8 @@ export class OptimizedChampionService {
         language,
         lolSkinsData,
         championNameLookup,
-        englishSkinNames
+        englishSkinNames,
+        englishChampionName
       )
     } catch (error: any) {
       // Fallback to default locale if locale-specific request fails
@@ -91,10 +93,12 @@ export class OptimizedChampionService {
     language: string,
     lolSkinsData: Map<string, any[]>,
     championNameLookup: Map<string, string>,
-    englishSkinNames?: Map<string, string>
+    englishSkinNames?: Map<string, string>,
+    englishChampionName?: string
   ): { champion: Champion; chromaData: Record<string, Chroma[]> } {
-    // Find champion folder
-    const nameForLookup = language !== 'en_US' ? detailData.alias : detailData.name
+    // Find champion folder - always use English name for matching if available
+    const nameForLookup =
+      englishChampionName || (language !== 'en_US' ? detailData.alias : detailData.name)
     const normalizedName = nameForLookup.toLowerCase()
     let championFolder = championNameLookup.get(normalizedName)
 
@@ -160,7 +164,8 @@ export class OptimizedChampionService {
     lolSkinsData: Map<string, any[]>,
     championFolders: string[],
     englishSkinNames?: Map<string, string>,
-    onProgress?: (completed: number, total: number) => void
+    onProgress?: (completed: number, total: number) => void,
+    englishChampionNames?: Map<number, string>
   ): Promise<{ champions: Champion[]; allChromaData: Record<string, Chroma[]> }> {
     const championList = await this.fetchChampionList(version, language)
     const champions: Champion[] = []
@@ -180,13 +185,16 @@ export class OptimizedChampionService {
       championKeys.map((key) =>
         this.limit(async () => {
           try {
+            const championId = parseInt(championList[key].key)
+            const englishChampionName = englishChampionNames?.get(championId)
             const result = await this.fetchChampionDetail(
               championList[key],
               version,
               language,
               lolSkinsData,
               championNameLookup,
-              englishSkinNames
+              englishSkinNames,
+              englishChampionName
             )
 
             completed++
