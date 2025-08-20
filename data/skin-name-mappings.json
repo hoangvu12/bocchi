@@ -1,0 +1,405 @@
+{
+  "version": "15.16.1",
+  "lastUpdated": "2025-08-20T09:35:18.152Z",
+  "skinMappings": [
+    {
+      "championKey": "Ahri",
+      "championName": "Ahri",
+      "skinNum": 15,
+      "ddragonName": "K/DA Ahri",
+      "lolSkinsName": "K DA Ahri"
+    },
+    {
+      "championKey": "Ahri",
+      "championName": "Ahri",
+      "skinNum": 16,
+      "ddragonName": "Prestige K/DA Ahri",
+      "lolSkinsName": "Prestige K DA Ahri"
+    },
+    {
+      "championKey": "Ahri",
+      "championName": "Ahri",
+      "skinNum": 28,
+      "ddragonName": "K/DA ALL OUT Ahri",
+      "lolSkinsName": "K DA ALL OUT Ahri"
+    },
+    {
+      "championKey": "Ahri",
+      "championName": "Ahri",
+      "skinNum": 65,
+      "ddragonName": "Prestige K/DA Ahri (2022)",
+      "lolSkinsName": "Prestige K DA Ahri (2022)"
+    },
+    {
+      "championKey": "Ahri",
+      "championName": "Ahri",
+      "skinNum": 86,
+      "ddragonName": "Immortalized Legend Ahri",
+      "lolSkinsName": "Immortalized Legend Ahri - Faker"
+    },
+    {
+      "championKey": "Akali",
+      "championName": "Akali",
+      "skinNum": 9,
+      "ddragonName": "K/DA Akali",
+      "lolSkinsName": "K DA Akali"
+    },
+    {
+      "championKey": "Akali",
+      "championName": "Akali",
+      "skinNum": 13,
+      "ddragonName": "Prestige K/DA Akali",
+      "lolSkinsName": "Prestige K DA Akali"
+    },
+    {
+      "championKey": "Akali",
+      "championName": "Akali",
+      "skinNum": 14,
+      "ddragonName": "PROJECT: Akali",
+      "lolSkinsName": "PROJECT Akali"
+    },
+    {
+      "championKey": "Akali",
+      "championName": "Akali",
+      "skinNum": 32,
+      "ddragonName": "K/DA ALL OUT Akali",
+      "lolSkinsName": "K DA ALL OUT Akali"
+    },
+    {
+      "championKey": "Akali",
+      "championName": "Akali",
+      "skinNum": 60,
+      "ddragonName": "Prestige K/DA Akali (2022)",
+      "lolSkinsName": "Prestige K DA Akali (2022)"
+    },
+    {
+      "championKey": "Ashe",
+      "championName": "Ashe",
+      "skinNum": 8,
+      "ddragonName": "PROJECT: Ashe",
+      "lolSkinsName": "PROJECT Ashe"
+    },
+    {
+      "championKey": "Ekko",
+      "championName": "Ekko",
+      "skinNum": 3,
+      "ddragonName": "PROJECT: Ekko",
+      "lolSkinsName": "PROJECT Ekko"
+    },
+    {
+      "championKey": "Evelynn",
+      "championName": "Evelynn",
+      "skinNum": 6,
+      "ddragonName": "K/DA Evelynn",
+      "lolSkinsName": "K DA Evelynn"
+    },
+    {
+      "championKey": "Evelynn",
+      "championName": "Evelynn",
+      "skinNum": 7,
+      "ddragonName": "Prestige K/DA Evelynn",
+      "lolSkinsName": "Prestige K DA Evelynn"
+    },
+    {
+      "championKey": "Evelynn",
+      "championName": "Evelynn",
+      "skinNum": 15,
+      "ddragonName": "K/DA ALL OUT Evelynn",
+      "lolSkinsName": "K DA ALL OUT Evelynn"
+    },
+    {
+      "championKey": "Evelynn",
+      "championName": "Evelynn",
+      "skinNum": 31,
+      "ddragonName": "Prestige K/DA Evelynn (2022)",
+      "lolSkinsName": "Prestige K DA Evelynn (2022)"
+    },
+    {
+      "championKey": "Fiora",
+      "championName": "Fiora",
+      "skinNum": 4,
+      "ddragonName": "PROJECT: Fiora",
+      "lolSkinsName": "PROJECT Fiora"
+    },
+    {
+      "championKey": "Gangplank",
+      "championName": "Gangplank",
+      "skinNum": 33,
+      "ddragonName": "PROJECT: Gangplank",
+      "lolSkinsName": "PROJECT Gangplank"
+    },
+    {
+      "championKey": "Irelia",
+      "championName": "Irelia",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Irelia",
+      "lolSkinsName": "PROJECT Irelia"
+    },
+    {
+      "championKey": "Irelia",
+      "championName": "Irelia",
+      "skinNum": 17,
+      "ddragonName": "Prestige PROJECT: Irelia",
+      "lolSkinsName": "Prestige PROJECT Irelia"
+    },
+    {
+      "championKey": "Irelia",
+      "championName": "Irelia",
+      "skinNum": 36,
+      "ddragonName": "Prestige PROJECT: Irelia (2022)",
+      "lolSkinsName": "Prestige PROJECT Irelia (2022)"
+    },
+    {
+      "championKey": "Jax",
+      "championName": "Jax",
+      "skinNum": 33,
+      "ddragonName": "PROJECT: Jax",
+      "lolSkinsName": "PROJECT Jax"
+    },
+    {
+      "championKey": "Jhin",
+      "championName": "Jhin",
+      "skinNum": 4,
+      "ddragonName": "PROJECT: Jhin",
+      "lolSkinsName": "PROJECT Jhin"
+    },
+    {
+      "championKey": "Jinx",
+      "championName": "Jinx",
+      "skinNum": 20,
+      "ddragonName": "PROJECT: Jinx",
+      "lolSkinsName": "PROJECT Jinx"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 14,
+      "ddragonName": "K/DA Kai'Sa",
+      "lolSkinsName": "K DA Kai'Sa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 15,
+      "ddragonName": "Prestige K/DA Kai'Sa",
+      "lolSkinsName": "Prestige K DA Kai'Sa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 26,
+      "ddragonName": "K/DA ALL OUT Kai'Sa",
+      "lolSkinsName": "K DA ALL OUT Kai'Sa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 27,
+      "ddragonName": "Prestige K/DA ALL OUT Kai'Sa",
+      "lolSkinsName": "Prestige K DA ALL OUT Kai'Sa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 39,
+      "ddragonName": "Prestige K/DA Kai'Sa (2022)",
+      "lolSkinsName": "Prestige K DA Kai'Sa (2022)"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 71,
+      "ddragonName": "Immortalized Legend Kai'Sa",
+      "lolSkinsName": "Immortalized Legend Kai'Sa - Uzi"
+    },
+    {
+      "championKey": "Karthus",
+      "championName": "Karthus",
+      "skinNum": 17,
+      "ddragonName": "Pentakill III: Lost Chapter Karthus",
+      "lolSkinsName": "Pentakill III Lost Chapter Karthus"
+    },
+    {
+      "championKey": "Katarina",
+      "championName": "Katarina",
+      "skinNum": 9,
+      "ddragonName": "PROJECT: Katarina",
+      "lolSkinsName": "PROJECT Katarina"
+    },
+    {
+      "championKey": "Kayle",
+      "championName": "Kayle",
+      "skinNum": 33,
+      "ddragonName": "Pentakill III: Lost Chapter Kayle",
+      "lolSkinsName": "Pentakill III Lost Chapter Kayle"
+    },
+    {
+      "championKey": "Leona",
+      "championName": "Leona",
+      "skinNum": 8,
+      "ddragonName": "PROJECT: Leona",
+      "lolSkinsName": "PROJECT Leona"
+    },
+    {
+      "championKey": "Lucian",
+      "championName": "Lucian",
+      "skinNum": 6,
+      "ddragonName": "PROJECT: Lucian",
+      "lolSkinsName": "PROJECT Lucian"
+    },
+    {
+      "championKey": "MasterYi",
+      "championName": "Master Yi",
+      "skinNum": 9,
+      "ddragonName": "PROJECT: Yi",
+      "lolSkinsName": "PROJECT Yi"
+    },
+    {
+      "championKey": "Mordekaiser",
+      "championName": "Mordekaiser",
+      "skinNum": 13,
+      "ddragonName": "PROJECT: Mordekaiser",
+      "lolSkinsName": "PROJECT Mordekaiser"
+    },
+    {
+      "championKey": "Mordekaiser",
+      "championName": "Mordekaiser",
+      "skinNum": 23,
+      "ddragonName": "Pentakill III: Lost Chapter Mordekaiser",
+      "lolSkinsName": "Pentakill III Lost Chapter Mordekaiser"
+    },
+    {
+      "championKey": "Morgana",
+      "championName": "Morgana",
+      "skinNum": 80,
+      "ddragonName": "Spirit Blossom Morgana",
+      "lolSkinsName": "Morgana"
+    },
+    {
+      "championKey": "Naafiri",
+      "championName": "Naafiri",
+      "skinNum": 11,
+      "ddragonName": "PROJECT: Naafiri",
+      "lolSkinsName": "PROJECT Naafiri"
+    },
+    {
+      "championKey": "Olaf",
+      "championName": "Olaf",
+      "skinNum": 35,
+      "ddragonName": "Pentakill III: Lost Chapter Olaf",
+      "lolSkinsName": "Pentakill III Lost Chapter Olaf"
+    },
+    {
+      "championKey": "Pyke",
+      "championName": "Pyke",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Pyke",
+      "lolSkinsName": "PROJECT Pyke"
+    },
+    {
+      "championKey": "Renekton",
+      "championName": "Renekton",
+      "skinNum": 26,
+      "ddragonName": "PROJECT: Renekton",
+      "lolSkinsName": "PROJECT Renekton"
+    },
+    {
+      "championKey": "Sejuani",
+      "championName": "Sejuani",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Sejuani",
+      "lolSkinsName": "PROJECT Sejuani"
+    },
+    {
+      "championKey": "Senna",
+      "championName": "Senna",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Senna",
+      "lolSkinsName": "PROJECT Senna"
+    },
+    {
+      "championKey": "Seraphine",
+      "championName": "Seraphine",
+      "skinNum": 1,
+      "ddragonName": "K/DA ALL OUT Seraphine Indie",
+      "lolSkinsName": "K DA ALL OUT Seraphine Indie"
+    },
+    {
+      "championKey": "Sona",
+      "championName": "Sona",
+      "skinNum": 26,
+      "ddragonName": "Pentakill III: Lost Chapter Sona",
+      "lolSkinsName": "Pentakill III Lost Chapter Sona"
+    },
+    {
+      "championKey": "Sylas",
+      "championName": "Sylas",
+      "skinNum": 13,
+      "ddragonName": "PROJECT: Sylas",
+      "lolSkinsName": "PROJECT Sylas"
+    },
+    {
+      "championKey": "Sylas",
+      "championName": "Sylas",
+      "skinNum": 14,
+      "ddragonName": "Prestige PROJECT: Sylas",
+      "lolSkinsName": "Prestige PROJECT Sylas"
+    },
+    {
+      "championKey": "Varus",
+      "championName": "Varus",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Varus",
+      "lolSkinsName": "PROJECT Varus"
+    },
+    {
+      "championKey": "Vayne",
+      "championName": "Vayne",
+      "skinNum": 11,
+      "ddragonName": "PROJECT: Vayne",
+      "lolSkinsName": "PROJECT Vayne"
+    },
+    {
+      "championKey": "Vi",
+      "championName": "Vi",
+      "skinNum": 11,
+      "ddragonName": "PROJECT: Vi",
+      "lolSkinsName": "PROJECT Vi"
+    },
+    {
+      "championKey": "Warwick",
+      "championName": "Warwick",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Warwick",
+      "lolSkinsName": "PROJECT Warwick"
+    },
+    {
+      "championKey": "Yasuo",
+      "championName": "Yasuo",
+      "skinNum": 2,
+      "ddragonName": "PROJECT: Yasuo",
+      "lolSkinsName": "PROJECT Yasuo"
+    },
+    {
+      "championKey": "Yorick",
+      "championName": "Yorick",
+      "skinNum": 21,
+      "ddragonName": "Pentakill III: Lost Chapter Yorick",
+      "lolSkinsName": "Pentakill III Lost Chapter Yorick"
+    },
+    {
+      "championKey": "Zed",
+      "championName": "Zed",
+      "skinNum": 3,
+      "ddragonName": "PROJECT: Zed",
+      "lolSkinsName": "PROJECT Zed"
+    },
+    {
+      "championKey": "Zed",
+      "championName": "Zed",
+      "skinNum": 30,
+      "ddragonName": "Prestige PROJECT: Zed",
+      "lolSkinsName": "Prestige PROJECT Zed"
+    }
+  ]
+}
