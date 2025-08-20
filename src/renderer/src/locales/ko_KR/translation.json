@@ -572,7 +572,8 @@
   },
   "confirmations": {
     "confirmDeleteAll": "정말로 모든 스킨을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
-    "confirmDeleteChampion": "정말로 {{champion}}의 모든 스킨을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
+    "confirmDeleteChampion": "정말로 {{champion}}의 모든 스킨을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+    "confirmDeleteSkin": "\"{{skin}}\"을(를) 삭제하시겠습니까?"
   },
   "importMethod": {
     "title": "커스텀 모드 가져오기",
@@ -592,5 +593,14 @@
     "download": "다운로드 및 가져오기",
     "directDownloadNote": "직접 다운로드 링크만 지원됩니다",
     "clipboardError": "클립보드 읽기 실패"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "편집 기능이 곧 출시됩니다!",
+    "noSkinsSelectedYet": "아직 선택된 스킨이 없습니다. 위의 스킨을 클릭하여 선택에 추가하세요.",
+    "autoSyncedCount": "({{count}}개 자동 동기화됨)",
+    "auto": "자동"
+  },
+  "accessibility": {
+    "close": "닫기"
   }
 }

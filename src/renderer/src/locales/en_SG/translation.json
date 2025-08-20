@@ -588,6 +588,16 @@
   },
   "confirmations": {
     "confirmDeleteAll": "Are you sure you want to delete all skins? This action cannot be undone.",
-    "confirmDeleteChampion": "Are you sure you want to delete all skins for {{champion}}? This action cannot be undone."
+    "confirmDeleteChampion": "Are you sure you want to delete all skins for {{champion}}? This action cannot be undone.",
+    "confirmDeleteSkin": "Are you sure you want to delete \"{{skin}}\"?"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "Edit functionality coming soon!",
+    "noSkinsSelectedYet": "No skins selected yet. Click on skins above to add them to your selection.",
+    "autoSyncedCount": "({{count}} auto-synced)",
+    "auto": "Auto"
+  },
+  "accessibility": {
+    "close": "Close"
   }
 }

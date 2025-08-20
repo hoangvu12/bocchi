@@ -572,7 +572,8 @@
   },
   "confirmations": {
     "confirmDeleteAll": "您确定要删除所有皮肤吗？此操作不可撤销。",
-    "confirmDeleteChampion": "您确定要删除{{champion}}的所有皮肤吗？此操作不可撤销。"
+    "confirmDeleteChampion": "您确定要删除{{champion}}的所有皮肤吗？此操作不可撤销。",
+    "confirmDeleteSkin": "您确定要删除\"{{skin}}\"吗？"
   },
   "importMethod": {
     "title": "导入自定义模组",
@@ -592,5 +593,14 @@
     "download": "下载并导入",
     "directDownloadNote": "仅支持直接下载链接",
     "clipboardError": "读取剪贴板失败"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "编辑功能即将推出！",
+    "noSkinsSelectedYet": "尚未选择皮肤。点击上方的皮肤将其添加到您的选择中。",
+    "autoSyncedCount": "({{count}}个自动同步)",
+    "auto": "自动"
+  },
+  "accessibility": {
+    "close": "关闭"
   }
 }

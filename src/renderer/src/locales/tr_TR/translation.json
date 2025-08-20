@@ -567,7 +567,17 @@
   },
   "confirmations": {
     "confirmDeleteAll": "Tüm skinleri silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-    "confirmDeleteChampion": "{{champion}} için tüm skinleri silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+    "confirmDeleteChampion": "{{champion}} için tüm skinleri silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "confirmDeleteSkin": "\"{{skin}}\" skinini silmek istediğinizden emin misiniz?"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "Düzenleme işlevleri yakında geliyor!",
+    "noSkinsSelectedYet": "Henüz skin seçilmedi. Seçiminize eklemek için yukarıdaki skinlere tıklayın.",
+    "autoSyncedCount": "({{count}} otomatik senkronize)",
+    "auto": "Otomatik"
+  },
+  "accessibility": {
+    "close": "Kapat"
   },
   "importMethod": {
     "title": "Özel Mod İçe Aktar",

@@ -567,7 +567,17 @@
   },
   "confirmations": {
     "confirmDeleteAll": "Sunteți sigur că doriți să ștergeți toate skin-urile? Această acțiune nu poate fi anulată.",
-    "confirmDeleteChampion": "Sunteți sigur că doriți să ștergeți toate skin-urile pentru {{champion}}? Această acțiune nu poate fi anulată."
+    "confirmDeleteChampion": "Sunteți sigur că doriți să ștergeți toate skin-urile pentru {{champion}}? Această acțiune nu poate fi anulată.",
+    "confirmDeleteSkin": "Sunteți sigur că doriți să ștergeți \"{{skin}}\"?"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "Funcționalitatea de editare va veni în curând!",
+    "noSkinsSelectedYet": "Încă nu sunt selectate skin-uri. Faceți clic pe skin-urile de mai sus pentru a le adăuga la selecție.",
+    "autoSyncedCount": "({{count}} sincronizate automat)",
+    "auto": "Automat"
+  },
+  "accessibility": {
+    "close": "Închide"
   },
   "importMethod": {
     "title": "Importă Mod Personalizat",

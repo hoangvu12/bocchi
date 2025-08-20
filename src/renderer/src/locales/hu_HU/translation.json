@@ -567,7 +567,17 @@
   },
   "confirmations": {
     "confirmDeleteAll": "Biztosan törölni szeretné az összes skint? Ez a művelet nem visszavonható.",
-    "confirmDeleteChampion": "Biztosan törölni szeretné az összes skint {{champion}} számára? Ez a művelet nem visszavonható."
+    "confirmDeleteChampion": "Biztosan törölni szeretné az összes skint {{champion}} számára? Ez a művelet nem visszavonható.",
+    "confirmDeleteSkin": "Biztosan törölni szeretné a \"{{skin}}\" skint?"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "A szerkesztési funkció hamarosan érkezik!",
+    "noSkinsSelectedYet": "Még nincsenek kiválasztott skinek. Kattintson a fenti skinekre, hogy hozzáadja őket a kiválasztásához.",
+    "autoSyncedCount": "({{count}} automatikusan szinkronizálva)",
+    "auto": "Automatikus"
+  },
+  "accessibility": {
+    "close": "Bezárás"
   },
   "importMethod": {
     "title": "Egyéni Mod Importálása",

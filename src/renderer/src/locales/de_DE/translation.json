@@ -587,5 +587,19 @@
     "download": "Herunterladen und importieren",
     "directDownloadNote": "Nur direkte Download-Links werden unterstützt",
     "clipboardError": "Zwischenablage konnte nicht gelesen werden"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "Sind Sie sicher, dass Sie alle Skins löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "confirmDeleteChampion": "Sind Sie sicher, dass Sie alle Skins für {{champion}} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "confirmDeleteSkin": "Sind Sie sicher, dass Sie \"{{skin}}\" löschen möchten?"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "Bearbeitungsfunktion kommt bald!",
+    "noSkinsSelectedYet": "Noch keine Skins ausgewählt. Klicken Sie auf die Skins oben, um sie zu Ihrer Auswahl hinzuzufügen.",
+    "autoSyncedCount": "({{count}} automatisch synchronisiert)",
+    "auto": "Auto"
+  },
+  "accessibility": {
+    "close": "Schließen"
   }
 }

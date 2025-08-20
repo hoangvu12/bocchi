@@ -573,7 +573,8 @@
   },
   "confirmations": {
     "confirmDeleteAll": "Bạn có chắc chắn muốn xóa tất cả trang phục? Hành động này không thể hoàn tác.",
-    "confirmDeleteChampion": "Bạn có chắc chắn muốn xóa tất cả trang phục của {{champion}}? Hành động này không thể hoàn tác."
+    "confirmDeleteChampion": "Bạn có chắc chắn muốn xóa tất cả trang phục của {{champion}}? Hành động này không thể hoàn tác.",
+    "confirmDeleteSkin": "Bạn có chắc chắn muốn xóa \"{{skin}}\"?"
   },
   "importMethod": {
     "title": "Nhập Mod Tùy Chỉnh",
@@ -593,5 +594,14 @@
     "download": "Tải xuống & Nhập",
     "directDownloadNote": "Chỉ hỗ trợ liên kết tải xuống trực tiếp",
     "clipboardError": "Không thể đọc clipboard"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "Chức năng chỉnh sửa sắp ra mắt!",
+    "noSkinsSelectedYet": "Chưa chọn trang phục nào. Nhấp vào trang phục ở trên để thêm vào lựa chọn của bạn.",
+    "autoSyncedCount": "({{count}} tự động đồng bộ)",
+    "auto": "Tự động"
+  },
+  "accessibility": {
+    "close": "Đóng"
   }
 }

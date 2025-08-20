@@ -587,5 +587,19 @@
     "download": "Pobierz i Importuj",
     "directDownloadNote": "Obsługiwane są tylko bezpośrednie linki do pobierania",
     "clipboardError": "Nie udało się odczytać schowka"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "Czy na pewno chcesz usunąć wszystkie skiny? Tej operacji nie można cofnąć.",
+    "confirmDeleteChampion": "Czy na pewno chcesz usunąć wszystkie skiny dla {{champion}}? Tej operacji nie można cofnąć.",
+    "confirmDeleteSkin": "Czy na pewno chcesz usunąć \"{{skin}}\"?"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "Funkcja edycji nadchodzi!",
+    "noSkinsSelectedYet": "Nie wybrano jeszcze żadnych skinów. Kliknij na skiny powyżej, aby dodać je do wyboru.",
+    "autoSyncedCount": "({{count}} auto-zsynchronizowane)",
+    "auto": "Auto"
+  },
+  "accessibility": {
+    "close": "Zamknij"
   }
 }

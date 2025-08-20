@@ -567,7 +567,17 @@
   },
   "confirmations": {
     "confirmDeleteAll": "Jste si jisti, že chcete smazat všechny skiny? Tuto akci nelze vrátit zpět.",
-    "confirmDeleteChampion": "Jste si jisti, že chcete smazat všechny skiny pro {{champion}}? Tuto akci nelze vrátit zpět."
+    "confirmDeleteChampion": "Jste si jisti, že chcete smazat všechny skiny pro {{champion}}? Tuto akci nelze vrátit zpět.",
+    "confirmDeleteSkin": "Jste si jisti, že chcete smazat \"{{skin}}\"?"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "Funkce úprav bude brzy k dispozici!",
+    "noSkinsSelectedYet": "Zatím nejsou vybrány žádné skiny. Klikněte na skiny výše a přidejte je do výběru.",
+    "autoSyncedCount": "({{count}} automaticky synchronizováno)",
+    "auto": "Auto"
+  },
+  "accessibility": {
+    "close": "Zavřít"
   },
   "importMethod": {
     "title": "Importovat vlastní mod",

@@ -572,7 +572,8 @@
   },
   "confirmations": {
     "confirmDeleteAll": "¿Estás seguro de que querés eliminar todos los skins? Esta acción no se puede deshacer.",
-    "confirmDeleteChampion": "¿Estás seguro de que querés eliminar todos los skins de {{champion}}? Esta acción no se puede deshacer."
+    "confirmDeleteChampion": "¿Estás seguro de que querés eliminar todos los skins de {{champion}}? Esta acción no se puede deshacer.",
+    "confirmDeleteSkin": "¿Estás seguro de que querés eliminar \"{{skin}}\"?"
   },
   "importMethod": {
     "title": "Importar Mod Personalizado",
@@ -592,5 +593,14 @@
     "download": "Descargar e Importar",
     "directDownloadNote": "Solo se admiten enlaces de descarga directa",
     "clipboardError": "Error al leer el portapapeles"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "¡Funcionalidad de edición próximamente!",
+    "noSkinsSelectedYet": "Aún no hay skins seleccionados. Hacé clic en los skins de arriba para agregarlos a tu selección.",
+    "autoSyncedCount": "({{count}} auto-sincronizados)",
+    "auto": "Auto"
+  },
+  "accessibility": {
+    "close": "Cerrar"
   }
 }

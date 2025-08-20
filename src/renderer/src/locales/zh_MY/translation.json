@@ -567,7 +567,17 @@
   },
   "confirmations": {
     "confirmDeleteAll": "您確定要刪除所有造型嗎？此操作無法復原。",
-    "confirmDeleteChampion": "您確定要刪除 {{champion}} 的所有造型嗎？此操作無法復原。"
+    "confirmDeleteChampion": "您確定要刪除 {{champion}} 的所有造型嗎？此操作無法復原。",
+    "confirmDeleteSkin": "您確定要刪除 \"{{skin}}\" 嗎？"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "編輯功能即將推出！",
+    "noSkinsSelectedYet": "尚未選擇造型。點擊上方的造型將其添加到您的選擇中。",
+    "autoSyncedCount": "({{count}} 自動同步)",
+    "auto": "自動"
+  },
+  "accessibility": {
+    "close": "關閉"
   },
   "importMethod": {
     "title": "导入自定义模组",

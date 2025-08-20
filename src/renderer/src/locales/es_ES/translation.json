@@ -592,5 +592,19 @@
     "download": "Descargar e Importar",
     "directDownloadNote": "Solo se admiten enlaces de descarga directa",
     "clipboardError": "Error al leer el portapapeles"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "¿Estás seguro de que quieres eliminar todas las skins? Esta acción no se puede deshacer.",
+    "confirmDeleteChampion": "¿Estás seguro de que quieres eliminar todas las skins de {{champion}}? Esta acción no se puede deshacer.",
+    "confirmDeleteSkin": "¿Estás seguro de que quieres eliminar \"{{skin}}\"?"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "¡Funcionalidad de edición próximamente!",
+    "noSkinsSelectedYet": "Aún no hay skins seleccionadas. Haz clic en las skins de arriba para añadirlas a tu selección.",
+    "autoSyncedCount": "({{count}} auto-sincronizadas)",
+    "auto": "Auto"
+  },
+  "accessibility": {
+    "close": "Cerrar"
   }
 }

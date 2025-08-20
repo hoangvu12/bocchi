@@ -587,5 +587,19 @@
     "download": "下載並匯入",
     "directDownloadNote": "僅支援直接下載連結",
     "clipboardError": "讀取剪貼簿失敗"
+  },
+  "confirmations": {
+    "confirmDeleteAll": "您確定要刪除所有面板嗎？此操作不可復原。",
+    "confirmDeleteChampion": "您確定要刪除{{champion}}的所有面板嗎？此操作不可復原。",
+    "confirmDeleteSkin": "您確定要刪除\"{{skin}}\"嗎？"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "編輯功能即將推出！",
+    "noSkinsSelectedYet": "尚未選擇面板。點擊上方的面板將其新增至您的選擇中。",
+    "autoSyncedCount": "({{count}}個自動同步)",
+    "auto": "自動"
+  },
+  "accessibility": {
+    "close": "關閉"
   }
 }

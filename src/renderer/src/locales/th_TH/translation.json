@@ -567,7 +567,17 @@
   },
   "confirmations": {
     "confirmDeleteAll": "คุณแน่ใจหรือไม่ที่จะลบสกินทั้งหมด? การกระทำนี้ไม่สามารถยกเลิกได้",
-    "confirmDeleteChampion": "คุณแน่ใจหรือไม่ที่จะลบสกินทั้งหมดสำหรับ {{champion}}? การกระทำนี้ไม่สามารถยกเลิกได้"
+    "confirmDeleteChampion": "คุณแน่ใจหรือไม่ที่จะลบสกินทั้งหมดสำหรับ {{champion}}? การกระทำนี้ไม่สามารถยกเลิกได้",
+    "confirmDeleteSkin": "คุณแน่ใจหรือไม่ที่จะลบ \"{{skin}}\"?"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "ฟังก์ชันการแก้ไขจะมาเร็วๆ นี้!",
+    "noSkinsSelectedYet": "ยังไม่ได้เลือกสกิน คลิกที่สกินด้านบนเพื่อเพิ่มลงในการเลือกของคุณ",
+    "autoSyncedCount": "({{count}} ซิงค์อัตโนมัติ)",
+    "auto": "อัตโนมัติ"
+  },
+  "accessibility": {
+    "close": "ปิด"
   },
   "importMethod": {
     "title": "นำเข้า Mod แบบกำหนดเอง",

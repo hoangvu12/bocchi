@@ -572,7 +572,8 @@
   },
   "confirmations": {
     "confirmDeleteAll": "本当にすべてのスキンを削除しますか？この操作は元に戻せません。",
-    "confirmDeleteChampion": "本当に{{champion}}のすべてのスキンを削除しますか？この操作は元に戻せません。"
+    "confirmDeleteChampion": "本当に{{champion}}のすべてのスキンを削除しますか？この操作は元に戻せません。",
+    "confirmDeleteSkin": "\"{{skin}}\"を削除してもよろしいですか？"
   },
   "importMethod": {
     "title": "カスタムModをインポート",
@@ -592,5 +593,14 @@
     "download": "ダウンロード＆インポート",
     "directDownloadNote": "直接ダウンロードリンクのみサポートされています",
     "clipboardError": "クリップボードの読み取りに失敗しました"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "編集機能は近日公開予定！",
+    "noSkinsSelectedYet": "まだスキンが選択されていません。上のスキンをクリックして選択に追加してください。",
+    "autoSyncedCount": "({{count}}個自動同期済み)",
+    "auto": "自動"
+  },
+  "accessibility": {
+    "close": "閉じる"
   }
 }

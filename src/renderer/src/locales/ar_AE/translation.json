@@ -567,7 +567,17 @@
   },
   "confirmations": {
     "confirmDeleteAll": "هل أنت متأكد من حذف جميع الأشكال؟ هذا الإجراء لا يمكن التراجع عنه.",
-    "confirmDeleteChampion": "هل أنت متأكد من حذف جميع الأشكال لـ {{champion}}؟ هذا الإجراء لا يمكن التراجع عنه."
+    "confirmDeleteChampion": "هل أنت متأكد من حذف جميع الأشكال لـ {{champion}}؟ هذا الإجراء لا يمكن التراجع عنه.",
+    "confirmDeleteSkin": "هل أنت متأكد من أنك تريد حذف \"{{skin}}\"؟"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "وظيفة التحرير قادمة قريباً!",
+    "noSkinsSelectedYet": "لم يتم اختيار أشكال بعد. انقر على الأشكال أعلاه لإضافتها إلى اختيارك.",
+    "autoSyncedCount": "({{count}} مزامنة تلقائية)",
+    "auto": "تلقائي"
+  },
+  "accessibility": {
+    "close": "إغلاق"
   },
   "importMethod": {
     "title": "استيراد تعديل مخصص",

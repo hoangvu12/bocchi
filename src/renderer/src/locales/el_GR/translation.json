@@ -567,7 +567,17 @@
   },
   "confirmations": {
     "confirmDeleteAll": "Είστε βέβαιοι ότι θέλετε να διαγράψετε όλα τα skins; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
-    "confirmDeleteChampion": "Είστε βέβαιοι ότι θέλετε να διαγράψετε όλα τα skins για τον {{champion}}; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί."
+    "confirmDeleteChampion": "Είστε βέβαιοι ότι θέλετε να διαγράψετε όλα τα skins για τον {{champion}}; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+    "confirmDeleteSkin": "Είστε βέβαιοι ότι θέλετε να διαγράψετε το \"{{skin}}\";"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "Η λειτουργικότητα επεξεργασίας έρχεται σύντομα!",
+    "noSkinsSelectedYet": "Δεν έχουν επιλεγεί skins ακόμα. Κάντε κλικ στα skins παραπάνω για να τα προσθέσετε στην επιλογή σας.",
+    "autoSyncedCount": "({{count}} αυτόματα συγχρονισμένα)",
+    "auto": "Αυτόματο"
+  },
+  "accessibility": {
+    "close": "Κλείσιμο"
   },
   "importMethod": {
     "title": "Εισαγωγή Προσαρμοσμένου Mod",

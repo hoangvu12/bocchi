@@ -572,7 +572,17 @@
   },
   "confirmations": {
     "confirmDeleteAll": "¿Estás seguro de que quieres eliminar todos los skins? Esta acción no se puede deshacer.",
-    "confirmDeleteChampion": "¿Estás seguro de que quieres eliminar todos los skins de {{champion}}? Esta acción no se puede deshacer."
+    "confirmDeleteChampion": "¿Estás seguro de que quieres eliminar todos los skins de {{champion}}? Esta acción no se puede deshacer.",
+    "confirmDeleteSkin": "¿Estás seguro de que quieres eliminar \"{{skin}}\"?"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "¡La funcionalidad de edición llegará pronto!",
+    "noSkinsSelectedYet": "Aún no se han seleccionado skins. Haz clic en los skins de arriba para agregarlos a tu selección.",
+    "autoSyncedCount": "({{count}} sincronizados automáticamente)",
+    "auto": "Auto"
+  },
+  "accessibility": {
+    "close": "Cerrar"
   },
   "importMethod": {
     "title": "Importar Mod Personalizado",

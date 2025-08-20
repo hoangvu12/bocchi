@@ -567,7 +567,17 @@
   },
   "confirmations": {
     "confirmDeleteAll": "Apakah Anda yakin ingin menghapus semua skin? Tindakan ini tidak dapat dibatalkan.",
-    "confirmDeleteChampion": "Apakah Anda yakin ingin menghapus semua skin untuk {{champion}}? Tindakan ini tidak dapat dibatalkan."
+    "confirmDeleteChampion": "Apakah Anda yakin ingin menghapus semua skin untuk {{champion}}? Tindakan ini tidak dapat dibatalkan.",
+    "confirmDeleteSkin": "Apakah Anda yakin ingin menghapus \"{{skin}}\"?"
+  },
+  "messages": {
+    "editFunctionalityComingSoon": "Fungsionalitas edit akan segera hadir!",
+    "noSkinsSelectedYet": "Belum ada skin yang dipilih. Klik skin di atas untuk menambahkannya ke pilihan Anda.",
+    "autoSyncedCount": "({{count}} tersinkronisasi otomatis)",
+    "auto": "Otomatis"
+  },
+  "accessibility": {
+    "close": "Tutup"
   },
   "importMethod": {
     "title": "Impor Mod Kustom",
