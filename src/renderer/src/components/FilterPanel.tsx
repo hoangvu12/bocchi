@@ -202,7 +202,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               {downloadedCount} / {totalCount} {t('skin.downloaded').toLowerCase()}
             </span>
             <span className="whitespace-nowrap">
-              {resultsCount}{' '}
               {resultsCount === 1
                 ? t('skin.showing_one', { count: resultsCount })
                 : t('skin.showing_other', { count: resultsCount })}

@@ -223,12 +223,12 @@ export function ToolsDownloadModal() {
                   disabled={downloadAttempts >= 3}
                 >
                   <RefreshCw className="w-4 h-4" />
-                  {downloadAttempts >= 3 ? 'Max Retries Reached' : 'Retry Download'}
+                  {downloadAttempts >= 3 ? t('tools.maxRetriesReached') : t('tools.retryDownload')}
                 </button>
                 <button
                   className="px-4 py-3 bg-surface-lighter hover:bg-surface-light text-text-secondary rounded-lg transition-colors"
                   onClick={handleManualDownload}
-                  title="Download manually from GitHub"
+                  title={t('tools.downloadManuallyFromGithub')}
                 >
                   <ExternalLink className="w-4 h-4" />
                 </button>
@@ -246,16 +246,16 @@ export function ToolsDownloadModal() {
             {/* Manual download option */}
             {(toolsError || downloadAttempts >= 2) && (
               <div className="pt-3 border-t border-surface-border">
-                <p className="text-xs text-text-secondary mb-2">Having trouble? You can also:</p>
+                <p className="text-xs text-text-secondary mb-2">{t('tools.havingTrouble')}</p>
                 <button
                   onClick={handleManualDownload}
                   className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-surface-lighter hover:bg-surface-light text-text-secondary rounded-lg transition-colors text-sm"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Download manually from GitHub
+                  {t('tools.downloadManuallyFromGithub')}
                 </button>
                 <p className="text-xs text-text-tertiary mt-2">
-                  Extract to: {`%APPDATA%\\bocchi\\cslol-tools`}
+                  {t('tools.extractTo')} {`%APPDATA%\\bocchi\\cslol-tools`}
                 </p>
               </div>
             )}

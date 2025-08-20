@@ -736,7 +736,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                 </span>
                 {autoSyncedSkins.length > 0 && (
                   <span className="text-sm text-text-secondary">
-                    ({autoSyncedSkins.length} auto-synced)
+                    {t('messages.autoSyncedCount', { count: autoSyncedSkins.length })}
                   </span>
                 )}
                 {needsDownload && (
@@ -760,7 +760,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                         variant="outline"
                         className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-700"
                       >
-                        Auto
+                        {t('messages.auto')}
                       </Badge>
                     )}
                   </div>
@@ -930,7 +930,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
               <>
                 {selectedSkins.length === 0 && autoSyncedSkins.length === 0 ? (
                   <div className="text-center py-8 text-text-muted">
-                    No skins selected yet. Click on skins above to add them to your selection.
+                    {t('messages.noSkinsSelectedYet')}
                   </div>
                 ) : (
                   <>
@@ -1081,7 +1081,7 @@ export const SelectedSkinsDrawer: React.FC<SelectedSkinsDrawerProps> = ({
                         className={`${selectedSkins.length > 0 ? 'mt-4 pt-4 border-t border-border' : ''}`}
                       >
                         <p className="text-xs text-text-secondary mb-2">
-                          Auto-synced skins (not reorderable):
+                          {t('skins.autoSelected')} (not reorderable):
                         </p>
                         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-3">
                           {autoSyncedSkins.map((skin, index) => {

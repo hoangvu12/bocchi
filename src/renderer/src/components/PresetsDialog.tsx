@@ -135,7 +135,7 @@ export const PresetsDialog: React.FC<PresetsDialogProps> = ({ onApplyPreset }) =
 
   const handleEditPreset = () => {
     // TODO: Implement edit functionality
-    toast.info('Edit functionality coming soon!')
+    toast.info(t('messages.editFunctionalityComingSoon'))
   }
 
   const filteredPresets = presets.filter(

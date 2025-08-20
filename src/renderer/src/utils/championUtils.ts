@@ -4,6 +4,29 @@ export function getChampionDisplayName(champion: { name: string; nameEn?: string
   return champion.nameEn || champion.name
 }
 
+// Utility function to get the localized display name for a champion
+// Returns the localized name (for UI display based on current language)
+export function getLocalizedChampionName(champion: { name: string; nameEn?: string }): string {
+  return champion.name
+}
+
+// Utility function to get the romanized first letter for alphabet navigation
+// For CJK languages, uses the English name to determine the letter
+// This provides consistent A-Z navigation across all languages
+export function getRomanizedFirstLetter(champion: { name: string; nameEn?: string }): string {
+  // Always use English name for alphabet grouping to ensure A-Z navigation
+  const nameForGrouping = champion.nameEn || champion.name
+
+  // Get the first character and uppercase it
+  const firstChar = nameForGrouping[0].toUpperCase()
+
+  // Ensure it's a valid letter A-Z, otherwise return '#' for special characters
+  if (firstChar >= 'A' && firstChar <= 'Z') {
+    return firstChar
+  }
+  return '#'
+}
+
 // Detects champion key from text (mod name or description)
 // Returns the champion key if found, otherwise returns empty string
 export function detectChampionFromText(

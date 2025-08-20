@@ -14,6 +14,7 @@ export const AlphabetNavigation: React.FC<AlphabetNavigationProps> = ({
   onLetterClick,
   className
 }) => {
+  // Use standard A-Z alphabet for consistent navigation across all languages
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
   return (

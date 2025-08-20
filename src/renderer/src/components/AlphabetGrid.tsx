@@ -15,6 +15,7 @@ export const AlphabetGrid: React.FC<AlphabetGridProps> = ({
   className
 }) => {
   const gridRef = useRef<HTMLDivElement>(null)
+  // Use standard A-Z alphabet for consistent navigation across all languages
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
   // Handle click outside
@@ -53,7 +54,6 @@ export const AlphabetGrid: React.FC<AlphabetGridProps> = ({
     >
       {alphabet.map((letter) => {
         const isAvailable = availableLetters.has(letter)
-
         return (
           <button
             key={letter}

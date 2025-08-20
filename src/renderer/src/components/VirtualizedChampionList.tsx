@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'rea
 import { useTranslation } from 'react-i18next'
 import { VariableSizeList as List } from 'react-window'
 import type { Champion } from '../App'
-import { getChampionDisplayName } from '../utils/championUtils'
+import { getChampionDisplayName, getRomanizedFirstLetter } from '../utils/championUtils'
 import {
   Tooltip,
   TooltipContent,
@@ -63,16 +63,14 @@ const VirtualizedChampionListComponent = forwardRef<
         // In collapsed mode, just add all champions without letter headers
         champions.forEach((champion) => {
           items.push({ type: 'champion', data: champion })
-          const displayName = getChampionDisplayName(champion)
-          const firstLetter = displayName[0].toUpperCase()
+          const firstLetter = getRomanizedFirstLetter(champion)
           letters.add(firstLetter)
         })
       } else {
         // In expanded mode, group by letter
         let lastLetter = ''
         champions.forEach((champion) => {
-          const displayName = getChampionDisplayName(champion)
-          const firstLetter = displayName[0].toUpperCase()
+          const firstLetter = getRomanizedFirstLetter(champion)
           if (firstLetter !== lastLetter) {
             indices[firstLetter] = items.length
             items.push({ type: 'letter', data: firstLetter })

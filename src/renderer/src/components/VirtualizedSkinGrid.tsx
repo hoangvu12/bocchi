@@ -400,7 +400,9 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                           className="w-8 h-8 rounded-full"
                           onClick={(e) => {
                             e.stopPropagation()
-                            if (confirm(`Are you sure you want to delete "${skin.name}"?`)) {
+                            if (
+                              confirm(t('confirmations.confirmDeleteSkin', { skin: skin.name }))
+                            ) {
                               onDeleteCustomSkin(downloadedSkin.localPath!, downloadedSkin.skinName)
                             }
                           }}
@@ -598,7 +600,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                         className="absolute top-18 right-2 w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 shadow-lg"
                         onClick={(e) => {
                           e.stopPropagation()
-                          if (confirm(`Are you sure you want to delete "${skin.name}"?`)) {
+                          if (confirm(t('confirmations.confirmDeleteSkin', { skin: skin.name }))) {
                             onDeleteCustomSkin(downloadedSkin.localPath!, downloadedSkin.skinName)
                           }
                         }}
