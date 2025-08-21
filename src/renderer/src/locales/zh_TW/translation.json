@@ -566,8 +566,9 @@
     "skinNotAvailable": "面板在 lol-skins 儲存庫中不可用或對應錯誤"
   },
   "confirmations": {
-    "confirmDeleteAll": "您確定要刪除所有面板嗎？此操作無法復原。",
-    "confirmDeleteChampion": "您確定要刪除 {{champion}} 的所有面板嗎？此操作無法復原。"
+    "confirmDeleteAll": "您確定要刪除所有面板嗎？此操作不可復原。",
+    "confirmDeleteChampion": "您確定要刪除{{champion}}的所有面板嗎？此操作不可復原。",
+    "confirmDeleteSkin": "您確定要刪除\"{{skin}}\"嗎？"
   },
   "importMethod": {
     "title": "匯入自訂模組",
@@ -588,11 +589,6 @@
     "directDownloadNote": "僅支援直接下載連結",
     "clipboardError": "讀取剪貼簿失敗"
   },
-  "confirmations": {
-    "confirmDeleteAll": "您確定要刪除所有面板嗎？此操作不可復原。",
-    "confirmDeleteChampion": "您確定要刪除{{champion}}的所有面板嗎？此操作不可復原。",
-    "confirmDeleteSkin": "您確定要刪除\"{{skin}}\"嗎？"
-  },
   "messages": {
     "editFunctionalityComingSoon": "編輯功能即將推出！",
     "noSkinsSelectedYet": "尚未選擇面板。點擊上方的面板將其新增至您的選擇中。",
@@ -601,5 +597,60 @@
   },
   "accessibility": {
     "close": "關閉"
+  },
+  "p2p": {
+    "status": {
+      "disconnected": "Disconnected",
+      "retrying": "Reconnecting...",
+      "connected": "Connected",
+      "roomReady": "Room Ready",
+      "direct": "Direct (Fast)",
+      "relay": "Relay (Slower)",
+      "unknown": "Unknown"
+    },
+    "tooltip": {
+      "connectionType": "Connection type: {{type}}",
+      "latency": "Latency: {{ms}}ms",
+      "packetLoss": "Packet loss: {{percent}}%",
+      "bandwidth": "Bandwidth: {{mbps}} Mbps",
+      "clickForDetails": "Click for diagnostics"
+    },
+    "diagnostics": {
+      "title": "P2P Connection Diagnostics",
+      "connectionStatus": "Connection Status",
+      "status": "Status",
+      "type": "Type",
+      "attempts": "Connection Attempts",
+      "quality": "Connection Quality",
+      "latency": "Latency",
+      "packetLoss": "Packet Loss",
+      "bandwidth": "Bandwidth",
+      "network": "Network Information",
+      "natType": "NAT Type",
+      "relayHelp": "Your connection is being relayed through a server. This may result in higher latency but ensures connectivity.",
+      "directHelp": "You have a direct peer-to-peer connection. This provides the best performance.",
+      "connectingHelp": "Establishing connection. Please wait...",
+      "waitingForPeers": "Waiting for other members to join the room...",
+      "troubleshooting": "Troubleshooting Tips",
+      "tip1": "Check your firewall settings",
+      "tip2": "Ensure your network allows UDP traffic",
+      "tip3": "Try restarting your router if connection issues persist",
+      "symmetricNatWarning": "Your network uses Symmetric NAT which requires relay servers for connectivity"
+    },
+    "settings": {
+      "title": "P2P Settings",
+      "customServers": "Custom TURN Servers",
+      "addServer": "Add Server",
+      "serverUrl": "Server URL",
+      "username": "Username",
+      "credential": "Credential",
+      "meteredApiKey": "Metered API Key",
+      "meteredApiKeyHelp": "Get 50GB/month free at metered.ca",
+      "testConnection": "Test Connection",
+      "serverAdded": "Server added successfully",
+      "serverRemoved": "Server removed",
+      "testSuccess": "Connection test successful",
+      "testFailed": "Connection test failed"
+    }
   }
 }

@@ -10,7 +10,12 @@
       "Bash(pnpm run:*)",
       "Bash(npm run lint)",
       "Bash(npm run lint:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "mcp__perplexity__reason",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "mcp__perplexity__deep_research",
+      "mcp__perplexity__search"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"

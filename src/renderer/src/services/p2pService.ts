@@ -2,6 +2,7 @@ import Peer, { DataConnection } from 'peerjs'
 import type { P2PRoom, P2PRoomMember } from '../../../main/types'
 import type { SelectedSkin } from '../store/atoms'
 import { p2pFileTransferService } from './p2pFileTransferService'
+import { iceServerManager } from './iceServerManager'
 
 export class P2PService {
   private peer: Peer | null = null
@@ -9,6 +10,11 @@ export class P2PService {
   private connections: Map<string, DataConnection> = new Map()
   private isHost: boolean = false
   private eventCallbacks: Map<string, ((data: any) => void)[]> = new Map()
+  private connectionAttempts: number = 0
+  private maxRetries: number = 3
+  private retryTimeout: NodeJS.Timeout | null = null
+  private connectionStartTime: number = 0
+  private connectionType: 'direct' | 'relay' | 'unknown' = 'unknown'
 
   private generateRoomId(): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -47,8 +53,13 @@ export class P2PService {
       this.isHost = true
       const roomId = this.generateRoomId()
 
-      // Initialize peer with room ID as peer ID
-      this.peer = new Peer(roomId)
+      // Initialize peer with room ID as peer ID and ICE servers configuration
+      const iceConfig = iceServerManager.getICEServers()
+      this.peer = new Peer(roomId, {
+        config: iceConfig,
+        debug: 2 // Enable debug logging to help diagnose connection issues
+      })
+      this.connectionStartTime = Date.now()
 
       await new Promise<void>((resolve, reject) => {
         this.peer!.on('open', (id) => {
@@ -73,9 +84,15 @@ export class P2PService {
           resolve()
         })
 
-        this.peer!.on('error', (err) => {
+        this.peer!.on('error', async (err) => {
           console.error('[P2P] Error creating room:', err)
-          reject(err)
+          // Try retry logic for recoverable errors
+          if (this.connectionAttempts < this.maxRetries) {
+            await this.retryConnection(roomId, displayName, true)
+            resolve()
+          } else {
+            reject(err)
+          }
         })
       })
 
@@ -98,7 +115,13 @@ export class P2PService {
       // Generate unique peer ID
       const peerId = `${roomId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 
-      this.peer = new Peer(peerId)
+      // Initialize peer with ICE servers configuration
+      const iceConfig = iceServerManager.getICEServers()
+      this.peer = new Peer(peerId, {
+        config: iceConfig,
+        debug: 2 // Enable debug logging to help diagnose connection issues
+      })
+      this.connectionStartTime = Date.now()
 
       await new Promise<void>((resolve, reject) => {
         this.peer!.on('open', (id) => {
@@ -113,9 +136,12 @@ export class P2PService {
             }
           })
 
-          conn.on('open', () => {
+          conn.on('open', async () => {
             console.log(`[P2P] Connected to room: ${roomId}`)
             this.connections.set(roomId, conn)
+
+            // Detect connection type
+            this.connectionType = await this.detectConnectionType(conn)
 
             // Send initial handshake
             conn.send({
@@ -141,9 +167,15 @@ export class P2PService {
             this.emit('connection-status', 'disconnected')
           })
 
-          conn.on('error', (err) => {
+          conn.on('error', async (err) => {
             console.error('[P2P] Connection error:', err)
-            reject(err)
+            // Try retry logic for recoverable errors
+            if (this.connectionAttempts < this.maxRetries) {
+              await this.retryConnection(roomId, displayName, false)
+              resolve()
+            } else {
+              reject(err)
+            }
           })
         })
 
@@ -166,7 +198,9 @@ export class P2PService {
   private handleIncomingConnection(conn: DataConnection) {
     console.log(`[P2P] Incoming connection from: ${conn.peer}`)
 
-    conn.on('open', () => {
+    conn.on('open', async () => {
+      // Detect connection type (direct or relay)
+      this.connectionType = await this.detectConnectionType(conn)
       const metadata = conn.metadata
 
       if (this.isHost && metadata?.type === 'join') {
@@ -505,6 +539,12 @@ export class P2PService {
   }
 
   private cleanup() {
+    // Clear any pending retry timeouts
+    if (this.retryTimeout) {
+      clearTimeout(this.retryTimeout)
+      this.retryTimeout = null
+    }
+
     // Close all connections
     this.connections.forEach((conn) => conn.close())
     this.connections.clear()
@@ -517,6 +557,8 @@ export class P2PService {
 
     this.room = null
     this.isHost = false
+    this.connectionAttempts = 0
+    this.connectionType = 'unknown'
   }
 
   getRoom(): P2PRoom | null {
@@ -537,6 +579,229 @@ export class P2PService {
 
   getConnectionToPeer(peerId: string): DataConnection | null {
     return this.connections.get(peerId) || null
+  }
+
+  /**
+   * Retry connection with exponential backoff
+   */
+  private async retryConnection(roomId: string, displayName: string, isCreating: boolean) {
+    if (this.connectionAttempts >= this.maxRetries) {
+      this.emit('connection-failed', {
+        reason: 'max_retries_exceeded',
+        attempts: this.connectionAttempts,
+        message:
+          'Unable to establish connection after multiple attempts. Please check your network settings.'
+      })
+      return
+    }
+
+    this.connectionAttempts++
+    const delay = Math.min(1000 * Math.pow(2, this.connectionAttempts - 1), 10000)
+
+    console.log(
+      `[P2P] Retrying connection (attempt ${this.connectionAttempts}/${this.maxRetries}) in ${delay}ms`
+    )
+    this.emit('connection-status', 'retrying')
+
+    this.retryTimeout = setTimeout(async () => {
+      try {
+        if (isCreating) {
+          await this.createRoom(displayName)
+        } else {
+          await this.joinRoom(roomId, displayName)
+        }
+      } catch (error) {
+        console.error('[P2P] Retry failed:', error)
+        await this.retryConnection(roomId, displayName, isCreating)
+      }
+    }, delay)
+  }
+
+  /**
+   * Detect connection type (direct or relay)
+   * This helps users understand their connection quality
+   */
+  async detectConnectionType(conn: DataConnection): Promise<'direct' | 'relay'> {
+    try {
+      // Access the underlying RTCPeerConnection
+      const pc = (conn as any).peerConnection as RTCPeerConnection
+
+      if (!pc) {
+        return 'relay'
+      }
+
+      const stats = await pc.getStats()
+      let connectionType: 'direct' | 'relay' = 'direct'
+
+      stats.forEach((report: any) => {
+        if (report.type === 'candidate-pair' && report.state === 'succeeded') {
+          const localCandidate = stats.get(report.localCandidateId)
+          const remoteCandidate = stats.get(report.remoteCandidateId)
+
+          // Check if either candidate is a relay candidate
+          if (
+            (localCandidate as any)?.candidateType === 'relay' ||
+            (remoteCandidate as any)?.candidateType === 'relay'
+          ) {
+            connectionType = 'relay'
+          }
+        }
+      })
+
+      const connectionTime = Date.now() - this.connectionStartTime
+      console.log(`[P2P] Connection established via ${connectionType} in ${connectionTime}ms`)
+
+      // Report metrics to ICE server manager
+      const iceServers = iceServerManager.getICEServers().iceServers
+      if ((connectionType as string) === 'relay' && iceServers.length > 0) {
+        const turnServer = iceServers.find((s) => s.urls.toString().includes('turn:'))
+        if (turnServer) {
+          const url = Array.isArray(turnServer.urls) ? turnServer.urls[0] : turnServer.urls
+          iceServerManager.reportConnectionResult(url, true, connectionTime)
+        }
+      }
+
+      return connectionType
+    } catch (error) {
+      console.error('[P2P] Failed to detect connection type:', error)
+      return 'relay'
+    }
+  }
+
+  /**
+   * Get connection quality metrics
+   */
+  async getConnectionQuality(peerId?: string): Promise<{
+    type: 'direct' | 'relay' | 'unknown'
+    latency: number
+    packetLoss: number
+    bandwidth: number
+  } | null> {
+    try {
+      let conn: DataConnection | null = null
+
+      if (peerId) {
+        conn = this.connections.get(peerId) || null
+      } else if (this.connections.size > 0) {
+        conn = this.connections.values().next().value || null
+      }
+
+      if (!conn) {
+        return null
+      }
+
+      const pc = (conn as any).peerConnection as RTCPeerConnection
+      if (!pc) {
+        return null
+      }
+
+      const stats = await pc.getStats()
+      const quality = {
+        type: this.connectionType,
+        latency: 0,
+        packetLoss: 0,
+        bandwidth: 0
+      }
+
+      stats.forEach((report) => {
+        if (report.type === 'candidate-pair' && report.state === 'succeeded') {
+          quality.latency = report.currentRoundTripTime ? report.currentRoundTripTime * 1000 : 0
+
+          if (report.availableOutgoingBitrate) {
+            quality.bandwidth = report.availableOutgoingBitrate / 1000000 // Convert to Mbps
+          }
+        }
+
+        if (report.type === 'inbound-rtp' && report.mediaType === 'audio') {
+          const packetsLost = report.packetsLost || 0
+          const packetsReceived = report.packetsReceived || 0
+          if (packetsReceived > 0) {
+            quality.packetLoss = (packetsLost / (packetsLost + packetsReceived)) * 100
+          }
+        }
+      })
+
+      return quality
+    } catch (error) {
+      console.error('[P2P] Failed to get connection quality:', error)
+      return null
+    }
+  }
+
+  /**
+   * Test NAT type to help diagnose connection issues
+   */
+  async detectNATType(): Promise<string> {
+    try {
+      // Create a temporary peer connection for NAT detection
+      const pc = new RTCPeerConnection({
+        iceServers: iceServerManager.getICEServers().iceServers
+      })
+
+      const candidates: RTCIceCandidate[] = []
+
+      return new Promise((resolve) => {
+        const timeout = setTimeout(() => {
+          pc.close()
+          resolve(this.analyzeNATType(candidates))
+        }, 5000)
+
+        pc.onicecandidate = (event) => {
+          if (event.candidate) {
+            candidates.push(event.candidate)
+          } else {
+            clearTimeout(timeout)
+            pc.close()
+            resolve(this.analyzeNATType(candidates))
+          }
+        }
+
+        // Create a data channel to trigger ICE gathering
+        pc.createDataChannel('natDetection')
+        pc.createOffer().then((offer) => pc.setLocalDescription(offer))
+      })
+    } catch (error) {
+      console.error('[P2P] NAT detection failed:', error)
+      return 'Unknown'
+    }
+  }
+
+  /**
+   * Analyze gathered ICE candidates to determine NAT type
+   */
+  private analyzeNATType(candidates: RTCIceCandidate[]): string {
+    const srflxCandidates = candidates.filter((c) => c.type === 'srflx')
+    const relayCandidates = candidates.filter((c) => c.type === 'relay')
+
+    if (srflxCandidates.length === 0 && relayCandidates.length > 0) {
+      return 'Symmetric NAT (Most Restrictive - TURN Required)'
+    } else if (srflxCandidates.length > 0) {
+      // Check if all srflx candidates have the same port
+      const ports = new Set(srflxCandidates.map((c) => c.port))
+      if (ports.size === 1) {
+        return 'Full Cone NAT (Least Restrictive)'
+      } else if (ports.size === srflxCandidates.length) {
+        return 'Symmetric NAT (Most Restrictive - TURN Required)'
+      } else {
+        return 'Restricted/Port Restricted NAT (Moderate)'
+      }
+    }
+
+    return 'Unknown NAT Type'
+  }
+
+  /**
+   * Get connection statistics for monitoring
+   */
+  getConnectionStats() {
+    return {
+      isConnected: this.isConnected(),
+      connectionType: this.connectionType,
+      activeConnections: this.connections.size,
+      connectionAttempts: this.connectionAttempts,
+      isHost: this.isHost,
+      roomId: this.room?.id || null
+    }
   }
 }
 

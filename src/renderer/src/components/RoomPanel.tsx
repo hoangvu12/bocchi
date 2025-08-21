@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
-import {
-  p2pRoomAtom,
-  p2pSettingsAtom,
-  p2pConnectionStatusAtom,
-  generateRandomPlayerName
-} from '../store/atoms'
+import { p2pRoomAtom, p2pSettingsAtom, generateRandomPlayerName } from '../store/atoms'
 import { useP2P } from '../contexts/P2PContext'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
 import { Separator } from './ui/separator'
+import { P2PConnectionStatus } from './P2PConnectionStatus'
 
 export const RoomPanel: React.FC = () => {
   const { t } = useTranslation()
   const [p2pRoom] = useAtom(p2pRoomAtom)
   const [p2pSettings, setP2pSettings] = useAtom(p2pSettingsAtom)
-  const [connectionStatus] = useAtom(p2pConnectionStatusAtom)
   const [showModal, setShowModal] = useState(false)
   const [roomIdInput, setRoomIdInput] = useState('')
   const [displayNameInput, setDisplayNameInput] = useState('')
@@ -149,11 +144,6 @@ export const RoomPanel: React.FC = () => {
   return (
     <div className="flex items-center gap-3 px-4 py-2 bg-secondary-100 dark:bg-secondary-800 rounded-lg">
       <div className="flex items-center gap-2">
-        <div
-          className={`w-2 h-2 rounded-full ${
-            connectionStatus === 'connected' ? 'bg-green-500' : 'bg-yellow-500'
-          }`}
-        />
         <span className="text-sm font-medium text-text-secondary">
           {t('room.roomId', { id: p2pRoom.id })}
         </span>
@@ -182,6 +172,7 @@ export const RoomPanel: React.FC = () => {
       <span className="text-sm text-text-muted">
         ({t('room.members', { count: totalMembers })})
       </span>
+      <P2PConnectionStatus />
       <Button
         variant="ghost"
         size="sm"

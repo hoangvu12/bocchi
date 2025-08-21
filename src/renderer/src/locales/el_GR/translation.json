@@ -597,5 +597,60 @@
     "download": "Λήψη και Εισαγωγή",
     "directDownloadNote": "Υποστηρίζονται μόνο άμεσοι σύνδεσμοι λήψης",
     "clipboardError": "Αποτυχία ανάγνωσης πρόχειρου"
+  },
+  "p2p": {
+    "status": {
+      "disconnected": "Disconnected",
+      "retrying": "Reconnecting...",
+      "connected": "Connected",
+      "roomReady": "Room Ready",
+      "direct": "Direct (Fast)",
+      "relay": "Relay (Slower)",
+      "unknown": "Unknown"
+    },
+    "tooltip": {
+      "connectionType": "Connection type: {{type}}",
+      "latency": "Latency: {{ms}}ms",
+      "packetLoss": "Packet loss: {{percent}}%",
+      "bandwidth": "Bandwidth: {{mbps}} Mbps",
+      "clickForDetails": "Click for diagnostics"
+    },
+    "diagnostics": {
+      "title": "P2P Connection Diagnostics",
+      "connectionStatus": "Connection Status",
+      "status": "Status",
+      "type": "Type",
+      "attempts": "Connection Attempts",
+      "quality": "Connection Quality",
+      "latency": "Latency",
+      "packetLoss": "Packet Loss",
+      "bandwidth": "Bandwidth",
+      "network": "Network Information",
+      "natType": "NAT Type",
+      "relayHelp": "Your connection is being relayed through a server. This may result in higher latency but ensures connectivity.",
+      "directHelp": "You have a direct peer-to-peer connection. This provides the best performance.",
+      "connectingHelp": "Establishing connection. Please wait...",
+      "waitingForPeers": "Waiting for other members to join the room...",
+      "troubleshooting": "Troubleshooting Tips",
+      "tip1": "Check your firewall settings",
+      "tip2": "Ensure your network allows UDP traffic",
+      "tip3": "Try restarting your router if connection issues persist",
+      "symmetricNatWarning": "Your network uses Symmetric NAT which requires relay servers for connectivity"
+    },
+    "settings": {
+      "title": "P2P Settings",
+      "customServers": "Custom TURN Servers",
+      "addServer": "Add Server",
+      "serverUrl": "Server URL",
+      "username": "Username",
+      "credential": "Credential",
+      "meteredApiKey": "Metered API Key",
+      "meteredApiKeyHelp": "Get 50GB/month free at metered.ca",
+      "testConnection": "Test Connection",
+      "serverAdded": "Server added successfully",
+      "serverRemoved": "Server removed",
+      "testSuccess": "Connection test successful",
+      "testFailed": "Connection test failed"
+    }
   }
 }
