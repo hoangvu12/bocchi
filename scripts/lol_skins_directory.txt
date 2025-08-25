@@ -3026,6 +3026,7 @@ Directory structure:
     │   │       └── T1 Jinx 222063.zip
     │   ├── Ambitious Elf Jinx.zip
     │   ├── Arcane Enemy Jinx.zip
+    │   ├── Arcane Fractured Jinx - AIO.zip
     │   ├── Arcane Fractured Jinx.zip
     │   ├── Battle Cat Jinx.zip
     │   ├── Cafe Cuties Jinx.zip
@@ -4911,6 +4912,7 @@ Directory structure:
     │   ├── Prestige Bewitching Morgana.zip
     │   ├── Sinful Succulence Morgana.zip
     │   ├── Snow Moon Morgana.zip
+    │   ├── Spirit Blossom Morgana - All-In-One.zip
     │   ├── Star Nemesis Morgana.zip
     │   └── Victorious Morgana.zip
     ├── Naafiri/
@@ -9502,4 +9504,4 @@ Directory structure:
         ├── Street Demons Zyra.zip
         └── Wildfire Zyra.zip
     
-    1279 directories, 8223 files
+    1279 directories, 8225 files
