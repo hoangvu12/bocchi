@@ -4,8 +4,9 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
-import { Loader2, Wrench } from 'lucide-react'
+import { Loader2, Wrench, FileCode } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+import { toast } from 'sonner'
 import type { Champion } from '../App'
 import { getChampionDisplayName } from '../utils/championUtils'
 
@@ -37,6 +38,8 @@ export const EditCustomSkinDialog: React.FC<EditCustomSkinDialogProps> = ({
   const [selectedImageName, setSelectedImageName] = useState<string>('')
   const [isFixing, setIsFixing] = useState(false)
   const [fixProgress, setFixProgress] = useState<string>('')
+  const [isSwappingFile, setIsSwappingFile] = useState(false)
+  const [swapProgress, setSwapProgress] = useState<string>('')
 
   useEffect(() => {
     setNewName(currentName)
@@ -104,6 +107,51 @@ export const EditCustomSkinDialog: React.FC<EditCustomSkinDialogProps> = ({
     }
   }
 
+  const handleSwapModFile = async () => {
+    if (!modPath) return
+
+    // Browse for new mod file
+    const browseResult = await window.api.browseSkinFiles()
+    if (!browseResult.success || !browseResult.filePaths || browseResult.filePaths.length === 0) {
+      return
+    }
+
+    const newModFilePath = browseResult.filePaths[0]
+
+    setIsSwappingFile(true)
+    setSwapProgress(t('editCustomSkin.swappingFile'))
+
+    try {
+      const result = await window.api.swapCustomModFile(modPath, newModFilePath)
+
+      if (result.success) {
+        setSwapProgress(t('editCustomSkin.swapCompleted'))
+        toast.success(t('editCustomSkin.modFileSwapped'))
+
+        // Wait a bit before resetting
+        setTimeout(() => {
+          setIsSwappingFile(false)
+          setSwapProgress('')
+          onFixComplete?.() // Refresh the skin list
+        }, 1500)
+      } else {
+        setSwapProgress(t('editCustomSkin.swapFailed', { error: result.error }))
+        toast.error(result.error || t('editCustomSkin.swapError'))
+        setTimeout(() => {
+          setIsSwappingFile(false)
+          setSwapProgress('')
+        }, 3000)
+      }
+    } catch {
+      setSwapProgress(t('editCustomSkin.swapError'))
+      toast.error(t('editCustomSkin.swapError'))
+      setTimeout(() => {
+        setIsSwappingFile(false)
+        setSwapProgress('')
+      }, 3000)
+    }
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
@@ -164,34 +212,66 @@ export const EditCustomSkinDialog: React.FC<EditCustomSkinDialogProps> = ({
           </div>
 
           {modPath && (
-            <div>
-              <Label>{t('editCustomSkin.modMaintenance')}</Label>
-              <Button
-                variant="secondary"
-                onClick={handleFixModIssues}
-                disabled={isFixing}
-                className="w-full mt-2"
-              >
-                {isFixing ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    {t('editCustomSkin.fixing')}
-                  </>
-                ) : (
-                  <>
-                    <Wrench className="w-4 h-4 mr-2" />
-                    {t('editCustomSkin.fixModIssues')}
-                  </>
+            <div className="space-y-4">
+              <div>
+                <Label>{t('editCustomSkin.modMaintenance')}</Label>
+                <Button
+                  variant="secondary"
+                  onClick={handleFixModIssues}
+                  disabled={isFixing || isSwappingFile}
+                  className="w-full mt-2"
+                >
+                  {isFixing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      {t('editCustomSkin.fixing')}
+                    </>
+                  ) : (
+                    <>
+                      <Wrench className="w-4 h-4 mr-2" />
+                      {t('editCustomSkin.fixModIssues')}
+                    </>
+                  )}
+                </Button>
+                {fixProgress && (
+                  <p className="text-xs mt-2 text-charcoal-500 dark:text-charcoal-400">
+                    {fixProgress}
+                  </p>
                 )}
-              </Button>
-              {fixProgress && (
-                <p className="text-xs mt-2 text-charcoal-500 dark:text-charcoal-400">
-                  {fixProgress}
+                <p className="text-xs text-charcoal-500 dark:text-charcoal-500 mt-1">
+                  {t('editCustomSkin.fixDescription')}
                 </p>
-              )}
-              <p className="text-xs text-charcoal-500 dark:text-charcoal-500 mt-1">
-                {t('editCustomSkin.fixDescription')}
-              </p>
+              </div>
+
+              <div>
+                <Label>{t('editCustomSkin.replaceModFile')}</Label>
+                <Button
+                  variant="secondary"
+                  onClick={handleSwapModFile}
+                  disabled={isSwappingFile || isFixing}
+                  className="w-full mt-2"
+                >
+                  {isSwappingFile ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      {t('editCustomSkin.swapping')}
+                    </>
+                  ) : (
+                    <>
+                      <FileCode className="w-4 h-4 mr-2" />
+                      {t('editCustomSkin.swapModFile')}
+                    </>
+                  )}
+                </Button>
+                {swapProgress && (
+                  <p className="text-xs mt-2 text-charcoal-500 dark:text-charcoal-400">
+                    {swapProgress}
+                  </p>
+                )}
+                <p className="text-xs text-charcoal-500 dark:text-charcoal-500 mt-1">
+                  {t('editCustomSkin.swapDescription')}
+                </p>
+              </div>
             </div>
           )}
         </div>

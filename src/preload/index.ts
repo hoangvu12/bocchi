@@ -212,6 +212,8 @@ const api = {
     newChampionKey?: string,
     newImagePath?: string
   ) => ipcRenderer.invoke('edit-custom-skin', modPath, newName, newChampionKey, newImagePath),
+  swapCustomModFile: (modPath: string, newModFilePath: string) =>
+    ipcRenderer.invoke('swap-custom-mod-file', modPath, newModFilePath),
   deleteCustomSkin: (modPath: string) => ipcRenderer.invoke('delete-custom-skin', modPath),
   extractImageForCustomSkin: (modPath: string) =>
     ipcRenderer.invoke('extract-image-for-custom-skin', modPath),

@@ -329,6 +329,15 @@
     "fixCompleted": "Sửa lỗi hoàn thành!",
     "fixFailed": "Sửa lỗi thất bại: {{error}}",
     "fixError": "Đã xảy ra lỗi khi sửa mod",
+    "replaceModFile": "Thay Thế File Mod",
+    "swapModFile": "Thay Thế File Mod",
+    "swapping": "Đang thay thế...",
+    "swapDescription": "Thay thế file mod mà vẫn giữ nguyên cài đặt và metadata",
+    "swappingFile": "Đang thay thế file mod...",
+    "swapCompleted": "Thay thế file mod thành công!",
+    "modFileSwapped": "File mod đã được thay thế thành công",
+    "swapFailed": "Không thể thay thế file mod: {{error}}",
+    "swapError": "Đã xảy ra lỗi khi thay thế file mod",
     "saveChanges": "Lưu Thay Đổi"
   },
   "common": {

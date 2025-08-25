@@ -149,10 +149,12 @@ export class PreselectLobbyMonitor extends EventEmitter {
     console.log('[PreselectLobbyMonitor] Ready check phase - triggering smart apply')
     this.currentState = SwiftplayState.MATCH_FOUND
     this.emit('match-found', this.championSnapshot)
-    
+
     // Trigger auto-apply during ready check phase (earlier than game start)
     if (this.championSnapshot && !this.autoApplyTriggered) {
-      console.log('[PreselectLobbyMonitor] Emitting ready-for-preselect-apply event during ready check')
+      console.log(
+        '[PreselectLobbyMonitor] Emitting ready-for-preselect-apply event during ready check'
+      )
       this.emit('ready-for-preselect-apply', this.championSnapshot)
       this.autoApplyTriggered = true
     }
@@ -269,7 +271,6 @@ export class PreselectLobbyMonitor extends EventEmitter {
       try {
         const gameflowSession = await lcuConnector.getGameflowSession()
 
-
         if (gameflowSession?.gameData?.playerChampionSelections) {
           await this.updateChampionSelections(gameflowSession.gameData.playerChampionSelections)
         }
@@ -381,9 +382,14 @@ export class PreselectLobbyMonitor extends EventEmitter {
           this.matchmakingState = searchState
 
           // Trigger auto-apply when in Searching or Found state
-          if ((searchState.searchState === 'Searching' || searchState.searchState === 'Found') && 
-              this.championSnapshot && !this.autoApplyTriggered) {
-            console.log(`[PreselectLobbyMonitor] Auto-applying during ${searchState.searchState} state`)
+          if (
+            (searchState.searchState === 'Searching' || searchState.searchState === 'Found') &&
+            this.championSnapshot &&
+            !this.autoApplyTriggered
+          ) {
+            console.log(
+              `[PreselectLobbyMonitor] Auto-applying during ${searchState.searchState} state`
+            )
             this.emit('ready-for-preselect-apply', this.championSnapshot)
             this.autoApplyTriggered = true
           }
@@ -400,12 +406,12 @@ export class PreselectLobbyMonitor extends EventEmitter {
             console.log('[PreselectLobbyMonitor] Queue cancelled, resetting state')
             this.currentState = SwiftplayState.LOBBY_SELECTING
             this.championSnapshot = null
-            
+
             // If auto-apply was triggered, emit cancellation to stop the patcher
             if (this.autoApplyTriggered) {
               this.emit('cancel-preselect-apply')
             }
-            
+
             this.autoApplyTriggered = false
             this.emit('queue-cancelled')
           }

@@ -1717,6 +1717,16 @@ function setupIpcHandlers(): void {
     }
   )
 
+  // Swap custom mod file
+  ipcMain.handle('swap-custom-mod-file', async (_, modPath: string, newModFilePath: string) => {
+    try {
+      const result = await fileImportService.swapCustomModFile(modPath, newModFilePath)
+      return result
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
   // Delete custom skin
   ipcMain.handle('delete-custom-skin', async (_, modPath: string) => {
     try {

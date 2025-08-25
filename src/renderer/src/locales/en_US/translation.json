@@ -351,6 +351,15 @@
     "fixCompleted": "Fix completed successfully!",
     "fixFailed": "Fix failed: {{error}}",
     "fixError": "An error occurred while fixing the mod",
+    "replaceModFile": "Replace Mod File",
+    "swapModFile": "Replace Mod File",
+    "swapping": "Replacing...",
+    "swapDescription": "Replace the mod file while keeping all settings and metadata",
+    "swappingFile": "Replacing mod file...",
+    "swapCompleted": "Mod file replaced successfully!",
+    "modFileSwapped": "Mod file has been replaced successfully",
+    "swapFailed": "Failed to replace mod file: {{error}}",
+    "swapError": "An error occurred while replacing the mod file",
     "saveChanges": "Save Changes"
   },
   "common": {

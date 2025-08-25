@@ -244,6 +244,10 @@ export interface IApi {
     newChampionKey?: string,
     newImagePath?: string
   ) => Promise<{ success: boolean; error?: string }>
+  swapCustomModFile: (
+    modPath: string,
+    newModFilePath: string
+  ) => Promise<{ success: boolean; error?: string }>
   deleteCustomSkin: (modPath: string) => Promise<{ success: boolean; error?: string }>
   extractImageForCustomSkin: (modPath: string) => Promise<{ success: boolean; error?: string }>
   extractImageFromMod: (

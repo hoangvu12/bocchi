@@ -834,6 +834,114 @@ export class FileImportService {
     }
   }
 
+  async swapCustomModFile(
+    modPath: string,
+    newModFilePath: string
+  ): Promise<{ success: boolean; error?: string }> {
+    try {
+      const stat = await fs.stat(modPath)
+
+      if (!stat.isFile()) {
+        return { success: false, error: 'Only file-based mods support file swapping' }
+      }
+
+      // Validate the new mod file
+      const validation = await this.validateFile(newModFilePath)
+      if (!validation.valid) {
+        return { success: false, error: validation.error || 'Invalid mod file' }
+      }
+
+      // Extract basic info about the mod
+      const oldFileName = path.basename(modPath, path.extname(modPath))
+      const parts = oldFileName.split('_')
+      if (parts.length < 2) {
+        return { success: false, error: 'Invalid mod file name structure' }
+      }
+
+      const championName = parts[0]
+      const skinName = parts.slice(1).join('_')
+
+      // Get extensions
+      const oldExt = path.extname(modPath)
+      const newExt = path.extname(newModFilePath)
+
+      // Backup the original file first
+      const backupPath = `${modPath}.backup`
+      await fs.copyFile(modPath, backupPath)
+
+      try {
+        // If extensions are different, we need to rename
+        if (oldExt !== newExt) {
+          const newModPath = path.join(
+            path.dirname(modPath),
+            `${championName}_${skinName}${newExt}`
+          )
+
+          // Copy new file to the new path
+          await fs.copyFile(newModFilePath, newModPath)
+
+          // Delete the old file
+          await fs.unlink(modPath)
+
+          // Update the WAD directory in metadata if it exists
+          const metadataPath = path.join(this.modsDir, oldFileName)
+          if (await this.fileExists(metadataPath)) {
+            const wadDir = path.join(metadataPath, 'WAD')
+            if (await this.fileExists(wadDir)) {
+              // Clear old WAD files
+              const wadFiles = await fs.readdir(wadDir)
+              for (const wadFile of wadFiles) {
+                await fs.unlink(path.join(wadDir, wadFile))
+              }
+
+              // Copy new WAD file
+              const newWadFileName = path.basename(newModFilePath)
+              await fs.copyFile(newModFilePath, path.join(wadDir, newWadFileName))
+            }
+          }
+        } else {
+          // Same extension, just replace the file
+          await fs.copyFile(newModFilePath, modPath)
+
+          // Update the WAD directory in metadata if it exists
+          const metadataPath = path.join(this.modsDir, oldFileName)
+          if (await this.fileExists(metadataPath)) {
+            const wadDir = path.join(metadataPath, 'WAD')
+            if (await this.fileExists(wadDir)) {
+              // Clear old WAD files
+              const wadFiles = await fs.readdir(wadDir)
+              for (const wadFile of wadFiles) {
+                await fs.unlink(path.join(wadDir, wadFile))
+              }
+
+              // Copy new WAD file
+              const newWadFileName = path.basename(newModFilePath)
+              await fs.copyFile(newModFilePath, path.join(wadDir, newWadFileName))
+            }
+          }
+        }
+
+        // Clear the skin from cache to ensure changes are applied
+        await this.modToolsWrapper.clearSkinCache(oldFileName)
+
+        // Delete the backup if everything succeeded
+        await fs.unlink(backupPath).catch(() => {})
+
+        return { success: true }
+      } catch (error) {
+        // Restore from backup if something went wrong
+        await fs.copyFile(backupPath, modPath)
+        await fs.unlink(backupPath).catch(() => {})
+        throw error
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to swap mod file'
+      }
+    }
+  }
+
   private async cleanupTrailingSpaces(): Promise<void> {
     try {
       const modDirs = await fs.readdir(this.modsDir)
