@@ -194,9 +194,9 @@ export function useSkinManagement() {
 
         // Priority: overrideChampionIds (Swiftplay) -> getTeamComposition (regular) -> apply all skins
         if (overrideChampionIds && overrideChampionIds.length > 0) {
-          // Swiftplay mode: use passed champion IDs directly
+          // Swiftplay mode: use passed champion IDs directly and always apply smart filtering
           championIdsToUse = overrideChampionIds
-          isUsingSmartApply = leagueClientEnabled && smartApplyEnabled
+          isUsingSmartApply = true // Always filter for Swiftplay regardless of settings
         } else if (leagueClientEnabled && smartApplyEnabled) {
           // Regular mode: query team composition from champion select
           const teamCompositionResult = await window.api.getTeamComposition()
@@ -213,21 +213,33 @@ export function useSkinManagement() {
 
         // Apply smart filtering if we have champion IDs and smart apply is enabled
         if (isUsingSmartApply && championIdsToUse.length > 0) {
+          console.log(
+            '[useSkinManagement] Applying smart filtering for champion IDs:',
+            championIdsToUse
+          )
           const summaryResult = await window.api.getSmartApplySummary(
             selectedSkins,
             championIdsToUse
           )
 
-          console.log('summaryResult', summaryResult)
+          console.log('[useSkinManagement] Smart apply summary:', summaryResult)
 
           if (summaryResult.success && summaryResult.summary) {
             const teamChampionKeys = new Set(summaryResult.summary.teamChampions)
+            console.log('[useSkinManagement] Team champion keys:', Array.from(teamChampionKeys))
 
+            const beforeCount = selectedSkins.length
             skinsToApply = selectedSkins.filter(
               (skin) => skin.championKey === 'Custom' || teamChampionKeys.has(skin.championKey)
             )
 
-            console.log('skinsToApply', skinsToApply)
+            console.log(
+              `[useSkinManagement] Smart filtering: ${beforeCount} → ${skinsToApply.length} skins`
+            )
+            console.log(
+              '[useSkinManagement] Filtered skins:',
+              skinsToApply.map((s) => `${s.championKey}/${s.skinName}`)
+            )
 
             if (skinsToApply.length === 0) {
               setStatusMessage(t('smartApply.noSkinsForTeam'))
