@@ -354,6 +354,62 @@ export interface IApi {
   ) => () => void
   onTeamReset: (callback: (newPhase?: string) => void) => () => void
 
+  // Preselect Lobby APIs
+  getPreselectCurrentState: () => Promise<{
+    success: boolean
+    state?: string
+    champions?: Array<{
+      summonerInternalName: string
+      championId: number
+      championKey?: string
+      isLocalPlayer?: boolean
+    }>
+    isDetected?: boolean
+    queueId?: number | null
+    error?: string
+  }>
+  getPreselectSnapshot: () => Promise<{
+    success: boolean
+    snapshot?: {
+      timestamp: number
+      queueId: number
+      champions: Array<{
+        summonerInternalName: string
+        championId: number
+        championKey?: string
+        isLocalPlayer?: boolean
+      }>
+      searchState: string
+      gameflowPhase: string
+    } | null
+    error?: string
+  }>
+  getMatchmakingState: () => Promise<{
+    success: boolean
+    state?: {
+      searchState: string
+      timeInQueue?: number
+      estimatedQueueTime?: number
+    } | null
+    error?: string
+  }>
+  getLobbyData: () => Promise<{
+    success: boolean
+    data?: any
+    error?: string
+  }>
+
+  // Preselect Lobby Events
+  onPreselectModeDetected: (
+    callback: (data: { queueId: number; champions: any[] }) => void
+  ) => () => void
+  onPreselectChampionsChanged: (callback: (champions: any[]) => void) => () => void
+  onPreselectSnapshotTaken: (callback: (snapshot: any) => void) => () => void
+  onPreselectMatchFound: (callback: (snapshot: any) => void) => () => void
+  onPreselectQueueCancelled: (callback: () => void) => () => void
+  onPreselectReadyForApply: (callback: (snapshot: any) => void) => () => void
+  onPreselectStateReset: (callback: () => void) => () => void
+
   // Overlay management
   createOverlay: () => Promise<{ success: boolean; error?: string }>
   destroyOverlay: () => Promise<{ success: boolean; error?: string }>

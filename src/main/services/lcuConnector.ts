@@ -235,6 +235,22 @@ export class LCUConnector extends EventEmitter {
     }
   }
 
+  async getMatchmakingSearchState(): Promise<any> {
+    try {
+      return await this.request('GET', '/lol-lobby/v2/lobby/matchmaking/search-state')
+    } catch {
+      return null
+    }
+  }
+
+  async getLobbyData(): Promise<any> {
+    try {
+      return await this.request('GET', '/lol-lobby/v2/lobby')
+    } catch {
+      return null
+    }
+  }
+
   isConnected(): boolean {
     return this.connected
   }

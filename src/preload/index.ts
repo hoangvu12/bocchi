@@ -363,6 +363,49 @@ const api = {
     return () => ipcRenderer.removeListener('team:reset', handler)
   },
 
+  // Preselect Lobby APIs
+  getPreselectCurrentState: () => ipcRenderer.invoke('preselect:get-current-state'),
+  getPreselectSnapshot: () => ipcRenderer.invoke('preselect:get-snapshot'),
+  getMatchmakingState: () => ipcRenderer.invoke('lcu:get-matchmaking-state'),
+  getLobbyData: () => ipcRenderer.invoke('lcu:get-lobby-data'),
+
+  // Preselect Lobby Events
+  onPreselectModeDetected: (callback: (data: { queueId: number; champions: any[] }) => void) => {
+    const handler = (_: any, data: any) => callback(data)
+    ipcRenderer.on('preselect:mode-detected', handler)
+    return () => ipcRenderer.removeListener('preselect:mode-detected', handler)
+  },
+  onPreselectChampionsChanged: (callback: (champions: any[]) => void) => {
+    const handler = (_: any, champions: any[]) => callback(champions)
+    ipcRenderer.on('preselect:champions-changed', handler)
+    return () => ipcRenderer.removeListener('preselect:champions-changed', handler)
+  },
+  onPreselectSnapshotTaken: (callback: (snapshot: any) => void) => {
+    const handler = (_: any, snapshot: any) => callback(snapshot)
+    ipcRenderer.on('preselect:snapshot-taken', handler)
+    return () => ipcRenderer.removeListener('preselect:snapshot-taken', handler)
+  },
+  onPreselectMatchFound: (callback: (snapshot: any) => void) => {
+    const handler = (_: any, snapshot: any) => callback(snapshot)
+    ipcRenderer.on('preselect:match-found', handler)
+    return () => ipcRenderer.removeListener('preselect:match-found', handler)
+  },
+  onPreselectQueueCancelled: (callback: () => void) => {
+    const handler = () => callback()
+    ipcRenderer.on('preselect:queue-cancelled', handler)
+    return () => ipcRenderer.removeListener('preselect:queue-cancelled', handler)
+  },
+  onPreselectReadyForApply: (callback: (snapshot: any) => void) => {
+    const handler = (_: any, snapshot: any) => callback(snapshot)
+    ipcRenderer.on('preselect:ready-for-apply', handler)
+    return () => ipcRenderer.removeListener('preselect:ready-for-apply', handler)
+  },
+  onPreselectStateReset: (callback: () => void) => {
+    const handler = () => callback()
+    ipcRenderer.on('preselect:state-reset', handler)
+    return () => ipcRenderer.removeListener('preselect:state-reset', handler)
+  },
+
   // Overlay management
   createOverlay: () => ipcRenderer.invoke('create-overlay'),
   destroyOverlay: () => ipcRenderer.invoke('destroy-overlay'),

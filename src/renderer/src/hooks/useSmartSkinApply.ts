@@ -15,6 +15,7 @@ interface TeamComposition {
   championIds: number[]
   allLocked: boolean
   inFinalization: boolean
+  updateKey?: number
 }
 
 interface SmartApplySummary {
@@ -178,12 +179,99 @@ export function useSmartSkinApply({
       }
     })
 
+    // Listen for preselect mode events
+    const unsubscribePreselectReady = window.api.onPreselectReadyForApply(async (snapshot) => {
+      // Check if patcher is already running
+      const isPatcherRunning = await window.api.isPatcherRunning()
+      if (isPatcherRunning) {
+        return
+      }
+
+      if (!autoApplyEnabled || !gamePath || isApplying) return
+
+      const championIds = snapshot.champions
+        .map((champ: any) => champ.championId)
+        .filter((id: number) => id > 0)
+
+      // Create a unique key for this team composition from snapshot
+      const teamKey = championIds.sort().join('-')
+
+      // Don't apply if we already applied for this exact team
+      if (teamKey === lastAppliedTeamKey.current) {
+        return
+      }
+
+      // Check if we have any skins selected at all
+      if (selectedSkins.length === 0) {
+        return
+      }
+
+      console.log('[useSmartSkinApply] Preselect ready for apply:', championIds)
+      toast.success(
+        t('smartApply.preselect.applying', { default: 'Applying skins for Swiftplay...' })
+      )
+
+      // Apply the skins using parent function
+      parentApplyFunction?.()
+      lastAppliedTeamKey.current = teamKey
+    })
+
+    const unsubscribePreselectModeDetected = window.api.onPreselectModeDetected((data) => {
+      console.log('[useSmartSkinApply] Preselect mode detected:', data)
+      toast.info(
+        t('smartApply.preselect.detected', {
+          default: `${data.queueId === 480 ? 'Swiftplay' : 'Preselect'} mode detected - Smart Apply ready!`
+        })
+      )
+    })
+
+    const unsubscribePreselectChampionsChanged = window.api.onPreselectChampionsChanged(
+      (champions) => {
+        console.log(
+          '[useSmartSkinApply] Preselect champions changed:',
+          champions.map((c: any) => c.championId)
+        )
+
+        // Update team composition with preselect champions
+        const championIds = champions
+          .map((champ: any) => champ.championId)
+          .filter((id: number) => id > 0)
+
+        if (championIds.length > 0) {
+          setTeamComposition({
+            championIds,
+            allLocked: false, // Not locked until queue starts
+            inFinalization: false,
+            updateKey: Date.now() // Force new object identity for React effects
+          })
+        }
+      }
+    )
+
+    const unsubscribePreselectSnapshot = window.api.onPreselectSnapshotTaken((snapshot) => {
+      console.log('[useSmartSkinApply] Preselect snapshot taken:', snapshot)
+      toast.info(
+        t('smartApply.preselect.snapshot', { default: 'Champions locked for matchmaking' })
+      )
+    })
+
+    const unsubscribePreselectQueueCancelled = window.api.onPreselectQueueCancelled(() => {
+      console.log('[useSmartSkinApply] Preselect queue cancelled')
+      // Reset applied state so user can requeue and apply again
+      lastAppliedTeamKey.current = ''
+    })
+
     return () => {
       unsubscribePhase()
       unsubscribeLcuConnected()
       unsubscribeComposition()
       unsubscribeReady()
       unsubscribeReset()
+      unsubscribePreselectReady()
+      unsubscribePreselectModeDetected()
+      unsubscribePreselectChampionsChanged()
+      unsubscribePreselectSnapshot()
+      unsubscribePreselectQueueCancelled()
     }
   }, [
     enabled,

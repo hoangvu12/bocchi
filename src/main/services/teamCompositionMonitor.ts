@@ -2,15 +2,10 @@ import { EventEmitter } from 'events'
 import { lcuConnector } from './lcuConnector'
 import { gameflowMonitor } from './gameflowMonitor'
 import { settingsService } from './settingsService'
+import { preselectLobbyMonitor } from './preselectLobbyMonitor'
 
-// Queue IDs for modes with gameSelectPriority 40 - these modes let players preselect champions
-// and don't have a champion select phase where auto-apply would be relevant
-const PRESELECT_CHAMPION_QUEUE_IDS = [
-  430, // Normal (Blind Pick)
-  480, // Swiftplay
-  490, // Quickplay
-  830 // Intro
-]
+// Note: PRESELECT_CHAMPION_QUEUE_IDS have been moved to PreselectLobbyMonitor
+// Regular champion select monitoring continues here for draft modes
 
 interface TeamMember {
   cellId: number
@@ -61,6 +56,9 @@ export class TeamCompositionMonitor extends EventEmitter {
   async start(): Promise<void> {
     this.monitoringActive = true
 
+    // Start preselect lobby monitoring
+    await preselectLobbyMonitor.start()
+
     // Check if we're already in champ select
     const currentPhase = gameflowMonitor.getCurrentPhase()
     if (currentPhase === 'ChampSelect') {
@@ -78,6 +76,9 @@ export class TeamCompositionMonitor extends EventEmitter {
     this.hasTriggeredInWindow = false
     this.lastTriggerTimeLeft = 0
     this.currentPhase = ''
+
+    // Stop preselect monitoring
+    preselectLobbyMonitor.stop()
   }
 
   private setupEventListeners(): void {
@@ -132,6 +133,51 @@ export class TeamCompositionMonitor extends EventEmitter {
       this.hasTriggeredInWindow = false
       this.lastTriggerTimeLeft = 0
       this.currentPhase = ''
+    })
+
+    // Listen for preselect lobby events
+    preselectLobbyMonitor.on('ready-for-preselect-apply', (snapshot) => {
+      console.log('[TeamCompositionMonitor] Preselect ready for smart apply:', snapshot)
+
+      // Convert preselect champions to our format
+      const championIds = snapshot.champions.map((champ) => champ.championId).filter((id) => id > 0)
+
+      const preselectComposition: TeamComposition = {
+        championIds,
+        allLocked: true,
+        inFinalization: true,
+        timeLeft: 0
+      }
+
+      // Emit ready for smart apply with preselect composition
+      this.emit('ready-for-smart-apply', preselectComposition)
+    })
+
+    preselectLobbyMonitor.on('champions-changed', (champions) => {
+      console.log(
+        '[TeamCompositionMonitor] Preselect champions changed:',
+        champions.map((c) => c.championId)
+      )
+
+      const championIds = champions.map((champ) => champ.championId).filter((id) => id > 0)
+
+      const preselectComposition: TeamComposition = {
+        championIds,
+        allLocked: false,
+        inFinalization: false,
+        timeLeft: 0
+      }
+
+      // Update current queue ID from preselect monitor
+      this.currentQueueId = preselectLobbyMonitor.getCurrentQueueId()
+
+      // Emit composition update
+      this.emit('team-composition-updated', preselectComposition)
+    })
+
+    preselectLobbyMonitor.on('state-reset', () => {
+      console.log('[TeamCompositionMonitor] Preselect state reset')
+      this.emit('team-reset', 'preselect-reset')
     })
   }
 
@@ -226,15 +272,8 @@ export class TeamCompositionMonitor extends EventEmitter {
         this.hasTriggeredInWindow = false
       }
 
-      // Skip auto-apply for modes with preselected champions (no champion select phase)
-      const isPreselectChampionMode =
-        this.currentQueueId !== null && PRESELECT_CHAMPION_QUEUE_IDS.includes(this.currentQueueId)
-      if (isPreselectChampionMode) {
-        console.log(
-          `[TeamCompositionMonitor] Skipping auto-apply for queue ${this.currentQueueId} (preselect champion mode)`
-        )
-        return
-      }
+      // Note: Preselect modes (Swiftplay, etc.) are now handled by PreselectLobbyMonitor
+      // No need to skip them here as they won't reach this point in normal flow
 
       // Multiple conditions for triggering auto-apply
       const shouldTrigger =

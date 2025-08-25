@@ -21,6 +21,7 @@ import { ImageConverter } from './services/imageConverter'
 import { lcuConnector } from './services/lcuConnector'
 import { gameflowMonitor } from './services/gameflowMonitor'
 import { teamCompositionMonitor } from './services/teamCompositionMonitor'
+import { preselectLobbyMonitor } from './services/preselectLobbyMonitor'
 import { skinApplyService } from './services/skinApplyService'
 import { overlayWindowManager } from './services/overlayWindowManager'
 import { autoBanPickService } from './services/autoBanPickService'
@@ -2238,6 +2239,40 @@ function setupIpcHandlers(): void {
     }
   )
 
+  // Preselect lobby handlers
+  ipcMain.handle('preselect:get-current-state', () => {
+    return {
+      success: true,
+      state: preselectLobbyMonitor.getCurrentState(),
+      champions: preselectLobbyMonitor.getCurrentChampions(),
+      isDetected: preselectLobbyMonitor.isPreselectModeDetected(),
+      queueId: preselectLobbyMonitor.getCurrentQueueId()
+    }
+  })
+
+  ipcMain.handle('preselect:get-snapshot', () => {
+    const snapshot = preselectLobbyMonitor.getChampionSnapshot()
+    return { success: true, snapshot }
+  })
+
+  ipcMain.handle('lcu:get-matchmaking-state', async () => {
+    try {
+      const state = await lcuConnector.getMatchmakingSearchState()
+      return { success: true, state }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('lcu:get-lobby-data', async () => {
+    try {
+      const data = await lcuConnector.getLobbyData()
+      return { success: true, data }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
   // Overlay skin selection handler
   overlayWindowManager.on('skin-selected', (skin: SelectedSkin) => {
     // Send the selected skin to the main window
@@ -2499,6 +2534,49 @@ function setupLCUConnection(): void {
   teamCompositionMonitor.on('team-reset', (newPhase: string) => {
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send('team:reset', newPhase)
+    })
+  })
+
+  // Forward preselectLobbyMonitor events
+  preselectLobbyMonitor.on('preselect-mode-detected', (data: any) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('preselect:mode-detected', data)
+    })
+  })
+
+  preselectLobbyMonitor.on('champions-changed', (champions: any[]) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('preselect:champions-changed', champions)
+    })
+  })
+
+  preselectLobbyMonitor.on('snapshot-taken', (snapshot: any) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('preselect:snapshot-taken', snapshot)
+    })
+  })
+
+  preselectLobbyMonitor.on('match-found', (snapshot: any) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('preselect:match-found', snapshot)
+    })
+  })
+
+  preselectLobbyMonitor.on('queue-cancelled', () => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('preselect:queue-cancelled')
+    })
+  })
+
+  preselectLobbyMonitor.on('ready-for-preselect-apply', (snapshot: any) => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('preselect:ready-for-apply', snapshot)
+    })
+  })
+
+  preselectLobbyMonitor.on('state-reset', () => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('preselect:state-reset')
     })
   })
 
