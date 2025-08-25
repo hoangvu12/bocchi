@@ -38,7 +38,7 @@ export function useSmartSkinApply({
   onApplyStart,
   onApplyComplete,
   parentApplyFunction
-}: UseSmartSkinApplyProps & { parentApplyFunction?: () => void } = {}) {
+}: UseSmartSkinApplyProps & { parentApplyFunction?: (championIds?: number[]) => void } = {}) {
   const { t } = useTranslation()
   const [selectedSkins] = useAtom(selectedSkinsAtom)
   const [autoSyncedSkinsMap] = useAtom(autoSyncedSkinsAtom)
@@ -183,9 +183,7 @@ export function useSmartSkinApply({
     const unsubscribePreselectReady = window.api.onPreselectReadyForApply(async (snapshot) => {
       // Check if patcher is already running
       const isPatcherRunning = await window.api.isPatcherRunning()
-      if (isPatcherRunning) {
-        return
-      }
+      if (isPatcherRunning) return
 
       if (!autoApplyEnabled || !gamePath || isApplying) return
 
@@ -197,22 +195,18 @@ export function useSmartSkinApply({
       const teamKey = championIds.sort().join('-')
 
       // Don't apply if we already applied for this exact team
-      if (teamKey === lastAppliedTeamKey.current) {
-        return
-      }
+      if (teamKey === lastAppliedTeamKey.current) return
 
       // Check if we have any skins selected at all
-      if (selectedSkins.length === 0) {
-        return
-      }
+      if (selectedSkins.length === 0) return
 
-      console.log('[useSmartSkinApply] Preselect ready for apply:', championIds)
+      console.log('[useSmartSkinApply] Triggering Swiftplay auto-apply:', championIds)
       toast.success(
         t('smartApply.preselect.applying', { default: 'Applying skins for Swiftplay...' })
       )
 
-      // Apply the skins using parent function
-      parentApplyFunction?.()
+      // Apply the skins using parent function with champion IDs for smart filtering
+      parentApplyFunction?.(championIds)
       lastAppliedTeamKey.current = teamKey
     })
 
@@ -261,6 +255,16 @@ export function useSmartSkinApply({
       lastAppliedTeamKey.current = ''
     })
 
+    const unsubscribePreselectCancelApply = window.api.onPreselectCancelApply(async () => {
+      console.log('[useSmartSkinApply] Swiftplay queue cancelled - stopping patcher')
+      try {
+        await window.api.stopPatcher()
+        lastAppliedTeamKey.current = ''
+      } catch (error) {
+        console.error('[useSmartSkinApply] Error stopping patcher:', error)
+      }
+    })
+
     return () => {
       unsubscribePhase()
       unsubscribeLcuConnected()
@@ -272,6 +276,7 @@ export function useSmartSkinApply({
       unsubscribePreselectChampionsChanged()
       unsubscribePreselectSnapshot()
       unsubscribePreselectQueueCancelled()
+      unsubscribePreselectCancelApply()
     }
   }, [
     enabled,

@@ -132,307 +132,322 @@ export function useSkinManagement() {
     [loadDownloadedSkins, setStatusMessage, t]
   )
 
-  const applySelectedSkins = useCallback(async () => {
-    if (!gamePath || selectedSkins.length === 0) {
-      return
-    }
-
-    // Prevent concurrent skin applications
-    if (activeOperation === 'applySelectedSkins') {
-      return
-    }
-
-    setActiveOperation('applySelectedSkins')
-    setLoadingStates((prev) => ({ ...prev, isApplyingSkins: true }))
-
-    try {
-      // Stop patcher if running
-      if (isPatcherRunning) {
-        setStatusMessage(t('status.stoppingCurrentPatcher'))
-        await window.api.stopPatcher()
-        await new Promise((resolve) => setTimeout(resolve, 500))
+  const applySelectedSkins = useCallback(
+    async (overrideChampionIds?: number[]) => {
+      if (!gamePath || selectedSkins.length === 0) {
+        return
       }
 
-      // Filter skins based on auto-selected priority
-      // If a champion has both manual and auto-selected skins, only use the auto-selected one
-      const allowMultipleSkinsPerChampion = await window.api.getSettings(
-        'allowMultipleSkinsPerChampion'
-      )
-      let prioritizedSkins = selectedSkins
+      // Prevent concurrent skin applications
+      if (activeOperation === 'applySelectedSkins') {
+        return
+      }
 
-      if (!allowMultipleSkinsPerChampion) {
-        const skinsByChampion = new Map<string, typeof selectedSkins>()
+      setActiveOperation('applySelectedSkins')
+      setLoadingStates((prev) => ({ ...prev, isApplyingSkins: true }))
 
-        for (const skin of selectedSkins) {
-          const existing = skinsByChampion.get(skin.championKey) || []
-          skinsByChampion.set(skin.championKey, [...existing, skin])
+      try {
+        // Stop patcher if running
+        if (isPatcherRunning) {
+          setStatusMessage(t('status.stoppingCurrentPatcher'))
+          await window.api.stopPatcher()
+          await new Promise((resolve) => setTimeout(resolve, 500))
         }
 
-        // Apply priority filtering
-        for (const [championKey, skins] of skinsByChampion) {
-          if (skins.length > 1) {
-            const autoSelectedSkin = skins.find((s) => s.isAutoSelected)
-            if (autoSelectedSkin) {
-              // Remove all skins for this champion except the auto-selected one
-              prioritizedSkins = prioritizedSkins.filter(
-                (s) => s.championKey !== championKey || s === autoSelectedSkin
-              )
+        // Filter skins based on auto-selected priority
+        // If a champion has both manual and auto-selected skins, only use the auto-selected one
+        const allowMultipleSkinsPerChampion = await window.api.getSettings(
+          'allowMultipleSkinsPerChampion'
+        )
+        let prioritizedSkins = selectedSkins
+
+        if (!allowMultipleSkinsPerChampion) {
+          const skinsByChampion = new Map<string, typeof selectedSkins>()
+
+          for (const skin of selectedSkins) {
+            const existing = skinsByChampion.get(skin.championKey) || []
+            skinsByChampion.set(skin.championKey, [...existing, skin])
+          }
+
+          // Apply priority filtering
+          for (const [championKey, skins] of skinsByChampion) {
+            if (skins.length > 1) {
+              const autoSelectedSkin = skins.find((s) => s.isAutoSelected)
+              if (autoSelectedSkin) {
+                // Remove all skins for this champion except the auto-selected one
+                prioritizedSkins = prioritizedSkins.filter(
+                  (s) => s.championKey !== championKey || s === autoSelectedSkin
+                )
+              }
             }
           }
         }
-      }
 
-      // Determine which skins to apply based on smart apply settings
-      let skinsToApply = prioritizedSkins
-      let isUsingSmartApply = false
+        // Determine which skins to apply based on smart apply settings
+        let skinsToApply = prioritizedSkins
+        let isUsingSmartApply = false
+        let championIdsToUse: number[] = []
 
-      // Check if we should filter skins for smart apply
-      const leagueClientEnabled = await window.api.getSettings('leagueClientEnabled')
-      const smartApplyEnabled = await window.api.getSettings('smartApplyEnabled')
-      const teamCompositionResult = await window.api.getTeamComposition()
+        // Check if we should filter skins for smart apply
+        const leagueClientEnabled = await window.api.getSettings('leagueClientEnabled')
+        const smartApplyEnabled = await window.api.getSettings('smartApplyEnabled')
 
-      if (
-        leagueClientEnabled &&
-        smartApplyEnabled &&
-        teamCompositionResult.success &&
-        teamCompositionResult.composition &&
-        teamCompositionResult.composition.championIds &&
-        teamCompositionResult.composition.championIds.length > 0
-      ) {
-        const summaryResult = await window.api.getSmartApplySummary(
-          selectedSkins,
-          teamCompositionResult.composition.championIds
-        )
+        // Priority: overrideChampionIds (Swiftplay) -> getTeamComposition (regular) -> apply all skins
+        if (overrideChampionIds && overrideChampionIds.length > 0) {
+          // Swiftplay mode: use passed champion IDs directly
+          championIdsToUse = overrideChampionIds
+          isUsingSmartApply = leagueClientEnabled && smartApplyEnabled
+        } else if (leagueClientEnabled && smartApplyEnabled) {
+          // Regular mode: query team composition from champion select
+          const teamCompositionResult = await window.api.getTeamComposition()
+          if (
+            teamCompositionResult.success &&
+            teamCompositionResult.composition &&
+            teamCompositionResult.composition.championIds &&
+            teamCompositionResult.composition.championIds.length > 0
+          ) {
+            championIdsToUse = teamCompositionResult.composition.championIds
+            isUsingSmartApply = true
+          }
+        }
 
-        console.log('summaryResult', summaryResult)
-
-        if (summaryResult.success && summaryResult.summary) {
-          const teamChampionKeys = new Set(summaryResult.summary.teamChampions)
-
-          skinsToApply = selectedSkins.filter(
-            (skin) => skin.championKey === 'Custom' || teamChampionKeys.has(skin.championKey)
+        // Apply smart filtering if we have champion IDs and smart apply is enabled
+        if (isUsingSmartApply && championIdsToUse.length > 0) {
+          const summaryResult = await window.api.getSmartApplySummary(
+            selectedSkins,
+            championIdsToUse
           )
 
-          console.log('skinsToApply', skinsToApply)
+          console.log('summaryResult', summaryResult)
 
-          isUsingSmartApply = true
+          if (summaryResult.success && summaryResult.summary) {
+            const teamChampionKeys = new Set(summaryResult.summary.teamChampions)
 
-          if (skinsToApply.length === 0) {
-            setStatusMessage(t('smartApply.noSkinsForTeam'))
-            setLoadingStates((prev) => ({ ...prev, isApplyingSkins: false }))
-            setActiveOperation(null)
-            return
-          }
-        }
-      }
-
-      const skinKeys: string[] = []
-
-      // Show appropriate status message
-      if (isUsingSmartApply) {
-        setStatusMessage(
-          t('smartApply.applying', {
-            count: skinsToApply.length,
-            champions: 'your team'
-          })
-        )
-      }
-
-      console.log('[useSkinManagement] Processing skins to apply:', skinsToApply)
-
-      // Download any skins that aren't downloaded yet
-      for (const selectedSkin of skinsToApply) {
-        // Handle custom mods (both old and new format)
-        if (
-          selectedSkin.championKey === 'Custom' ||
-          selectedSkin.skinId.startsWith('custom_[User] ')
-        ) {
-          if (selectedSkin.championKey === 'Custom') {
-            // Old format: Custom champion
-            const userMod = downloadedSkins.find(
-              (ds) => ds.skinName.includes('[User]') && ds.skinName.includes(selectedSkin.skinName)
+            skinsToApply = selectedSkins.filter(
+              (skin) => skin.championKey === 'Custom' || teamChampionKeys.has(skin.championKey)
             )
-            if (userMod) {
-              skinKeys.push(`${userMod.championName}/${userMod.skinName}`)
+
+            console.log('skinsToApply', skinsToApply)
+
+            if (skinsToApply.length === 0) {
+              setStatusMessage(t('smartApply.noSkinsForTeam'))
+              setLoadingStates((prev) => ({ ...prev, isApplyingSkins: false }))
+              setActiveOperation(null)
+              return
             }
-          } else {
-            // New format: Custom mod with champion assigned
-            // Extract the filename from skinId after "custom_"
-            const modFileName = selectedSkin.skinId.replace('custom_', '')
-            console.log(
-              `[useSkinManagement] Adding custom mod: ${selectedSkin.championKey}/${modFileName}`
-            )
-            skinKeys.push(`${selectedSkin.championKey}/${modFileName}`)
-          }
-          continue
-        }
-
-        const champion = championData?.champions.find((c) => c.key === selectedSkin.championKey)
-        if (!champion) continue
-
-        const skin = champion.skins.find((s) => s.id === selectedSkin.skinId)
-        if (!skin) continue
-
-        let skinFileName: string
-        let githubUrl: string | undefined
-
-        // Check if this is a variant selection
-        if (selectedSkin.variantId && skin.variants) {
-          const variant = skin.variants.items.find((v) => v.id === selectedSkin.variantId)
-          if (!variant) continue
-
-          // Use the variant's download URL if available, otherwise use GitHub URL
-          githubUrl = variant.downloadUrl || variant.githubUrl
-          // Extract filename from the URL for consistency
-          const urlParts = githubUrl.split('/')
-          skinFileName = decodeURIComponent(urlParts[urlParts.length - 1])
-
-          console.log(`[Download] Using variant ${variant.name}:`)
-          console.log(`  variantId: ${selectedSkin.variantId}`)
-          console.log(`  githubUrl: ${variant.githubUrl}`)
-          console.log(`  downloadUrl: ${variant.downloadUrl}`)
-          console.log(`  using URL: ${githubUrl}`)
-          console.log(`  filename: ${skinFileName}`)
-        } else {
-          // Use centralized filename generation for regular skins and chromas
-          skinFileName = generateSkinFilename({
-            ...skin,
-            chromaId: selectedSkin.chromaId
-          })
-
-          console.log(`[Download] Generating filename for ${skin.name}:`)
-          console.log(`  lolSkinsName: ${skin.lolSkinsName}`)
-          console.log(`  nameEn: ${skin.nameEn}`)
-          console.log(`  name: ${skin.name}`)
-          console.log(`  chromaId: ${selectedSkin.chromaId}`)
-          console.log(`  Generated filename: ${skinFileName}`)
-        }
-
-        // Check if skin is already downloaded
-        const isSkinDownloaded = downloadedSkins.some(
-          (ds) => ds.championName === champion.key && ds.skinName === skinFileName
-        )
-
-        if (!isSkinDownloaded) {
-          // Only generate GitHub URL if we haven't already (variants have it pre-set)
-          if (!githubUrl) {
-            const championNameForUrl = getChampionDisplayName(champion)
-
-            if (selectedSkin.chromaId) {
-              const downloadName = skinFileName.replace(/\.zip$/i, '').replace(/\s+\d+$/, '')
-              githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/chromas/${encodeURIComponent(downloadName)}/${encodeURIComponent(skinFileName)}`
-
-              const displayMessage = isUsingSmartApply
-                ? t('status.downloading', { name: `${skin.name} (Chroma) for your team` })
-                : t('status.downloading', { name: `${skin.name} (Chroma)` })
-              setStatusMessage(displayMessage)
-            } else {
-              githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(skinFileName)}`
-
-              const displayMessage = isUsingSmartApply
-                ? t('status.downloading', { name: `${skin.name} for your team` })
-                : t('status.downloading', { name: skin.name })
-              setStatusMessage(displayMessage)
-            }
-          } else {
-            // For variants, use a more specific message
-            const variantName = selectedSkin.variantId
-              ? skin.variants?.items.find((v) => v.id === selectedSkin.variantId)?.displayName ||
-                skin.name
-              : skin.name
-            const displayMessage = isUsingSmartApply
-              ? t('status.downloading', { name: `${variantName} for your team` })
-              : t('status.downloading', { name: variantName })
-            setStatusMessage(displayMessage)
-          }
-
-          const downloadResult = await window.api.downloadSkin(githubUrl)
-          if (!downloadResult.success) {
-            throw new Error(downloadResult.error || 'Failed to download skin')
           }
         }
 
-        const championNameForPatcher = getChampionDisplayName(champion)
-        skinKeys.push(`${championNameForPatcher}/${skinFileName}`)
-      }
+        const skinKeys: string[] = []
 
-      console.log('[useSkinManagement] Final skinKeys array:', skinKeys)
-
-      // Reload downloaded skins list
-      await loadDownloadedSkins()
-
-      // Update status message based on mode
-      if (isUsingSmartApply) {
-        setStatusMessage(
-          t('smartApply.applying', {
-            count: skinsToApply.length,
-            champions: 'your team'
-          })
-        )
-      } else {
-        setStatusMessage(t('status.applying', { name: `${skinsToApply.length} skins` }))
-      }
-
-      // Run patcher with filtered skins
-      const patcherResult = await window.api.runPatcher(gamePath, skinKeys)
-      if (patcherResult.success) {
+        // Show appropriate status message
         if (isUsingSmartApply) {
           setStatusMessage(
-            t('smartApply.success', {
-              applied: skinsToApply.length,
-              total: selectedSkins.length
+            t('smartApply.applying', {
+              count: skinsToApply.length,
+              champions: 'your team'
+            })
+          )
+        }
+
+        console.log('[useSkinManagement] Processing skins to apply:', skinsToApply)
+
+        // Download any skins that aren't downloaded yet
+        for (const selectedSkin of skinsToApply) {
+          // Handle custom mods (both old and new format)
+          if (
+            selectedSkin.championKey === 'Custom' ||
+            selectedSkin.skinId.startsWith('custom_[User] ')
+          ) {
+            if (selectedSkin.championKey === 'Custom') {
+              // Old format: Custom champion
+              const userMod = downloadedSkins.find(
+                (ds) =>
+                  ds.skinName.includes('[User]') && ds.skinName.includes(selectedSkin.skinName)
+              )
+              if (userMod) {
+                skinKeys.push(`${userMod.championName}/${userMod.skinName}`)
+              }
+            } else {
+              // New format: Custom mod with champion assigned
+              // Extract the filename from skinId after "custom_"
+              const modFileName = selectedSkin.skinId.replace('custom_', '')
+              console.log(
+                `[useSkinManagement] Adding custom mod: ${selectedSkin.championKey}/${modFileName}`
+              )
+              skinKeys.push(`${selectedSkin.championKey}/${modFileName}`)
+            }
+            continue
+          }
+
+          const champion = championData?.champions.find((c) => c.key === selectedSkin.championKey)
+          if (!champion) continue
+
+          const skin = champion.skins.find((s) => s.id === selectedSkin.skinId)
+          if (!skin) continue
+
+          let skinFileName: string
+          let githubUrl: string | undefined
+
+          // Check if this is a variant selection
+          if (selectedSkin.variantId && skin.variants) {
+            const variant = skin.variants.items.find((v) => v.id === selectedSkin.variantId)
+            if (!variant) continue
+
+            // Use the variant's download URL if available, otherwise use GitHub URL
+            githubUrl = variant.downloadUrl || variant.githubUrl
+            // Extract filename from the URL for consistency
+            const urlParts = githubUrl.split('/')
+            skinFileName = decodeURIComponent(urlParts[urlParts.length - 1])
+
+            console.log(`[Download] Using variant ${variant.name}:`)
+            console.log(`  variantId: ${selectedSkin.variantId}`)
+            console.log(`  githubUrl: ${variant.githubUrl}`)
+            console.log(`  downloadUrl: ${variant.downloadUrl}`)
+            console.log(`  using URL: ${githubUrl}`)
+            console.log(`  filename: ${skinFileName}`)
+          } else {
+            // Use centralized filename generation for regular skins and chromas
+            skinFileName = generateSkinFilename({
+              ...skin,
+              chromaId: selectedSkin.chromaId
+            })
+
+            console.log(`[Download] Generating filename for ${skin.name}:`)
+            console.log(`  lolSkinsName: ${skin.lolSkinsName}`)
+            console.log(`  nameEn: ${skin.nameEn}`)
+            console.log(`  name: ${skin.name}`)
+            console.log(`  chromaId: ${selectedSkin.chromaId}`)
+            console.log(`  Generated filename: ${skinFileName}`)
+          }
+
+          // Check if skin is already downloaded
+          const isSkinDownloaded = downloadedSkins.some(
+            (ds) => ds.championName === champion.key && ds.skinName === skinFileName
+          )
+
+          if (!isSkinDownloaded) {
+            // Only generate GitHub URL if we haven't already (variants have it pre-set)
+            if (!githubUrl) {
+              const championNameForUrl = getChampionDisplayName(champion)
+
+              if (selectedSkin.chromaId) {
+                const downloadName = skinFileName.replace(/\.zip$/i, '').replace(/\s+\d+$/, '')
+                githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/chromas/${encodeURIComponent(downloadName)}/${encodeURIComponent(skinFileName)}`
+
+                const displayMessage = isUsingSmartApply
+                  ? t('status.downloading', { name: `${skin.name} (Chroma) for your team` })
+                  : t('status.downloading', { name: `${skin.name} (Chroma)` })
+                setStatusMessage(displayMessage)
+              } else {
+                githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(skinFileName)}`
+
+                const displayMessage = isUsingSmartApply
+                  ? t('status.downloading', { name: `${skin.name} for your team` })
+                  : t('status.downloading', { name: skin.name })
+                setStatusMessage(displayMessage)
+              }
+            } else {
+              // For variants, use a more specific message
+              const variantName = selectedSkin.variantId
+                ? skin.variants?.items.find((v) => v.id === selectedSkin.variantId)?.displayName ||
+                  skin.name
+                : skin.name
+              const displayMessage = isUsingSmartApply
+                ? t('status.downloading', { name: `${variantName} for your team` })
+                : t('status.downloading', { name: variantName })
+              setStatusMessage(displayMessage)
+            }
+
+            const downloadResult = await window.api.downloadSkin(githubUrl)
+            if (!downloadResult.success) {
+              throw new Error(downloadResult.error || 'Failed to download skin')
+            }
+          }
+
+          const championNameForPatcher = getChampionDisplayName(champion)
+          skinKeys.push(`${championNameForPatcher}/${skinFileName}`)
+        }
+
+        console.log('[useSkinManagement] Final skinKeys array:', skinKeys)
+
+        // Reload downloaded skins list
+        await loadDownloadedSkins()
+
+        // Update status message based on mode
+        if (isUsingSmartApply) {
+          setStatusMessage(
+            t('smartApply.applying', {
+              count: skinsToApply.length,
+              champions: 'your team'
             })
           )
         } else {
-          setStatusMessage(t('status.applied', { name: `${skinsToApply.length} skins` }))
+          setStatusMessage(t('status.applying', { name: `${skinsToApply.length} skins` }))
         }
-        setIsPatcherRunning(true)
 
-        // Start checking patcher status
-        const intervalId = setInterval(async () => {
-          const running = await window.api.isPatcherRunning()
-          setIsPatcherRunning(running)
-          if (!running) {
-            clearInterval(intervalId)
-            setStatusMessage(t('status.stopped'))
+        // Run patcher with filtered skins
+        const patcherResult = await window.api.runPatcher(gamePath, skinKeys)
+        if (patcherResult.success) {
+          if (isUsingSmartApply) {
+            setStatusMessage(
+              t('smartApply.success', {
+                applied: skinsToApply.length,
+                total: selectedSkins.length
+              })
+            )
+          } else {
+            setStatusMessage(t('status.applied', { name: `${skinsToApply.length} skins` }))
           }
-        }, 1000)
-      } else {
-        throw new Error(patcherResult.message || 'Failed to apply skins')
-      }
-    } catch (error) {
-      let errorMsg = error instanceof Error ? error.message : 'Unknown error'
+          setIsPatcherRunning(true)
 
-      if (errorMsg.startsWith('errors.')) {
-        errorMsg = t(errorMsg)
-      }
+          // Start checking patcher status
+          const intervalId = setInterval(async () => {
+            const running = await window.api.isPatcherRunning()
+            setIsPatcherRunning(running)
+            if (!running) {
+              clearInterval(intervalId)
+              setStatusMessage(t('status.stopped'))
+            }
+          }, 1000)
+        } else {
+          throw new Error(patcherResult.message || 'Failed to apply skins')
+        }
+      } catch (error) {
+        let errorMsg = error instanceof Error ? error.message : 'Unknown error'
 
-      setErrorMessage(errorMsg)
-      setStatusMessage(errorMsg)
-      // Clear error after 10 seconds
-      setTimeout(() => {
-        setErrorMessage('')
-        setStatusMessage('')
-      }, 10000)
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, isApplyingSkins: false }))
-      setActiveOperation(null)
-    }
-  }, [
-    gamePath,
-    selectedSkins,
-    activeOperation,
-    isPatcherRunning,
-    championData,
-    downloadedSkins,
-    t,
-    loadDownloadedSkins,
-    setActiveOperation,
-    setLoadingStates,
-    setStatusMessage,
-    setErrorMessage,
-    setIsPatcherRunning
-  ])
+        if (errorMsg.startsWith('errors.')) {
+          errorMsg = t(errorMsg)
+        }
+
+        setErrorMessage(errorMsg)
+        setStatusMessage(errorMsg)
+        // Clear error after 10 seconds
+        setTimeout(() => {
+          setErrorMessage('')
+          setStatusMessage('')
+        }, 10000)
+      } finally {
+        setLoadingStates((prev) => ({ ...prev, isApplyingSkins: false }))
+        setActiveOperation(null)
+      }
+    },
+    [
+      gamePath,
+      selectedSkins,
+      activeOperation,
+      isPatcherRunning,
+      championData,
+      downloadedSkins,
+      t,
+      loadDownloadedSkins,
+      setActiveOperation,
+      setLoadingStates,
+      setStatusMessage,
+      setErrorMessage,
+      setIsPatcherRunning
+    ]
+  )
 
   return {
     downloadedSkins,

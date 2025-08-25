@@ -407,6 +407,7 @@ export interface IApi {
   onPreselectSnapshotTaken: (callback: (snapshot: any) => void) => () => void
   onPreselectMatchFound: (callback: (snapshot: any) => void) => () => void
   onPreselectQueueCancelled: (callback: () => void) => () => void
+  onPreselectCancelApply: (callback: () => void) => () => void
   onPreselectReadyForApply: (callback: (snapshot: any) => void) => () => void
   onPreselectStateReset: (callback: () => void) => () => void
 

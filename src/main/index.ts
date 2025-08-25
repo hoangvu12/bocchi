@@ -2568,6 +2568,12 @@ function setupLCUConnection(): void {
     })
   })
 
+  preselectLobbyMonitor.on('cancel-preselect-apply', () => {
+    BrowserWindow.getAllWindows().forEach((window) => {
+      window.webContents.send('preselect:cancel-apply')
+    })
+  })
+
   preselectLobbyMonitor.on('ready-for-preselect-apply', (snapshot: any) => {
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send('preselect:ready-for-apply', snapshot)

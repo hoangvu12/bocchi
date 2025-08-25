@@ -395,6 +395,11 @@ const api = {
     ipcRenderer.on('preselect:queue-cancelled', handler)
     return () => ipcRenderer.removeListener('preselect:queue-cancelled', handler)
   },
+  onPreselectCancelApply: (callback: () => void) => {
+    const handler = () => callback()
+    ipcRenderer.on('preselect:cancel-apply', handler)
+    return () => ipcRenderer.removeListener('preselect:cancel-apply', handler)
+  },
   onPreselectReadyForApply: (callback: (snapshot: any) => void) => {
     const handler = (_: any, snapshot: any) => callback(snapshot)
     ipcRenderer.on('preselect:ready-for-apply', handler)

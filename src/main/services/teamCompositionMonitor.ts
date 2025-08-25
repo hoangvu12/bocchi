@@ -135,23 +135,8 @@ export class TeamCompositionMonitor extends EventEmitter {
       this.currentPhase = ''
     })
 
-    // Listen for preselect lobby events
-    preselectLobbyMonitor.on('ready-for-preselect-apply', (snapshot) => {
-      console.log('[TeamCompositionMonitor] Preselect ready for smart apply:', snapshot)
-
-      // Convert preselect champions to our format
-      const championIds = snapshot.champions.map((champ) => champ.championId).filter((id) => id > 0)
-
-      const preselectComposition: TeamComposition = {
-        championIds,
-        allLocked: true,
-        inFinalization: true,
-        timeLeft: 0
-      }
-
-      // Emit ready for smart apply with preselect composition
-      this.emit('ready-for-smart-apply', preselectComposition)
-    })
+    // Note: Preselect ready-for-apply events are handled directly by useSmartSkinApply
+    // No need to re-emit here as regular and preselect modes have different logic
 
     preselectLobbyMonitor.on('champions-changed', (champions) => {
       console.log(

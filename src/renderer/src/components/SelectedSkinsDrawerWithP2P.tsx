@@ -42,7 +42,7 @@ interface ExtendedMember extends Omit<P2PRoomMember, 'activeSkins'> {
 }
 
 interface SelectedSkinsDrawerProps {
-  onApplySkins: () => void
+  onApplySkins: (championIds?: number[]) => void
   onStopPatcher: () => void
   onCancelApply: () => void
   loading: boolean
