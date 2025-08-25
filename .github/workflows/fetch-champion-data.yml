@@ -21,8 +21,11 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install dependencies
-        run: bun install
+      - name: Install dependencies (skip postinstall)
+        run: |
+          # Install dependencies but skip postinstall scripts that build native modules
+          # This avoids building electron-overlay-window which requires XCB libraries
+          bun install --ignore-scripts
 
       - name: Fetch champion data
         run: bun run scripts/fetch-champion-data.ts
