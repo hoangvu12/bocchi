@@ -4912,7 +4912,7 @@ Directory structure:
     │   ├── Prestige Bewitching Morgana.zip
     │   ├── Sinful Succulence Morgana.zip
     │   ├── Snow Moon Morgana.zip
-    │   ├── Spirit Blossom Morgana - All-In-One.zip
+    │   ├── Spirit Blossom Morgana - AIO.zip
     │   ├── Star Nemesis Morgana.zip
     │   └── Victorious Morgana.zip
     ├── Naafiri/
