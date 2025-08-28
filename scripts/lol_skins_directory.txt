@@ -308,6 +308,15 @@ Directory structure:
     │   │   │   └── Blackfrost Alistar 12028.zip
     │   │   ├── Conqueror Alistar/
     │   │   │   └── Conqueror Alistar 12021.zip
+    │   │   ├── Elderwood Alistar/
+    │   │   │   ├── Elderwood Alistar 12041.zip
+    │   │   │   ├── Elderwood Alistar 12042.zip
+    │   │   │   ├── Elderwood Alistar 12043.zip
+    │   │   │   ├── Elderwood Alistar 12044.zip
+    │   │   │   ├── Elderwood Alistar 12045.zip
+    │   │   │   ├── Elderwood Alistar 12046.zip
+    │   │   │   ├── Elderwood Alistar 12047.zip
+    │   │   │   └── Elderwood Alistar 12048.zip
     │   │   ├── Lunar Beast Alistar/
     │   │   │   ├── Lunar Beast Alistar 12030.zip
     │   │   │   ├── Lunar Beast Alistar 12031.zip
@@ -328,6 +337,7 @@ Directory structure:
     │   ├── Black Alistar.zip
     │   ├── Blackfrost Alistar.zip
     │   ├── Conqueror Alistar.zip
+    │   ├── Elderwood Alistar.zip
     │   ├── Golden Alistar.zip
     │   ├── Hextech Alistar.zip
     │   ├── Infernal Alistar.zip
@@ -2200,6 +2210,15 @@ Directory structure:
     │   │   │   ├── Mythmaker Garen 86041.zip
     │   │   │   ├── Mythmaker Garen 86042.zip
     │   │   │   └── Mythmaker Garen 86045.zip
+    │   │   ├── Visions of the Fallen Garen/
+    │   │   │   ├── Visions of the Fallen Garen 86047.zip
+    │   │   │   ├── Visions of the Fallen Garen 86048.zip
+    │   │   │   ├── Visions of the Fallen Garen 86049.zip
+    │   │   │   ├── Visions of the Fallen Garen 86050.zip
+    │   │   │   ├── Visions of the Fallen Garen 86051.zip
+    │   │   │   ├── Visions of the Fallen Garen 86052.zip
+    │   │   │   ├── Visions of the Fallen Garen 86053.zip
+    │   │   │   └── Visions of the Fallen Garen 86054.zip
     │   │   └── Warring Kingdoms Garen/
     │   │       └── Warring Kingdoms Garen 86012.zip
     │   ├── Battle Academia Garen.zip
@@ -2217,6 +2236,7 @@ Directory structure:
     │   ├── Rugged Garen.zip
     │   ├── Sanguine Garen.zip
     │   ├── Steel Legion Garen.zip
+    │   ├── Visions of the Fallen Garen.zip
     │   └── Warring Kingdoms Garen.zip
     ├── Gnar/
     │   ├── chromas/
@@ -2795,6 +2815,8 @@ Directory structure:
     │   │   │   ├── Pool Party Jarvan IV 59018.zip
     │   │   │   ├── Pool Party Jarvan IV 59019.zip
     │   │   │   └── Pool Party Jarvan IV 59020.zip
+    │   │   ├── Prestige Visions of the Fallen Jarvan IV/
+    │   │   │   └── Prestige Visions of the Fallen Jarvan IV 59055.zip
     │   │   ├── Warring Kingdoms Jarvan IV/
     │   │   │   └── Warring Kingdoms Jarvan IV 59010.zip
     │   │   └── Worlds 2021 Jarvan IV/
@@ -2812,6 +2834,7 @@ Directory structure:
     │   ├── Mythmaker Jarvan IV.zip
     │   ├── Nightbringer Jarvan IV.zip
     │   ├── Pool Party Jarvan IV.zip
+    │   ├── Prestige Visions of the Fallen Jarvan IV.zip
     │   ├── SSG Jarvan IV.zip
     │   ├── Victorious Jarvan IV.zip
     │   ├── Warring Kingdoms Jarvan IV.zip
@@ -2955,6 +2978,7 @@ Directory structure:
     │   │       ├── Soul Fighter Jhin 202044.zip
     │   │       ├── Soul Fighter Jhin 202045.zip
     │   │       └── Soul Fighter Jhin 202046.zip
+    │   ├── Arcana Jhin.zip
     │   ├── Blood Moon Jhin.zip
     │   ├── DWG Jhin.zip
     │   ├── Dark Cosmic Erasure Jhin.zip
@@ -4280,6 +4304,7 @@ Directory structure:
     │   │       ├── Space Groove Lulu 117034.zip
     │   │       ├── Space Groove Lulu 117035.zip
     │   │       └── Space Groove Lulu 117036.zip
+    │   ├── Arcana Lulu.zip
     │   ├── Bittersweet Lulu.zip
     │   ├── Cafe Cuties Lulu.zip
     │   ├── Cosmic Enchantress Lulu.zip
@@ -7802,16 +7827,25 @@ Directory structure:
     │   │   │   ├── Nightbringer Tryndamere 23024.zip
     │   │   │   ├── Nightbringer Tryndamere 23025.zip
     │   │   │   └── Nightbringer Tryndamere 23026.zip
-    │   │   └── Victorious Tryndamere/
-    │   │       ├── Victorious Tryndamere 23028.zip
-    │   │       ├── Victorious Tryndamere 23029.zip
-    │   │       ├── Victorious Tryndamere 23030.zip
-    │   │       ├── Victorious Tryndamere 23031.zip
-    │   │       ├── Victorious Tryndamere 23032.zip
-    │   │       ├── Victorious Tryndamere 23033.zip
-    │   │       ├── Victorious Tryndamere 23034.zip
-    │   │       ├── Victorious Tryndamere 23035.zip
-    │   │       └── Victorious Tryndamere 23036.zip
+    │   │   ├── Victorious Tryndamere/
+    │   │   │   ├── Victorious Tryndamere 23028.zip
+    │   │   │   ├── Victorious Tryndamere 23029.zip
+    │   │   │   ├── Victorious Tryndamere 23030.zip
+    │   │   │   ├── Victorious Tryndamere 23031.zip
+    │   │   │   ├── Victorious Tryndamere 23032.zip
+    │   │   │   ├── Victorious Tryndamere 23033.zip
+    │   │   │   ├── Victorious Tryndamere 23034.zip
+    │   │   │   ├── Victorious Tryndamere 23035.zip
+    │   │   │   └── Victorious Tryndamere 23036.zip
+    │   │   └── Visions of the Fallen Tryndamere/
+    │   │       ├── Visions of the Fallen Tryndamere 23038.zip
+    │   │       ├── Visions of the Fallen Tryndamere 23039.zip
+    │   │       ├── Visions of the Fallen Tryndamere 23040.zip
+    │   │       ├── Visions of the Fallen Tryndamere 23041.zip
+    │   │       ├── Visions of the Fallen Tryndamere 23042.zip
+    │   │       ├── Visions of the Fallen Tryndamere 23043.zip
+    │   │       ├── Visions of the Fallen Tryndamere 23044.zip
+    │   │       └── Visions of the Fallen Tryndamere 23045.zip
     │   ├── Beast Hunter Tryndamere.zip
     │   ├── Blood Moon Tryndamere.zip
     │   ├── Chemtech Tryndamere.zip
@@ -7823,6 +7857,7 @@ Directory structure:
     │   ├── Sultan Tryndamere.zip
     │   ├── Victorious Tryndamere.zip
     │   ├── Viking Tryndamere.zip
+    │   ├── Visions of the Fallen Tryndamere.zip
     │   └── Warring Kingdoms Tryndamere.zip
     ├── Twisted Fate/
     │   ├── chromas/
@@ -9504,4 +9539,4 @@ Directory structure:
         ├── Street Demons Zyra.zip
         └── Wildfire Zyra.zip
     
-    1279 directories, 8225 files
+    1283 directories, 8256 files
