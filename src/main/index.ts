@@ -1756,6 +1756,29 @@ function setupIpcHandlers(): void {
     }
   })
 
+  ipcMain.handle(
+    'repository:construct-url',
+    async (
+      _,
+      championName: string,
+      skinFile: string,
+      isChroma: boolean = false,
+      chromaBase?: string
+    ) => {
+      try {
+        const url = repositoryService.constructGitHubUrl(
+          championName,
+          skinFile,
+          isChroma,
+          chromaBase
+        )
+        return { success: true, url }
+      } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+      }
+    }
+  )
+
   // Custom skin images
   ipcMain.handle('get-custom-skin-image', async (_, modPath: string) => {
     try {

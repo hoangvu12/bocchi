@@ -345,14 +345,31 @@ export function useSkinManagement() {
 
               if (selectedSkin.chromaId) {
                 const downloadName = skinFileName.replace(/\.zip$/i, '').replace(/\s+\d+$/, '')
-                githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/chromas/${encodeURIComponent(downloadName)}/${encodeURIComponent(skinFileName)}`
+                const urlResult = await window.api.repositoryConstructUrl(
+                  championNameForUrl,
+                  skinFileName,
+                  true,
+                  downloadName
+                )
+                if (!urlResult.success || !urlResult.url) {
+                  throw new Error('Failed to construct download URL')
+                }
+                githubUrl = urlResult.url
 
                 const displayMessage = isUsingSmartApply
                   ? t('status.downloading', { name: `${skin.name} (Chroma) for your team` })
                   : t('status.downloading', { name: `${skin.name} (Chroma)` })
                 setStatusMessage(displayMessage)
               } else {
-                githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(skinFileName)}`
+                const urlResult = await window.api.repositoryConstructUrl(
+                  championNameForUrl,
+                  skinFileName,
+                  false
+                )
+                if (!urlResult.success || !urlResult.url) {
+                  throw new Error('Failed to construct download URL')
+                }
+                githubUrl = urlResult.url
 
                 const displayMessage = isUsingSmartApply
                   ? t('status.downloading', { name: `${skin.name} for your team` })

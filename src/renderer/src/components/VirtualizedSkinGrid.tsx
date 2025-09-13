@@ -230,20 +230,19 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       }
 
       const chromas = skin.chromaList || []
-      const isAvailable = skin.isInLolSkins !== false
 
       if (viewMode === 'list') {
         return (
           <div style={adjustedStyle}>
             <div
               className={`flex items-center gap-4 p-3 bg-surface rounded-lg transition-all duration-200 border-2
-                ${!isAvailable ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                ${'cursor-pointer'}
                 ${
                   isSelected
                     ? 'border-primary-500 bg-primary-50 dark:bg-primary-950/20'
                     : 'border-border hover:border-border-strong hover:shadow-md dark:hover:shadow-dark-soft'
                 }`}
-              onClick={() => !loading && isAvailable && onSkinClick(champion, skin)}
+              onClick={() => !loading && onSkinClick(champion, skin)}
             >
               <img
                 src={getSkinImageUrl(champion.key, skin.num, skin.id, downloadedSkin?.localPath)}
@@ -258,11 +257,11 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                 {isUserSkin && skin.author && (
                   <p className="text-xs text-text-tertiary">by {skin.author}</p>
                 )}
-                {!isAvailable && (
+                {/* Temporarily disabled - !isAvailable && (
                   <span className="inline-block mt-1 px-2 py-0.5 bg-red-500/10 text-red-500 text-xs rounded">
                     {t('skin.notAvailable')}
                   </span>
-                )}
+                ) */}
               </div>
               <div className="flex items-center gap-2">
                 <div
@@ -440,12 +439,12 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                 isSelected
                   ? 'border-primary-500 shadow-xl dark:shadow-dark-large scale-[1.02]'
                   : 'border-border hover:shadow-xl dark:hover:shadow-dark-large shadow-md dark:shadow-dark-soft hover:-translate-y-1 hover:scale-[1.02] hover:border-border-strong'
-              } ${loading || !isAvailable ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+              } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
             `}
           >
             <div
               className="relative aspect-[0.67] overflow-hidden bg-secondary-100 dark:bg-secondary-900"
-              onClick={() => !loading && isAvailable && onSkinClick(champion, skin)}
+              onClick={() => !loading && onSkinClick(champion, skin)}
             >
               <img
                 src={getSkinImageUrl(champion.key, skin.num, skin.id, downloadedSkin?.localPath)}
@@ -478,13 +477,13 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                   </svg>
                 </div>
               )}
-              {!isAvailable && (
+              {/* Temporarily disabled - !isAvailable && (
                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center pointer-events-none">
                   <div className="bg-red-500/90 text-white px-3 py-1.5 rounded-lg text-sm font-medium shadow-lg">
                     {t('skin.notAvailable')}
                   </div>
                 </div>
-              )}
+              ) */}
               {isDownloaded && !isSelected && (
                 <div
                   className={`absolute bottom-2 right-2 w-6 h-6 rounded-full flex items-center justify-center shadow-soft transform transition-all duration-300 group-hover:scale-110 ${
@@ -625,10 +624,10 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
                 )}
             </div>
             <div
-              className={`bg-white dark:bg-charcoal-800 ${viewMode === 'spacious' ? 'p-4' : viewMode === 'comfortable' ? 'p-3' : 'p-2'} ${!isAvailable ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-charcoal-50 dark:hover:bg-charcoal-700'} transition-colors`}
+              className={`bg-white dark:bg-charcoal-800 ${viewMode === 'spacious' ? 'p-4' : viewMode === 'comfortable' ? 'p-3' : 'p-2'} ${'cursor-pointer hover:bg-charcoal-50 dark:hover:bg-charcoal-700'} transition-colors`}
               onClick={(e) => {
                 e.stopPropagation()
-                !loading && isAvailable && onSkinClick(champion, skin)
+                !loading && onSkinClick(champion, skin)
               }}
             >
               <p

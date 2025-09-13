@@ -247,6 +247,12 @@ export interface IApi {
     repositoryId: string,
     updates: any
   ) => Promise<{ success: boolean; error?: string }>
+  repositoryConstructUrl: (
+    championName: string,
+    skinFile: string,
+    isChroma?: boolean,
+    chromaBase?: string
+  ) => Promise<{ success: boolean; url?: string; error?: string }>
 
   // Custom skin images
   getCustomSkinImage: (

@@ -284,6 +284,12 @@ const api = {
     ipcRenderer.invoke('repository:validate', repositoryId),
   repositoryUpdate: (repositoryId: string, updates: any) =>
     ipcRenderer.invoke('repository:update', repositoryId, updates),
+  repositoryConstructUrl: (
+    championName: string,
+    skinFile: string,
+    isChroma?: boolean,
+    chromaBase?: string
+  ) => ipcRenderer.invoke('repository:construct-url', championName, skinFile, isChroma, chromaBase),
 
   // LCU Connection APIs
   lcuConnect: () => ipcRenderer.invoke('lcu:connect'),

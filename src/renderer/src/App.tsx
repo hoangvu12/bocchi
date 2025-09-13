@@ -556,9 +556,18 @@ function AppContent(): React.JSX.Element {
       if (!isCustomSkinSelected && randomSkin) {
         const skinFileName = generateSkinFilename(randomSkin)
         const championNameForUrl = getChampionDisplayName(champion)
-        const githubUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championNameForUrl}/${encodeURIComponent(
-          skinFileName
-        )}`
+
+        // Construct URL using repository service
+        const urlResult = await window.api.repositoryConstructUrl(
+          championNameForUrl,
+          skinFileName,
+          false
+        )
+        if (!urlResult.success || !urlResult.url) {
+          console.error('Failed to construct download URL for auto-selected skin')
+          return
+        }
+        const githubUrl = urlResult.url
 
         // Update tracking for the new auto-selected skin
         setPreDownloadedAutoSkin({
@@ -725,12 +734,6 @@ function AppContent(): React.JSX.Element {
     (champion: Champion, skin: Skin, chromaId?: string, variantId?: string) => {
       if (!gamePath) {
         setStatusMessage(t('status.pleaseSetGamePath'))
-        return
-      }
-
-      // Prevent selection of unavailable skins (unless it's a base skin)
-      if (skin.isInLolSkins === false && skin.num !== 0) {
-        toast.error(t('skin.notAvailableMessage'))
         return
       }
 
