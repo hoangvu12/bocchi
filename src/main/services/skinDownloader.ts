@@ -11,6 +11,8 @@ import { githubApiService } from './githubApiService'
 import { skinMetadataService } from './skinMetadataService'
 import { skinMigrationService } from './skinMigrationService'
 import { ModToolsWrapper } from './modToolsWrapper'
+import { repositoryService } from './repositoryService'
+import { SkinRepository } from '../types/repository.types'
 
 interface BulkDownloadProgress {
   phase: 'downloading' | 'extracting' | 'processing' | 'completed'
@@ -174,32 +176,31 @@ export class SkinDownloader {
   }
 
   private parseGitHubUrl(url: string): SkinInfo {
-    // Example regular skin: https://github.com/darkseal-org/lol-skins/blob/main/skins/Aatrox/DRX%20Aatrox.zip
-    // Example chroma: https://github.com/darkseal-org/lol-skins/blob/main/skins/Aatrox/chromas/DRX%20Aatrox/DRX%20Aatrox%20266032.zip
-    // Example variant: https://github.com/darkseal-org/lol-skins/blob/main/skins/Jinx/Exalted/Arcane%20Fractured%20Jinx%20%E2%80%94%20Hero.zip
-    // Raw URLs: https://raw.githubusercontent.com/darkseal-org/lol-skins/main/skins/...
-
-    // Check if it's already a raw URL
-    const isRawUrl = url.includes('raw.githubusercontent.com')
-
-    // For raw URLs, convert the pattern to match
-    let urlToMatch = url
-    if (isRawUrl) {
-      // Convert raw URL pattern to match our existing patterns
-      urlToMatch = url
-        .replace('raw.githubusercontent.com', 'github.com')
-        .replace('/main/', '/raw/main/')
+    // Parse any GitHub repository URL
+    // Works with any repository structure
+    const parsed = repositoryService.parseGitHubUrl(url)
+    if (!parsed) {
+      throw new Error('Invalid GitHub URL format')
     }
 
-    // First try to match chroma URL pattern (supports both blob and raw)
-    const chromaPattern =
-      /github\.com\/darkseal-org\/lol-skins\/(blob|raw)\/main\/skins\/([^\\/]+)\/chromas\/([^\\/]+)\/([^\\/]+)$/
-    const chromaMatch = urlToMatch.match(chromaPattern)
+    // Get repository info
+    const repository = repositoryService.getRepositoryFromUrl(url)
+    const skinsPath = repository?.structure?.skinsPath || 'skins'
+
+    // Remove skins path prefix from the parsed path
+    let relativePath = parsed.path
+    if (relativePath.startsWith(skinsPath + '/')) {
+      relativePath = relativePath.substring(skinsPath.length + 1)
+    }
+
+    // First try to match chroma pattern
+    const chromaPattern = /^([^/]+)\/chromas\/([^/]+)\/([^/]+)$/
+    const chromaMatch = relativePath.match(chromaPattern)
 
     if (chromaMatch) {
-      const championName = decodeURIComponent(chromaMatch[2]) // Skip the blob/raw group and decode
-      // const skinName = decodeURIComponent(chromaMatch[3]) // Not needed, we use the full chroma filename
-      const chromaFileName = decodeURIComponent(chromaMatch[4])
+      const championName = decodeURIComponent(chromaMatch[1])
+      // const skinName = decodeURIComponent(chromaMatch[2]) // Not needed, we use the full chroma filename
+      const chromaFileName = decodeURIComponent(chromaMatch[3])
 
       return {
         championName,
@@ -210,15 +211,14 @@ export class SkinDownloader {
     }
 
     // Try to match variant patterns with nested subdirectories (like forms/SkinName/FileName.zip)
-    const nestedVariantPattern =
-      /github\.com\/darkseal-org\/lol-skins\/(blob|raw)\/main\/skins\/([^\\/]+)\/([^\\/]+)\/([^\\/]+)\/([^\\/]+)$/
-    const nestedVariantMatch = urlToMatch.match(nestedVariantPattern)
+    const nestedVariantPattern = /^([^/]+)\/([^/]+)\/([^/]+)\/([^/]+)$/
+    const nestedVariantMatch = relativePath.match(nestedVariantPattern)
 
     if (nestedVariantMatch) {
-      const championName = decodeURIComponent(nestedVariantMatch[2]) // Skip the blob/raw group and decode
-      const variantDir = decodeURIComponent(nestedVariantMatch[3]) // e.g., "forms"
-      const skinSubDir = decodeURIComponent(nestedVariantMatch[4]) // e.g., "Elementalist Lux"
-      const variantFileName = decodeURIComponent(nestedVariantMatch[5])
+      const championName = decodeURIComponent(nestedVariantMatch[1])
+      const variantDir = decodeURIComponent(nestedVariantMatch[2]) // e.g., "forms"
+      const skinSubDir = decodeURIComponent(nestedVariantMatch[3]) // e.g., "Elementalist Lux"
+      const variantFileName = decodeURIComponent(nestedVariantMatch[4])
 
       // If the last part has an extension, it's a nested variant
       const hasFileExtension = /\.(zip|wad|fantome)$/i.test(variantFileName)
@@ -237,14 +237,13 @@ export class SkinDownloader {
     }
 
     // Try to match variant patterns (subdirectories like Exalted, forms, etc.)
-    const variantPattern =
-      /github\.com\/darkseal-org\/lol-skins\/(blob|raw)\/main\/skins\/([^\\/]+)\/([^\\/]+)\/([^\\/]+)$/
-    const variantMatch = urlToMatch.match(variantPattern)
+    const variantPattern = /^([^/]+)\/([^/]+)\/([^/]+)$/
+    const variantMatch = relativePath.match(variantPattern)
 
     if (variantMatch) {
-      const championName = decodeURIComponent(variantMatch[2]) // Skip the blob/raw group and decode
-      const variantDir = decodeURIComponent(variantMatch[3])
-      const variantFileName = decodeURIComponent(variantMatch[4])
+      const championName = decodeURIComponent(variantMatch[1])
+      const variantDir = decodeURIComponent(variantMatch[2])
+      const variantFileName = decodeURIComponent(variantMatch[3])
 
       // For variant URLs, the middle part is a subdirectory, not the skin file
       // If the last part has an extension, it's likely a variant in a subdirectory
@@ -264,24 +263,23 @@ export class SkinDownloader {
     }
 
     // Otherwise try regular skin pattern
-    const skinPattern =
-      /github\.com\/darkseal-org\/lol-skins\/(blob|raw)\/main\/skins\/([^\\/]+)\/([^\\/]+)$/
-    const skinMatch = urlToMatch.match(skinPattern)
+    const skinPattern = /^([^/]+)\/([^/]+)$/
+    const skinMatch = relativePath.match(skinPattern)
 
     if (!skinMatch) {
       // Log the URL that failed to match for debugging
       console.error(`Failed to parse GitHub URL: ${url}`)
       throw new Error(
         'Invalid GitHub URL format. Expected formats:\n' +
-          '- Regular skin: https://github.com/darkseal-org/lol-skins/(blob|raw)/main/skins/[Champion]/[SkinName].zip\n' +
-          '- Chroma: .../skins/[Champion]/chromas/[SkinName]/[ChromaFile].zip\n' +
-          '- Variant: .../skins/[Champion]/[VariantDir]/[VariantFile].zip\n' +
-          '- Nested Variant: .../skins/[Champion]/[VariantDir]/[SkinName]/[VariantFile].zip'
+          '- Regular skin: https://github.com/[owner]/[repo]/(blob|raw)/[branch]/[skins]/[Champion]/[SkinName].zip\n' +
+          '- Chroma: .../[skins]/[Champion]/chromas/[SkinName]/[ChromaFile].zip\n' +
+          '- Variant: .../[skins]/[Champion]/[VariantDir]/[VariantFile].zip\n' +
+          '- Nested Variant: .../[skins]/[Champion]/[VariantDir]/[SkinName]/[VariantFile].zip'
       )
     }
 
-    const championName = decodeURIComponent(skinMatch[2]) // Skip the blob/raw group and decode
-    const skinName = decodeURIComponent(skinMatch[3])
+    const championName = decodeURIComponent(skinMatch[1])
+    const skinName = decodeURIComponent(skinMatch[2])
 
     return {
       championName,
@@ -340,14 +338,15 @@ export class SkinDownloader {
             if (chromaMatch) {
               // This is a chroma file
               const baseSkinName = chromaMatch[1]
-              reconstructedUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championName}/chromas/${encodeURIComponent(
+              reconstructedUrl = repositoryService.constructGitHubUrl(
+                championName,
+                skinName,
+                true,
                 baseSkinName
-              )}/${encodeURIComponent(skinName)}`
+              )
             } else {
               // Regular skin file
-              reconstructedUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${championName}/${encodeURIComponent(
-                skinName
-              )}`
+              reconstructedUrl = repositoryService.constructGitHubUrl(championName, skinName)
             }
 
             // Try to load metadata (non-blocking)
@@ -641,8 +640,9 @@ export class SkinDownloader {
     options: BulkDownloadOptions,
     onProgress?: BulkProgressCallback
   ): Promise<void> {
+    const repository = repositoryService.getActiveRepository()
     const tempDir = path.join(app.getPath('temp'), 'bocchi-bulk-download')
-    const archivePath = path.join(tempDir, 'lol-skins.tar.gz')
+    const archivePath = path.join(tempDir, `${repository.repo}.tar.gz`)
     const extractPath = path.join(tempDir, 'extracted')
 
     try {
@@ -651,8 +651,10 @@ export class SkinDownloader {
       await fs.mkdir(extractPath, { recursive: true })
 
       // Phase 1: Download archive
-      console.log('[SkinDownloader] Starting bulk download from repository')
-      await this.downloadRepositoryArchive(archivePath, (downloaded, total) => {
+      console.log(
+        `[SkinDownloader] Starting bulk download from ${repository.owner}/${repository.repo}`
+      )
+      await this.downloadRepositoryArchive(archivePath, repository, (downloaded, total) => {
         onProgress?.({
           phase: 'downloading',
           downloadedSize: downloaded,
@@ -673,7 +675,9 @@ export class SkinDownloader {
 
       // Phase 3: Process and copy files
       console.log('[SkinDownloader] Processing skins')
-      const skinsPath = path.join(extractPath, 'lol-skins-main', 'skins')
+      const repoFolder = `${repository.repo}-${repository.branch}`
+      const skinsRelPath = repository.structure?.skinsPath || 'skins'
+      const skinsPath = path.join(extractPath, repoFolder, skinsRelPath)
       await this.processSkins(skinsPath, options, (processed, total, current, skipped, failed) => {
         const progressPercent = 40 + Math.round((processed / total) * 60) // 40-100%
         onProgress?.({
@@ -704,9 +708,10 @@ export class SkinDownloader {
 
   private async downloadRepositoryArchive(
     archivePath: string,
+    repository: SkinRepository,
     onProgress?: (downloaded: number, total: number) => void
   ): Promise<void> {
-    const url = 'https://github.com/darkseal-org/lol-skins/archive/refs/heads/main.tar.gz'
+    const url = `https://github.com/${repository.owner}/${repository.repo}/archive/refs/heads/${repository.branch}.tar.gz`
 
     const response = await axios({
       method: 'GET',

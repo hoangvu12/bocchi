@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { repositoryService } from './repositoryService'
+import { SkinRepository } from '../types/repository.types'
 
 export interface GitHubCommit {
   sha: string
@@ -8,24 +10,31 @@ export interface GitHubCommit {
 
 export class GitHubApiService {
   private static readonly API_BASE = 'https://api.github.com'
-  private static readonly REPO = 'darkseal-org/lol-skins'
   private static readonly RATE_LIMIT_DELAY = 1000 // 1 second between requests
 
   private lastRequestTime = 0
 
-  async getLatestCommitForSkin(skinPath: string): Promise<GitHubCommit | null> {
+  async getLatestCommitForSkin(
+    skinPath: string,
+    repository?: SkinRepository
+  ): Promise<GitHubCommit | null> {
     try {
       // Rate limiting
       await this.enforceRateLimit()
 
-      const url = `${GitHubApiService.API_BASE}/repos/${GitHubApiService.REPO}/commits`
+      // Use provided repository or get active one
+      const repo = repository || repositoryService.getActiveRepository()
+      const repoPath = `${repo.owner}/${repo.repo}`
+
+      const url = `${GitHubApiService.API_BASE}/repos/${repoPath}/commits`
       const params = {
         path: skinPath,
         page: 1,
-        per_page: 1
+        per_page: 1,
+        ref: repo.branch
       }
 
-      console.log(`[GitHubAPI] Fetching commit for: ${skinPath}`)
+      console.log(`[GitHubAPI] Fetching commit for: ${skinPath} from ${repoPath}`)
 
       const response = await axios.get(url, {
         params,
@@ -45,7 +54,7 @@ export class GitHubApiService {
         }
       }
 
-      console.warn(`[GitHubAPI] No commits found for: ${skinPath}`)
+      console.warn(`[GitHubAPI] No commits found for: ${skinPath} in ${repoPath}`)
       return null
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -68,24 +77,18 @@ export class GitHubApiService {
 
   parseGitHubPathFromUrl(url: string): string {
     // Convert GitHub URL to file path for API
-    // Example: https://github.com/darkseal-org/lol-skins/blob/main/skins/Aatrox/Blood%20Moon%20Aatrox.zip
-    // Result: skins/Aatrox/Blood Moon Aatrox.zip
+    // Works with any repository structure
+    // Example: https://github.com/owner/repo/blob/branch/path/to/file.zip
+    // Result: path/to/file.zip
 
     try {
-      const urlObj = new URL(url)
-      const pathParts = urlObj.pathname.split('/')
-
-      // Find the index of 'main' or 'master' branch
-      const branchIndex = pathParts.findIndex((part) => part === 'main' || part === 'master')
-      if (branchIndex === -1) {
-        throw new Error('Invalid GitHub URL: no main/master branch found')
+      const parsed = repositoryService.parseGitHubUrl(url)
+      if (!parsed) {
+        throw new Error('Invalid GitHub URL format')
       }
 
-      // Get everything after the branch
-      const filePath = pathParts.slice(branchIndex + 1).join('/')
-
       // Decode URL encoding
-      return decodeURIComponent(filePath)
+      return decodeURIComponent(parsed.path)
     } catch (error) {
       console.error(`[GitHubAPI] Failed to parse GitHub path from URL: ${url}`, error)
       throw new Error(`Invalid GitHub URL: ${url}`)

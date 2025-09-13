@@ -234,6 +234,20 @@ export interface IApi {
   // App info
   getAppVersion: () => Promise<string>
 
+  // Repository management
+  repositoryGetAll: () => Promise<{ success: boolean; data?: any[]; error?: string }>
+  repositoryGetActive: () => Promise<{ success: boolean; data?: any; error?: string }>
+  repositorySetActive: (repositoryId: string) => Promise<{ success: boolean; error?: string }>
+  repositoryAdd: (repository: any) => Promise<{ success: boolean; data?: any; error?: string }>
+  repositoryRemove: (repositoryId: string) => Promise<{ success: boolean; error?: string }>
+  repositoryValidate: (
+    repositoryId: string
+  ) => Promise<{ success: boolean; data?: boolean; error?: string }>
+  repositoryUpdate: (
+    repositoryId: string,
+    updates: any
+  ) => Promise<{ success: boolean; error?: string }>
+
   // Custom skin images
   getCustomSkinImage: (
     modPath: string

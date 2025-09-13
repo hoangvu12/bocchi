@@ -251,6 +251,56 @@
       "clearSuccess": "Skin cache cleared successfully",
       "clearError": "Failed to clear skin cache"
     },
+    "repositories": {
+      "title": "Skin Repositories",
+      "description": "Manage skin repository sources",
+      "addCustom": "Add Repository",
+      "setActive": "Set Active",
+      "active": "Active",
+      "default": "Default",
+      "remove": "Remove",
+      "loadError": "Failed to load repositories",
+      "setActiveSuccess": "Repository set as active",
+      "setActiveError": "Failed to set active repository",
+      "removeSuccess": "Repository removed successfully",
+      "removeError": "Failed to remove repository",
+      "cannotRemoveActive": "Cannot remove the active repository. Please set another repository as active first",
+      "updateError": "Failed to update repository",
+      "confirmRemove": "Are you sure you want to remove this repository?",
+      "fillAllFields": "Please fill all fields",
+      "addSuccess": "Repository added successfully",
+      "addError": "Failed to add repository",
+      "status": {
+        "valid": "Validated",
+        "error": "Invalid",
+        "checking": "Checking...",
+        "unchecked": "Not validated"
+      },
+      "statusHelp": {
+        "valid": "Repository structure verified - ready to use",
+        "error": "Repository structure invalid or inaccessible",
+        "unchecked": "Click refresh to validate repository"
+      },
+      "validation": {
+        "checking": "Validating repository...",
+        "valid": "Repository is valid",
+        "invalid": "Repository structure is invalid",
+        "error": "Failed to validate repository"
+      },
+      "addDialog": {
+        "title": "Add Custom Repository",
+        "description": "Add a GitHub repository containing League of Legends skins",
+        "url": "GitHub Repository URL",
+        "urlHint": "Paste a GitHub URL and fields will be auto-filled",
+        "or": "or enter manually",
+        "name": "Repository Name",
+        "owner": "GitHub Owner/Username",
+        "repository": "Repository Name",
+        "branch": "Branch",
+        "add": "Add Repository",
+        "adding": "Adding..."
+      }
+    },
     "tabs": {
       "general": "General",
       "leagueClient": "League Client",

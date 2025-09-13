@@ -27,6 +27,7 @@ import { overlayWindowManager } from './services/overlayWindowManager'
 import { autoBanPickService } from './services/autoBanPickService'
 import { multiRitoFixesService } from './services/multiRitoFixesService'
 import { skinMigrationService } from './services/skinMigrationService'
+import { repositoryService } from './services/repositoryService'
 import {
   translationService,
   supportedLanguages,
@@ -936,9 +937,7 @@ function setupIpcHandlers(): void {
           }
 
           // For regular skins, try to download
-          const url = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion}/${encodeURIComponent(
-            skinFile
-          )}`
+          const url = repositoryService.constructGitHubUrl(champion, skinFile)
           console.log(`[Patcher] Downloading skin: ${url}`)
           return skinDownloader.downloadSkin(url)
         })
@@ -1238,7 +1237,7 @@ function setupIpcHandlers(): void {
             }
 
             // For regular skins, try to download
-            const url = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${champion}/${encodeURIComponent(skinFile)}`
+            const url = repositoryService.constructGitHubUrl(champion, skinFile)
             console.log(`[SmartApply] Downloading skin: ${url}`)
             return skinDownloader.downloadSkin(url)
           })
@@ -1687,6 +1686,74 @@ function setupIpcHandlers(): void {
   // App info
   ipcMain.handle('get-app-version', () => {
     return app.getVersion()
+  })
+
+  // Repository management
+  ipcMain.handle('repository:get-all', async () => {
+    try {
+      const repositories = repositoryService.getRepositories()
+      return { success: true, data: repositories }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('repository:get-active', async () => {
+    try {
+      const activeRepository = repositoryService.getActiveRepository()
+      return { success: true, data: activeRepository }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('repository:set-active', async (_, repositoryId: string) => {
+    try {
+      const result = repositoryService.setActiveRepository(repositoryId)
+      return { success: result }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('repository:add', async (_, repository: any) => {
+    try {
+      const newRepo = await repositoryService.addRepository(repository)
+      return { success: true, data: newRepo }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('repository:remove', async (_, repositoryId: string) => {
+    try {
+      const result = repositoryService.removeRepository(repositoryId)
+      return { success: result }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('repository:validate', async (_, repositoryId: string) => {
+    try {
+      const repository = repositoryService.getRepositoryById(repositoryId)
+      if (!repository) {
+        return { success: false, error: 'Repository not found' }
+      }
+      const isValid = await repositoryService.validateRepository(repository)
+      return { success: true, data: isValid }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle('repository:update', async (_, repositoryId: string, updates: any) => {
+    try {
+      const result = repositoryService.updateRepository(repositoryId, updates)
+      return { success: result }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
   })
 
   // Custom skin images

@@ -273,6 +273,18 @@ const api = {
   importFile: (filePath: string, options?: any) =>
     ipcRenderer.invoke('import-file', filePath, options),
 
+  // Repository management APIs
+  repositoryGetAll: () => ipcRenderer.invoke('repository:get-all'),
+  repositoryGetActive: () => ipcRenderer.invoke('repository:get-active'),
+  repositorySetActive: (repositoryId: string) =>
+    ipcRenderer.invoke('repository:set-active', repositoryId),
+  repositoryAdd: (repository: any) => ipcRenderer.invoke('repository:add', repository),
+  repositoryRemove: (repositoryId: string) => ipcRenderer.invoke('repository:remove', repositoryId),
+  repositoryValidate: (repositoryId: string) =>
+    ipcRenderer.invoke('repository:validate', repositoryId),
+  repositoryUpdate: (repositoryId: string, updates: any) =>
+    ipcRenderer.invoke('repository:update', repositoryId, updates),
+
   // LCU Connection APIs
   lcuConnect: () => ipcRenderer.invoke('lcu:connect'),
   lcuDisconnect: () => ipcRenderer.invoke('lcu:disconnect'),

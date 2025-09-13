@@ -23,6 +23,7 @@ import {
   smartApplyEnabledAtom
 } from '../store/atoms/settings.atoms'
 import { AutoBanPickSettings } from './AutoBanPickSettings'
+import { RepositorySettings } from './RepositorySettings'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion'
 import {
   Dialog,
@@ -902,6 +903,9 @@ export function SettingsDialog({
           </TabsContent>
 
           <TabsContent value="skin-management" className="space-y-6 mt-6">
+            {/* Repository Settings */}
+            <RepositorySettings disabled={loading} />
+
             {/* Auto Extract Images Setting */}
             <div className="flex items-center justify-between space-x-4">
               <div className="flex-1">
