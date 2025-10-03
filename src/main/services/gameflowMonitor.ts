@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events'
 import { lcuConnector } from './lcuConnector'
 import { settingsService } from './settingsService'
+import { lcuRequestManager } from './lcuRequestManager'
 
 interface ChampSelectSession {
   gameId: number
@@ -29,6 +30,8 @@ export class GameflowMonitor extends EventEmitter {
   private lastLockedChampionId: number | null = null
   private monitoringActive: boolean = false
   private sessionCheckInterval: NodeJS.Timeout | null = null
+  private missedUpdates: number = 0
+  private readonly maxMissedUpdates = 3
 
   constructor() {
     super()
@@ -91,6 +94,19 @@ export class GameflowMonitor extends EventEmitter {
       this.lastLockedChampionId = null
       this.stopSessionMonitoring()
     })
+
+    lcuConnector.on('websocket-error', () => {
+      this.missedUpdates++
+      if (this.missedUpdates >= this.maxMissedUpdates && !this.sessionCheckInterval) {
+        console.log('[GameflowMonitor] WebSocket unstable, enabling backup polling')
+        this.startBackupPolling()
+      }
+    })
+
+    lcuConnector.on('websocket-recovered', () => {
+      this.missedUpdates = 0
+      this.stopBackupPolling()
+    })
   }
 
   private handlePhaseChange(phase: string): void {
@@ -110,33 +126,49 @@ export class GameflowMonitor extends EventEmitter {
   }
 
   private async startChampSelectMonitoring(): Promise<void> {
-    // Subscribe to champion select session updates
+    // Subscribe to WebSocket
     await lcuConnector.subscribe('OnJsonApiEvent_lol-champ-select_v1_session')
 
-    // Get initial session state
+    // Get initial state
     const session = await lcuConnector.getChampSelectSession()
     if (session) {
       this.handleChampSelectUpdate(session)
     }
 
-    // Start polling as backup (some events might be missed)
-    this.sessionCheckInterval = setInterval(async () => {
-      if (this.currentPhase === 'ChampSelect') {
-        const session = await lcuConnector.getChampSelectSession()
-        if (session) {
-          this.handleChampSelectUpdate(session)
-        }
-      }
-    }, 1000)
+    // Only poll if WebSocket is having issues (handled by event listeners)
+    // Backup polling will be started automatically if WebSocket fails
   }
 
-  private stopSessionMonitoring(): void {
-    lcuConnector.unsubscribe('OnJsonApiEvent_lol-champ-select_v1_session')
+  private startBackupPolling(): void {
+    if (this.sessionCheckInterval) return
 
+    this.sessionCheckInterval = setInterval(async () => {
+      if (this.currentPhase !== 'ChampSelect') {
+        this.stopBackupPolling()
+        return
+      }
+
+      const session = await lcuRequestManager.request(
+        'champ-select-session',
+        () => lcuConnector.getChampSelectSession(),
+        500
+      )
+      if (session) {
+        this.handleChampSelectUpdate(session)
+      }
+    }, 2000) // Less frequent backup
+  }
+
+  private stopBackupPolling(): void {
     if (this.sessionCheckInterval) {
       clearInterval(this.sessionCheckInterval)
       this.sessionCheckInterval = null
     }
+  }
+
+  private stopSessionMonitoring(): void {
+    lcuConnector.unsubscribe('OnJsonApiEvent_lol-champ-select_v1_session')
+    this.stopBackupPolling()
   }
 
   private async handleChampSelectUpdate(session: ChampSelectSession): Promise<void> {

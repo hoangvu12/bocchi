@@ -258,6 +258,9 @@ export interface IApi {
   getCustomSkinImage: (
     modPath: string
   ) => Promise<{ success: boolean; imageUrl?: string | null; error?: string }>
+  getCustomSkinImages: (
+    modPaths: string[]
+  ) => Promise<{ success: boolean; images: Record<string, string> }>
   editCustomSkin: (
     modPath: string,
     newName: string,

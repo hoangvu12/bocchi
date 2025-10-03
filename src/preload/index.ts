@@ -206,6 +206,8 @@ const api = {
 
   // Custom skin images
   getCustomSkinImage: (modPath: string) => ipcRenderer.invoke('get-custom-skin-image', modPath),
+  getCustomSkinImages: (modPaths: string[]) =>
+    ipcRenderer.invoke('get-custom-skin-images', modPaths),
   editCustomSkin: (
     modPath: string,
     newName: string,

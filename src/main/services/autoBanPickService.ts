@@ -1,6 +1,8 @@
 import { EventEmitter } from 'events'
 import { lcuConnector } from './lcuConnector'
 import { settingsService } from './settingsService'
+import { lcuRequestManager } from './lcuRequestManager'
+import { gameflowMonitor } from './gameflowMonitor'
 
 interface ChampSelectAction {
   id: number
@@ -56,10 +58,10 @@ export class AutoBanPickService extends EventEmitter {
     this.enabled = true
     await this.loadSettings()
 
-    // Start monitoring at 300ms intervals like the reference implementation
+    // Start monitoring at 1500ms intervals (5x reduction from 300ms)
     this.monitoringInterval = setInterval(() => {
       this.checkAndPerformActions()
-    }, 300)
+    }, 1500)
   }
 
   stop(): void {
@@ -94,10 +96,21 @@ export class AutoBanPickService extends EventEmitter {
   }
 
   private async checkAndPerformActions(): Promise<void> {
+    // Early exit if not in champion select
+    const phase = gameflowMonitor.getCurrentPhase()
+    if (phase !== 'ChampSelect') {
+      return
+    }
+
     if (!lcuConnector.isConnected()) return
 
     try {
-      const session = await lcuConnector.getChampSelectSession()
+      // Use request manager for caching/deduplication
+      const session = await lcuRequestManager.request(
+        'champ-select-session',
+        () => lcuConnector.getChampSelectSession(),
+        200 // Short TTL for action-critical data
+      )
       if (!session || !session.actions) return
 
       await this.handleChampSelectUpdate(session)

@@ -133,8 +133,67 @@ export interface Chroma {
   colors: string[]
 }
 
-// Global chroma data cache
-export const chromaDataAtom = atom<Record<string, Chroma[]>>({})
+// Create immutable LRU cache helper
+class LRUCache<K, V> {
+  private items: Array<[K, V]> = []
+  private maxSize: number
+
+  constructor(maxSize: number = 50) {
+    this.maxSize = maxSize
+  }
+
+  get(key: K): V | undefined {
+    const index = this.items.findIndex(([k]) => k === key)
+    if (index === -1) return undefined
+
+    const [, value] = this.items[index]
+    // Move to end (most recently used)
+    this.items.splice(index, 1)
+    this.items.push([key, value])
+    return value
+  }
+
+  set(key: K, value: V): LRUCache<K, V> {
+    // Return NEW cache instance (immutable)
+    const newCache = new LRUCache<K, V>(this.maxSize)
+
+    // Copy existing items (excluding the key if it exists)
+    newCache.items = this.items.filter(([k]) => k !== key)
+
+    // Add new item
+    newCache.items.push([key, value])
+
+    // Trim if exceeds max
+    if (newCache.items.length > this.maxSize) {
+      newCache.items.shift() // Remove oldest
+    }
+
+    return newCache
+  }
+
+  toMap(): Map<K, V> {
+    return new Map(this.items)
+  }
+}
+
+// Global chroma data cache with LRU
+export const chromaDataCacheAtom = atom<LRUCache<string, Chroma[]>>(
+  new LRUCache(50)
+)
+
+// Derived atom for reading
+export const chromaDataAtom = atom(
+  (get) => {
+    const cache = get(chromaDataCacheAtom)
+    return cache.toMap()
+  },
+  (get, set, update: { key: string; data: Chroma[] }) => {
+    const currentCache = get(chromaDataCacheAtom)
+    const newCache = currentCache.set(update.key, update.data)
+    set(chromaDataCacheAtom, newCache) // Set NEW cache instance
+  }
+)
+
 export const chromaDataLoadingAtom = atom<Set<string>>(new Set<string>())
 
 // Team composition for smart apply

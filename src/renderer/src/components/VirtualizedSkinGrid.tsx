@@ -152,30 +152,60 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
   // Load custom images
   useEffect(() => {
     const loadCustomImages = async () => {
-      // Find all custom skins (both in Custom section and champion sections)
       const customSkins = skins.filter(
         (s) => s.champion.key === 'Custom' || s.skin.id.startsWith('custom_')
       )
 
-      for (const { champion, skin } of customSkins) {
-        const modPath = downloadedSkins.find(
-          (ds) =>
-            ds.skinName.startsWith('[User]') &&
-            ds.skinName.includes(skin.name) &&
-            (champion.key === 'Custom' || ds.championName === champion.key)
-        )?.localPath
+      if (customSkins.length === 0) return
 
-        if (modPath) {
-          const result = await window.api.getCustomSkinImage(modPath)
-          if (result.success && result.imageUrl) {
-            setCustomImages((prev) => ({ ...prev, [modPath]: result.imageUrl! }))
-          }
-        }
+      const modPaths = customSkins
+        .map(({ champion, skin }) =>
+          downloadedSkins.find(
+            (ds) =>
+              ds.skinName.startsWith('[User]') &&
+              ds.skinName.includes(skin.name) &&
+              (champion.key === 'Custom' || ds.championName === champion.key)
+          )?.localPath
+        )
+        .filter((path): path is string => !!path)
+
+      if (modPaths.length === 0) return
+
+      // Single batched call
+      const result = await window.api.getCustomSkinImages(modPaths)
+
+      if (result.success) {
+        setCustomImages(prev => ({
+          ...prev,
+          ...result.images
+        }))
       }
     }
 
     loadCustomImages()
   }, [skins, downloadedSkins])
+
+  // Create Maps for O(1) lookup
+  const downloadedSkinsMap = useMemo(() => {
+    const map = new Map<string, typeof downloadedSkins[0]>()
+    downloadedSkins.forEach(ds => {
+      // Create multiple keys for different lookup patterns
+      const key1 = `${ds.championName}:${ds.skinName}`
+      const key2 = ds.localPath || ''
+      map.set(key1, ds)
+      if (key2) map.set(key2, ds)
+    })
+    return map
+  }, [downloadedSkins])
+
+  const selectedSkinsMap = useMemo(() => {
+    const map = new Map<string, SelectedSkin>()
+    selectedSkins.forEach(s => {
+      const key = `${s.championKey}:${s.skinId}:${s.chromaId || ''}:${s.variantId || ''}`
+      map.set(key, s)
+    })
+    return map
+  }, [selectedSkins])
 
   const Cell = useCallback(
     ({ columnIndex, rowIndex, style }) => {
@@ -198,27 +228,27 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       const isDownloaded = !!downloadedSkin
       const isUserSkin = downloadedSkin?.skinName?.includes('[User]')
       const isFavorite = favorites.has(`${champion.key}_${skin.id}_base`)
-      const isSelected = selectedSkins.some((s) => {
-        // Direct match
-        if (s.championKey === champion.key && s.skinId === skin.id && !s.chromaId && !s.variantId) {
-          return true
-        }
 
-        // Backward compatibility: check if old format ID matches current skin
-        if (
-          skin.id.startsWith('custom_') &&
-          s.skinId.startsWith('custom_') &&
-          isOldFormatCustomId(s.skinId) &&
-          s.championKey === champion.key &&
-          s.skinName === skin.name &&
-          !s.chromaId &&
-          !s.variantId
-        ) {
-          return true
-        }
+      // Use Map for O(1) lookup instead of linear search
+      const directKey = `${champion.key}:${skin.id}::`
+      let isSelected = selectedSkinsMap.has(directKey)
 
-        return false
-      })
+      // Backward compatibility check
+      if (!isSelected && skin.id.startsWith('custom_')) {
+        for (const [key, s] of selectedSkinsMap) {
+          if (
+            s.skinId.startsWith('custom_') &&
+            isOldFormatCustomId(s.skinId) &&
+            s.championKey === champion.key &&
+            s.skinName === skin.name &&
+            !s.chromaId &&
+            !s.variantId
+          ) {
+            isSelected = true
+            break
+          }
+        }
+      }
 
       // Adjust style to account for gap
       const adjustedStyle = {
@@ -646,7 +676,8 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       columnCount,
       viewMode,
       downloadedSkins,
-      selectedSkins,
+      downloadedSkinsMap,
+      selectedSkinsMap,
       favorites,
       loading,
       onSkinClick,

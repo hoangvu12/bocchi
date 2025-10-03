@@ -1789,6 +1789,27 @@ function setupIpcHandlers(): void {
     }
   })
 
+  // Batch custom skin images
+  ipcMain.handle('get-custom-skin-images', async (_, modPaths: string[]) => {
+    const images: Record<string, string> = {}
+
+    // Parallel processing
+    await Promise.all(
+      modPaths.map(async (modPath) => {
+        try {
+          const result = await imageService.getCustomSkinImage(modPath)
+          if (result) {
+            images[modPath] = result
+          }
+        } catch (error) {
+          console.error(`Failed to load image for ${modPath}:`, error)
+        }
+      })
+    )
+
+    return { success: true, images }
+  })
+
   // Edit custom skin
   ipcMain.handle(
     'edit-custom-skin',

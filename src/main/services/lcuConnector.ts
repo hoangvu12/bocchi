@@ -28,6 +28,9 @@ export class LCUConnector extends EventEmitter {
   private subscriptions: Set<string> = new Set()
   private options: Required<LCUConnectionOptions>
   private axiosInstance: any = null
+  private cachedLockfilePath: string | null = null
+  private lockfileCacheExpiry: number = 0
+  private readonly lockfileCacheDuration = 30000 // 30 seconds
 
   constructor(options: LCUConnectionOptions = {}) {
     super()
@@ -256,6 +259,20 @@ export class LCUConnector extends EventEmitter {
   }
 
   private async findLockfile(): Promise<LCUCredentials | null> {
+    // Check cache first
+    if (this.cachedLockfilePath && Date.now() < this.lockfileCacheExpiry) {
+      try {
+        const lockfileContent = await fs.promises.readFile(this.cachedLockfilePath, 'utf-8')
+        const credentials = this.parseLockfileContent(lockfileContent)
+        if (credentials) {
+          return credentials
+        }
+      } catch {
+        // Cache invalid, clear and continue
+        this.cachedLockfilePath = null
+      }
+    }
+
     const possiblePaths: string[] = []
 
     // Use the centralized GamePathService
@@ -294,22 +311,13 @@ export class LCUConnector extends EventEmitter {
     for (const lockfilePath of possiblePaths) {
       try {
         const lockfileContent = await fs.promises.readFile(lockfilePath, 'utf-8')
-        const parts = lockfileContent.split(':')
+        const credentials = this.parseLockfileContent(lockfileContent)
 
-        if (parts.length < 5) {
-          console.error('LCU: Invalid lockfile format:', lockfileContent)
-          continue
-        }
-
-        // Lockfile format: ProcessName:ProcessId:Port:Password:Protocol
-        const [, , port, password, protocol] = parts
-
-        return {
-          protocol: protocol?.trim() || 'https',
-          address: '127.0.0.1',
-          port: parseInt(port, 10),
-          username: 'riot',
-          password: password.trim() // Trim any whitespace/newlines
+        if (credentials) {
+          // Cache successful path
+          this.cachedLockfilePath = lockfilePath
+          this.lockfileCacheExpiry = Date.now() + this.lockfileCacheDuration
+          return credentials
         }
       } catch {
         // Continue to next path
@@ -318,6 +326,20 @@ export class LCUConnector extends EventEmitter {
 
     // Try to find using process
     return this.findLockfileFromProcess()
+  }
+
+  private parseLockfileContent(content: string): LCUCredentials | null {
+    const parts = content.split(':')
+    if (parts.length < 5) return null
+
+    const [, , port, password, protocol] = parts
+    return {
+      protocol: protocol?.trim() || 'https',
+      address: '127.0.0.1',
+      port: parseInt(port, 10),
+      username: 'riot',
+      password: password.trim()
+    }
   }
 
   private async findLockfileFromProcess(): Promise<LCUCredentials | null> {
@@ -437,11 +459,31 @@ export class LCUConnector extends EventEmitter {
   }
 
   private startPolling(): void {
+    let lastHeartbeat = Date.now()
+
+    // Track WebSocket activity
+    if (this.ws) {
+      this.ws.on('message', () => {
+        lastHeartbeat = Date.now()
+      })
+
+      this.ws.on('ping', () => {
+        lastHeartbeat = Date.now()
+      })
+    }
+
+    // Only test if truly stale (10 seconds without activity)
     this.pollInterval = setInterval(async () => {
-      if (!(await this.testConnection())) {
-        this.handleDisconnection()
+      const timeSinceLastHeartbeat = Date.now() - lastHeartbeat
+
+      if (timeSinceLastHeartbeat > 10000) {
+        // Only make HTTP call if WebSocket seems dead
+        const connected = await this.testConnection()
+        if (!connected) {
+          this.handleDisconnection()
+        }
       }
-    }, this.options.pollInterval)
+    }, 5000) // Check every 5s, but only HTTP call if stale
   }
 
   private stopPolling(): void {
