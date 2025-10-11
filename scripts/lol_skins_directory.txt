@@ -35,13 +35,14 @@ Directory structure:
     │   │   │   └── Primordian Aatrox 266039.zip
     │   │   └── Victorious Aatrox/
     │   │       └── Victorious Aatrox 266010.zip
+    │   ├── Aatrox.zip
     │   ├── Blood Moon Aatrox.zip
     │   ├── DRX Aatrox.zip
     │   ├── Justicar Aatrox.zip
     │   ├── Lunar Eclipse Aatrox.zip
     │   ├── Mecha Aatrox.zip
     │   ├── Odyssey Aatrox.zip
-    │   ├── Prestige Blood Moon Aatrox (2022).zip
+    │   ├── Prestige Blood Moon Aatrox 2022.zip
     │   ├── Prestige Blood Moon Aatrox.zip
     │   ├── Prestige DRX Aatrox.zip
     │   ├── Primordian Aatrox.zip
@@ -91,18 +92,18 @@ Directory structure:
     │   │   ├── Foxfire Ahri/
     │   │   │   ├── Foxfire Ahri 103054.zip
     │   │   │   └── Foxfire Ahri 103075.zip
-    │   │   ├── K DA ALL OUT Ahri/
-    │   │   │   ├── K DA ALL OUT Ahri 103034.zip
-    │   │   │   ├── K DA ALL OUT Ahri 103035.zip
-    │   │   │   ├── K DA ALL OUT Ahri 103036.zip
-    │   │   │   ├── K DA ALL OUT Ahri 103037.zip
-    │   │   │   ├── K DA ALL OUT Ahri 103038.zip
-    │   │   │   ├── K DA ALL OUT Ahri 103039.zip
-    │   │   │   ├── K DA ALL OUT Ahri 103040.zip
-    │   │   │   ├── K DA ALL OUT Ahri 103041.zip
-    │   │   │   └── K DA ALL OUT Ahri 103063.zip
-    │   │   ├── K DA Ahri/
-    │   │   │   └── K DA Ahri 103060.zip
+    │   │   ├── KDA ALL OUT Ahri/
+    │   │   │   ├── KDA ALL OUT Ahri 103034.zip
+    │   │   │   ├── KDA ALL OUT Ahri 103035.zip
+    │   │   │   ├── KDA ALL OUT Ahri 103036.zip
+    │   │   │   ├── KDA ALL OUT Ahri 103037.zip
+    │   │   │   ├── KDA ALL OUT Ahri 103038.zip
+    │   │   │   ├── KDA ALL OUT Ahri 103039.zip
+    │   │   │   ├── KDA ALL OUT Ahri 103040.zip
+    │   │   │   ├── KDA ALL OUT Ahri 103041.zip
+    │   │   │   └── KDA ALL OUT Ahri 103063.zip
+    │   │   ├── KDA Ahri/
+    │   │   │   └── KDA Ahri 103060.zip
     │   │   ├── Midnight Ahri/
     │   │   │   └── Midnight Ahri 103053.zip
     │   │   ├── Popstar Ahri/
@@ -140,6 +141,7 @@ Directory structure:
     │   │       └── Star Guardian Ahri 103059.zip
     │   ├── Academy Ahri.zip
     │   ├── After Hours Spirit Blossom Springs Ahri.zip
+    │   ├── Ahri.zip
     │   ├── Arcade Ahri.zip
     │   ├── Arcana Ahri.zip
     │   ├── Challenger Ahri.zip
@@ -147,13 +149,13 @@ Directory structure:
     │   ├── Dynasty Ahri.zip
     │   ├── Elderwood Ahri.zip
     │   ├── Foxfire Ahri.zip
-    │   ├── Immortalized Legend Ahri - Faker.zip
-    │   ├── K DA ALL OUT Ahri.zip
-    │   ├── K DA Ahri.zip
+    │   ├── Immortalized Legend Ahri.zip
+    │   ├── KDA ALL OUT Ahri.zip
+    │   ├── KDA Ahri.zip
     │   ├── Midnight Ahri.zip
     │   ├── Popstar Ahri.zip
-    │   ├── Prestige K DA Ahri (2022).zip
-    │   ├── Prestige K DA Ahri.zip
+    │   ├── Prestige KDA Ahri 2022.zip
+    │   ├── Prestige KDA Ahri.zip
     │   ├── Risen Legend Ahri.zip
     │   ├── Snow Moon Ahri.zip
     │   ├── Spirit Blossom Ahri.zip
@@ -198,15 +200,15 @@ Directory structure:
     │   │   │   ├── Headhunter Akali 84010.zip
     │   │   │   ├── Headhunter Akali 84011.zip
     │   │   │   └── Headhunter Akali 84012.zip
-    │   │   ├── K DA ALL OUT Akali/
-    │   │   │   ├── K DA ALL OUT Akali 84041.zip
-    │   │   │   ├── K DA ALL OUT Akali 84042.zip
-    │   │   │   ├── K DA ALL OUT Akali 84043.zip
-    │   │   │   ├── K DA ALL OUT Akali 84044.zip
-    │   │   │   ├── K DA ALL OUT Akali 84045.zip
-    │   │   │   ├── K DA ALL OUT Akali 84046.zip
-    │   │   │   ├── K DA ALL OUT Akali 84047.zip
-    │   │   │   └── K DA ALL OUT Akali 84048.zip
+    │   │   ├── KDA ALL OUT Akali/
+    │   │   │   ├── KDA ALL OUT Akali 84041.zip
+    │   │   │   ├── KDA ALL OUT Akali 84042.zip
+    │   │   │   ├── KDA ALL OUT Akali 84043.zip
+    │   │   │   ├── KDA ALL OUT Akali 84044.zip
+    │   │   │   ├── KDA ALL OUT Akali 84045.zip
+    │   │   │   ├── KDA ALL OUT Akali 84046.zip
+    │   │   │   ├── KDA ALL OUT Akali 84047.zip
+    │   │   │   └── KDA ALL OUT Akali 84048.zip
     │   │   ├── Nurse Akali/
     │   │   │   ├── Nurse Akali 84033.zip
     │   │   │   ├── Nurse Akali 84034.zip
@@ -251,6 +253,7 @@ Directory structure:
     │   │       ├── True Damage Akali 84029.zip
     │   │       ├── True Damage Akali 84030.zip
     │   │       └── True Damage Akali 84031.zip
+    │   ├── Akali.zip
     │   ├── All-star Akali.zip
     │   ├── Blood Moon Akali.zip
     │   ├── Coven Akali.zip
@@ -259,13 +262,13 @@ Directory structure:
     │   ├── Empyrean Akali.zip
     │   ├── Headhunter Akali.zip
     │   ├── Infernal Akali.zip
-    │   ├── K DA ALL OUT Akali.zip
-    │   ├── K DA Akali.zip
+    │   ├── KDA ALL OUT Akali.zip
+    │   ├── KDA Akali.zip
     │   ├── Nurse Akali.zip
     │   ├── PROJECT Akali.zip
     │   ├── Prestige Coven Akali.zip
-    │   ├── Prestige K DA Akali (2022).zip
-    │   ├── Prestige K DA Akali.zip
+    │   ├── Prestige KDA Akali 2022.zip
+    │   ├── Prestige KDA Akali.zip
     │   ├── Sashimi Akali.zip
     │   ├── Silverfang Akali.zip
     │   ├── Spirit Blossom Akali.zip
@@ -293,6 +296,7 @@ Directory structure:
     │   │       ├── Cyber Pop Akshan 166007.zip
     │   │       ├── Cyber Pop Akshan 166008.zip
     │   │       └── Cyber Pop Akshan 166009.zip
+    │   ├── Akshan.zip
     │   ├── Crystal Rose Akshan.zip
     │   ├── Cyber Pop Akshan.zip
     │   └── Three Honors Akshan.zip
@@ -333,6 +337,7 @@ Directory structure:
     │   │       ├── Moo Cow Alistar 12016.zip
     │   │       ├── Moo Cow Alistar 12017.zip
     │   │       └── Moo Cow Alistar 12018.zip
+    │   ├── Alistar.zip
     │   ├── Black Alistar.zip
     │   ├── Blackfrost Alistar.zip
     │   ├── Conqueror Alistar.zip
@@ -357,6 +362,7 @@ Directory structure:
     │   │       ├── Chosen of the Wolf Ambessa 799005.zip
     │   │       ├── Chosen of the Wolf Ambessa 799006.zip
     │   │       └── Chosen of the Wolf Ambessa 799007.zip
+    │   ├── Ambessa.zip
     │   └── Chosen of the Wolf Ambessa.zip
     ├── Amumu/
     │   ├── chromas/
@@ -414,8 +420,9 @@ Directory structure:
     │   │       ├── Surprise Party Amumu 32015.zip
     │   │       └── Surprise Party Amumu 32016.zip
     │   ├── Almost-Prom King Amumu.zip
+    │   ├── Amumu.zip
     │   ├── Dumpling Darlings Amumu.zip
-    │   ├── Emumu.zip
+    │   ├── Emumu Amumu.zip
     │   ├── Heartache Amumu.zip
     │   ├── Hextech Amumu.zip
     │   ├── Infernal Amumu.zip
@@ -476,7 +483,8 @@ Directory structure:
     │   │       ├── Victorious Anivia 34052.zip
     │   │       ├── Victorious Anivia 34053.zip
     │   │       └── Victorious Anivia 34054.zip
-    │   ├── Bewitching Batnivia.zip
+    │   ├── Anivia.zip
+    │   ├── Bewitching Batnivia Anivia.zip
     │   ├── Bird of Prey Anivia.zip
     │   ├── Blackfrost Anivia.zip
     │   ├── Cosmic Flight Anivia.zip
@@ -537,6 +545,7 @@ Directory structure:
     │   │       └── Winterblessed Annie 1049.zip
     │   ├── Annie in Wonderland.zip
     │   ├── Annie-Versary.zip
+    │   ├── Annie.zip
     │   ├── Battle Princess Annie.zip
     │   ├── Cafe Cuties Annie.zip
     │   ├── FrankenTibbers Annie.zip
@@ -592,6 +601,7 @@ Directory structure:
     │   │       ├── Spirit Blossom Aphelios 523027.zip
     │   │       ├── Spirit Blossom Aphelios 523028.zip
     │   │       └── Spirit Blossom Aphelios 523029.zip
+    │   ├── Aphelios.zip
     │   ├── EDG Aphelios.zip
     │   ├── HEARTSTEEL Aphelios.zip
     │   ├── Lunar Beast Aphelios.zip
@@ -677,6 +687,7 @@ Directory structure:
     │   │   └── Worlds 2017 Ashe/
     │   │       └── Worlds 2017 Ashe 22010.zip
     │   ├── Amethyst Ashe.zip
+    │   ├── Ashe.zip
     │   ├── Cosmic Queen Ashe.zip
     │   ├── Coven Ashe.zip
     │   ├── Crystalis Motus Ashe.zip
@@ -696,7 +707,7 @@ Directory structure:
     │   ├── Woad Ashe.zip
     │   └── Worlds 2017 Ashe.zip
     ├── Aurelion Sol/
-    │   ├── chromas/
+    │   ├── Chromas/
     │   │   ├── Inkshadow Aurelion Sol/
     │   │   │   ├── Inkshadow Aurelion Sol 136022.zip
     │   │   │   ├── Inkshadow Aurelion Sol 136023.zip
@@ -733,12 +744,22 @@ Directory structure:
     │   │       ├── Storm Dragon Aurelion Sol 136019.zip
     │   │       └── Storm Dragon Aurelion Sol 136020.zip
     │   ├── Ashen Lord Aurelion Sol.zip
+    │   ├── Aurelion Sol.zip
     │   ├── Inkshadow Aurelion Sol.zip
     │   ├── Mecha Aurelion Sol.zip
     │   ├── Porcelain Protector Aurelion Sol.zip
     │   └── Storm Dragon Aurelion Sol.zip
     ├── Aurora/
     │   ├── chromas/
+    │   │   ├── Arcana Aurora/
+    │   │   │   ├── Arcana Aurora 893012.zip
+    │   │   │   ├── Arcana Aurora 893013.zip
+    │   │   │   ├── Arcana Aurora 893014.zip
+    │   │   │   ├── Arcana Aurora 893015.zip
+    │   │   │   ├── Arcana Aurora 893016.zip
+    │   │   │   ├── Arcana Aurora 893017.zip
+    │   │   │   ├── Arcana Aurora 893018.zip
+    │   │   │   └── Arcana Aurora 893019.zip
     │   │   └── Battle Bunny Aurora/
     │   │       ├── Battle Bunny Aurora 893002.zip
     │   │       ├── Battle Bunny Aurora 893003.zip
@@ -749,6 +770,8 @@ Directory structure:
     │   │       ├── Battle Bunny Aurora 893008.zip
     │   │       ├── Battle Bunny Aurora 893009.zip
     │   │       └── Battle Bunny Aurora 893010.zip
+    │   ├── Arcana Aurora.zip
+    │   ├── Aurora.zip
     │   └── Battle Bunny Aurora.zip
     ├── Azir/
     │   ├── chromas/
@@ -776,6 +799,7 @@ Directory structure:
     │   │       ├── Worlds 2022 Azir 268017.zip
     │   │       └── Worlds 2022 Azir 268018.zip
     │   ├── Attorney Azir.zip
+    │   ├── Azir.zip
     │   ├── Elderwood Azir.zip
     │   ├── Galactic Azir.zip
     │   ├── Gravelord Azir.zip
@@ -838,38 +862,39 @@ Directory structure:
     │   ├── Spirit Blossom Bard.zip
     │   └── T1 Bard.zip
     ├── Bel'Veth/
-    │   ├── chromas/
-    │   │   ├── Battle Boss Bel'Veth/
-    │   │   │   ├── Battle Boss Bel'Veth 200002.zip
-    │   │   │   ├── Battle Boss Bel'Veth 200003.zip
-    │   │   │   ├── Battle Boss Bel'Veth 200004.zip
-    │   │   │   ├── Battle Boss Bel'Veth 200005.zip
-    │   │   │   ├── Battle Boss Bel'Veth 200006.zip
-    │   │   │   ├── Battle Boss Bel'Veth 200007.zip
-    │   │   │   ├── Battle Boss Bel'Veth 200008.zip
-    │   │   │   └── Battle Boss Bel'Veth 200009.zip
-    │   │   ├── Cosmic Matriarch Bel'Veth/
-    │   │   │   ├── Cosmic Matriarch Bel'Veth 200011.zip
-    │   │   │   ├── Cosmic Matriarch Bel'Veth 200012.zip
-    │   │   │   ├── Cosmic Matriarch Bel'Veth 200013.zip
-    │   │   │   ├── Cosmic Matriarch Bel'Veth 200014.zip
-    │   │   │   ├── Cosmic Matriarch Bel'Veth 200015.zip
-    │   │   │   ├── Cosmic Matriarch Bel'Veth 200016.zip
-    │   │   │   ├── Cosmic Matriarch Bel'Veth 200017.zip
-    │   │   │   └── Cosmic Matriarch Bel'Veth 200018.zip
-    │   │   └── Primordian Bel'Veth/
-    │   │       ├── Primordian Bel'Veth 200020.zip
-    │   │       ├── Primordian Bel'Veth 200021.zip
-    │   │       ├── Primordian Bel'Veth 200022.zip
-    │   │       ├── Primordian Bel'Veth 200023.zip
-    │   │       ├── Primordian Bel'Veth 200024.zip
-    │   │       ├── Primordian Bel'Veth 200025.zip
-    │   │       ├── Primordian Bel'Veth 200026.zip
-    │   │       ├── Primordian Bel'Veth 200027.zip
-    │   │       └── Primordian Bel'Veth 200028.zip
-    │   ├── Battle Boss Bel'Veth.zip
-    │   ├── Cosmic Matriarch Bel'Veth.zip
-    │   └── Primordian Bel'Veth.zip
+    │   ├── Chromas/
+    │   │   ├── Battle Boss BelVeth/
+    │   │   │   ├── Battle Boss BelVeth 200002.zip
+    │   │   │   ├── Battle Boss BelVeth 200003.zip
+    │   │   │   ├── Battle Boss BelVeth 200004.zip
+    │   │   │   ├── Battle Boss BelVeth 200005.zip
+    │   │   │   ├── Battle Boss BelVeth 200006.zip
+    │   │   │   ├── Battle Boss BelVeth 200007.zip
+    │   │   │   ├── Battle Boss BelVeth 200008.zip
+    │   │   │   └── Battle Boss BelVeth 200009.zip
+    │   │   ├── Cosmic Matriarch BelVeth/
+    │   │   │   ├── Cosmic Matriarch BelVeth 200011.zip
+    │   │   │   ├── Cosmic Matriarch BelVeth 200012.zip
+    │   │   │   ├── Cosmic Matriarch BelVeth 200013.zip
+    │   │   │   ├── Cosmic Matriarch BelVeth 200014.zip
+    │   │   │   ├── Cosmic Matriarch BelVeth 200015.zip
+    │   │   │   ├── Cosmic Matriarch BelVeth 200016.zip
+    │   │   │   ├── Cosmic Matriarch BelVeth 200017.zip
+    │   │   │   └── Cosmic Matriarch BelVeth 200018.zip
+    │   │   └── Primordian BelVeth/
+    │   │       ├── Primordian BelVeth 200020.zip
+    │   │       ├── Primordian BelVeth 200021.zip
+    │   │       ├── Primordian BelVeth 200022.zip
+    │   │       ├── Primordian BelVeth 200023.zip
+    │   │       ├── Primordian BelVeth 200024.zip
+    │   │       ├── Primordian BelVeth 200025.zip
+    │   │       ├── Primordian BelVeth 200026.zip
+    │   │       ├── Primordian BelVeth 200027.zip
+    │   │       └── Primordian BelVeth 200028.zip
+    │   ├── Battle Boss BelVeth.zip
+    │   ├── BelVeth.zip
+    │   ├── Cosmic Matriarch BelVeth.zip
+    │   └── Primordian BelVeth.zip
     ├── Blitzcrank/
     │   ├── chromas/
     │   │   ├── Battle Boss Blitzcrank/
@@ -894,13 +919,13 @@ Directory structure:
     │   │   │   ├── Blitzcrank 53008.zip
     │   │   │   ├── Blitzcrank 53009.zip
     │   │   │   └── Blitzcrank 53010.zip
-    │   │   ├── Space Groove Blitz & Crank/
-    │   │   │   ├── Space Groove Blitz & Crank 53030.zip
-    │   │   │   ├── Space Groove Blitz & Crank 53031.zip
-    │   │   │   ├── Space Groove Blitz & Crank 53032.zip
-    │   │   │   ├── Space Groove Blitz & Crank 53033.zip
-    │   │   │   ├── Space Groove Blitz & Crank 53034.zip
-    │   │   │   └── Space Groove Blitz & Crank 53035.zip
+    │   │   ├── Space Groove Blitz Crank/
+    │   │   │   ├── Space Groove Blitz Crank 53030.zip
+    │   │   │   ├── Space Groove Blitz Crank 53031.zip
+    │   │   │   ├── Space Groove Blitz Crank 53032.zip
+    │   │   │   ├── Space Groove Blitz Crank 53033.zip
+    │   │   │   ├── Space Groove Blitz Crank 53034.zip
+    │   │   │   └── Space Groove Blitz Crank 53035.zip
     │   │   ├── Victorious Blitzcrank/
     │   │   │   ├── Victorious Blitzcrank 53037.zip
     │   │   │   ├── Victorious Blitzcrank 53038.zip
@@ -912,13 +937,13 @@ Directory structure:
     │   │   │   ├── Victorious Blitzcrank 53044.zip
     │   │   │   ├── Victorious Blitzcrank 53045.zip
     │   │   │   └── Victorious Blitzcrank 53046.zip
-    │   │   ├── Witch's Brew Blitzcrank/
-    │   │   │   ├── Witch's Brew Blitzcrank 53023.zip
-    │   │   │   ├── Witch's Brew Blitzcrank 53024.zip
-    │   │   │   ├── Witch's Brew Blitzcrank 53025.zip
-    │   │   │   ├── Witch's Brew Blitzcrank 53026.zip
-    │   │   │   ├── Witch's Brew Blitzcrank 53027.zip
-    │   │   │   └── Witch's Brew Blitzcrank 53028.zip
+    │   │   ├── Witchs Brew Blitzcrank/
+    │   │   │   ├── Witchs Brew Blitzcrank 53023.zip
+    │   │   │   ├── Witchs Brew Blitzcrank 53024.zip
+    │   │   │   ├── Witchs Brew Blitzcrank 53025.zip
+    │   │   │   ├── Witchs Brew Blitzcrank 53026.zip
+    │   │   │   ├── Witchs Brew Blitzcrank 53027.zip
+    │   │   │   └── Witchs Brew Blitzcrank 53028.zip
     │   │   └── Zenith Games Blitzcrank/
     │   │       ├── Zenith Games Blitzcrank 53048.zip
     │   │       ├── Zenith Games Blitzcrank 53049.zip
@@ -929,7 +954,7 @@ Directory structure:
     │   │       ├── Zenith Games Blitzcrank 53054.zip
     │   │       └── Zenith Games Blitzcrank 53055.zip
     │   ├── Battle Boss Blitzcrank.zip
-    │   ├── Beezcrank.zip
+    │   ├── Beezcrank Blitzcrank.zip
     │   ├── Blitzcrank.zip
     │   ├── Boom Boom Blitzcrank.zip
     │   ├── Definitely Not Blitzcrank.zip
@@ -939,9 +964,9 @@ Directory structure:
     │   ├── Piltover Customs Blitzcrank.zip
     │   ├── Riot Blitzcrank.zip
     │   ├── Rusty Blitzcrank.zip
-    │   ├── Space Groove Blitz & Crank.zip
+    │   ├── Space Groove Blitz Crank Blitzcrank.zip
     │   ├── Victorious Blitzcrank.zip
-    │   ├── Witch's Brew Blitzcrank.zip
+    │   ├── Witchs Brew Blitzcrank.zip
     │   ├── Zenith Games Blitzcrank.zip
     │   └── iBlitzcrank.zip
     ├── Brand/
@@ -981,18 +1006,21 @@ Directory structure:
     │   │   │   ├── Eternal Dragon Brand 63019.zip
     │   │   │   ├── Eternal Dragon Brand 63020.zip
     │   │   │   └── Eternal Dragon Brand 63023.zip
-    │   │   └── Street Demons Brand/
-    │   │       ├── Street Demons Brand 63034.zip
-    │   │       ├── Street Demons Brand 63035.zip
-    │   │       ├── Street Demons Brand 63036.zip
-    │   │       ├── Street Demons Brand 63037.zip
-    │   │       ├── Street Demons Brand 63038.zip
-    │   │       ├── Street Demons Brand 63039.zip
-    │   │       ├── Street Demons Brand 63040.zip
-    │   │       └── Street Demons Brand 63041.zip
+    │   │   ├── Street Demons Brand/
+    │   │   │   ├── Street Demons Brand 63034.zip
+    │   │   │   ├── Street Demons Brand 63035.zip
+    │   │   │   ├── Street Demons Brand 63036.zip
+    │   │   │   ├── Street Demons Brand 63037.zip
+    │   │   │   ├── Street Demons Brand 63038.zip
+    │   │   │   ├── Street Demons Brand 63039.zip
+    │   │   │   ├── Street Demons Brand 63040.zip
+    │   │   │   └── Street Demons Brand 63041.zip
+    │   │   └── Zombie Brand/
+    │   │       └── Zombie Brand 63052.zip
     │   ├── Apocalyptic Brand.zip
     │   ├── Arclight Brand.zip
     │   ├── Battle Boss Brand.zip
+    │   ├── Brand.zip
     │   ├── Cryocore Brand.zip
     │   ├── Debonair Brand.zip
     │   ├── Empyrean Brand.zip
@@ -1052,6 +1080,7 @@ Directory structure:
     │   │       ├── Sugar Rush Braum 201031.zip
     │   │       └── Sugar Rush Braum 201032.zip
     │   ├── Braum Lionheart.zip
+    │   ├── Braum.zip
     │   ├── Crime City Braum.zip
     │   ├── Dragonslayer Braum.zip
     │   ├── El Tigre Braum.zip
@@ -1080,6 +1109,7 @@ Directory structure:
     │   │       ├── Street Demons Briar 233007.zip
     │   │       ├── Street Demons Briar 233008.zip
     │   │       └── Street Demons Briar 233009.zip
+    │   ├── Briar.zip
     │   ├── Primordian Briar.zip
     │   └── Street Demons Briar.zip
     ├── Caitlyn/
@@ -1140,7 +1170,7 @@ Directory structure:
     │   ├── Lunar Wraith Caitlyn.zip
     │   ├── Officer Caitlyn.zip
     │   ├── Pool Party Caitlyn.zip
-    │   ├── Prestige Arcade Caitlyn (2022).zip
+    │   ├── Prestige Arcade Caitlyn 2022.zip
     │   ├── Prestige Arcade Caitlyn.zip
     │   ├── Prestige Arcane Commander Caitlyn.zip
     │   ├── Pulsefire Caitlyn.zip
@@ -1178,18 +1208,21 @@ Directory structure:
     │   │   │   ├── Strike Commander Camille 164028.zip
     │   │   │   ├── Strike Commander Camille 164029.zip
     │   │   │   └── Strike Commander Camille 164030.zip
-    │   │   └── Winterblessed Camille/
-    │   │       ├── Winterblessed Camille 164033.zip
-    │   │       ├── Winterblessed Camille 164034.zip
-    │   │       ├── Winterblessed Camille 164035.zip
-    │   │       ├── Winterblessed Camille 164036.zip
-    │   │       ├── Winterblessed Camille 164037.zip
-    │   │       ├── Winterblessed Camille 164038.zip
-    │   │       ├── Winterblessed Camille 164039.zip
-    │   │       ├── Winterblessed Camille 164040.zip
-    │   │       ├── Winterblessed Camille 164041.zip
-    │   │       └── Winterblessed Camille 164042.zip
+    │   │   ├── Winterblessed Camille/
+    │   │   │   ├── Winterblessed Camille 164033.zip
+    │   │   │   ├── Winterblessed Camille 164034.zip
+    │   │   │   ├── Winterblessed Camille 164035.zip
+    │   │   │   ├── Winterblessed Camille 164036.zip
+    │   │   │   ├── Winterblessed Camille 164037.zip
+    │   │   │   ├── Winterblessed Camille 164038.zip
+    │   │   │   ├── Winterblessed Camille 164039.zip
+    │   │   │   ├── Winterblessed Camille 164040.zip
+    │   │   │   ├── Winterblessed Camille 164041.zip
+    │   │   │   └── Winterblessed Camille 164042.zip
+    │   │   └── iG Camille/
+    │   │       └── iG Camille 164043.zip
     │   ├── Arcana Camille.zip
+    │   ├── Camille.zip
     │   ├── Coven Camille.zip
     │   ├── Prestige Winterblessed Camille.zip
     │   ├── Program Camille.zip
@@ -1231,6 +1264,7 @@ Directory structure:
     │   │       ├── Spirit Blossom Cassiopeia 69016.zip
     │   │       └── Spirit Blossom Cassiopeia 69017.zip
     │   ├── Bewitching Cassiopeia.zip
+    │   ├── Cassiopeia.zip
     │   ├── Coven Cassiopeia.zip
     │   ├── Desperada Cassiopeia.zip
     │   ├── Eternum Cassiopeia.zip
@@ -1240,51 +1274,52 @@ Directory structure:
     │   ├── Siren Cassiopeia.zip
     │   └── Spirit Blossom Cassiopeia.zip
     ├── Cho'Gath/
-    │   ├── chromas/
-    │   │   ├── Battlecast Prime Cho'Gath/
-    │   │   │   ├── Battlecast Prime Cho'Gath 31008.zip
-    │   │   │   ├── Battlecast Prime Cho'Gath 31009.zip
-    │   │   │   ├── Battlecast Prime Cho'Gath 31010.zip
-    │   │   │   ├── Battlecast Prime Cho'Gath 31011.zip
-    │   │   │   ├── Battlecast Prime Cho'Gath 31012.zip
-    │   │   │   └── Battlecast Prime Cho'Gath 31013.zip
-    │   │   ├── Broken Covenant Cho'Gath/
-    │   │   │   ├── Broken Covenant Cho'Gath 31024.zip
-    │   │   │   ├── Broken Covenant Cho'Gath 31025.zip
-    │   │   │   ├── Broken Covenant Cho'Gath 31026.zip
-    │   │   │   ├── Broken Covenant Cho'Gath 31027.zip
-    │   │   │   ├── Broken Covenant Cho'Gath 31028.zip
-    │   │   │   ├── Broken Covenant Cho'Gath 31029.zip
-    │   │   │   ├── Broken Covenant Cho'Gath 31030.zip
-    │   │   │   └── Broken Covenant Cho'Gath 31031.zip
-    │   │   ├── Shan Hai Scrolls Cho'Gath/
-    │   │   │   ├── Shan Hai Scrolls Cho'Gath 31015.zip
-    │   │   │   ├── Shan Hai Scrolls Cho'Gath 31016.zip
-    │   │   │   ├── Shan Hai Scrolls Cho'Gath 31017.zip
-    │   │   │   ├── Shan Hai Scrolls Cho'Gath 31018.zip
-    │   │   │   ├── Shan Hai Scrolls Cho'Gath 31019.zip
-    │   │   │   ├── Shan Hai Scrolls Cho'Gath 31020.zip
-    │   │   │   ├── Shan Hai Scrolls Cho'Gath 31021.zip
-    │   │   │   └── Shan Hai Scrolls Cho'Gath 31022.zip
-    │   │   └── Toy Terror Cho'Gath/
-    │   │       ├── Toy Terror Cho'Gath 31033.zip
-    │   │       ├── Toy Terror Cho'Gath 31034.zip
-    │   │       ├── Toy Terror Cho'Gath 31035.zip
-    │   │       ├── Toy Terror Cho'Gath 31036.zip
-    │   │       ├── Toy Terror Cho'Gath 31037.zip
-    │   │       ├── Toy Terror Cho'Gath 31038.zip
-    │   │       ├── Toy Terror Cho'Gath 31039.zip
-    │   │       └── Toy Terror Cho'Gath 31040.zip
-    │   ├── Battlecast Prime Cho'Gath.zip
-    │   ├── Broken Covenant Cho'Gath.zip
-    │   ├── Dark Star Cho'Gath.zip
-    │   ├── Gentleman Cho'Gath.zip
-    │   ├── Jurassic Cho'Gath.zip
-    │   ├── Loch Ness Cho'Gath.zip
-    │   ├── Nightmare Cho'Gath.zip
-    │   ├── Prehistoric Cho'Gath.zip
-    │   ├── Shan Hai Scrolls Cho'Gath.zip
-    │   └── Toy Terror Cho'Gath.zip
+    │   ├── Chromas/
+    │   │   ├── Battlecast Prime ChoGath/
+    │   │   │   ├── Battlecast Prime ChoGath 31008.zip
+    │   │   │   ├── Battlecast Prime ChoGath 31009.zip
+    │   │   │   ├── Battlecast Prime ChoGath 31010.zip
+    │   │   │   ├── Battlecast Prime ChoGath 31011.zip
+    │   │   │   ├── Battlecast Prime ChoGath 31012.zip
+    │   │   │   └── Battlecast Prime ChoGath 31013.zip
+    │   │   ├── Broken Covenant ChoGath/
+    │   │   │   ├── Broken Covenant ChoGath 31024.zip
+    │   │   │   ├── Broken Covenant ChoGath 31025.zip
+    │   │   │   ├── Broken Covenant ChoGath 31026.zip
+    │   │   │   ├── Broken Covenant ChoGath 31027.zip
+    │   │   │   ├── Broken Covenant ChoGath 31028.zip
+    │   │   │   ├── Broken Covenant ChoGath 31029.zip
+    │   │   │   ├── Broken Covenant ChoGath 31030.zip
+    │   │   │   └── Broken Covenant ChoGath 31031.zip
+    │   │   ├── Shan Hai Scrolls ChoGath/
+    │   │   │   ├── Shan Hai Scrolls ChoGath 31015.zip
+    │   │   │   ├── Shan Hai Scrolls ChoGath 31016.zip
+    │   │   │   ├── Shan Hai Scrolls ChoGath 31017.zip
+    │   │   │   ├── Shan Hai Scrolls ChoGath 31018.zip
+    │   │   │   ├── Shan Hai Scrolls ChoGath 31019.zip
+    │   │   │   ├── Shan Hai Scrolls ChoGath 31020.zip
+    │   │   │   ├── Shan Hai Scrolls ChoGath 31021.zip
+    │   │   │   └── Shan Hai Scrolls ChoGath 31022.zip
+    │   │   └── Toy Terror ChoGath/
+    │   │       ├── Toy Terror ChoGath 31033.zip
+    │   │       ├── Toy Terror ChoGath 31034.zip
+    │   │       ├── Toy Terror ChoGath 31035.zip
+    │   │       ├── Toy Terror ChoGath 31036.zip
+    │   │       ├── Toy Terror ChoGath 31037.zip
+    │   │       ├── Toy Terror ChoGath 31038.zip
+    │   │       ├── Toy Terror ChoGath 31039.zip
+    │   │       └── Toy Terror ChoGath 31040.zip
+    │   ├── Battlecast Prime ChoGath.zip
+    │   ├── Broken Covenant ChoGath.zip
+    │   ├── ChoGath.zip
+    │   ├── Dark Star ChoGath.zip
+    │   ├── Gentleman ChoGath.zip
+    │   ├── Jurassic ChoGath.zip
+    │   ├── Loch Ness ChoGath.zip
+    │   ├── Nightmare ChoGath.zip
+    │   ├── Prehistoric ChoGath.zip
+    │   ├── Shan Hai Scrolls ChoGath.zip
+    │   └── Toy Terror ChoGath.zip
     ├── Corki/
     │   ├── chromas/
     │   │   ├── Arcade Corki/
@@ -1329,6 +1364,7 @@ Directory structure:
     │   ├── Astronaut Corki.zip
     │   ├── Brick Toy Corki.zip
     │   ├── Corgi Corki.zip
+    │   ├── Corki.zip
     │   ├── Dragonwing Corki.zip
     │   ├── Fnatic Corki.zip
     │   ├── Hot Rod Corki.zip
@@ -1487,6 +1523,7 @@ Directory structure:
     │   ├── Dark Cosmic Diana.zip
     │   ├── Dark Valkyrie Diana.zip
     │   ├── Dark Waters Diana.zip
+    │   ├── Diana.zip
     │   ├── Dragonslayer Diana.zip
     │   ├── Firecracker Diana.zip
     │   ├── Heavenscale Diana.zip
@@ -1497,7 +1534,7 @@ Directory structure:
     │   ├── Sentinel Diana.zip
     │   └── Winterblessed Diana.zip
     ├── Dr. Mundo/
-    │   ├── chromas/
+    │   ├── Chromas/
     │   │   ├── Corporate Mundo/
     │   │   │   ├── Corporate Mundo 36016.zip
     │   │   │   ├── Corporate Mundo 36017.zip
@@ -1510,26 +1547,27 @@ Directory structure:
     │   │   │   ├── Frozen Prince Mundo 36013.zip
     │   │   │   ├── Frozen Prince Mundo 36014.zip
     │   │   │   └── Frozen Prince Mundo 36015.zip
-    │   │   └── Street Demons Dr. Mundo/
-    │   │       ├── Street Demons Dr. Mundo 36022.zip
-    │   │       ├── Street Demons Dr. Mundo 36023.zip
-    │   │       ├── Street Demons Dr. Mundo 36024.zip
-    │   │       ├── Street Demons Dr. Mundo 36025.zip
-    │   │       ├── Street Demons Dr. Mundo 36026.zip
-    │   │       ├── Street Demons Dr. Mundo 36027.zip
-    │   │       ├── Street Demons Dr. Mundo 36028.zip
-    │   │       └── Street Demons Dr. Mundo 36029.zip
+    │   │   └── Street Demons Dr Mundo/
+    │   │       ├── Street Demons Dr Mundo 36022.zip
+    │   │       ├── Street Demons Dr Mundo 36023.zip
+    │   │       ├── Street Demons Dr Mundo 36024.zip
+    │   │       ├── Street Demons Dr Mundo 36025.zip
+    │   │       ├── Street Demons Dr Mundo 36026.zip
+    │   │       ├── Street Demons Dr Mundo 36027.zip
+    │   │       ├── Street Demons Dr Mundo 36028.zip
+    │   │       └── Street Demons Dr Mundo 36029.zip
     │   ├── Corporate Mundo.zip
+    │   ├── Dr Mundo.zip
     │   ├── El Macho Mundo.zip
     │   ├── Executioner Mundo.zip
     │   ├── Frozen Prince Mundo.zip
-    │   ├── Mr. Mundoverse.zip
+    │   ├── Mr Mundoverse.zip
     │   ├── Mundo Mundo.zip
     │   ├── Pool Party Mundo.zip
     │   ├── Rageborn Mundo.zip
-    │   ├── Street Demons Dr. Mundo.zip
+    │   ├── Street Demons Dr Mundo.zip
     │   ├── TPA Mundo.zip
-    │   └── Toxic Dr. Mundo.zip
+    │   └── Toxic Dr Mundo.zip
     ├── Draven/
     │   ├── chromas/
     │   │   ├── Debonair Draven/
@@ -1596,6 +1634,7 @@ Directory structure:
     │   ├── Beast Hunter Draven.zip
     │   ├── Debonair Draven.zip
     │   ├── Draven Draven.zip
+    │   ├── Draven.zip
     │   ├── Fright Night Draven.zip
     │   ├── Gladiator Draven.zip
     │   ├── Grand Reckoning Draven.zip
@@ -1665,6 +1704,7 @@ Directory structure:
     │   ├── Arcane Firelight Ekko.zip
     │   ├── Arcane Last Stand Ekko.zip
     │   ├── Breakout True Damage Ekko.zip
+    │   ├── Ekko.zip
     │   ├── PROJECT Ekko.zip
     │   ├── Prestige Star Guardian Ekko.zip
     │   ├── Pulsefire Ekko.zip
@@ -1708,6 +1748,7 @@ Directory structure:
     │   ├── Blood Moon Elise.zip
     │   ├── Coven Elise.zip
     │   ├── Death Blossom Elise.zip
+    │   ├── Elise.zip
     │   ├── Masque of the Black Rose Elise.zip
     │   ├── SKT T1 Elise.zip
     │   ├── Super Galaxy Elise.zip
@@ -1733,15 +1774,15 @@ Directory structure:
     │   │   │   ├── High Noon Evelynn 28061.zip
     │   │   │   ├── High Noon Evelynn 28062.zip
     │   │   │   └── High Noon Evelynn 28063.zip
-    │   │   ├── K DA ALL OUT Evelynn/
-    │   │   │   ├── K DA ALL OUT Evelynn 28016.zip
-    │   │   │   ├── K DA ALL OUT Evelynn 28017.zip
-    │   │   │   ├── K DA ALL OUT Evelynn 28018.zip
-    │   │   │   ├── K DA ALL OUT Evelynn 28019.zip
-    │   │   │   ├── K DA ALL OUT Evelynn 28020.zip
-    │   │   │   ├── K DA ALL OUT Evelynn 28021.zip
-    │   │   │   ├── K DA ALL OUT Evelynn 28022.zip
-    │   │   │   └── K DA ALL OUT Evelynn 28023.zip
+    │   │   ├── KDA ALL OUT Evelynn/
+    │   │   │   ├── KDA ALL OUT Evelynn 28016.zip
+    │   │   │   ├── KDA ALL OUT Evelynn 28017.zip
+    │   │   │   ├── KDA ALL OUT Evelynn 28018.zip
+    │   │   │   ├── KDA ALL OUT Evelynn 28019.zip
+    │   │   │   ├── KDA ALL OUT Evelynn 28020.zip
+    │   │   │   ├── KDA ALL OUT Evelynn 28021.zip
+    │   │   │   ├── KDA ALL OUT Evelynn 28022.zip
+    │   │   │   └── KDA ALL OUT Evelynn 28023.zip
     │   │   ├── Soul Fighter Evelynn/
     │   │   │   ├── Soul Fighter Evelynn 28043.zip
     │   │   │   ├── Soul Fighter Evelynn 28044.zip
@@ -1771,14 +1812,15 @@ Directory structure:
     │   │       └── Sugar Rush Evelynn 28014.zip
     │   ├── Blood Moon Evelynn.zip
     │   ├── Coven Evelynn.zip
+    │   ├── Evelynn.zip
     │   ├── High Noon Evelynn.zip
-    │   ├── K DA ALL OUT Evelynn.zip
-    │   ├── K DA Evelynn.zip
+    │   ├── KDA ALL OUT Evelynn.zip
+    │   ├── KDA Evelynn.zip
     │   ├── Masquerade Evelynn.zip
     │   ├── Nightbringer Evelynn.zip
     │   ├── Prestige High Noon Evelynn.zip
-    │   ├── Prestige K DA Evelynn (2022).zip
-    │   ├── Prestige K DA Evelynn.zip
+    │   ├── Prestige KDA Evelynn 2022.zip
+    │   ├── Prestige KDA Evelynn.zip
     │   ├── Safecracker Evelynn.zip
     │   ├── Shadow Evelynn.zip
     │   ├── Soul Fighter Evelynn.zip
@@ -1840,18 +1882,21 @@ Directory structure:
     │   │   │   ├── Masque of the Black Rose Ezreal 81071.zip
     │   │   │   ├── Masque of the Black Rose Ezreal 81072.zip
     │   │   │   └── Masque of the Black Rose Ezreal 81073.zip
-    │   │   └── Porcelain Protector Ezreal/
-    │   │       ├── Porcelain Protector Ezreal 81026.zip
-    │   │       ├── Porcelain Protector Ezreal 81027.zip
-    │   │       ├── Porcelain Protector Ezreal 81028.zip
-    │   │       ├── Porcelain Protector Ezreal 81029.zip
-    │   │       ├── Porcelain Protector Ezreal 81030.zip
-    │   │       └── Porcelain Protector Ezreal 81031.zip
+    │   │   ├── Porcelain Protector Ezreal/
+    │   │   │   ├── Porcelain Protector Ezreal 81026.zip
+    │   │   │   ├── Porcelain Protector Ezreal 81027.zip
+    │   │   │   ├── Porcelain Protector Ezreal 81028.zip
+    │   │   │   ├── Porcelain Protector Ezreal 81029.zip
+    │   │   │   ├── Porcelain Protector Ezreal 81030.zip
+    │   │   │   └── Porcelain Protector Ezreal 81031.zip
+    │   │   └── SSG Ezreal/
+    │   │       └── SSG Ezreal 81075.zip
     │   ├── Ace of Spades Ezreal.zip
     │   ├── Arcade Ezreal.zip
     │   ├── Battle Academia Ezreal.zip
     │   ├── Debonair Ezreal.zip
     │   ├── Explorer Ezreal.zip
+    │   ├── Ezreal.zip
     │   ├── Faerie Court Ezreal.zip
     │   ├── Frosted Ezreal.zip
     │   ├── HEARTSTEEL Ezreal.zip
@@ -1888,6 +1933,15 @@ Directory structure:
     │   │   │   ├── Blood Moon Fiddlesticks 9043.zip
     │   │   │   ├── Blood Moon Fiddlesticks 9044.zip
     │   │   │   └── Blood Moon Fiddlesticks 9045.zip
+    │   │   ├── Flora Fatalis Fiddlesticks/
+    │   │   │   ├── Flora Fatalis Fiddlesticks 9047.zip
+    │   │   │   ├── Flora Fatalis Fiddlesticks 9048.zip
+    │   │   │   ├── Flora Fatalis Fiddlesticks 9049.zip
+    │   │   │   ├── Flora Fatalis Fiddlesticks 9050.zip
+    │   │   │   ├── Flora Fatalis Fiddlesticks 9051.zip
+    │   │   │   ├── Flora Fatalis Fiddlesticks 9052.zip
+    │   │   │   ├── Flora Fatalis Fiddlesticks 9053.zip
+    │   │   │   └── Flora Fatalis Fiddlesticks 9054.zip
     │   │   ├── Praetorian Fiddlesticks/
     │   │   │   ├── Praetorian Fiddlesticks 9010.zip
     │   │   │   ├── Praetorian Fiddlesticks 9011.zip
@@ -1912,7 +1966,9 @@ Directory structure:
     │   ├── Bandito Fiddlesticks.zip
     │   ├── Blood Moon Fiddlesticks.zip
     │   ├── Dark Candy Fiddlesticks.zip
-    │   ├── Fiddle Me Timbers.zip
+    │   ├── Fiddle Me Timbers Fiddlesticks.zip
+    │   ├── Fiddlesticks.zip
+    │   ├── Flora Fatalis Fiddlesticks.zip
     │   ├── Praetorian Fiddlesticks.zip
     │   ├── Pumpkinhead Fiddlesticks.zip
     │   ├── Risen Fiddlesticks.zip
@@ -2015,11 +2071,13 @@ Directory structure:
     │   │   │   ├── Victorious Fiora 114106.zip
     │   │   │   └── Victorious Fiora 114107.zip
     │   │   └── iG Fiora/
-    │   │       └── iG Fiora 114079.zip
+    │   │       ├── iG Fiora 114079.zip
+    │   │       └── iG Fiora 114108.zip
     │   ├── Battle Queen Fiora.zip
     │   ├── Bewitching Fiora.zip
     │   ├── Dragonmancer Fiora.zip
     │   ├── Faerie Court Fiora.zip
+    │   ├── Fiora.zip
     │   ├── Headmistress Fiora.zip
     │   ├── Heartpiercer Fiora.zip
     │   ├── Lunar Beast Fiora.zip
@@ -2073,10 +2131,11 @@ Directory structure:
     │   ├── Atlantean Fizz.zip
     │   ├── Cottontail Fizz.zip
     │   ├── Fisherman Fizz.zip
+    │   ├── Fizz.zip
     │   ├── Fuzz Fizz.zip
     │   ├── Little Devil Fizz.zip
     │   ├── Omega Squad Fizz.zip
-    │   ├── Prestige Fuzz Fizz (2022).zip
+    │   ├── Prestige Fuzz Fizz 2022.zip
     │   ├── Prestige Fuzz Fizz.zip
     │   ├── Rain Shepherd Fizz.zip
     │   ├── Super Galaxy Fizz.zip
@@ -2118,11 +2177,12 @@ Directory structure:
     │   │       ├── Mythmaker Galio 3037.zip
     │   │       ├── Mythmaker Galio 3038.zip
     │   │       └── Mythmaker Galio 3039.zip
-    │   ├── Birdio.zip
+    │   ├── Birdio Galio.zip
     │   ├── Commando Galio.zip
     │   ├── Debonair Galio.zip
     │   ├── Dragon Guardian Galio.zip
     │   ├── Enchanted Galio.zip
+    │   ├── Galio.zip
     │   ├── Gatekeeper Galio.zip
     │   ├── Hextech Galio.zip
     │   ├── Infernal Galio.zip
@@ -2167,6 +2227,7 @@ Directory structure:
     │   ├── Dreadnova Gangplank.zip
     │   ├── FPX Gangplank.zip
     │   ├── Gangplank the Betrayer.zip
+    │   ├── Gangplank.zip
     │   ├── Minuteman Gangplank.zip
     │   ├── PROJECT Gangplank.zip
     │   ├── Pool Party Gangplank.zip
@@ -2264,25 +2325,31 @@ Directory structure:
     │   │   │   ├── Elderwood Gnar 150028.zip
     │   │   │   ├── Elderwood Gnar 150029.zip
     │   │   │   └── Elderwood Gnar 150030.zip
-    │   │   └── La Ilusión Gnar/
-    │   │       ├── La Ilusión Gnar 150032.zip
-    │   │       ├── La Ilusión Gnar 150033.zip
-    │   │       ├── La Ilusión Gnar 150034.zip
-    │   │       ├── La Ilusión Gnar 150035.zip
-    │   │       ├── La Ilusión Gnar 150036.zip
-    │   │       ├── La Ilusión Gnar 150037.zip
-    │   │       ├── La Ilusión Gnar 150038.zip
-    │   │       ├── La Ilusión Gnar 150039.zip
-    │   │       └── La Ilusión Gnar 150040.zip
+    │   │   ├── La Ilusión Gnar/
+    │   │   │   ├── La Ilusión Gnar 150032.zip
+    │   │   │   ├── La Ilusión Gnar 150033.zip
+    │   │   │   ├── La Ilusión Gnar 150034.zip
+    │   │   │   ├── La Ilusión Gnar 150035.zip
+    │   │   │   ├── La Ilusión Gnar 150036.zip
+    │   │   │   ├── La Ilusión Gnar 150037.zip
+    │   │   │   ├── La Ilusión Gnar 150038.zip
+    │   │   │   ├── La Ilusión Gnar 150039.zip
+    │   │   │   └── La Ilusión Gnar 150040.zip
+    │   │   ├── SSG Gnar/
+    │   │   │   └── SSG Gnar 150043.zip
+    │   │   └── T1 Gnar/
+    │   │       └── T1 Gnar 150042.zip
     │   ├── Astronaut Gnar.zip
     │   ├── Dino Gnar.zip
     │   ├── El León Gnar.zip
     │   ├── Elderwood Gnar.zip
     │   ├── Gentleman Gnar.zip
+    │   ├── Gnar.zip
     │   ├── La Ilusión Gnar.zip
     │   ├── SSG Gnar.zip
     │   ├── Snow Day Gnar.zip
-    │   └── Super Galaxy Gnar.zip
+    │   ├── Super Galaxy Gnar.zip
+    │   └── T1 Gnar.zip
     ├── Gragas/
     │   ├── chromas/
     │   │   ├── High Noon Gragas/
@@ -2325,7 +2392,8 @@ Directory structure:
     │   ├── Arctic Ops Gragas.zip
     │   ├── Fnatic Gragas.zip
     │   ├── Gragas Caskbreaker.zip
-    │   ├── Gragas, Esq..zip
+    │   ├── Gragas Esq.zip
+    │   ├── Gragas.zip
     │   ├── High Noon Gragas.zip
     │   ├── Hillbilly Gragas.zip
     │   ├── Music Fan Gragas.zip
@@ -2390,6 +2458,7 @@ Directory structure:
     │   ├── Crime City Graves.zip
     │   ├── Cutthroat Graves.zip
     │   ├── EDG Graves.zip
+    │   ├── Graves.zip
     │   ├── Hired Gun Graves.zip
     │   ├── Jailbreak Graves.zip
     │   ├── Pool Party Graves.zip
@@ -2441,6 +2510,7 @@ Directory structure:
     │   │       └── Space Groove Gwen 887010.zip
     │   ├── Battle Queen Gwen.zip
     │   ├── Cafe Cuties Gwen.zip
+    │   ├── Gwen.zip
     │   ├── Soul Fighter Gwen.zip
     │   └── Space Groove Gwen.zip
     ├── Hecarim/
@@ -2493,6 +2563,7 @@ Directory structure:
     │   ├── Cosmic Charger Hecarim.zip
     │   ├── Elderwood Hecarim.zip
     │   ├── Headless Hecarim.zip
+    │   ├── Hecarim.zip
     │   ├── High Noon Hecarim.zip
     │   ├── Lancer Zero Hecarim.zip
     │   ├── Nightbringer Hecarim.zip
@@ -2526,10 +2597,11 @@ Directory structure:
     │   ├── Blast Zone Heimerdinger.zip
     │   ├── Dragon Trainer Heimerdinger.zip
     │   ├── Hazmat Heimerdinger.zip
-    │   ├── Heimerstinger.zip
+    │   ├── Heimerdinger.zip
+    │   ├── Heimerstinger Heimerdinger.zip
     │   ├── Piltover Customs Heimerdinger.zip
     │   ├── Pool Party Heimerdinger.zip
-    │   └── Snowmerdinger.zip
+    │   └── Snowmerdinger Heimerdinger.zip
     ├── Hwei/
     │   ├── chromas/
     │   │   ├── Spirit Blossom Hwei/
@@ -2552,6 +2624,7 @@ Directory structure:
     │   │       ├── Winterblessed Hwei 910008.zip
     │   │       ├── Winterblessed Hwei 910009.zip
     │   │       └── Winterblessed Hwei 910010.zip
+    │   ├── Hwei.zip
     │   ├── Spirit Blossom Hwei.zip
     │   └── Winterblessed Hwei.zip
     ├── Illaoi/
@@ -2593,6 +2666,7 @@ Directory structure:
     │   │       └── Snow Moon Illaoi 420026.zip
     │   ├── Battle Bear Illaoi.zip
     │   ├── Cosmic Invoker Illaoi.zip
+    │   ├── Illaoi.zip
     │   ├── Resistance Illaoi.zip
     │   ├── Snow Moon Illaoi.zip
     │   └── Void Bringer Illaoi.zip
@@ -2644,24 +2718,27 @@ Directory structure:
     │   │   │   ├── Sentinel Irelia 39033.zip
     │   │   │   ├── Sentinel Irelia 39034.zip
     │   │   │   └── Sentinel Irelia 39035.zip
-    │   │   └── Spirit Blossom Irelia/
-    │   │       ├── Spirit Blossom Irelia 39056.zip
-    │   │       ├── Spirit Blossom Irelia 39057.zip
-    │   │       ├── Spirit Blossom Irelia 39058.zip
-    │   │       ├── Spirit Blossom Irelia 39059.zip
-    │   │       ├── Spirit Blossom Irelia 39060.zip
-    │   │       └── Spirit Blossom Irelia 39061.zip
+    │   │   ├── Spirit Blossom Irelia/
+    │   │   │   ├── Spirit Blossom Irelia 39056.zip
+    │   │   │   ├── Spirit Blossom Irelia 39057.zip
+    │   │   │   ├── Spirit Blossom Irelia 39058.zip
+    │   │   │   ├── Spirit Blossom Irelia 39059.zip
+    │   │   │   ├── Spirit Blossom Irelia 39060.zip
+    │   │   │   └── Spirit Blossom Irelia 39061.zip
+    │   │   └── iG Irelia/
+    │   │       └── iG Irelia 39062.zip
     │   ├── Aviator Irelia.zip
     │   ├── Divine Sword Irelia.zip
     │   ├── Frostblade Irelia.zip
     │   ├── High Noon Irelia.zip
     │   ├── Infiltrator Irelia.zip
+    │   ├── Irelia.zip
     │   ├── Mythmaker Irelia.zip
     │   ├── Nightblade Irelia.zip
     │   ├── Order of the Lotus Irelia.zip
     │   ├── PROJECT Irelia.zip
     │   ├── Porcelain Irelia.zip
-    │   ├── Prestige PROJECT Irelia (2022).zip
+    │   ├── Prestige PROJECT Irelia 2022.zip
     │   ├── Prestige PROJECT Irelia.zip
     │   ├── Sentinel Irelia.zip
     │   ├── Spirit Blossom Irelia.zip
@@ -2698,6 +2775,7 @@ Directory structure:
     │   ├── Astronaut Ivern.zip
     │   ├── Candy King Ivern.zip
     │   ├── Dunkmaster Ivern.zip
+    │   ├── Ivern.zip
     │   ├── Old God Ivern.zip
     │   └── Spirit Blossom Ivern.zip
     ├── Janna/
@@ -2770,13 +2848,14 @@ Directory structure:
     │   ├── Guardian of the Sands Janna.zip
     │   ├── Heavenscale Janna.zip
     │   ├── Hextech Janna.zip
+    │   ├── Janna.zip
     │   ├── Prestige Cyber Halo Janna.zip
     │   ├── Sacred Sword Janna.zip
     │   ├── Star Guardian Janna.zip
     │   ├── Tempest Janna.zip
     │   └── Victorious Janna.zip
     ├── Jarvan IV/
-    │   ├── chromas/
+    │   ├── Chromas/
     │   │   ├── Dark Star Jarvan IV/
     │   │   │   └── Dark Star Jarvan IV 59012.zip
     │   │   ├── Lunar Beast Jarvan IV/
@@ -2816,6 +2895,8 @@ Directory structure:
     │   │   │   └── Pool Party Jarvan IV 59020.zip
     │   │   ├── Prestige Visions of the Fallen Jarvan IV/
     │   │   │   └── Prestige Visions of the Fallen Jarvan IV 59055.zip
+    │   │   ├── SSG Jarvan IV/
+    │   │   │   └── SSG Jarvan IV 59056.zip
     │   │   ├── Warring Kingdoms Jarvan IV/
     │   │   │   └── Warring Kingdoms Jarvan IV 59010.zip
     │   │   └── Worlds 2021 Jarvan IV/
@@ -2829,6 +2910,7 @@ Directory structure:
     │   ├── Dragonslayer Jarvan IV.zip
     │   ├── Fnatic Jarvan IV.zip
     │   ├── Hextech Jarvan IV.zip
+    │   ├── Jarvan IV.zip
     │   ├── Lunar Beast Jarvan IV.zip
     │   ├── Mythmaker Jarvan IV.zip
     │   ├── Nightbringer Jarvan IV.zip
@@ -2873,6 +2955,7 @@ Directory structure:
     │   ├── Conqueror Jax.zip
     │   ├── Empyrean Jax.zip
     │   ├── God Staff Jax.zip
+    │   ├── Jax.zip
     │   ├── Jaximus.zip
     │   ├── Mecha Kingdoms Jax.zip
     │   ├── Nemesis Jax.zip
@@ -2924,6 +3007,7 @@ Directory structure:
     │   ├── Forsaken Jayce.zip
     │   ├── Full Metal Jayce.zip
     │   ├── Jayce Brighthammer.zip
+    │   ├── Jayce.zip
     │   ├── Prestige T1 Jayce.zip
     │   ├── Resistance Jayce.zip
     │   ├── T1 Jayce.zip
@@ -2984,6 +3068,7 @@ Directory structure:
     │   ├── Dark Cosmic Jhin.zip
     │   ├── Empyrean Jhin.zip
     │   ├── High Noon Jhin.zip
+    │   ├── Jhin.zip
     │   ├── Mythmaker Jhin.zip
     │   ├── PROJECT Jhin.zip
     │   ├── SKT T1 Jhin.zip
@@ -3045,17 +3130,19 @@ Directory structure:
     │   │   │   └── PROJECT Jinx 222028.zip
     │   │   ├── Star Guardian Jinx/
     │   │   │   └── Star Guardian Jinx 222050.zip
-    │   │   └── T1 Jinx/
-    │   │       └── T1 Jinx 222063.zip
+    │   │   ├── T1 Jinx/
+    │   │   │   └── T1 Jinx 222063.zip
+    │   │   └── Zombie Slayer Jinx/
+    │   │       └── Zombie Slayer Jinx 222064.zip
     │   ├── Ambitious Elf Jinx.zip
     │   ├── Arcane Enemy Jinx.zip
-    │   ├── Arcane Fractured Jinx - AIO.zip
     │   ├── Arcane Fractured Jinx.zip
     │   ├── Battle Cat Jinx.zip
     │   ├── Cafe Cuties Jinx.zip
     │   ├── Crime City Jinx.zip
     │   ├── Firecracker Jinx.zip
     │   ├── Heartseeker Jinx.zip
+    │   ├── Jinx.zip
     │   ├── Odyssey Jinx.zip
     │   ├── PROJECT Jinx.zip
     │   ├── Prestige Battle Cat Jinx.zip
@@ -3063,114 +3150,116 @@ Directory structure:
     │   ├── T1 Jinx.zip
     │   └── Zombie Slayer Jinx.zip
     ├── K'Sante/
-    │   ├── chromas/
-    │   │   ├── Empyrean K'Sante/
-    │   │   │   ├── Empyrean K'Sante 897003.zip
-    │   │   │   ├── Empyrean K'Sante 897004.zip
-    │   │   │   ├── Empyrean K'Sante 897005.zip
-    │   │   │   ├── Empyrean K'Sante 897006.zip
-    │   │   │   └── Empyrean K'Sante 897007.zip
-    │   │   └── HEARTSTEEL K'Sante/
-    │   │       ├── HEARTSTEEL K'Sante 897009.zip
-    │   │       ├── HEARTSTEEL K'Sante 897010.zip
-    │   │       ├── HEARTSTEEL K'Sante 897011.zip
-    │   │       ├── HEARTSTEEL K'Sante 897012.zip
-    │   │       ├── HEARTSTEEL K'Sante 897013.zip
-    │   │       ├── HEARTSTEEL K'Sante 897014.zip
-    │   │       ├── HEARTSTEEL K'Sante 897015.zip
-    │   │       ├── HEARTSTEEL K'Sante 897016.zip
-    │   │       └── HEARTSTEEL K'Sante 897017.zip
-    │   ├── Empyrean K'Sante.zip
-    │   ├── HEARTSTEEL K'Sante.zip
-    │   ├── K'Sante.zip
-    │   └── Prestige Empyrean K'Sante.zip
+    │   ├── Chromas/
+    │   │   ├── Empyrean KSante/
+    │   │   │   ├── Empyrean KSante 897003.zip
+    │   │   │   ├── Empyrean KSante 897004.zip
+    │   │   │   ├── Empyrean KSante 897005.zip
+    │   │   │   ├── Empyrean KSante 897006.zip
+    │   │   │   └── Empyrean KSante 897007.zip
+    │   │   └── HEARTSTEEL KSante/
+    │   │       ├── HEARTSTEEL KSante 897009.zip
+    │   │       ├── HEARTSTEEL KSante 897010.zip
+    │   │       ├── HEARTSTEEL KSante 897011.zip
+    │   │       ├── HEARTSTEEL KSante 897012.zip
+    │   │       ├── HEARTSTEEL KSante 897013.zip
+    │   │       ├── HEARTSTEEL KSante 897014.zip
+    │   │       ├── HEARTSTEEL KSante 897015.zip
+    │   │       ├── HEARTSTEEL KSante 897016.zip
+    │   │       └── HEARTSTEEL KSante 897017.zip
+    │   ├── Empyrean KSante.zip
+    │   ├── HEARTSTEEL KSante.zip
+    │   ├── KSante.zip
+    │   └── Prestige Empyrean KSante.zip
     ├── Kai'Sa/
-    │   ├── chromas/
-    │   │   ├── Arcade Kai'Sa/
-    │   │   │   ├── Arcade Kai'Sa 145018.zip
-    │   │   │   ├── Arcade Kai'Sa 145019.zip
-    │   │   │   ├── Arcade Kai'Sa 145020.zip
-    │   │   │   ├── Arcade Kai'Sa 145021.zip
-    │   │   │   ├── Arcade Kai'Sa 145022.zip
-    │   │   │   ├── Arcade Kai'Sa 145023.zip
-    │   │   │   ├── Arcade Kai'Sa 145024.zip
-    │   │   │   └── Arcade Kai'Sa 145025.zip
-    │   │   ├── Bullet Angel Kai'Sa/
-    │   │   │   ├── Bullet Angel Kai'Sa 145002.zip
-    │   │   │   ├── Bullet Angel Kai'Sa 145003.zip
-    │   │   │   ├── Bullet Angel Kai'Sa 145004.zip
-    │   │   │   ├── Bullet Angel Kai'Sa 145005.zip
-    │   │   │   ├── Bullet Angel Kai'Sa 145006.zip
-    │   │   │   ├── Bullet Angel Kai'Sa 145007.zip
-    │   │   │   ├── Bullet Angel Kai'Sa 145008.zip
-    │   │   │   ├── Bullet Angel Kai'Sa 145009.zip
-    │   │   │   └── Bullet Angel Kai'Sa 145047.zip
-    │   │   ├── Dark Star Kai'Sa/
-    │   │   │   ├── Dark Star Kai'Sa 145072.zip
-    │   │   │   ├── Dark Star Kai'Sa 145073.zip
-    │   │   │   ├── Dark Star Kai'Sa 145074.zip
-    │   │   │   ├── Dark Star Kai'Sa 145075.zip
-    │   │   │   ├── Dark Star Kai'Sa 145076.zip
-    │   │   │   ├── Dark Star Kai'Sa 145077.zip
-    │   │   │   ├── Dark Star Kai'Sa 145078.zip
-    │   │   │   ├── Dark Star Kai'Sa 145079.zip
-    │   │   │   └── Dark Star Kai'Sa 145080.zip
-    │   │   ├── Heavenscale Kai'Sa/
-    │   │   │   ├── Heavenscale Kai'Sa 145060.zip
-    │   │   │   ├── Heavenscale Kai'Sa 145061.zip
-    │   │   │   ├── Heavenscale Kai'Sa 145062.zip
-    │   │   │   ├── Heavenscale Kai'Sa 145063.zip
-    │   │   │   ├── Heavenscale Kai'Sa 145064.zip
-    │   │   │   ├── Heavenscale Kai'Sa 145065.zip
-    │   │   │   ├── Heavenscale Kai'Sa 145066.zip
-    │   │   │   ├── Heavenscale Kai'Sa 145067.zip
-    │   │   │   └── Heavenscale Kai'Sa 145068.zip
-    │   │   ├── Inkshadow Kai'Sa/
-    │   │   │   ├── Inkshadow Kai'Sa 145049.zip
-    │   │   │   ├── Inkshadow Kai'Sa 145050.zip
-    │   │   │   ├── Inkshadow Kai'Sa 145051.zip
-    │   │   │   ├── Inkshadow Kai'Sa 145052.zip
-    │   │   │   ├── Inkshadow Kai'Sa 145053.zip
-    │   │   │   ├── Inkshadow Kai'Sa 145054.zip
-    │   │   │   ├── Inkshadow Kai'Sa 145055.zip
-    │   │   │   ├── Inkshadow Kai'Sa 145056.zip
-    │   │   │   └── Inkshadow Kai'Sa 145057.zip
-    │   │   ├── K DA ALL OUT Kai'Sa/
-    │   │   │   └── K DA ALL OUT Kai'Sa 145028.zip
-    │   │   ├── Lagoon Dragon Kai'Sa/
-    │   │   │   ├── Lagoon Dragon Kai'Sa 145030.zip
-    │   │   │   ├── Lagoon Dragon Kai'Sa 145031.zip
-    │   │   │   ├── Lagoon Dragon Kai'Sa 145032.zip
-    │   │   │   ├── Lagoon Dragon Kai'Sa 145033.zip
-    │   │   │   ├── Lagoon Dragon Kai'Sa 145034.zip
-    │   │   │   ├── Lagoon Dragon Kai'Sa 145035.zip
-    │   │   │   ├── Lagoon Dragon Kai'Sa 145036.zip
-    │   │   │   ├── Lagoon Dragon Kai'Sa 145037.zip
-    │   │   │   └── Lagoon Dragon Kai'Sa 145038.zip
-    │   │   ├── Star Guardian Kai'Sa/
-    │   │   │   ├── Star Guardian Kai'Sa 145041.zip
-    │   │   │   ├── Star Guardian Kai'Sa 145042.zip
-    │   │   │   ├── Star Guardian Kai'Sa 145043.zip
-    │   │   │   ├── Star Guardian Kai'Sa 145044.zip
-    │   │   │   ├── Star Guardian Kai'Sa 145045.zip
-    │   │   │   └── Star Guardian Kai'Sa 145046.zip
-    │   │   └── iG Kai'Sa/
-    │   │       └── iG Kai'Sa 145058.zip
-    │   ├── Arcade Kai'Sa.zip
-    │   ├── Bullet Angel Kai'Sa.zip
-    │   ├── Dark Star Kai'Sa.zip
-    │   ├── Heavenscale Kai'Sa.zip
-    │   ├── Immortalized Legend Kai'Sa - Uzi.zip
-    │   ├── Inkshadow Kai'Sa.zip
-    │   ├── K DA ALL OUT Kai'Sa.zip
-    │   ├── K DA Kai'Sa.zip
-    │   ├── Lagoon Dragon Kai'Sa.zip
-    │   ├── Prestige K DA ALL OUT Kai'Sa.zip
-    │   ├── Prestige K DA Kai'Sa (2022).zip
-    │   ├── Prestige K DA Kai'Sa.zip
-    │   ├── Risen Legend Kai'Sa.zip
-    │   ├── Star Guardian Kai'Sa.zip
-    │   └── iG Kai'Sa.zip
+    │   ├── Chromas/
+    │   │   ├── Arcade KaiSa/
+    │   │   │   ├── Arcade KaiSa 145018.zip
+    │   │   │   ├── Arcade KaiSa 145019.zip
+    │   │   │   ├── Arcade KaiSa 145020.zip
+    │   │   │   ├── Arcade KaiSa 145021.zip
+    │   │   │   ├── Arcade KaiSa 145022.zip
+    │   │   │   ├── Arcade KaiSa 145023.zip
+    │   │   │   ├── Arcade KaiSa 145024.zip
+    │   │   │   └── Arcade KaiSa 145025.zip
+    │   │   ├── Bullet Angel KaiSa/
+    │   │   │   ├── Bullet Angel KaiSa 145002.zip
+    │   │   │   ├── Bullet Angel KaiSa 145003.zip
+    │   │   │   ├── Bullet Angel KaiSa 145004.zip
+    │   │   │   ├── Bullet Angel KaiSa 145005.zip
+    │   │   │   ├── Bullet Angel KaiSa 145006.zip
+    │   │   │   ├── Bullet Angel KaiSa 145007.zip
+    │   │   │   ├── Bullet Angel KaiSa 145008.zip
+    │   │   │   ├── Bullet Angel KaiSa 145009.zip
+    │   │   │   └── Bullet Angel KaiSa 145047.zip
+    │   │   ├── Dark Star KaiSa/
+    │   │   │   ├── Dark Star KaiSa 145072.zip
+    │   │   │   ├── Dark Star KaiSa 145073.zip
+    │   │   │   ├── Dark Star KaiSa 145074.zip
+    │   │   │   ├── Dark Star KaiSa 145075.zip
+    │   │   │   ├── Dark Star KaiSa 145076.zip
+    │   │   │   ├── Dark Star KaiSa 145077.zip
+    │   │   │   ├── Dark Star KaiSa 145078.zip
+    │   │   │   ├── Dark Star KaiSa 145079.zip
+    │   │   │   └── Dark Star KaiSa 145080.zip
+    │   │   ├── Heavenscale KaiSa/
+    │   │   │   ├── Heavenscale KaiSa 145060.zip
+    │   │   │   ├── Heavenscale KaiSa 145061.zip
+    │   │   │   ├── Heavenscale KaiSa 145062.zip
+    │   │   │   ├── Heavenscale KaiSa 145063.zip
+    │   │   │   ├── Heavenscale KaiSa 145064.zip
+    │   │   │   ├── Heavenscale KaiSa 145065.zip
+    │   │   │   ├── Heavenscale KaiSa 145066.zip
+    │   │   │   ├── Heavenscale KaiSa 145067.zip
+    │   │   │   └── Heavenscale KaiSa 145068.zip
+    │   │   ├── Inkshadow KaiSa/
+    │   │   │   ├── Inkshadow KaiSa 145049.zip
+    │   │   │   ├── Inkshadow KaiSa 145050.zip
+    │   │   │   ├── Inkshadow KaiSa 145051.zip
+    │   │   │   ├── Inkshadow KaiSa 145052.zip
+    │   │   │   ├── Inkshadow KaiSa 145053.zip
+    │   │   │   ├── Inkshadow KaiSa 145054.zip
+    │   │   │   ├── Inkshadow KaiSa 145055.zip
+    │   │   │   ├── Inkshadow KaiSa 145056.zip
+    │   │   │   └── Inkshadow KaiSa 145057.zip
+    │   │   ├── KDA ALL OUT KaiSa/
+    │   │   │   └── KDA ALL OUT KaiSa 145028.zip
+    │   │   ├── Lagoon Dragon KaiSa/
+    │   │   │   ├── Lagoon Dragon KaiSa 145030.zip
+    │   │   │   ├── Lagoon Dragon KaiSa 145031.zip
+    │   │   │   ├── Lagoon Dragon KaiSa 145032.zip
+    │   │   │   ├── Lagoon Dragon KaiSa 145033.zip
+    │   │   │   ├── Lagoon Dragon KaiSa 145034.zip
+    │   │   │   ├── Lagoon Dragon KaiSa 145035.zip
+    │   │   │   ├── Lagoon Dragon KaiSa 145036.zip
+    │   │   │   ├── Lagoon Dragon KaiSa 145037.zip
+    │   │   │   └── Lagoon Dragon KaiSa 145038.zip
+    │   │   ├── Star Guardian KaiSa/
+    │   │   │   ├── Star Guardian KaiSa 145041.zip
+    │   │   │   ├── Star Guardian KaiSa 145042.zip
+    │   │   │   ├── Star Guardian KaiSa 145043.zip
+    │   │   │   ├── Star Guardian KaiSa 145044.zip
+    │   │   │   ├── Star Guardian KaiSa 145045.zip
+    │   │   │   └── Star Guardian KaiSa 145046.zip
+    │   │   └── iG KaiSa/
+    │   │       ├── iG KaiSa 145058.zip
+    │   │       └── iG KaiSa 145081.zip
+    │   ├── Arcade KaiSa.zip
+    │   ├── Bullet Angel KaiSa.zip
+    │   ├── Dark Star KaiSa.zip
+    │   ├── Heavenscale KaiSa.zip
+    │   ├── Immortalized Legend KaiSa.zip
+    │   ├── Inkshadow KaiSa.zip
+    │   ├── KDA ALL OUT KaiSa.zip
+    │   ├── KDA KaiSa.zip
+    │   ├── KaiSa.zip
+    │   ├── Lagoon Dragon KaiSa.zip
+    │   ├── Prestige KDA ALL OUT KaiSa.zip
+    │   ├── Prestige KDA KaiSa 2022.zip
+    │   ├── Prestige KDA KaiSa.zip
+    │   ├── Risen Legend KaiSa.zip
+    │   ├── Star Guardian KaiSa.zip
+    │   └── iG KaiSa.zip
     ├── Kalista/
     │   ├── chromas/
     │   │   ├── Dawnbringer Kalista/
@@ -3206,6 +3295,7 @@ Directory structure:
     │   ├── Blood Moon Kalista.zip
     │   ├── Dawnbringer Kalista.zip
     │   ├── Faerie Court Kalista.zip
+    │   ├── Kalista.zip
     │   ├── Marauder Kalista.zip
     │   ├── SKT T1 Kalista.zip
     │   └── Worlds 2015 Kalista.zip
@@ -3285,6 +3375,7 @@ Directory structure:
     │   ├── Dawnbringer Karma.zip
     │   ├── Faerie Queen Karma.zip
     │   ├── Infernal Karma.zip
+    │   ├── Karma.zip
     │   ├── Odyssey Karma.zip
     │   ├── Order of the Lotus Karma.zip
     │   ├── Ruined Karma.zip
@@ -3297,6 +3388,15 @@ Directory structure:
     │   └── Winter Wonder Karma.zip
     ├── Karthus/
     │   ├── chromas/
+    │   │   ├── Arcana Karthus/
+    │   │   │   ├── Arcana Karthus 30036.zip
+    │   │   │   ├── Arcana Karthus 30037.zip
+    │   │   │   ├── Arcana Karthus 30038.zip
+    │   │   │   ├── Arcana Karthus 30039.zip
+    │   │   │   ├── Arcana Karthus 30040.zip
+    │   │   │   ├── Arcana Karthus 30041.zip
+    │   │   │   ├── Arcana Karthus 30042.zip
+    │   │   │   └── Arcana Karthus 30043.zip
     │   │   ├── Elderwood Karthus/
     │   │   │   ├── Elderwood Karthus 30027.zip
     │   │   │   ├── Elderwood Karthus 30028.zip
@@ -3326,11 +3426,13 @@ Directory structure:
     │   │       ├── Pentakill III Lost Chapter Karthus 30023.zip
     │   │       ├── Pentakill III Lost Chapter Karthus 30024.zip
     │   │       └── Pentakill III Lost Chapter Karthus 30025.zip
+    │   ├── Arcana Karthus.zip
     │   ├── Elderwood Karthus.zip
     │   ├── Fnatic Karthus.zip
     │   ├── Grim Reaper Karthus.zip
     │   ├── Infernal Karthus.zip
     │   ├── Karthus Lightsbane.zip
+    │   ├── Karthus.zip
     │   ├── Pentakill III Lost Chapter Karthus.zip
     │   ├── Pentakill Karthus.zip
     │   ├── Phantom Karthus.zip
@@ -3369,9 +3471,109 @@ Directory structure:
     │   ├── Festival Kassadin.zip
     │   ├── Harbinger Kassadin.zip
     │   ├── Hextech Kassadin.zip
+    │   ├── Kassadin.zip
     │   ├── Pre-Void Kassadin.zip
     │   └── Shockblade Kassadin.zip
     ├── Katarina/
+    │   ├── Battle Queen Katarina Blades/
+    │   │   ├── Battle Queen Katarina/
+    │   │   │   ├── Battle Queen Katarina Blade2.zip
+    │   │   │   ├── Battle Queen Katarina Blade3.zip
+    │   │   │   ├── Battle Queen Katarina Blade4.zip
+    │   │   │   ├── Battle Queen Katarina Blade5.zip
+    │   │   │   └── Battle Queen Katarina Blade6.zip
+    │   │   ├── Battle Queen Katarina (55030)/
+    │   │   │   ├── Battle Queen Katarina 55030 Blade2.zip
+    │   │   │   ├── Battle Queen Katarina 55030 Blade3.zip
+    │   │   │   ├── Battle Queen Katarina 55030 Blade4.zip
+    │   │   │   ├── Battle Queen Katarina 55030 Blade5.zip
+    │   │   │   ├── Battle Queen Katarina 55030 Blade6.zip
+    │   │   │   └── README.MD
+    │   │   ├── Battle Queen Katarina (55031)/
+    │   │   │   ├── Battle Queen Katarina 55031 Blade2.zip
+    │   │   │   ├── Battle Queen Katarina 55031 Blade3.zip
+    │   │   │   ├── Battle Queen Katarina 55031 Blade4.zip
+    │   │   │   ├── Battle Queen Katarina 55031 Blade5.zip
+    │   │   │   ├── Battle Queen Katarina 55031 Blade6.zip
+    │   │   │   └── README.MD
+    │   │   ├── Battle Queen Katarina (55032)/
+    │   │   │   ├── Battle Queen Katarina 55032 Blade2.zip
+    │   │   │   ├── Battle Queen Katarina 55032 Blade3.zip
+    │   │   │   ├── Battle Queen Katarina 55032 Blade4.zip
+    │   │   │   ├── Battle Queen Katarina 55032 Blade5.zip
+    │   │   │   ├── Battle Queen Katarina 55032 Blade6.zip
+    │   │   │   └── README.MD
+    │   │   ├── Battle Queen Katarina (55033)/
+    │   │   │   ├── Battle Queen Katarina 55033 Blade2.zip
+    │   │   │   ├── Battle Queen Katarina 55033 Blade3.zip
+    │   │   │   ├── Battle Queen Katarina 55033 Blade4.zip
+    │   │   │   ├── Battle Queen Katarina 55033 Blade5.zip
+    │   │   │   ├── Battle Queen Katarina 55033 Blade6.zip
+    │   │   │   └── README.MD
+    │   │   ├── Battle Queen Katarina (55034)/
+    │   │   │   ├── Battle Queen Katarina 55034 Blade2.zip
+    │   │   │   ├── Battle Queen Katarina 55034 Blade3.zip
+    │   │   │   ├── Battle Queen Katarina 55034 Blade4.zip
+    │   │   │   ├── Battle Queen Katarina 55034 Blade5.zip
+    │   │   │   ├── Battle Queen Katarina 55034 Blade6.zip
+    │   │   │   └── README.MD
+    │   │   ├── Battle Queen Katarina (55035)/
+    │   │   │   ├── Battle Queen Katarina 55035 Blade2.zip
+    │   │   │   ├── Battle Queen Katarina 55035 Blade3.zip
+    │   │   │   ├── Battle Queen Katarina 55035 Blade4.zip
+    │   │   │   ├── Battle Queen Katarina 55035 Blade5.zip
+    │   │   │   ├── Battle Queen Katarina 55035 Blade6.zip
+    │   │   │   └── README.MD
+    │   │   ├── Battle Queen Katarina (55036)/
+    │   │   │   ├── Battle Queen Katarina 55036 Blade2.zip
+    │   │   │   ├── Battle Queen Katarina 55036 Blade3.zip
+    │   │   │   ├── Battle Queen Katarina 55036 Blade4.zip
+    │   │   │   ├── Battle Queen Katarina 55036 Blade5.zip
+    │   │   │   ├── Battle Queen Katarina 55036 Blade6.zip
+    │   │   │   └── README.MD
+    │   │   └── Blade Images/
+    │   │       ├── 55030/
+    │   │       │   ├── 2.png
+    │   │       │   ├── 3.png
+    │   │       │   ├── 4.png
+    │   │       │   ├── 5.png
+    │   │       │   └── 6.png
+    │   │       ├── 55031/
+    │   │       │   ├── 2.png
+    │   │       │   ├── 3.png
+    │   │       │   ├── 4.png
+    │   │       │   ├── 5.png
+    │   │       │   └── 6.png
+    │   │       ├── 55032/
+    │   │       │   ├── 2.png
+    │   │       │   ├── 3.png
+    │   │       │   ├── 4.png
+    │   │       │   ├── 5.png
+    │   │       │   └── 6.png
+    │   │       ├── 55033/
+    │   │       │   ├── 2.png
+    │   │       │   ├── 3.png
+    │   │       │   ├── 4.png
+    │   │       │   ├── 5.png
+    │   │       │   └── 6.png
+    │   │       ├── 55034/
+    │   │       │   ├── 2.png
+    │   │       │   ├── 3.png
+    │   │       │   ├── 4.png
+    │   │       │   ├── 5.png
+    │   │       │   └── 6.png
+    │   │       ├── 55035/
+    │   │       │   ├── 2.png
+    │   │       │   ├── 3.png
+    │   │       │   ├── 4.png
+    │   │       │   ├── 5.png
+    │   │       │   └── 6.png
+    │   │       └── 55036/
+    │   │           ├── 2.png
+    │   │           ├── 3.png
+    │   │           ├── 4.png
+    │   │           ├── 5.png
+    │   │           └── 6.png
     │   ├── chromas/
     │   │   ├── Battle Academia Katarina/
     │   │   │   ├── Battle Academia Katarina 55013.zip
@@ -3537,6 +3739,7 @@ Directory structure:
     │   ├── Immortal Journey Kayle.zip
     │   ├── Iron Inquisitor Kayle.zip
     │   ├── Judgment Kayle.zip
+    │   ├── Kayle.zip
     │   ├── Pentakill III Lost Chapter Kayle.zip
     │   ├── Pentakill Kayle.zip
     │   ├── Prestige Empyrean Kayle.zip
@@ -3579,6 +3782,7 @@ Directory structure:
     │   │       └── Snow Moon Kayn 141019.zip
     │   ├── Battle Academia Kayn.zip
     │   ├── HEARTSTEEL Kayn.zip
+    │   ├── Kayn.zip
     │   ├── Nightbringer Kayn.zip
     │   ├── Odyssey Kayn.zip
     │   ├── Prestige Nightbringer Kayn.zip
@@ -3604,15 +3808,15 @@ Directory structure:
     │   │   │   ├── Infernal Kennen 85020.zip
     │   │   │   ├── Infernal Kennen 85021.zip
     │   │   │   └── Infernal Kennen 85022.zip
-    │   │   └── Kennen M.D/
-    │   │       ├── Kennen M.D. 85009.zip
-    │   │       ├── Kennen M.D. 85010.zip
-    │   │       ├── Kennen M.D. 85011.zip
-    │   │       ├── Kennen M.D. 85012.zip
-    │   │       ├── Kennen M.D. 85013.zip
-    │   │       ├── Kennen M.D. 85014.zip
-    │   │       ├── Kennen M.D. 85015.zip
-    │   │       └── Kennen M.D. 85016.zip
+    │   │   └── Kennen MD/
+    │   │       ├── Kennen MD 85009.zip
+    │   │       ├── Kennen MD 85010.zip
+    │   │       ├── Kennen MD 85011.zip
+    │   │       ├── Kennen MD 85012.zip
+    │   │       ├── Kennen MD 85013.zip
+    │   │       ├── Kennen MD 85014.zip
+    │   │       ├── Kennen MD 85015.zip
+    │   │       └── Kennen MD 85016.zip
     │   ├── Arctic Ops Kennen.zip
     │   ├── Astronaut Kennen.zip
     │   ├── Blood Moon Kennen.zip
@@ -3620,73 +3824,75 @@ Directory structure:
     │   ├── Deadly Kennen.zip
     │   ├── Infernal Kennen.zip
     │   ├── Karate Kennen.zip
-    │   ├── Kennen M.D..zip
+    │   ├── Kennen MD.zip
+    │   ├── Kennen.zip
     │   ├── Super Kennen.zip
     │   └── Swamp Master Kennen.zip
     ├── Kha'Zix/
-    │   ├── chromas/
-    │   │   ├── Crystalis Indomitus Kha'Zix/
-    │   │   │   └── Crystalis Indomitus Kha'Zix 121080.zip
-    │   │   ├── Lunar Guardian Kha'Zix/
-    │   │   │   ├── Lunar Guardian Kha'Zix 121070.zip
-    │   │   │   ├── Lunar Guardian Kha'Zix 121071.zip
-    │   │   │   ├── Lunar Guardian Kha'Zix 121072.zip
-    │   │   │   ├── Lunar Guardian Kha'Zix 121073.zip
-    │   │   │   ├── Lunar Guardian Kha'Zix 121074.zip
-    │   │   │   ├── Lunar Guardian Kha'Zix 121075.zip
-    │   │   │   ├── Lunar Guardian Kha'Zix 121076.zip
-    │   │   │   ├── Lunar Guardian Kha'Zix 121077.zip
-    │   │   │   └── Lunar Guardian Kha'Zix 121078.zip
-    │   │   ├── Mecha Kha'Zix/
-    │   │   │   ├── Mecha Kha'Zix 121005.zip
-    │   │   │   ├── Mecha Kha'Zix 121006.zip
-    │   │   │   ├── Mecha Kha'Zix 121007.zip
-    │   │   │   ├── Mecha Kha'Zix 121008.zip
-    │   │   │   ├── Mecha Kha'Zix 121009.zip
-    │   │   │   └── Mecha Kha'Zix 121010.zip
-    │   │   ├── Odyssey Kha'Zix/
-    │   │   │   ├── Odyssey Kha'Zix 121061.zip
-    │   │   │   ├── Odyssey Kha'Zix 121062.zip
-    │   │   │   ├── Odyssey Kha'Zix 121063.zip
-    │   │   │   ├── Odyssey Kha'Zix 121064.zip
-    │   │   │   ├── Odyssey Kha'Zix 121065.zip
-    │   │   │   ├── Odyssey Kha'Zix 121066.zip
-    │   │   │   ├── Odyssey Kha'Zix 121067.zip
-    │   │   │   └── Odyssey Kha'Zix 121068.zip
-    │   │   └── Worlds 2018 Kha'Zix/
-    │   │       ├── Worlds 2018 Kha'Zix 121012.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121013.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121014.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121015.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121017.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121018.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121022.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121023.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121024.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121025.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121028.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121030.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121031.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121035.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121037.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121041.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121042.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121043.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121046.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121047.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121048.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121051.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121053.zip
-    │   │       ├── Worlds 2018 Kha'Zix 121054.zip
-    │   │       └── Worlds 2018 Kha'Zix 121059.zip
-    │   ├── Crystalis Indomitus Kha'Zix.zip
-    │   ├── Dark Star Kha'Zix.zip
-    │   ├── Death Blossom Kha'Zix.zip
-    │   ├── Guardian of the Sands Kha'Zix.zip
-    │   ├── Lunar Guardian Kha'Zix.zip
-    │   ├── Mecha Kha'Zix.zip
-    │   ├── Odyssey Kha'Zix.zip
-    │   └── Worlds 2018 Kha'Zix.zip
+    │   ├── Chromas/
+    │   │   ├── Crystalis Indomitus KhaZix/
+    │   │   │   └── Crystalis Indomitus KhaZix 121080.zip
+    │   │   ├── Lunar Guardian KhaZix/
+    │   │   │   ├── Lunar Guardian KhaZix 121070.zip
+    │   │   │   ├── Lunar Guardian KhaZix 121071.zip
+    │   │   │   ├── Lunar Guardian KhaZix 121072.zip
+    │   │   │   ├── Lunar Guardian KhaZix 121073.zip
+    │   │   │   ├── Lunar Guardian KhaZix 121074.zip
+    │   │   │   ├── Lunar Guardian KhaZix 121075.zip
+    │   │   │   ├── Lunar Guardian KhaZix 121076.zip
+    │   │   │   ├── Lunar Guardian KhaZix 121077.zip
+    │   │   │   └── Lunar Guardian KhaZix 121078.zip
+    │   │   ├── Mecha KhaZix/
+    │   │   │   ├── Mecha KhaZix 121005.zip
+    │   │   │   ├── Mecha KhaZix 121006.zip
+    │   │   │   ├── Mecha KhaZix 121007.zip
+    │   │   │   ├── Mecha KhaZix 121008.zip
+    │   │   │   ├── Mecha KhaZix 121009.zip
+    │   │   │   └── Mecha KhaZix 121010.zip
+    │   │   ├── Odyssey KhaZix/
+    │   │   │   ├── Odyssey KhaZix 121061.zip
+    │   │   │   ├── Odyssey KhaZix 121062.zip
+    │   │   │   ├── Odyssey KhaZix 121063.zip
+    │   │   │   ├── Odyssey KhaZix 121064.zip
+    │   │   │   ├── Odyssey KhaZix 121065.zip
+    │   │   │   ├── Odyssey KhaZix 121066.zip
+    │   │   │   ├── Odyssey KhaZix 121067.zip
+    │   │   │   └── Odyssey KhaZix 121068.zip
+    │   │   └── Worlds 2018 KhaZix/
+    │   │       ├── Worlds 2018 KhaZix 121012.zip
+    │   │       ├── Worlds 2018 KhaZix 121013.zip
+    │   │       ├── Worlds 2018 KhaZix 121014.zip
+    │   │       ├── Worlds 2018 KhaZix 121015.zip
+    │   │       ├── Worlds 2018 KhaZix 121017.zip
+    │   │       ├── Worlds 2018 KhaZix 121018.zip
+    │   │       ├── Worlds 2018 KhaZix 121022.zip
+    │   │       ├── Worlds 2018 KhaZix 121023.zip
+    │   │       ├── Worlds 2018 KhaZix 121024.zip
+    │   │       ├── Worlds 2018 KhaZix 121025.zip
+    │   │       ├── Worlds 2018 KhaZix 121028.zip
+    │   │       ├── Worlds 2018 KhaZix 121030.zip
+    │   │       ├── Worlds 2018 KhaZix 121031.zip
+    │   │       ├── Worlds 2018 KhaZix 121035.zip
+    │   │       ├── Worlds 2018 KhaZix 121037.zip
+    │   │       ├── Worlds 2018 KhaZix 121041.zip
+    │   │       ├── Worlds 2018 KhaZix 121042.zip
+    │   │       ├── Worlds 2018 KhaZix 121043.zip
+    │   │       ├── Worlds 2018 KhaZix 121046.zip
+    │   │       ├── Worlds 2018 KhaZix 121047.zip
+    │   │       ├── Worlds 2018 KhaZix 121048.zip
+    │   │       ├── Worlds 2018 KhaZix 121051.zip
+    │   │       ├── Worlds 2018 KhaZix 121053.zip
+    │   │       ├── Worlds 2018 KhaZix 121054.zip
+    │   │       └── Worlds 2018 KhaZix 121059.zip
+    │   ├── Crystalis Indomitus KhaZix.zip
+    │   ├── Dark Star KhaZix.zip
+    │   ├── Death Blossom KhaZix.zip
+    │   ├── Guardian of the Sands KhaZix.zip
+    │   ├── KhaZix.zip
+    │   ├── Lunar Guardian KhaZix.zip
+    │   ├── Mecha KhaZix.zip
+    │   ├── Odyssey KhaZix.zip
+    │   └── Worlds 2018 KhaZix.zip
     ├── Kindred/
     │   ├── chromas/
     │   │   ├── Chosen of the Wolf Kindred/
@@ -3766,80 +3972,82 @@ Directory structure:
     │   │       └── Marauder Kled 240017.zip
     │   ├── Count Kledula.zip
     │   ├── Kibble-Head Kled.zip
+    │   ├── Kled.zip
     │   ├── Marauder Kled.zip
     │   └── Sir Kled.zip
     ├── Kog'Maw/
-    │   ├── chromas/
-    │   │   ├── Arcanist Kog'Maw/
-    │   │   │   ├── Arcanist Kog'Maw 96020.zip
-    │   │   │   ├── Arcanist Kog'Maw 96021.zip
-    │   │   │   ├── Arcanist Kog'Maw 96022.zip
-    │   │   │   ├── Arcanist Kog'Maw 96023.zip
-    │   │   │   ├── Arcanist Kog'Maw 96024.zip
-    │   │   │   ├── Arcanist Kog'Maw 96025.zip
-    │   │   │   ├── Arcanist Kog'Maw 96026.zip
-    │   │   │   └── Arcanist Kog'Maw 96027.zip
-    │   │   ├── Bee'Maw/
-    │   │   │   ├── Bee'Maw 96029.zip
-    │   │   │   ├── Bee'Maw 96030.zip
-    │   │   │   ├── Bee'Maw 96031.zip
-    │   │   │   ├── Bee'Maw 96032.zip
-    │   │   │   ├── Bee'Maw 96033.zip
-    │   │   │   ├── Bee'Maw 96034.zip
-    │   │   │   ├── Bee'Maw 96035.zip
-    │   │   │   └── Bee'Maw 96036.zip
-    │   │   ├── Pug'Maw/
-    │   │   │   ├── Pug'Maw 96011.zip
-    │   │   │   ├── Pug'Maw 96012.zip
-    │   │   │   ├── Pug'Maw 96013.zip
-    │   │   │   ├── Pug'Maw 96014.zip
-    │   │   │   ├── Pug'Maw 96015.zip
-    │   │   │   ├── Pug'Maw 96016.zip
-    │   │   │   ├── Pug'Maw 96017.zip
-    │   │   │   └── Pug'Maw 96018.zip
-    │   │   ├── Shan Hai Scrolls Kog'Maw/
-    │   │   │   ├── Shan Hai Scrolls Kog'Maw 96047.zip
-    │   │   │   ├── Shan Hai Scrolls Kog'Maw 96048.zip
-    │   │   │   ├── Shan Hai Scrolls Kog'Maw 96049.zip
-    │   │   │   ├── Shan Hai Scrolls Kog'Maw 96050.zip
-    │   │   │   ├── Shan Hai Scrolls Kog'Maw 96051.zip
-    │   │   │   ├── Shan Hai Scrolls Kog'Maw 96052.zip
-    │   │   │   ├── Shan Hai Scrolls Kog'Maw 96053.zip
-    │   │   │   └── Shan Hai Scrolls Kog'Maw 96054.zip
-    │   │   ├── Victorious Kog'Maw/
-    │   │   │   ├── Victorious Kog'Maw 96056.zip
-    │   │   │   ├── Victorious Kog'Maw 96057.zip
-    │   │   │   ├── Victorious Kog'Maw 96058.zip
-    │   │   │   ├── Victorious Kog'Maw 96059.zip
-    │   │   │   ├── Victorious Kog'Maw 96060.zip
-    │   │   │   ├── Victorious Kog'Maw 96061.zip
-    │   │   │   ├── Victorious Kog'Maw 96062.zip
-    │   │   │   ├── Victorious Kog'Maw 96063.zip
-    │   │   │   └── Victorious Kog'Maw 96064.zip
-    │   │   └── Zap'Maw/
-    │   │       ├── Zap'Maw 96038.zip
-    │   │       ├── Zap'Maw 96039.zip
-    │   │       ├── Zap'Maw 96040.zip
-    │   │       ├── Zap'Maw 96041.zip
-    │   │       ├── Zap'Maw 96042.zip
-    │   │       ├── Zap'Maw 96043.zip
-    │   │       ├── Zap'Maw 96044.zip
-    │   │       └── Zap'Maw 96045.zip
-    │   ├── Arcanist Kog'Maw.zip
-    │   ├── Battlecast Kog'Maw.zip
-    │   ├── Bee'Maw.zip
-    │   ├── Caterpillar Kog'Maw.zip
-    │   ├── Deep Sea Kog'Maw.zip
-    │   ├── Hextech Kog'Maw.zip
-    │   ├── Jurassic Kog'Maw.zip
-    │   ├── Lion Dance Kog'Maw.zip
-    │   ├── Monarch Kog'Maw.zip
-    │   ├── Pug'Maw.zip
-    │   ├── Reindeer Kog'Maw.zip
-    │   ├── Shan Hai Scrolls Kog'Maw.zip
-    │   ├── Sonoran Kog'Maw.zip
-    │   ├── Victorious Kog'Maw.zip
-    │   └── Zap'Maw.zip
+    │   ├── Chromas/
+    │   │   ├── Arcanist KogMaw/
+    │   │   │   ├── Arcanist KogMaw 96020.zip
+    │   │   │   ├── Arcanist KogMaw 96021.zip
+    │   │   │   ├── Arcanist KogMaw 96022.zip
+    │   │   │   ├── Arcanist KogMaw 96023.zip
+    │   │   │   ├── Arcanist KogMaw 96024.zip
+    │   │   │   ├── Arcanist KogMaw 96025.zip
+    │   │   │   ├── Arcanist KogMaw 96026.zip
+    │   │   │   └── Arcanist KogMaw 96027.zip
+    │   │   ├── BeeMaw/
+    │   │   │   ├── BeeMaw 96029.zip
+    │   │   │   ├── BeeMaw 96030.zip
+    │   │   │   ├── BeeMaw 96031.zip
+    │   │   │   ├── BeeMaw 96032.zip
+    │   │   │   ├── BeeMaw 96033.zip
+    │   │   │   ├── BeeMaw 96034.zip
+    │   │   │   ├── BeeMaw 96035.zip
+    │   │   │   └── BeeMaw 96036.zip
+    │   │   ├── PugMaw/
+    │   │   │   ├── PugMaw 96011.zip
+    │   │   │   ├── PugMaw 96012.zip
+    │   │   │   ├── PugMaw 96013.zip
+    │   │   │   ├── PugMaw 96014.zip
+    │   │   │   ├── PugMaw 96015.zip
+    │   │   │   ├── PugMaw 96016.zip
+    │   │   │   ├── PugMaw 96017.zip
+    │   │   │   └── PugMaw 96018.zip
+    │   │   ├── Shan Hai Scrolls KogMaw/
+    │   │   │   ├── Shan Hai Scrolls KogMaw 96047.zip
+    │   │   │   ├── Shan Hai Scrolls KogMaw 96048.zip
+    │   │   │   ├── Shan Hai Scrolls KogMaw 96049.zip
+    │   │   │   ├── Shan Hai Scrolls KogMaw 96050.zip
+    │   │   │   ├── Shan Hai Scrolls KogMaw 96051.zip
+    │   │   │   ├── Shan Hai Scrolls KogMaw 96052.zip
+    │   │   │   ├── Shan Hai Scrolls KogMaw 96053.zip
+    │   │   │   └── Shan Hai Scrolls KogMaw 96054.zip
+    │   │   ├── Victorious KogMaw/
+    │   │   │   ├── Victorious KogMaw 96056.zip
+    │   │   │   ├── Victorious KogMaw 96057.zip
+    │   │   │   ├── Victorious KogMaw 96058.zip
+    │   │   │   ├── Victorious KogMaw 96059.zip
+    │   │   │   ├── Victorious KogMaw 96060.zip
+    │   │   │   ├── Victorious KogMaw 96061.zip
+    │   │   │   ├── Victorious KogMaw 96062.zip
+    │   │   │   ├── Victorious KogMaw 96063.zip
+    │   │   │   └── Victorious KogMaw 96064.zip
+    │   │   └── ZapMaw/
+    │   │       ├── ZapMaw 96038.zip
+    │   │       ├── ZapMaw 96039.zip
+    │   │       ├── ZapMaw 96040.zip
+    │   │       ├── ZapMaw 96041.zip
+    │   │       ├── ZapMaw 96042.zip
+    │   │       ├── ZapMaw 96043.zip
+    │   │       ├── ZapMaw 96044.zip
+    │   │       └── ZapMaw 96045.zip
+    │   ├── Arcanist KogMaw.zip
+    │   ├── Battlecast KogMaw.zip
+    │   ├── BeeMaw KogMaw.zip
+    │   ├── Caterpillar KogMaw.zip
+    │   ├── Deep Sea KogMaw.zip
+    │   ├── Hextech KogMaw.zip
+    │   ├── Jurassic KogMaw.zip
+    │   ├── KogMaw.zip
+    │   ├── Lion Dance KogMaw.zip
+    │   ├── Monarch KogMaw.zip
+    │   ├── PugMaw KogMaw.zip
+    │   ├── Reindeer KogMaw.zip
+    │   ├── Shan Hai Scrolls KogMaw.zip
+    │   ├── Sonoran KogMaw.zip
+    │   ├── Victorious KogMaw.zip
+    │   └── ZapMaw KogMaw.zip
     ├── LeBlanc/
     │   ├── chromas/
     │   │   ├── Bewitching LeBlanc/
@@ -3893,7 +4101,8 @@ Directory structure:
     │   │   │   ├── Worlds 2020 LeBlanc 7031.zip
     │   │   │   └── Worlds 2020 LeBlanc 7032.zip
     │   │   └── iG LeBlanc/
-    │   │       └── iG LeBlanc 7054.zip
+    │   │       ├── iG LeBlanc 7054.zip
+    │   │       └── iG LeBlanc 7058.zip
     │   ├── Bewitching LeBlanc.zip
     │   ├── Coven LeBlanc.zip
     │   ├── Debonair LeBlanc.zip
@@ -3909,7 +4118,7 @@ Directory structure:
     │   ├── Worlds 2020 LeBlanc.zip
     │   └── iG LeBlanc.zip
     ├── Lee Sin/
-    │   ├── chromas/
+    │   ├── Chromas/
     │   │   ├── Dragon Fist Lee Sin/
     │   │   │   ├── Dragon Fist Lee Sin 64007.zip
     │   │   │   ├── Dragon Fist Lee Sin 64008.zip
@@ -3986,11 +4195,12 @@ Directory structure:
     │   ├── Heavenscale Lee Sin.zip
     │   ├── Inkshadow Lee Sin.zip
     │   ├── Knockout Lee Sin.zip
+    │   ├── Lee Sin.zip
     │   ├── Muay Thai Lee Sin.zip
     │   ├── Nightbringer Lee Sin.zip
     │   ├── Playmaker Lee Sin.zip
     │   ├── Pool Party Lee Sin.zip
-    │   ├── Prestige Nightbringer Lee Sin (2022).zip
+    │   ├── Prestige Nightbringer Lee Sin 2022.zip
     │   ├── Prestige Nightbringer Lee Sin.zip
     │   ├── SKT T1 Lee Sin.zip
     │   ├── Storm Dragon Lee Sin.zip
@@ -4062,6 +4272,7 @@ Directory structure:
     │   ├── Defender Leona.zip
     │   ├── High Noon Leona.zip
     │   ├── Iron Solari Leona.zip
+    │   ├── Leona.zip
     │   ├── Lunar Eclipse Leona.zip
     │   ├── Mecha Kingdoms Leona.zip
     │   ├── PROJECT Leona.zip
@@ -4119,6 +4330,7 @@ Directory structure:
     │   │       └── Spirit Blossom Lillia 876009.zip
     │   ├── Bowling League Lillia.zip
     │   ├── Faerie Court Lillia.zip
+    │   ├── Lillia.zip
     │   ├── Nightbringer Lillia.zip
     │   ├── Shan Hai Scrolls Lillia.zip
     │   └── Spirit Blossom Lillia.zip
@@ -4143,6 +4355,15 @@ Directory structure:
     │   │   │   ├── Dark Cosmic Lissandra 127019.zip
     │   │   │   ├── Dark Cosmic Lissandra 127020.zip
     │   │   │   └── Dark Cosmic Lissandra 127021.zip
+    │   │   ├── Flora Fatalis Lissandra/
+    │   │   │   ├── Flora Fatalis Lissandra 127044.zip
+    │   │   │   ├── Flora Fatalis Lissandra 127045.zip
+    │   │   │   ├── Flora Fatalis Lissandra 127046.zip
+    │   │   │   ├── Flora Fatalis Lissandra 127047.zip
+    │   │   │   ├── Flora Fatalis Lissandra 127048.zip
+    │   │   │   ├── Flora Fatalis Lissandra 127049.zip
+    │   │   │   ├── Flora Fatalis Lissandra 127050.zip
+    │   │   │   └── Flora Fatalis Lissandra 127051.zip
     │   │   ├── Porcelain Lissandra/
     │   │   │   ├── Porcelain Lissandra 127024.zip
     │   │   │   ├── Porcelain Lissandra 127025.zip
@@ -4166,6 +4387,8 @@ Directory structure:
     │   ├── Bloodstone Lissandra.zip
     │   ├── Coven Lissandra.zip
     │   ├── Dark Cosmic Lissandra.zip
+    │   ├── Flora Fatalis Lissandra.zip
+    │   ├── Lissandra.zip
     │   ├── Porcelain Lissandra.zip
     │   ├── Prestige Porcelain Lissandra.zip
     │   ├── Program Lissandra.zip
@@ -4308,6 +4531,7 @@ Directory structure:
     │   ├── Cafe Cuties Lulu.zip
     │   ├── Cosmic Enchantress Lulu.zip
     │   ├── Dragon Trainer Lulu.zip
+    │   ├── Lulu.zip
     │   ├── Monster Tamer Lulu.zip
     │   ├── Pajama Guardian Lulu.zip
     │   ├── Pool Party Lulu.zip
@@ -4317,16 +4541,6 @@ Directory structure:
     │   ├── Wicked Lulu.zip
     │   └── Winter Wonder Lulu.zip
     ├── Lux/
-    │   ├── Elementalist Forms/
-    │   │   ├── Lux Elementalist Air.zip
-    │   │   ├── Lux Elementalist Dark.zip
-    │   │   ├── Lux Elementalist Fire.zip
-    │   │   ├── Lux Elementalist Ice.zip
-    │   │   ├── Lux Elementalist Magma.zip
-    │   │   ├── Lux Elementalist Mystic.zip
-    │   │   ├── Lux Elementalist Nature.zip
-    │   │   ├── Lux Elementalist Storm.zip
-    │   │   └── Lux Elementalist Water.zip
     │   ├── chromas/
     │   │   ├── Empyrean Lux/
     │   │   │   ├── Empyrean Lux 99043.zip
@@ -4394,9 +4608,10 @@ Directory structure:
     │   ├── Faerie Court Lux.zip
     │   ├── Imperial Lux.zip
     │   ├── Lunar Empress Lux.zip
+    │   ├── Lux.zip
     │   ├── Pajama Guardian Lux.zip
     │   ├── Porcelain Lux.zip
-    │   ├── Prestige Battle Academia Lux (2022).zip
+    │   ├── Prestige Battle Academia Lux 2022.zip
     │   ├── Prestige Battle Academia Lux.zip
     │   ├── Prestige Porcelain Lux.zip
     │   ├── Prestige Spirit Blossom Lux.zip
@@ -4462,6 +4677,7 @@ Directory structure:
     │   ├── Glacial Malphite.zip
     │   ├── Ironside Malphite.zip
     │   ├── Lunar Guardian Malphite.zip
+    │   ├── Malphite.zip
     │   ├── Marble Malphite.zip
     │   ├── Mecha Malphite.zip
     │   ├── Obsidian Malphite.zip
@@ -4523,12 +4739,13 @@ Directory structure:
     │   │       ├── Worldbreaker Malzahar 90016.zip
     │   │       └── Worldbreaker Malzahar 90017.zip
     │   ├── Battle Boss Malzahar.zip
-    │   ├── Beezahar.zip
+    │   ├── Beezahar Malzahar.zip
     │   ├── Debonair Malzahar.zip
     │   ├── Djinn Malzahar.zip
     │   ├── Empyrean Malzahar.zip
     │   ├── Fatebreaker Malzahar.zip
     │   ├── Hextech Malzahar.zip
+    │   ├── Malzahar.zip
     │   ├── Overlord Malzahar.zip
     │   ├── Shadow Prince Malzahar.zip
     │   ├── Snow Day Malzahar.zip
@@ -4571,12 +4788,13 @@ Directory structure:
     │   ├── Festive Maokai.zip
     │   ├── Goalkeeper Maokai.zip
     │   ├── Haunted Maokai.zip
-    │   ├── Meowkai.zip
+    │   ├── Maokai.zip
+    │   ├── Meowkai Maokai.zip
     │   ├── Totemic Maokai.zip
     │   ├── Victorious Maokai.zip
     │   └── Worldbreaker Maokai.zip
     ├── Master Yi/
-    │   ├── chromas/
+    │   ├── Chromas/
     │   │   ├── Blood Moon Master Yi/
     │   │   │   ├── Blood Moon Master Yi 11025.zip
     │   │   │   ├── Blood Moon Master Yi 11026.zip
@@ -4668,6 +4886,7 @@ Directory structure:
     │   ├── Heavenscale Master Yi.zip
     │   ├── Inkshadow Master Yi.zip
     │   ├── Ionia Master Yi.zip
+    │   ├── Master Yi.zip
     │   ├── PROJECT Yi.zip
     │   ├── Prestige Spirit Blossom Master Yi.zip
     │   ├── PsyOps Master Yi.zip
@@ -4686,7 +4905,8 @@ Directory structure:
     │   │       ├── Arcane Councilor Mel 800007.zip
     │   │       ├── Arcane Councilor Mel 800008.zip
     │   │       └── Arcane Councilor Mel 800009.zip
-    │   └── Arcane Councilor Mel.zip
+    │   ├── Arcane Councilor Mel.zip
+    │   └── Mel.zip
     ├── Milio/
     │   ├── chromas/
     │   │   ├── Faerie Court Milio/
@@ -4709,9 +4929,10 @@ Directory structure:
     │   │       ├── Rain Shepherd Milio 902018.zip
     │   │       └── Rain Shepherd Milio 902019.zip
     │   ├── Faerie Court Milio.zip
+    │   ├── Milio.zip
     │   └── Rain Shepherd Milio.zip
     ├── Miss Fortune/
-    │   ├── chromas/
+    │   ├── Chromas/
     │   │   ├── Arcade Miss Fortune/
     │   │   │   ├── Arcade Miss Fortune 21010.zip
     │   │   │   ├── Arcade Miss Fortune 21011.zip
@@ -4775,10 +4996,11 @@ Directory structure:
     │   ├── Cowgirl Miss Fortune.zip
     │   ├── Crime City Miss Fortune.zip
     │   ├── Gun Goddess Miss Fortune.zip
+    │   ├── Miss Fortune.zip
     │   ├── Pajama Guardian Miss Fortune.zip
     │   ├── Pool Party Miss Fortune.zip
     │   ├── Porcelain Miss Fortune.zip
-    │   ├── Prestige Bewitching Miss Fortune (2022).zip
+    │   ├── Prestige Bewitching Miss Fortune 2022.zip
     │   ├── Prestige Bewitching Miss Fortune.zip
     │   ├── Prestige Broken Covenant Miss Fortune.zip
     │   ├── Road Warrior Miss Fortune.zip
@@ -4843,6 +5065,7 @@ Directory structure:
     │   ├── Infernal Mordekaiser.zip
     │   ├── King of Clubs Mordekaiser.zip
     │   ├── Lord Mordekaiser.zip
+    │   ├── Mordekaiser.zip
     │   ├── Old God Mordekaiser.zip
     │   ├── PROJECT Mordekaiser.zip
     │   ├── Pentakill III Lost Chapter Mordekaiser.zip
@@ -4936,7 +5159,7 @@ Directory structure:
     │   ├── Prestige Bewitching Morgana.zip
     │   ├── Sinful Succulence Morgana.zip
     │   ├── Snow Moon Morgana.zip
-    │   ├── Spirit Blossom Morgana - AIO.zip
+    │   ├── Spirit Blossom Morgana.zip
     │   ├── Star Nemesis Morgana.zip
     │   └── Victorious Morgana.zip
     ├── Naafiri/
@@ -4970,6 +5193,7 @@ Directory structure:
     │   │       ├── Soul Fighter Naafiri 950009.zip
     │   │       └── Soul Fighter Naafiri 950010.zip
     │   ├── Glizzy Naafiri.zip
+    │   ├── Naafiri.zip
     │   ├── PROJECT Naafiri.zip
     │   └── Soul Fighter Naafiri.zip
     ├── Nami/
@@ -5041,6 +5265,7 @@ Directory structure:
     │   ├── Deep Sea Nami.zip
     │   ├── Koi Nami.zip
     │   ├── Mythmaker Nami.zip
+    │   ├── Nami.zip
     │   ├── Prestige Space Groove Nami.zip
     │   ├── Program Nami.zip
     │   ├── River Spirit Nami.zip
@@ -5114,6 +5339,7 @@ Directory structure:
     │   ├── Galactic Nasus.zip
     │   ├── Infernal Nasus.zip
     │   ├── Lunar Guardian Nasus.zip
+    │   ├── Nasus.zip
     │   ├── Nightbringer Nasus.zip
     │   ├── Pharaoh Nasus.zip
     │   ├── Riot K-9 Nasus.zip
@@ -5158,6 +5384,7 @@ Directory structure:
     │   ├── Cosmic Paladin Nautilus.zip
     │   ├── Crystalis Indomitus Nautilus.zip
     │   ├── Fright Night Nautilus.zip
+    │   ├── Nautilus.zip
     │   ├── Shan Hai Scrolls Nautilus.zip
     │   ├── Subterranean Nautilus.zip
     │   ├── Warden Nautilus.zip
@@ -5211,7 +5438,8 @@ Directory structure:
     │   │       └── Winter Wonder Neeko 518009.zip
     │   ├── Bewitching Neeko.zip
     │   ├── Cosplayer Neeko.zip
-    │   ├── Prestige Star Guardian Neeko (2022).zip
+    │   ├── Neeko.zip
+    │   ├── Prestige Star Guardian Neeko 2022.zip
     │   ├── Prestige Star Guardian Neeko.zip
     │   ├── Shan Hai Scrolls Neeko.zip
     │   ├── Star Guardian Neeko.zip
@@ -5284,9 +5512,10 @@ Directory structure:
     │   ├── Dawnbringer Nidalee.zip
     │   ├── French Maid Nidalee.zip
     │   ├── Headhunter Nidalee.zip
-    │   ├── Kittalee.zip
+    │   ├── Kittalee Nidalee.zip
     │   ├── La Ilusión Nidalee.zip
     │   ├── Leopard Nidalee.zip
+    │   ├── Nidalee.zip
     │   ├── Ocean Song Nidalee.zip
     │   ├── Pharaoh Nidalee.zip
     │   ├── Snow Bunny Nidalee.zip
@@ -5318,6 +5547,7 @@ Directory structure:
     │   │       ├── Star Guardian Nilah 895002.zip
     │   │       ├── Star Guardian Nilah 895003.zip
     │   │       ├── Star Guardian Nilah 895004.zip
+    │   │       ├── Star Guardian Nilah 895005.zip
     │   │       ├── Star Guardian Nilah 895006.zip
     │   │       ├── Star Guardian Nilah 895007.zip
     │   │       ├── Star Guardian Nilah 895008.zip
@@ -5325,6 +5555,7 @@ Directory structure:
     │   │       └── Star Guardian Nilah 895010.zip
     │   ├── Coven Nilah.zip
     │   ├── Inkshadow Nilah.zip
+    │   ├── Nilah.zip
     │   └── Star Guardian Nilah.zip
     ├── Nocturne/
     │   ├── chromas/
@@ -5363,69 +5594,71 @@ Directory structure:
     │   ├── Frozen Terror Nocturne.zip
     │   ├── Haunting Nocturne.zip
     │   ├── Hextech Nocturne.zip
+    │   ├── Nocturne.zip
     │   ├── Old God Nocturne.zip
     │   ├── Ravager Nocturne.zip
     │   └── Void Nocturne.zip
     ├── Nunu & Willump/
-    │   ├── chromas/
-    │   │   ├── Cosmic Paladins Nunu & Willump/
-    │   │   │   ├── Cosmic Paladins Nunu & Willump 20036.zip
-    │   │   │   ├── Cosmic Paladins Nunu & Willump 20037.zip
-    │   │   │   ├── Cosmic Paladins Nunu & Willump 20038.zip
-    │   │   │   ├── Cosmic Paladins Nunu & Willump 20039.zip
-    │   │   │   ├── Cosmic Paladins Nunu & Willump 20040.zip
-    │   │   │   ├── Cosmic Paladins Nunu & Willump 20041.zip
-    │   │   │   ├── Cosmic Paladins Nunu & Willump 20042.zip
-    │   │   │   └── Cosmic Paladins Nunu & Willump 20043.zip
-    │   │   ├── Fright Night Nunu & Willump/
-    │   │   │   ├── Fright Night Nunu & Willump 20045.zip
-    │   │   │   ├── Fright Night Nunu & Willump 20046.zip
-    │   │   │   ├── Fright Night Nunu & Willump 20047.zip
-    │   │   │   ├── Fright Night Nunu & Willump 20048.zip
-    │   │   │   ├── Fright Night Nunu & Willump 20049.zip
-    │   │   │   ├── Fright Night Nunu & Willump 20050.zip
-    │   │   │   ├── Fright Night Nunu & Willump 20051.zip
-    │   │   │   ├── Fright Night Nunu & Willump 20052.zip
-    │   │   │   └── Fright Night Nunu & Willump 20053.zip
-    │   │   ├── Nunu & Beelump/
-    │   │   │   ├── Nunu & Beelump 20027.zip
-    │   │   │   ├── Nunu & Beelump 20028.zip
-    │   │   │   ├── Nunu & Beelump 20029.zip
-    │   │   │   ├── Nunu & Beelump 20030.zip
-    │   │   │   ├── Nunu & Beelump 20031.zip
-    │   │   │   ├── Nunu & Beelump 20032.zip
-    │   │   │   ├── Nunu & Beelump 20033.zip
-    │   │   │   └── Nunu & Beelump 20034.zip
-    │   │   ├── Papercraft Nunu & Willump/
-    │   │   │   ├── Papercraft Nunu & Willump 20009.zip
-    │   │   │   ├── Papercraft Nunu & Willump 20010.zip
-    │   │   │   ├── Papercraft Nunu & Willump 20011.zip
-    │   │   │   ├── Papercraft Nunu & Willump 20012.zip
-    │   │   │   ├── Papercraft Nunu & Willump 20013.zip
-    │   │   │   ├── Papercraft Nunu & Willump 20014.zip
-    │   │   │   └── Papercraft Nunu & Willump 20015.zip
-    │   │   └── Space Groove Nunu & Willump/
-    │   │       ├── Space Groove Nunu & Willump 20017.zip
-    │   │       ├── Space Groove Nunu & Willump 20018.zip
-    │   │       ├── Space Groove Nunu & Willump 20019.zip
-    │   │       ├── Space Groove Nunu & Willump 20020.zip
-    │   │       ├── Space Groove Nunu & Willump 20021.zip
-    │   │       ├── Space Groove Nunu & Willump 20022.zip
-    │   │       ├── Space Groove Nunu & Willump 20023.zip
-    │   │       ├── Space Groove Nunu & Willump 20024.zip
-    │   │       └── Space Groove Nunu & Willump 20025.zip
-    │   ├── Cosmic Paladins Nunu & Willump.zip
-    │   ├── Demolisher Nunu & Willump.zip
-    │   ├── Fright Night Nunu & Willump.zip
-    │   ├── Grungy Nunu & Willump.zip
-    │   ├── Nunu & Beelump.zip
-    │   ├── Nunu & Willump Bot.zip
-    │   ├── Papercraft Nunu & Willump.zip
-    │   ├── Sasquatch Nunu & Willump.zip
-    │   ├── Space Groove Nunu & Willump.zip
-    │   ├── TPA Nunu & Willump.zip
-    │   ├── Workshop Nunu & Willump.zip
-    │   └── Zombie Nunu & Willump.zip
+    │   ├── Chromas/
+    │   │   ├── Cosmic Paladins Nunu Willump/
+    │   │   │   ├── Cosmic Paladins Nunu Willump 20036.zip
+    │   │   │   ├── Cosmic Paladins Nunu Willump 20037.zip
+    │   │   │   ├── Cosmic Paladins Nunu Willump 20038.zip
+    │   │   │   ├── Cosmic Paladins Nunu Willump 20039.zip
+    │   │   │   ├── Cosmic Paladins Nunu Willump 20040.zip
+    │   │   │   ├── Cosmic Paladins Nunu Willump 20041.zip
+    │   │   │   ├── Cosmic Paladins Nunu Willump 20042.zip
+    │   │   │   └── Cosmic Paladins Nunu Willump 20043.zip
+    │   │   ├── Fright Night Nunu Willump/
+    │   │   │   ├── Fright Night Nunu Willump 20045.zip
+    │   │   │   ├── Fright Night Nunu Willump 20046.zip
+    │   │   │   ├── Fright Night Nunu Willump 20047.zip
+    │   │   │   ├── Fright Night Nunu Willump 20048.zip
+    │   │   │   ├── Fright Night Nunu Willump 20049.zip
+    │   │   │   ├── Fright Night Nunu Willump 20050.zip
+    │   │   │   ├── Fright Night Nunu Willump 20051.zip
+    │   │   │   ├── Fright Night Nunu Willump 20052.zip
+    │   │   │   └── Fright Night Nunu Willump 20053.zip
+    │   │   ├── Nunu Beelump/
+    │   │   │   ├── Nunu Beelump 20027.zip
+    │   │   │   ├── Nunu Beelump 20028.zip
+    │   │   │   ├── Nunu Beelump 20029.zip
+    │   │   │   ├── Nunu Beelump 20030.zip
+    │   │   │   ├── Nunu Beelump 20031.zip
+    │   │   │   ├── Nunu Beelump 20032.zip
+    │   │   │   ├── Nunu Beelump 20033.zip
+    │   │   │   └── Nunu Beelump 20034.zip
+    │   │   ├── Papercraft Nunu Willump/
+    │   │   │   ├── Papercraft Nunu Willump 20009.zip
+    │   │   │   ├── Papercraft Nunu Willump 20010.zip
+    │   │   │   ├── Papercraft Nunu Willump 20011.zip
+    │   │   │   ├── Papercraft Nunu Willump 20012.zip
+    │   │   │   ├── Papercraft Nunu Willump 20013.zip
+    │   │   │   ├── Papercraft Nunu Willump 20014.zip
+    │   │   │   └── Papercraft Nunu Willump 20015.zip
+    │   │   └── Space Groove Nunu Willump/
+    │   │       ├── Space Groove Nunu Willump 20017.zip
+    │   │       ├── Space Groove Nunu Willump 20018.zip
+    │   │       ├── Space Groove Nunu Willump 20019.zip
+    │   │       ├── Space Groove Nunu Willump 20020.zip
+    │   │       ├── Space Groove Nunu Willump 20021.zip
+    │   │       ├── Space Groove Nunu Willump 20022.zip
+    │   │       ├── Space Groove Nunu Willump 20023.zip
+    │   │       ├── Space Groove Nunu Willump 20024.zip
+    │   │       └── Space Groove Nunu Willump 20025.zip
+    │   ├── Cosmic Paladins Nunu Willump.zip
+    │   ├── Demolisher Nunu Willump.zip
+    │   ├── Fright Night Nunu Willump.zip
+    │   ├── Grungy Nunu Willump.zip
+    │   ├── Nunu Beelump.zip
+    │   ├── Nunu Willump Bot.zip
+    │   ├── Nunu Willump.zip
+    │   ├── Papercraft Nunu Willump.zip
+    │   ├── Sasquatch Nunu Willump.zip
+    │   ├── Space Groove Nunu Willump.zip
+    │   ├── TPA Nunu Willump.zip
+    │   ├── Workshop Nunu Willump.zip
+    │   └── Zombie Nunu Willump.zip
     ├── Olaf/
     │   ├── chromas/
     │   │   ├── Brolaf/
@@ -5481,6 +5714,7 @@ Directory structure:
     │   ├── Glacial Olaf.zip
     │   ├── Infernal Olaf.zip
     │   ├── Marauder Olaf.zip
+    │   ├── Olaf.zip
     │   ├── Pentakill III Lost Chapter Olaf.zip
     │   ├── Pentakill Olaf.zip
     │   ├── SKT T1 Olaf.zip
@@ -5524,7 +5758,8 @@ Directory structure:
     │   ├── Dark Star Orianna.zip
     │   ├── Gothic Orianna.zip
     │   ├── Heartseeker Orianna.zip
-    │   ├── Orbeeanna.zip
+    │   ├── Orbeeanna Orianna.zip
+    │   ├── Orianna.zip
     │   ├── Pool Party Orianna.zip
     │   ├── Sewn Chaos Orianna.zip
     │   ├── Star Guardian Orianna.zip
@@ -5563,6 +5798,7 @@ Directory structure:
     │   │       └── Space Groove Ornn 516019.zip
     │   ├── Choo-Choo Ornn.zip
     │   ├── Elderwood Ornn.zip
+    │   ├── Ornn.zip
     │   ├── Space Groove Ornn.zip
     │   └── Thunder Lord Ornn.zip
     ├── Pantheon/
@@ -5612,6 +5848,7 @@ Directory structure:
     │   ├── Full Metal Pantheon.zip
     │   ├── Glaive Warrior Pantheon.zip
     │   ├── Myrmidon Pantheon.zip
+    │   ├── Pantheon.zip
     │   ├── Perseus Pantheon.zip
     │   ├── Prestige Ascended Pantheon.zip
     │   ├── Pulsefire Pantheon.zip
@@ -5661,6 +5898,7 @@ Directory structure:
     │   ├── Hextech Poppy.zip
     │   ├── Lollipoppy.zip
     │   ├── Noxus Poppy.zip
+    │   ├── Poppy.zip
     │   ├── Ragdoll Poppy.zip
     │   ├── Scarlet Hammer Poppy.zip
     │   ├── Snow Fawn Poppy.zip
@@ -5738,16 +5976,18 @@ Directory structure:
     │   │   │   ├── Sentinel Pyke 555041.zip
     │   │   │   ├── Sentinel Pyke 555042.zip
     │   │   │   └── Sentinel Pyke 555043.zip
-    │   │   └── Soul Fighter Pyke/
-    │   │       ├── Soul Fighter Pyke 555055.zip
-    │   │       ├── Soul Fighter Pyke 555056.zip
-    │   │       ├── Soul Fighter Pyke 555057.zip
-    │   │       ├── Soul Fighter Pyke 555058.zip
-    │   │       ├── Soul Fighter Pyke 555059.zip
-    │   │       ├── Soul Fighter Pyke 555060.zip
-    │   │       ├── Soul Fighter Pyke 555061.zip
-    │   │       ├── Soul Fighter Pyke 555062.zip
-    │   │       └── Soul Fighter Pyke 555063.zip
+    │   │   ├── Soul Fighter Pyke/
+    │   │   │   ├── Soul Fighter Pyke 555055.zip
+    │   │   │   ├── Soul Fighter Pyke 555056.zip
+    │   │   │   ├── Soul Fighter Pyke 555057.zip
+    │   │   │   ├── Soul Fighter Pyke 555058.zip
+    │   │   │   ├── Soul Fighter Pyke 555059.zip
+    │   │   │   ├── Soul Fighter Pyke 555060.zip
+    │   │   │   ├── Soul Fighter Pyke 555061.zip
+    │   │   │   ├── Soul Fighter Pyke 555062.zip
+    │   │   │   └── Soul Fighter Pyke 555063.zip
+    │   │   └── T1 Pyke/
+    │   │       └── T1 Pyke 555084.zip
     │   ├── Ashen Knight Pyke.zip
     │   ├── Blood Moon Pyke.zip
     │   ├── Empyrean Pyke.zip
@@ -5756,9 +5996,11 @@ Directory structure:
     │   ├── PROJECT Pyke.zip
     │   ├── Prestige Soul Fighter Pyke.zip
     │   ├── PsyOps Pyke.zip
+    │   ├── Pyke.zip
     │   ├── Sand Wraith Pyke.zip
     │   ├── Sentinel Pyke.zip
-    │   └── Soul Fighter Pyke.zip
+    │   ├── Soul Fighter Pyke.zip
+    │   └── T1 Pyke.zip
     ├── Qiyana/
     │   ├── chromas/
     │   │   ├── Battle Boss Qiyana/
@@ -5812,8 +6054,9 @@ Directory structure:
     │   ├── La Ilusión Qiyana.zip
     │   ├── Lunar Empress Qiyana.zip
     │   ├── Prestige Battle Academia Qiyana.zip
-    │   ├── Prestige True Damage Qiyana (2022).zip
+    │   ├── Prestige True Damage Qiyana 2022.zip
     │   ├── Prestige True Damage Qiyana.zip
+    │   ├── Qiyana.zip
     │   ├── Shockblade Qiyana.zip
     │   └── True Damage Qiyana.zip
     ├── Quinn/
@@ -5840,6 +6083,7 @@ Directory structure:
     │   ├── Corsair Quinn.zip
     │   ├── Heartseeker Quinn.zip
     │   ├── Phoenix Quinn.zip
+    │   ├── Quinn.zip
     │   ├── Star Guardian Quinn.zip
     │   ├── Warden Quinn.zip
     │   └── Woad Scout Quinn.zip
@@ -5890,10 +6134,14 @@ Directory structure:
     │   │   │   ├── Elderwood Rakan 497015.zip
     │   │   │   ├── Elderwood Rakan 497016.zip
     │   │   │   └── Elderwood Rakan 497017.zip
-    │   │   └── Star Guardian Rakan/
-    │   │       ├── Star Guardian Rakan 497006.zip
-    │   │       ├── Star Guardian Rakan 497007.zip
-    │   │       └── Star Guardian Rakan 497008.zip
+    │   │   ├── SSG Rakan/
+    │   │   │   └── SSG Rakan 497056.zip
+    │   │   ├── Star Guardian Rakan/
+    │   │   │   ├── Star Guardian Rakan 497006.zip
+    │   │   │   ├── Star Guardian Rakan 497007.zip
+    │   │   │   └── Star Guardian Rakan 497008.zip
+    │   │   └── iG Rakan/
+    │   │       └── iG Rakan 497057.zip
     │   ├── Arcana Rakan.zip
     │   ├── Battle Academia Rakan.zip
     │   ├── Broken Covenant Rakan.zip
@@ -5901,6 +6149,7 @@ Directory structure:
     │   ├── Dragonmancer Rakan.zip
     │   ├── Elderwood Rakan.zip
     │   ├── Prestige Dragonmancer Rakan.zip
+    │   ├── Rakan.zip
     │   ├── Redeemed Star Guardian Rakan.zip
     │   ├── SSG Rakan.zip
     │   ├── Star Guardian Rakan.zip
@@ -5944,48 +6193,50 @@ Directory structure:
     │   ├── King Rammus.zip
     │   ├── Molten Rammus.zip
     │   ├── Ninja Rammus.zip
+    │   ├── Rammus.zip
     │   └── Sweeper Rammus.zip
     ├── Rek'Sai/
-    │   ├── chromas/
-    │   │   ├── Blackfrost Rek'Sai/
-    │   │   │   ├── Blackfrost Rek'Sai 421010.zip
-    │   │   │   ├── Blackfrost Rek'Sai 421011.zip
-    │   │   │   ├── Blackfrost Rek'Sai 421012.zip
-    │   │   │   ├── Blackfrost Rek'Sai 421013.zip
-    │   │   │   ├── Blackfrost Rek'Sai 421014.zip
-    │   │   │   ├── Blackfrost Rek'Sai 421015.zip
-    │   │   │   └── Blackfrost Rek'Sai 421016.zip
-    │   │   ├── Elderwood Rek'Sai/
-    │   │   │   ├── Elderwood Rek'Sai 421018.zip
-    │   │   │   ├── Elderwood Rek'Sai 421019.zip
-    │   │   │   ├── Elderwood Rek'Sai 421020.zip
-    │   │   │   ├── Elderwood Rek'Sai 421021.zip
-    │   │   │   ├── Elderwood Rek'Sai 421022.zip
-    │   │   │   ├── Elderwood Rek'Sai 421023.zip
-    │   │   │   ├── Elderwood Rek'Sai 421024.zip
-    │   │   │   └── Elderwood Rek'Sai 421025.zip
-    │   │   ├── Pool Party Rek'Sai/
-    │   │   │   ├── Pool Party Rek'Sai 421003.zip
-    │   │   │   ├── Pool Party Rek'Sai 421004.zip
-    │   │   │   ├── Pool Party Rek'Sai 421005.zip
-    │   │   │   ├── Pool Party Rek'Sai 421006.zip
-    │   │   │   ├── Pool Party Rek'Sai 421007.zip
-    │   │   │   └── Pool Party Rek'Sai 421008.zip
-    │   │   └── Primordian Rek'Sai/
-    │   │       ├── Primordian Rek'Sai 421027.zip
-    │   │       ├── Primordian Rek'Sai 421028.zip
-    │   │       ├── Primordian Rek'Sai 421029.zip
-    │   │       ├── Primordian Rek'Sai 421030.zip
-    │   │       ├── Primordian Rek'Sai 421031.zip
-    │   │       ├── Primordian Rek'Sai 421032.zip
-    │   │       ├── Primordian Rek'Sai 421033.zip
-    │   │       ├── Primordian Rek'Sai 421034.zip
-    │   │       └── Primordian Rek'Sai 421035.zip
-    │   ├── Blackfrost Rek'Sai.zip
-    │   ├── Elderwood Rek'Sai.zip
-    │   ├── Eternum Rek'Sai.zip
-    │   ├── Pool Party Rek'Sai.zip
-    │   └── Primordian Rek'Sai.zip
+    │   ├── Chromas/
+    │   │   ├── Blackfrost RekSai/
+    │   │   │   ├── Blackfrost RekSai 421010.zip
+    │   │   │   ├── Blackfrost RekSai 421011.zip
+    │   │   │   ├── Blackfrost RekSai 421012.zip
+    │   │   │   ├── Blackfrost RekSai 421013.zip
+    │   │   │   ├── Blackfrost RekSai 421014.zip
+    │   │   │   ├── Blackfrost RekSai 421015.zip
+    │   │   │   └── Blackfrost RekSai 421016.zip
+    │   │   ├── Elderwood RekSai/
+    │   │   │   ├── Elderwood RekSai 421018.zip
+    │   │   │   ├── Elderwood RekSai 421019.zip
+    │   │   │   ├── Elderwood RekSai 421020.zip
+    │   │   │   ├── Elderwood RekSai 421021.zip
+    │   │   │   ├── Elderwood RekSai 421022.zip
+    │   │   │   ├── Elderwood RekSai 421023.zip
+    │   │   │   ├── Elderwood RekSai 421024.zip
+    │   │   │   └── Elderwood RekSai 421025.zip
+    │   │   ├── Pool Party RekSai/
+    │   │   │   ├── Pool Party RekSai 421003.zip
+    │   │   │   ├── Pool Party RekSai 421004.zip
+    │   │   │   ├── Pool Party RekSai 421005.zip
+    │   │   │   ├── Pool Party RekSai 421006.zip
+    │   │   │   ├── Pool Party RekSai 421007.zip
+    │   │   │   └── Pool Party RekSai 421008.zip
+    │   │   └── Primordian RekSai/
+    │   │       ├── Primordian RekSai 421027.zip
+    │   │       ├── Primordian RekSai 421028.zip
+    │   │       ├── Primordian RekSai 421029.zip
+    │   │       ├── Primordian RekSai 421030.zip
+    │   │       ├── Primordian RekSai 421031.zip
+    │   │       ├── Primordian RekSai 421032.zip
+    │   │       ├── Primordian RekSai 421033.zip
+    │   │       ├── Primordian RekSai 421034.zip
+    │   │       └── Primordian RekSai 421035.zip
+    │   ├── Blackfrost RekSai.zip
+    │   ├── Elderwood RekSai.zip
+    │   ├── Eternum RekSai.zip
+    │   ├── Pool Party RekSai.zip
+    │   ├── Primordian RekSai.zip
+    │   └── RekSai.zip
     ├── Rell/
     │   ├── chromas/
     │   │   ├── Battle Queen Rell/
@@ -6020,9 +6271,10 @@ Directory structure:
     │   ├── Battle Queen Rell.zip
     │   ├── Grand Reckoning Rell.zip
     │   ├── High Noon Rell.zip
+    │   ├── Rell.zip
     │   └── Star Guardian Rell.zip
     ├── Renata Glasc/
-    │   ├── chromas/
+    │   ├── Chromas/
     │   │   ├── Admiral Glasc/
     │   │   │   ├── Admiral Glasc 888002.zip
     │   │   │   ├── Admiral Glasc 888003.zip
@@ -6056,7 +6308,8 @@ Directory structure:
     │   ├── Fright Night Renata Glasc.zip
     │   ├── La Ilusión Renata Glasc.zip
     │   ├── Masque of the Black Rose Renata Glasc.zip
-    │   └── Prestige La Ilusión Renata Glasc.zip
+    │   ├── Prestige La Ilusión Renata Glasc.zip
+    │   └── Renata Glasc.zip
     ├── Renekton/
     │   ├── chromas/
     │   │   ├── Blackfrost Renekton/
@@ -6116,7 +6369,8 @@ Directory structure:
     │   ├── PROJECT Renekton.zip
     │   ├── Pool Party Renekton.zip
     │   ├── Prehistoric Renekton.zip
-    │   ├── Renektoy.zip
+    │   ├── Renekton.zip
+    │   ├── Renektoy Renekton.zip
     │   ├── Rune Wars Renekton.zip
     │   ├── SKT T1 Renekton.zip
     │   ├── Scorched Earth Renekton.zip
@@ -6174,6 +6428,7 @@ Directory structure:
     │   ├── Mecha Rengar.zip
     │   ├── Night Hunter Rengar.zip
     │   ├── Pretty Kitty Rengar.zip
+    │   ├── Rengar.zip
     │   ├── SSW Rengar.zip
     │   ├── Sentinel Rengar.zip
     │   └── Street Demons Rengar.zip
@@ -6252,12 +6507,13 @@ Directory structure:
     │   ├── Crimson Elite Riven.zip
     │   ├── Dawnbringer Riven.zip
     │   ├── Dragonblade Riven.zip
-    │   ├── Prestige Valiant Sword Riven (2022).zip
+    │   ├── Prestige Valiant Sword Riven 2022.zip
     │   ├── Prestige Valiant Sword Riven.zip
     │   ├── Primal Ambush Riven.zip
     │   ├── Pulsefire Riven.zip
     │   ├── Redeemed Riven.zip
     │   ├── Reignited Worlds 2012 Riven.zip
+    │   ├── Riven.zip
     │   ├── Sentinel Riven.zip
     │   ├── Spirit Blossom Riven.zip
     │   ├── Valiant Sword Riven.zip
@@ -6296,6 +6552,7 @@ Directory structure:
     │   ├── Bilgerat Rumble.zip
     │   ├── Cafe Cuties Rumble.zip
     │   ├── Rumble in the Jungle.zip
+    │   ├── Rumble.zip
     │   ├── Space Groove Rumble.zip
     │   └── Super Galaxy Rumble.zip
     ├── Ryze/
@@ -6336,6 +6593,7 @@ Directory structure:
     │   ├── Pirate Ryze.zip
     │   ├── Professor Ryze.zip
     │   ├── Ryze Whitebeard.zip
+    │   ├── Ryze.zip
     │   ├── SKT T1 Ryze.zip
     │   ├── Tribal Ryze.zip
     │   ├── Triumphant Ryze.zip
@@ -6378,6 +6636,7 @@ Directory structure:
     │   ├── High Noon Samira.zip
     │   ├── Masque of the Black Rose Samira.zip
     │   ├── PsyOps Samira.zip
+    │   ├── Samira.zip
     │   ├── Soul Fighter Samira.zip
     │   └── Space Groove Samira.zip
     ├── Sejuani/
@@ -6431,6 +6690,7 @@ Directory structure:
     │   ├── Poro Rider Sejuani.zip
     │   ├── Sabretusk Sejuani.zip
     │   ├── Sejuani Dawnchaser.zip
+    │   ├── Sejuani.zip
     │   ├── Solar Eclipse Sejuani.zip
     │   ├── Traditional Sejuani.zip
     │   └── Victorious Sejuani.zip
@@ -6511,6 +6771,7 @@ Directory structure:
     │   ├── PROJECT Senna.zip
     │   ├── Prestige Lunar Eclipse Senna.zip
     │   ├── Prestige True Damage Senna.zip
+    │   ├── Senna.zip
     │   ├── Star Guardian Senna.zip
     │   ├── True Damage Senna.zip
     │   └── Winterblessed Senna.zip
@@ -6574,11 +6835,12 @@ Directory structure:
     │   ├── Dumpling Darlings Seraphine.zip
     │   ├── Faerie Court Seraphine.zip
     │   ├── Graceful Phoenix Seraphine.zip
-    │   ├── K DA ALL OUT Seraphine Indie.zip
-    │   ├── K DA ALL OUT Seraphine Rising Star.zip
-    │   ├── K DA ALL OUT Seraphine Superstar.zip
+    │   ├── KDA ALL OUT Seraphine Indie.zip
+    │   ├── KDA ALL OUT Seraphine Rising Star.zip
+    │   ├── KDA ALL OUT Seraphine Superstar.zip
     │   ├── Ocean Song Seraphine.zip
     │   ├── Prestige Ocean Song Seraphine.zip
+    │   ├── Seraphine.zip
     │   └── Star Guardian Seraphine.zip
     ├── Sett/
     │   ├── chromas/
@@ -6661,6 +6923,8 @@ Directory structure:
     │   ├── Obsidian Dragon Sett.zip
     │   ├── Pool Party Sett.zip
     │   ├── Prestige Obsidian Dragon Sett.zip
+    │   ├── Radiant Serpent Sett.zip
+    │   ├── Sett.zip
     │   ├── Soul Fighter Sett.zip
     │   ├── Spirit Blossom Sett.zip
     │   └── Spirit Blossom Springs Sett.zip
@@ -6736,9 +7000,10 @@ Directory structure:
     │   ├── Fright Night Shaco.zip
     │   ├── Mad Hatter Shaco.zip
     │   ├── Masked Shaco.zip
-    │   ├── Nutcracko.zip
+    │   ├── Nutcracko Shaco.zip
     │   ├── Prestige Soul Fighter Shaco.zip
     │   ├── Royal Shaco.zip
+    │   ├── Shaco.zip
     │   ├── Soul Fighter Shaco.zip
     │   ├── Wild Card Shaco.zip
     │   ├── Winterblessed Shaco.zip
@@ -6797,6 +7062,7 @@ Directory structure:
     │   ├── Infernal Shen.zip
     │   ├── PsyOps Shen.zip
     │   ├── Pulsefire Shen.zip
+    │   ├── Shen.zip
     │   ├── Shockblade Shen.zip
     │   ├── Surgeon Shen.zip
     │   ├── TPA Shen.zip
@@ -6831,6 +7097,7 @@ Directory structure:
     │   ├── Immortal Journey Shyvana.zip
     │   ├── Ironscale Shyvana.zip
     │   ├── Ruined Shyvana.zip
+    │   ├── Shyvana.zip
     │   ├── Super Galaxy Shyvana.zip
     │   └── Worlds 2014 Shyvana.zip
     ├── Singed/
@@ -6863,6 +7130,7 @@ Directory structure:
     │   ├── Resistance Singed.zip
     │   ├── Riot Squad Singed.zip
     │   ├── SSW Singed.zip
+    │   ├── Singed.zip
     │   ├── Snow Day Singed.zip
     │   └── Surfer Singed.zip
     ├── Sion/
@@ -6919,6 +7187,7 @@ Directory structure:
     │   ├── High Noon Sion.zip
     │   ├── Lumberjack Sion.zip
     │   ├── Mecha Zero Sion.zip
+    │   ├── Sion.zip
     │   ├── Warmonger Sion.zip
     │   └── Worldbreaker Sion.zip
     ├── Sivir/
@@ -6996,6 +7265,7 @@ Directory structure:
     │   ├── Pizza Delivery Sivir.zip
     │   ├── Prestige Mythmaker Sivir.zip
     │   ├── Primal Ambush Sivir.zip
+    │   ├── Sivir.zip
     │   ├── Snowstorm Sivir.zip
     │   ├── Solar Eclipse Sivir.zip
     │   ├── Spectacular Sivir.zip
@@ -7017,7 +7287,8 @@ Directory structure:
     │   ├── Cosmic Sting Skarner.zip
     │   ├── Earthrune Skarner.zip
     │   ├── Guardian of the Sands Skarner.zip
-    │   └── Sandscourge Skarner.zip
+    │   ├── Sandscourge Skarner.zip
+    │   └── Skarner.zip
     ├── Smolder/
     │   ├── chromas/
     │   │   └── Heavenscale Smolder/
@@ -7030,7 +7301,8 @@ Directory structure:
     │   │       ├── Heavenscale Smolder 901008.zip
     │   │       ├── Heavenscale Smolder 901009.zip
     │   │       └── Heavenscale Smolder 901010.zip
-    │   └── Heavenscale Smolder.zip
+    │   ├── Heavenscale Smolder.zip
+    │   └── Smolder.zip
     ├── Sona/
     │   ├── chromas/
     │   │   ├── Arcade Sona/
@@ -7112,6 +7384,7 @@ Directory structure:
     │   ├── Prestige Immortal Journey Sona.zip
     │   ├── PsyOps Sona.zip
     │   ├── Silent Night Sona.zip
+    │   ├── Sona.zip
     │   ├── Spirit Blossom Springs Sona.zip
     │   ├── Star Guardian Sona.zip
     │   ├── Sweetheart Sona.zip
@@ -7136,6 +7409,15 @@ Directory structure:
     │   │   │   ├── Faerie Court Soraka 16050.zip
     │   │   │   ├── Faerie Court Soraka 16051.zip
     │   │   │   └── Faerie Court Soraka 16052.zip
+    │   │   ├── Flora Fatalis Soraka/
+    │   │   │   ├── Flora Fatalis Soraka 16054.zip
+    │   │   │   ├── Flora Fatalis Soraka 16055.zip
+    │   │   │   ├── Flora Fatalis Soraka 16056.zip
+    │   │   │   ├── Flora Fatalis Soraka 16057.zip
+    │   │   │   ├── Flora Fatalis Soraka 16058.zip
+    │   │   │   ├── Flora Fatalis Soraka 16059.zip
+    │   │   │   ├── Flora Fatalis Soraka 16060.zip
+    │   │   │   └── Flora Fatalis Soraka 16061.zip
     │   │   ├── Immortal Journey Soraka/
     │   │   │   ├── Immortal Journey Soraka 16038.zip
     │   │   │   ├── Immortal Journey Soraka 16039.zip
@@ -7143,6 +7425,8 @@ Directory structure:
     │   │   │   ├── Immortal Journey Soraka 16041.zip
     │   │   │   ├── Immortal Journey Soraka 16042.zip
     │   │   │   └── Immortal Journey Soraka 16043.zip
+    │   │   ├── Reaper Soraka/
+    │   │   │   └── Reaper Soraka 16062.zip
     │   │   ├── Spirit Blossom Soraka/
     │   │   │   ├── Spirit Blossom Soraka 16028.zip
     │   │   │   ├── Spirit Blossom Soraka 16029.zip
@@ -7165,6 +7449,7 @@ Directory structure:
     │   ├── Divine Soraka.zip
     │   ├── Dryad Soraka.zip
     │   ├── Faerie Court Soraka.zip
+    │   ├── Flora Fatalis Soraka.zip
     │   ├── Immortal Journey Soraka.zip
     │   ├── Nightbringer Soraka.zip
     │   ├── Order of the Banana Soraka.zip
@@ -7172,6 +7457,7 @@ Directory structure:
     │   ├── Prestige Star Guardian Soraka.zip
     │   ├── Program Soraka.zip
     │   ├── Reaper Soraka.zip
+    │   ├── Soraka.zip
     │   ├── Spirit Blossom Soraka.zip
     │   ├── Star Guardian Soraka.zip
     │   └── Winter Wonder Soraka.zip
@@ -7220,6 +7506,7 @@ Directory structure:
     │   ├── Hextech Swain.zip
     │   ├── Northern Front Swain.zip
     │   ├── Prestige Chosen of the Wolf Swain.zip
+    │   ├── Swain.zip
     │   ├── Tyrant Swain.zip
     │   └── Winterblessed Swain.zip
     ├── Sylas/
@@ -7282,6 +7569,8 @@ Directory structure:
     │   ├── Lunar Wraith Sylas.zip
     │   ├── PROJECT Sylas.zip
     │   ├── Prestige PROJECT Sylas.zip
+    │   ├── Prestige T1 Sylas.zip
+    │   ├── Sylas.zip
     │   └── Winterblessed Sylas.zip
     ├── Syndra/
     │   ├── chromas/
@@ -7365,9 +7654,10 @@ Directory structure:
     │   ├── Snow Day Syndra.zip
     │   ├── Spirit Blossom Syndra.zip
     │   ├── Star Guardian Syndra.zip
+    │   ├── Syndra.zip
     │   └── Withered Rose Syndra.zip
     ├── Tahm Kench/
-    │   ├── chromas/
+    │   ├── Chromas/
     │   │   ├── Arcana Tahm Kench/
     │   │   │   ├── Arcana Tahm Kench 223012.zip
     │   │   │   ├── Arcana Tahm Kench 223013.zip
@@ -7408,6 +7698,7 @@ Directory structure:
     │   ├── High Noon Tahm Kench.zip
     │   ├── Master Chef Tahm Kench.zip
     │   ├── Shan Hai Scrolls Tahm Kench.zip
+    │   ├── Tahm Kench.zip
     │   └── Urf Kench.zip
     ├── Taliyah/
     │   ├── chromas/
@@ -7421,6 +7712,8 @@ Directory structure:
     │   │   │   ├── Pool Party Taliyah 163008.zip
     │   │   │   ├── Pool Party Taliyah 163009.zip
     │   │   │   └── Pool Party Taliyah 163010.zip
+    │   │   ├── SSG Taliyah/
+    │   │   │   └── SSG Taliyah 163023.zip
     │   │   └── Star Guardian Taliyah/
     │   │       ├── Star Guardian Taliyah 163012.zip
     │   │       ├── Star Guardian Taliyah 163013.zip
@@ -7435,7 +7728,8 @@ Directory structure:
     │   ├── Freljord Taliyah.zip
     │   ├── Pool Party Taliyah.zip
     │   ├── SSG Taliyah.zip
-    │   └── Star Guardian Taliyah.zip
+    │   ├── Star Guardian Taliyah.zip
+    │   └── Taliyah.zip
     ├── Talon/
     │   ├── chromas/
     │   │   ├── Dragonblade Talon/
@@ -7502,6 +7796,7 @@ Directory structure:
     │   ├── Renegade Talon.zip
     │   ├── SSW Talon.zip
     │   ├── Talon Blackwood.zip
+    │   ├── Talon.zip
     │   └── Withered Rose Talon.zip
     ├── Taric/
     │   ├── chromas/
@@ -7543,7 +7838,8 @@ Directory structure:
     │   ├── Fatebreaker Taric.zip
     │   ├── Pool Party Taric.zip
     │   ├── Space Groove Taric.zip
-    │   └── Taric Luminshield.zip
+    │   ├── Taric Luminshield.zip
+    │   └── Taric.zip
     ├── Teemo/
     │   ├── chromas/
     │   │   ├── Astronaut Teemo/
@@ -7603,7 +7899,7 @@ Directory structure:
     │   │       └── Spirit Blossom Springs Teemo 17062.zip
     │   ├── Astronaut Teemo.zip
     │   ├── Badger Teemo.zip
-    │   ├── Beemo.zip
+    │   ├── Beemo Teemo.zip
     │   ├── Cottontail Teemo.zip
     │   ├── Firecracker Teemo.zip
     │   ├── Happy Elf Teemo.zip
@@ -7615,7 +7911,8 @@ Directory structure:
     │   ├── Space Groove Teemo.zip
     │   ├── Spirit Blossom Springs Teemo.zip
     │   ├── Spirit Blossom Teemo.zip
-    │   └── Super Teemo.zip
+    │   ├── Super Teemo.zip
+    │   └── Teemo.zip
     ├── Thresh/
     │   ├── chromas/
     │   │   ├── Dark Star Thresh/
@@ -7685,12 +7982,13 @@ Directory structure:
     │   ├── High Noon Thresh.zip
     │   ├── Janitor Thresh.zip
     │   ├── Lunar Emperor Thresh.zip
-    │   ├── Prestige Pulsefire Thresh (2022).zip
+    │   ├── Prestige Pulsefire Thresh 2022.zip
     │   ├── Prestige Pulsefire Thresh.zip
     │   ├── Pulsefire Thresh.zip
     │   ├── SSW Thresh.zip
     │   ├── Spirit Blossom Thresh.zip
     │   ├── Steel Dragon Thresh.zip
+    │   ├── Thresh.zip
     │   ├── Unbound Thresh.zip
     │   ├── Winterblessed Thresh.zip
     │   └── Worlds 2013 Thresh.zip
@@ -7772,7 +8070,8 @@ Directory structure:
     │   ├── Pengu Cosplay Tristana.zip
     │   ├── Riot Girl Tristana.zip
     │   ├── Rocket Girl Tristana.zip
-    │   └── Spirit Blossom Tristana.zip
+    │   ├── Spirit Blossom Tristana.zip
+    │   └── Tristana.zip
     ├── Trundle/
     │   ├── chromas/
     │   │   ├── Dragonslayer Trundle/
@@ -7804,8 +8103,9 @@ Directory structure:
     │   ├── Esports Fan Trundle.zip
     │   ├── Fright Night Trundle.zip
     │   ├── Junkyard Trundle.zip
-    │   ├── Lil' Slugger Trundle.zip
+    │   ├── Lil Slugger Trundle.zip
     │   ├── Traditional Trundle.zip
+    │   ├── Trundle.zip
     │   └── Worldbreaker Trundle.zip
     ├── Tryndamere/
     │   ├── chromas/
@@ -7854,12 +8154,13 @@ Directory structure:
     │   ├── Nightbringer Tryndamere.zip
     │   ├── Nightmare Tryndamere.zip
     │   ├── Sultan Tryndamere.zip
+    │   ├── Tryndamere.zip
     │   ├── Victorious Tryndamere.zip
     │   ├── Viking Tryndamere.zip
     │   ├── Visions of the Fallen Tryndamere.zip
     │   └── Warring Kingdoms Tryndamere.zip
     ├── Twisted Fate/
-    │   ├── chromas/
+    │   ├── Chromas/
     │   │   ├── Crime City Nightmare Twisted Fate/
     │   │   │   ├── Crime City Nightmare Twisted Fate 4026.zip
     │   │   │   ├── Crime City Nightmare Twisted Fate 4027.zip
@@ -7917,6 +8218,7 @@ Directory structure:
     │   ├── Space Groove Twisted Fate.zip
     │   ├── Tango Twisted Fate.zip
     │   ├── The Magnificent Twisted Fate.zip
+    │   ├── Twisted Fate.zip
     │   ├── Underworld Twisted Fate.zip
     │   └── Victorious Twisted Fate.zip
     ├── Twitch/
@@ -7984,6 +8286,7 @@ Directory structure:
     │   ├── Pool Party Twitch.zip
     │   ├── SSW Twitch.zip
     │   ├── Twitch Shadowfoot.zip
+    │   ├── Twitch.zip
     │   ├── Vandal Twitch.zip
     │   └── Whistler Village Twitch.zip
     ├── Udyr/
@@ -7999,7 +8302,8 @@ Directory structure:
     │   ├── Dragon Oracle Udyr.zip
     │   ├── Inkshadow Udyr.zip
     │   ├── Primal Udyr.zip
-    │   └── Spirit Guard Udyr.zip
+    │   ├── Spirit Guard Udyr.zip
+    │   └── Udyr.zip
     ├── Urgot/
     │   ├── chromas/
     │   │   ├── Battlecast Urgot/
@@ -8043,10 +8347,11 @@ Directory structure:
     │   ├── Battlecast Urgot.zip
     │   ├── Butcher Urgot.zip
     │   ├── Fright Night Urgot.zip
-    │   ├── Giant Enemy Crabgot.zip
+    │   ├── Giant Enemy Crabgot Urgot.zip
     │   ├── High Noon Urgot.zip
     │   ├── Pajama Guardian Cosplay Urgot.zip
-    │   └── Urgot the Clogfather.zip
+    │   ├── Urgot the Clogfather.zip
+    │   └── Urgot.zip
     ├── Varus/
     │   ├── chromas/
     │   │   ├── Conqueror Varus/
@@ -8103,15 +8408,17 @@ Directory structure:
     │   │   │   ├── Snow Moon Varus 110050.zip
     │   │   │   ├── Snow Moon Varus 110051.zip
     │   │   │   └── Snow Moon Varus 110052.zip
-    │   │   └── Spirit Blossom Varus/
-    │   │       ├── Spirit Blossom Varus 110061.zip
-    │   │       ├── Spirit Blossom Varus 110062.zip
-    │   │       ├── Spirit Blossom Varus 110063.zip
-    │   │       ├── Spirit Blossom Varus 110064.zip
-    │   │       ├── Spirit Blossom Varus 110065.zip
-    │   │       ├── Spirit Blossom Varus 110066.zip
-    │   │       ├── Spirit Blossom Varus 110067.zip
-    │   │       └── Spirit Blossom Varus 110068.zip
+    │   │   ├── Spirit Blossom Varus/
+    │   │   │   ├── Spirit Blossom Varus 110061.zip
+    │   │   │   ├── Spirit Blossom Varus 110062.zip
+    │   │   │   ├── Spirit Blossom Varus 110063.zip
+    │   │   │   ├── Spirit Blossom Varus 110064.zip
+    │   │   │   ├── Spirit Blossom Varus 110065.zip
+    │   │   │   ├── Spirit Blossom Varus 110066.zip
+    │   │   │   ├── Spirit Blossom Varus 110067.zip
+    │   │   │   └── Spirit Blossom Varus 110068.zip
+    │   │   └── T1 Varus/
+    │   │       └── T1 Varus 110070.zip
     │   ├── Arclight Varus.zip
     │   ├── Arctic Ops Varus.zip
     │   ├── Blight Crystal Varus.zip
@@ -8125,7 +8432,9 @@ Directory structure:
     │   ├── PROJECT Varus.zip
     │   ├── Snow Moon Varus.zip
     │   ├── Spirit Blossom Varus.zip
-    │   └── Varus Swiftbolt.zip
+    │   ├── T1 Varus.zip
+    │   ├── Varus Swiftbolt.zip
+    │   └── Varus.zip
     ├── Vayne/
     │   ├── chromas/
     │   │   ├── Battle Bat Vayne/
@@ -8196,13 +8505,14 @@ Directory structure:
     │   ├── Firecracker Vayne.zip
     │   ├── Heartseeker Vayne.zip
     │   ├── PROJECT Vayne.zip
-    │   ├── Prestige Firecracker Vayne (2022).zip
+    │   ├── Prestige Firecracker Vayne 2022.zip
     │   ├── Prestige Firecracker Vayne.zip
     │   ├── Risen Legend Vayne.zip
     │   ├── SKT T1 Vayne.zip
     │   ├── Sentinel Vayne.zip
     │   ├── Soulstealer Vayne.zip
     │   ├── Spirit Blossom Vayne.zip
+    │   ├── Vayne.zip
     │   └── Vindicator Vayne.zip
     ├── Veigar/
     │   ├── chromas/
@@ -8273,46 +8583,48 @@ Directory structure:
     │   ├── Final Boss Veigar.zip
     │   ├── Fright Night Veigar.zip
     │   ├── Furyhorn Cosplay Veigar.zip
-    │   ├── King Beegar.zip
+    │   ├── King Beegar Veigar.zip
     │   ├── Leprechaun Veigar.zip
     │   ├── Monster Tamer Veigar.zip
     │   ├── Omega Squad Veigar.zip
     │   ├── Superb Villain Veigar.zip
     │   ├── Veigar Greybeard.zip
+    │   ├── Veigar.zip
     │   └── White Mage Veigar.zip
     ├── Vel'Koz/
-    │   ├── chromas/
-    │   │   ├── Bee'Koz/
-    │   │   │   ├── Bee'Koz 161021.zip
-    │   │   │   ├── Bee'Koz 161022.zip
-    │   │   │   ├── Bee'Koz 161023.zip
-    │   │   │   ├── Bee'Koz 161024.zip
-    │   │   │   ├── Bee'Koz 161025.zip
-    │   │   │   ├── Bee'Koz 161026.zip
-    │   │   │   ├── Bee'Koz 161027.zip
-    │   │   │   └── Bee'Koz 161028.zip
-    │   │   ├── Blackfrost Vel'Koz/
-    │   │   │   ├── Blackfrost Vel'Koz 161012.zip
-    │   │   │   ├── Blackfrost Vel'Koz 161013.zip
-    │   │   │   ├── Blackfrost Vel'Koz 161014.zip
-    │   │   │   ├── Blackfrost Vel'Koz 161015.zip
-    │   │   │   ├── Blackfrost Vel'Koz 161016.zip
-    │   │   │   ├── Blackfrost Vel'Koz 161017.zip
-    │   │   │   ├── Blackfrost Vel'Koz 161018.zip
-    │   │   │   └── Blackfrost Vel'Koz 161019.zip
-    │   │   └── Infernal Vel'Koz/
-    │   │       ├── Infernal Vel'Koz 161005.zip
-    │   │       ├── Infernal Vel'Koz 161006.zip
-    │   │       ├── Infernal Vel'Koz 161007.zip
-    │   │       ├── Infernal Vel'Koz 161008.zip
-    │   │       ├── Infernal Vel'Koz 161009.zip
-    │   │       └── Infernal Vel'Koz 161010.zip
-    │   ├── Arclight Vel'Koz.zip
-    │   ├── Battlecast Vel'Koz.zip
-    │   ├── Bee'Koz.zip
-    │   ├── Blackfrost Vel'Koz.zip
-    │   ├── Definitely Not Vel'Koz.zip
-    │   └── Infernal Vel'Koz.zip
+    │   ├── Chromas/
+    │   │   ├── BeeKoz/
+    │   │   │   ├── BeeKoz 161021.zip
+    │   │   │   ├── BeeKoz 161022.zip
+    │   │   │   ├── BeeKoz 161023.zip
+    │   │   │   ├── BeeKoz 161024.zip
+    │   │   │   ├── BeeKoz 161025.zip
+    │   │   │   ├── BeeKoz 161026.zip
+    │   │   │   ├── BeeKoz 161027.zip
+    │   │   │   └── BeeKoz 161028.zip
+    │   │   ├── Blackfrost VelKoz/
+    │   │   │   ├── Blackfrost VelKoz 161012.zip
+    │   │   │   ├── Blackfrost VelKoz 161013.zip
+    │   │   │   ├── Blackfrost VelKoz 161014.zip
+    │   │   │   ├── Blackfrost VelKoz 161015.zip
+    │   │   │   ├── Blackfrost VelKoz 161016.zip
+    │   │   │   ├── Blackfrost VelKoz 161017.zip
+    │   │   │   ├── Blackfrost VelKoz 161018.zip
+    │   │   │   └── Blackfrost VelKoz 161019.zip
+    │   │   └── Infernal VelKoz/
+    │   │       ├── Infernal VelKoz 161005.zip
+    │   │       ├── Infernal VelKoz 161006.zip
+    │   │       ├── Infernal VelKoz 161007.zip
+    │   │       ├── Infernal VelKoz 161008.zip
+    │   │       ├── Infernal VelKoz 161009.zip
+    │   │       └── Infernal VelKoz 161010.zip
+    │   ├── Arclight VelKoz.zip
+    │   ├── Battlecast VelKoz.zip
+    │   ├── BeeKoz VelKoz.zip
+    │   ├── Blackfrost VelKoz.zip
+    │   ├── Definitely Not VelKoz.zip
+    │   ├── Infernal VelKoz.zip
+    │   └── VelKoz.zip
     ├── Vex/
     │   ├── chromas/
     │   │   ├── Dawnbringer Vex/
@@ -8345,7 +8657,8 @@ Directory structure:
     │   │       └── Stargazer Vex 711028.zip
     │   ├── Dawnbringer Vex.zip
     │   ├── Empyrean Vex.zip
-    │   └── Stargazer Vex.zip
+    │   ├── Stargazer Vex.zip
+    │   └── Vex.zip
     ├── Vi/
     │   ├── chromas/
     │   │   ├── Heartache Vi/
@@ -8380,15 +8693,17 @@ Directory structure:
     │   │   │   ├── Primal Ambush Vi 254045.zip
     │   │   │   ├── Primal Ambush Vi 254046.zip
     │   │   │   └── Primal Ambush Vi 254047.zip
-    │   │   └── PsyOps Vi/
-    │   │       ├── PsyOps Vi 254021.zip
-    │   │       ├── PsyOps Vi 254022.zip
-    │   │       ├── PsyOps Vi 254023.zip
-    │   │       ├── PsyOps Vi 254024.zip
-    │   │       ├── PsyOps Vi 254025.zip
-    │   │       ├── PsyOps Vi 254026.zip
-    │   │       ├── PsyOps Vi 254027.zip
-    │   │       └── PsyOps Vi 254028.zip
+    │   │   ├── PsyOps Vi/
+    │   │   │   ├── PsyOps Vi 254021.zip
+    │   │   │   ├── PsyOps Vi 254022.zip
+    │   │   │   ├── PsyOps Vi 254023.zip
+    │   │   │   ├── PsyOps Vi 254024.zip
+    │   │   │   ├── PsyOps Vi 254025.zip
+    │   │   │   ├── PsyOps Vi 254026.zip
+    │   │   │   ├── PsyOps Vi 254027.zip
+    │   │   │   └── PsyOps Vi 254028.zip
+    │   │   └── T1 Vi/
+    │   │       └── T1 Vi 254050.zip
     │   ├── Arcane Brawler Vi.zip
     │   ├── Arcane Undercity Vi.zip
     │   ├── Debonair Vi.zip
@@ -8400,6 +8715,7 @@ Directory structure:
     │   ├── PROJECT Vi.zip
     │   ├── Primal Ambush Vi.zip
     │   ├── PsyOps Vi.zip
+    │   ├── T1 Vi.zip
     │   ├── Vi.zip
     │   └── Warring Kingdoms Vi.zip
     ├── Viego/
@@ -8450,6 +8766,7 @@ Directory structure:
     │   ├── King Viego.zip
     │   ├── Lunar Beast Viego.zip
     │   ├── Soul Fighter Viego.zip
+    │   ├── Viego.zip
     │   └── Worlds 2024 Viego.zip
     ├── Viktor/
     │   ├── chromas/
@@ -8478,7 +8795,8 @@ Directory structure:
     │   ├── Full Machine Viktor.zip
     │   ├── High Noon Viktor.zip
     │   ├── Prototype Viktor.zip
-    │   └── PsyOps Viktor.zip
+    │   ├── PsyOps Viktor.zip
+    │   └── Viktor.zip
     ├── Vladimir/
     │   ├── chromas/
     │   │   ├── Broken Covenant Vladimir/
@@ -8533,7 +8851,8 @@ Directory structure:
     │   ├── Nightbringer Vladimir.zip
     │   ├── Nosferatu Vladimir.zip
     │   ├── Soulstealer Vladimir.zip
-    │   └── Vandal Vladimir.zip
+    │   ├── Vandal Vladimir.zip
+    │   └── Vladimir.zip
     ├── Volibear/
     │   ├── chromas/
     │   │   ├── Duality Dragon Volibear/
@@ -8573,8 +8892,9 @@ Directory structure:
     │   ├── Prestige Duality Dragon Volibear.zip
     │   ├── Runeguard Volibear.zip
     │   ├── Spirit Blossom Springs Volibear.zip
-    │   ├── The Thousand-Pierced Bear.zip
-    │   └── Thunder Lord Volibear.zip
+    │   ├── The Thousand-Pierced Bear Volibear.zip
+    │   ├── Thunder Lord Volibear.zip
+    │   └── Volibear.zip
     ├── Warwick/
     │   ├── chromas/
     │   │   ├── Arcane Vander Warwick/
@@ -8631,11 +8951,12 @@ Directory structure:
     │   ├── PROJECT Warwick.zip
     │   ├── Prestige Winterblessed Warwick.zip
     │   ├── Tundra Hunter Warwick.zip
-    │   ├── Urf the Manatee.zip
-    │   ├── Urfwick.zip
+    │   ├── Urf the Manatee Warwick.zip
+    │   ├── Urfwick Warwick.zip
+    │   ├── Warwick.zip
     │   └── Winterblessed Warwick.zip
     ├── Wukong/
-    │   ├── chromas/
+    │   ├── Chromas/
     │   │   ├── Battle Academia Wukong/
     │   │   │   ├── Battle Academia Wukong 62008.zip
     │   │   │   ├── Battle Academia Wukong 62009.zip
@@ -8654,8 +8975,10 @@ Directory structure:
     │   │   │   ├── Elderwood Wukong 62022.zip
     │   │   │   ├── Elderwood Wukong 62023.zip
     │   │   │   └── Elderwood Wukong 62024.zip
-    │   │   └── Jade Dragon Wukong/
-    │   │       └── Jade Dragon Wukong 62025.zip
+    │   │   ├── Jade Dragon Wukong/
+    │   │   │   └── Jade Dragon Wukong 62025.zip
+    │   │   └── Underworld Wukong/
+    │   │       └── Underworld Wukong 62027.zip
     │   ├── Battle Academia Wukong.zip
     │   ├── Elderwood Wukong.zip
     │   ├── General Wukong.zip
@@ -8663,7 +8986,8 @@ Directory structure:
     │   ├── Lancer Stratus Wukong.zip
     │   ├── Radiant Wukong.zip
     │   ├── Underworld Wukong.zip
-    │   └── Volcanic Wukong.zip
+    │   ├── Volcanic Wukong.zip
+    │   └── Wukong.zip
     ├── Xayah/
     │   ├── chromas/
     │   │   ├── Arcana Xayah/
@@ -8720,6 +9044,8 @@ Directory structure:
     │   │   │   ├── Elderwood Xayah 498014.zip
     │   │   │   ├── Elderwood Xayah 498015.zip
     │   │   │   └── Elderwood Xayah 498016.zip
+    │   │   ├── SSG Xayah/
+    │   │   │   └── SSG Xayah 498065.zip
     │   │   └── Star Guardian Xayah/
     │   │       ├── Star Guardian Xayah 498005.zip
     │   │       ├── Star Guardian Xayah 498006.zip
@@ -8735,7 +9061,8 @@ Directory structure:
     │   ├── Redeemed Star Guardian Xayah.zip
     │   ├── SSG Xayah.zip
     │   ├── Star Guardian Xayah.zip
-    │   └── Sweetheart Xayah.zip
+    │   ├── Sweetheart Xayah.zip
+    │   └── Xayah.zip
     ├── Xerath/
     │   ├── chromas/
     │   │   ├── Arcana Xerath/
@@ -8772,9 +9099,10 @@ Directory structure:
     │   ├── Dark Star Xerath.zip
     │   ├── Guardian of the Sands Xerath.zip
     │   ├── Runeborn Xerath.zip
-    │   └── Scorched Earth Xerath.zip
+    │   ├── Scorched Earth Xerath.zip
+    │   └── Xerath.zip
     ├── Xin Zhao/
-    │   ├── chromas/
+    │   ├── Chromas/
     │   │   ├── Cosmic Defender Xin Zhao/
     │   │   │   ├── Cosmic Defender Xin Zhao 5021.zip
     │   │   │   ├── Cosmic Defender Xin Zhao 5022.zip
@@ -8807,6 +9135,12 @@ Directory structure:
     │   │   │   ├── Marauder Xin Zhao 5033.zip
     │   │   │   ├── Marauder Xin Zhao 5034.zip
     │   │   │   └── Marauder Xin Zhao 5035.zip
+    │   │   ├── Trials of Twilight Xin Zhao/
+    │   │   │   ├── Trials of Twilight Xin Zhao 5048.zip
+    │   │   │   ├── Trials of Twilight Xin Zhao 5049.zip
+    │   │   │   ├── Trials of Twilight Xin Zhao 5050.zip
+    │   │   │   ├── Trials of Twilight Xin Zhao 5051.zip
+    │   │   │   └── Trials of Twilight Xin Zhao 5052.zip
     │   │   └── Warring Kingdoms Xin Zhao/
     │   │       ├── Warring Kingdoms Xin Zhao 5007.zip
     │   │       ├── Warring Kingdoms Xin Zhao 5008.zip
@@ -8822,9 +9156,11 @@ Directory structure:
     │   ├── Imperial Xin Zhao.zip
     │   ├── Marauder Xin Zhao.zip
     │   ├── Secret Agent Xin Zhao.zip
+    │   ├── Trials of Twilight Xin Zhao.zip
     │   ├── Viscero Xin Zhao.zip
     │   ├── Warring Kingdoms Xin Zhao.zip
-    │   └── Winged Hussar Xin Zhao.zip
+    │   ├── Winged Hussar Xin Zhao.zip
+    │   └── Xin Zhao.zip
     ├── Yasuo/
     │   ├── chromas/
     │   │   ├── Battle Boss Yasuo/
@@ -8923,7 +9259,8 @@ Directory structure:
     │   ├── Sea Dog Yasuo.zip
     │   ├── Spirit Blossom Yasuo.zip
     │   ├── True Damage Yasuo.zip
-    │   └── Truth Dragon Yasuo.zip
+    │   ├── Truth Dragon Yasuo.zip
+    │   └── Yasuo.zip
     ├── Yone/
     │   ├── chromas/
     │   │   ├── Battle Academia Yone/
@@ -8987,15 +9324,17 @@ Directory structure:
     │   │   │   ├── Ocean Song Yone 777032.zip
     │   │   │   ├── Ocean Song Yone 777033.zip
     │   │   │   └── Ocean Song Yone 777034.zip
-    │   │   └── Spirit Blossom Yone/
-    │   │       ├── Spirit Blossom Yone 777002.zip
-    │   │       ├── Spirit Blossom Yone 777003.zip
-    │   │       ├── Spirit Blossom Yone 777004.zip
-    │   │       ├── Spirit Blossom Yone 777005.zip
-    │   │       ├── Spirit Blossom Yone 777006.zip
-    │   │       ├── Spirit Blossom Yone 777007.zip
-    │   │       ├── Spirit Blossom Yone 777008.zip
-    │   │       └── Spirit Blossom Yone 777009.zip
+    │   │   ├── Spirit Blossom Yone/
+    │   │   │   ├── Spirit Blossom Yone 777002.zip
+    │   │   │   ├── Spirit Blossom Yone 777003.zip
+    │   │   │   ├── Spirit Blossom Yone 777004.zip
+    │   │   │   ├── Spirit Blossom Yone 777005.zip
+    │   │   │   ├── Spirit Blossom Yone 777006.zip
+    │   │   │   ├── Spirit Blossom Yone 777007.zip
+    │   │   │   ├── Spirit Blossom Yone 777008.zip
+    │   │   │   └── Spirit Blossom Yone 777009.zip
+    │   │   └── T1 Yone/
+    │   │       └── T1 Yone 777075.zip
     │   ├── Battle Academia Yone.zip
     │   ├── Dawnbringer Yone.zip
     │   ├── HEARTSTEEL Yone.zip
@@ -9005,7 +9344,9 @@ Directory structure:
     │   ├── Ocean Song Yone.zip
     │   ├── Peacemaker High Noon Yone.zip
     │   ├── Prestige HEARTSTEEL Yone.zip
-    │   └── Spirit Blossom Yone.zip
+    │   ├── Spirit Blossom Yone.zip
+    │   ├── T1 Yone.zip
+    │   └── Yone.zip
     ├── Yorick/
     │   ├── chromas/
     │   │   ├── Dark Star Yorick/
@@ -9066,7 +9407,7 @@ Directory structure:
     │   ├── Arclight Yorick.zip
     │   ├── Dark Star Yorick.zip
     │   ├── High Noon Yorick.zip
-    │   ├── Meowrick.zip
+    │   ├── Meowrick Yorick.zip
     │   ├── Pentakill III Lost Chapter Yorick.zip
     │   ├── Pentakill Yorick.zip
     │   ├── Resistance Yorick.zip
@@ -9084,7 +9425,8 @@ Directory structure:
     │   │       ├── Spirit Blossom Springs Yunara 804007.zip
     │   │       ├── Spirit Blossom Springs Yunara 804008.zip
     │   │       └── Spirit Blossom Springs Yunara 804009.zip
-    │   └── Spirit Blossom Springs Yunara.zip
+    │   ├── Spirit Blossom Springs Yunara.zip
+    │   └── Yunara.zip
     ├── Yuumi/
     │   ├── chromas/
     │   │   ├── Battle Principal Yuumi/
@@ -9163,7 +9505,8 @@ Directory structure:
     │   ├── Nightbringer Yuumi.zip
     │   ├── Prestige Cyber Cat Yuumi.zip
     │   ├── Shiba Yuumi.zip
-    │   └── Yuubee.zip
+    │   ├── Yuubee Yuumi.zip
+    │   └── Yuumi.zip
     ├── Zac/
     │   ├── chromas/
     │   │   ├── Battlecast Zac/
@@ -9285,7 +9628,8 @@ Directory structure:
     │   ├── Quantum Galaxy Slayer Zed.zip
     │   ├── SKT T1 Zed.zip
     │   ├── Shockblade Zed.zip
-    │   └── Worlds 2016 Zed.zip
+    │   ├── Worlds 2016 Zed.zip
+    │   └── Zed.zip
     ├── Zeri/
     │   ├── chromas/
     │   │   ├── Fright Night Zeri/
@@ -9330,7 +9674,8 @@ Directory structure:
     │   ├── Immortal Journey Zeri.zip
     │   ├── Ocean Song Zeri.zip
     │   ├── Prestige Fright Night Zeri.zip
-    │   └── Withered Rose Zeri.zip
+    │   ├── Withered Rose Zeri.zip
+    │   └── Zeri.zip
     ├── Ziggs/
     │   ├── chromas/
     │   │   ├── BZZZiggs/
@@ -9378,9 +9723,19 @@ Directory structure:
     │   ├── Odyssey Ziggs.zip
     │   ├── Pool Party Ziggs.zip
     │   ├── Snow Day Ziggs.zip
-    │   └── Sugar Rush Ziggs.zip
+    │   ├── Sugar Rush Ziggs.zip
+    │   └── Ziggs.zip
     ├── Zilean/
     │   ├── chromas/
+    │   │   ├── Arcana Zilean/
+    │   │   │   ├── Arcana Zilean 26025.zip
+    │   │   │   ├── Arcana Zilean 26026.zip
+    │   │   │   ├── Arcana Zilean 26027.zip
+    │   │   │   ├── Arcana Zilean 26028.zip
+    │   │   │   ├── Arcana Zilean 26029.zip
+    │   │   │   ├── Arcana Zilean 26030.zip
+    │   │   │   ├── Arcana Zilean 26031.zip
+    │   │   │   └── Arcana Zilean 26032.zip
     │   │   ├── Sugar Rush Zilean/
     │   │   │   ├── Sugar Rush Zilean 26007.zip
     │   │   │   ├── Sugar Rush Zilean 26008.zip
@@ -9399,13 +9754,15 @@ Directory structure:
     │   │       ├── Winterblessed Zilean 26021.zip
     │   │       ├── Winterblessed Zilean 26022.zip
     │   │       └── Winterblessed Zilean 26023.zip
+    │   ├── Arcana Zilean.zip
     │   ├── Blood Moon Zilean.zip
     │   ├── Groovy Zilean.zip
     │   ├── Old Saint Zilean.zip
     │   ├── Shurima Desert Zilean.zip
     │   ├── Sugar Rush Zilean.zip
     │   ├── Time Machine Zilean.zip
-    │   └── Winterblessed Zilean.zip
+    │   ├── Winterblessed Zilean.zip
+    │   └── Zilean.zip
     ├── Zoe/
     │   ├── chromas/
     │   │   ├── Dark Star Zoe/
@@ -9454,7 +9811,8 @@ Directory structure:
     │   ├── Pool Party Zoe.zip
     │   ├── Prestige Arcanist Zoe.zip
     │   ├── Star Guardian Zoe.zip
-    │   └── Winterblessed Zoe.zip
+    │   ├── Winterblessed Zoe.zip
+    │   └── Zoe.zip
     └── Zyra/
         ├── chromas/
         │   ├── Blood Moon Zyra/
@@ -9536,6 +9894,7 @@ Directory structure:
         ├── SKT T1 Zyra.zip
         ├── Spirit Blossom Zyra.zip
         ├── Street Demons Zyra.zip
-        └── Wildfire Zyra.zip
+        ├── Wildfire Zyra.zip
+        └── Zyra.zip
     
-    1283 directories, 8255 files
+    1324 directories, 8573 files
