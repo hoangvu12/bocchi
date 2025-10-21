@@ -4541,6 +4541,16 @@ Directory structure:
     │   ├── Wicked Lulu.zip
     │   └── Winter Wonder Lulu.zip
     ├── Lux/
+    │   ├── Forms/
+    │   │   ├── Elementalist Lux Fire.zip
+    │   │   ├── Lux Elementalist Air.zip
+    │   │   ├── Lux Elementalist Dark.zip
+    │   │   ├── Lux Elementalist Ice.zip
+    │   │   ├── Lux Elementalist Magma.zip
+    │   │   ├── Lux Elementalist Mystic.zip
+    │   │   ├── Lux Elementalist Nature.zip
+    │   │   ├── Lux Elementalist Storm.zip
+    │   │   └── Lux Elementalist Water.zip
     │   ├── chromas/
     │   │   ├── Empyrean Lux/
     │   │   │   ├── Empyrean Lux 99043.zip
@@ -6923,6 +6933,8 @@ Directory structure:
     │   ├── Obsidian Dragon Sett.zip
     │   ├── Pool Party Sett.zip
     │   ├── Prestige Obsidian Dragon Sett.zip
+    │   ├── Radiant Serpent Sett - Blue.zip
+    │   ├── Radiant Serpent Sett - Gold.zip
     │   ├── Radiant Serpent Sett.zip
     │   ├── Sett.zip
     │   ├── Soul Fighter Sett.zip
@@ -9897,4 +9909,4 @@ Directory structure:
         ├── Wildfire Zyra.zip
         └── Zyra.zip
     
-    1324 directories, 8573 files
+    1325 directories, 8584 files
