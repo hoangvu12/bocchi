@@ -149,7 +149,6 @@ Directory structure:
     │   ├── Dynasty Ahri.zip
     │   ├── Elderwood Ahri.zip
     │   ├── Foxfire Ahri.zip
-    │   ├── Immortalized Legend Ahri.zip
     │   ├── KDA ALL OUT Ahri.zip
     │   ├── KDA Ahri.zip
     │   ├── Midnight Ahri.zip
@@ -3136,7 +3135,6 @@ Directory structure:
     │   │       └── Zombie Slayer Jinx 222064.zip
     │   ├── Ambitious Elf Jinx.zip
     │   ├── Arcane Enemy Jinx.zip
-    │   ├── Arcane Fractured Jinx.zip
     │   ├── Battle Cat Jinx.zip
     │   ├── Cafe Cuties Jinx.zip
     │   ├── Crime City Jinx.zip
@@ -3248,7 +3246,6 @@ Directory structure:
     │   ├── Bullet Angel KaiSa.zip
     │   ├── Dark Star KaiSa.zip
     │   ├── Heavenscale KaiSa.zip
-    │   ├── Immortalized Legend KaiSa.zip
     │   ├── Inkshadow KaiSa.zip
     │   ├── KDA ALL OUT KaiSa.zip
     │   ├── KDA KaiSa.zip
@@ -3487,93 +3484,43 @@ Directory structure:
     │   │   │   ├── Battle Queen Katarina 55030 Blade3.zip
     │   │   │   ├── Battle Queen Katarina 55030 Blade4.zip
     │   │   │   ├── Battle Queen Katarina 55030 Blade5.zip
-    │   │   │   ├── Battle Queen Katarina 55030 Blade6.zip
-    │   │   │   └── README.MD
+    │   │   │   └── Battle Queen Katarina 55030 Blade6.zip
     │   │   ├── Battle Queen Katarina (55031)/
     │   │   │   ├── Battle Queen Katarina 55031 Blade2.zip
     │   │   │   ├── Battle Queen Katarina 55031 Blade3.zip
     │   │   │   ├── Battle Queen Katarina 55031 Blade4.zip
     │   │   │   ├── Battle Queen Katarina 55031 Blade5.zip
-    │   │   │   ├── Battle Queen Katarina 55031 Blade6.zip
-    │   │   │   └── README.MD
+    │   │   │   └── Battle Queen Katarina 55031 Blade6.zip
     │   │   ├── Battle Queen Katarina (55032)/
     │   │   │   ├── Battle Queen Katarina 55032 Blade2.zip
     │   │   │   ├── Battle Queen Katarina 55032 Blade3.zip
     │   │   │   ├── Battle Queen Katarina 55032 Blade4.zip
     │   │   │   ├── Battle Queen Katarina 55032 Blade5.zip
-    │   │   │   ├── Battle Queen Katarina 55032 Blade6.zip
-    │   │   │   └── README.MD
+    │   │   │   └── Battle Queen Katarina 55032 Blade6.zip
     │   │   ├── Battle Queen Katarina (55033)/
     │   │   │   ├── Battle Queen Katarina 55033 Blade2.zip
     │   │   │   ├── Battle Queen Katarina 55033 Blade3.zip
     │   │   │   ├── Battle Queen Katarina 55033 Blade4.zip
     │   │   │   ├── Battle Queen Katarina 55033 Blade5.zip
-    │   │   │   ├── Battle Queen Katarina 55033 Blade6.zip
-    │   │   │   └── README.MD
+    │   │   │   └── Battle Queen Katarina 55033 Blade6.zip
     │   │   ├── Battle Queen Katarina (55034)/
     │   │   │   ├── Battle Queen Katarina 55034 Blade2.zip
     │   │   │   ├── Battle Queen Katarina 55034 Blade3.zip
     │   │   │   ├── Battle Queen Katarina 55034 Blade4.zip
     │   │   │   ├── Battle Queen Katarina 55034 Blade5.zip
-    │   │   │   ├── Battle Queen Katarina 55034 Blade6.zip
-    │   │   │   └── README.MD
+    │   │   │   └── Battle Queen Katarina 55034 Blade6.zip
     │   │   ├── Battle Queen Katarina (55035)/
     │   │   │   ├── Battle Queen Katarina 55035 Blade2.zip
     │   │   │   ├── Battle Queen Katarina 55035 Blade3.zip
     │   │   │   ├── Battle Queen Katarina 55035 Blade4.zip
     │   │   │   ├── Battle Queen Katarina 55035 Blade5.zip
-    │   │   │   ├── Battle Queen Katarina 55035 Blade6.zip
-    │   │   │   └── README.MD
-    │   │   ├── Battle Queen Katarina (55036)/
-    │   │   │   ├── Battle Queen Katarina 55036 Blade2.zip
-    │   │   │   ├── Battle Queen Katarina 55036 Blade3.zip
-    │   │   │   ├── Battle Queen Katarina 55036 Blade4.zip
-    │   │   │   ├── Battle Queen Katarina 55036 Blade5.zip
-    │   │   │   ├── Battle Queen Katarina 55036 Blade6.zip
-    │   │   │   └── README.MD
-    │   │   └── Blade Images/
-    │   │       ├── 55030/
-    │   │       │   ├── 2.png
-    │   │       │   ├── 3.png
-    │   │       │   ├── 4.png
-    │   │       │   ├── 5.png
-    │   │       │   └── 6.png
-    │   │       ├── 55031/
-    │   │       │   ├── 2.png
-    │   │       │   ├── 3.png
-    │   │       │   ├── 4.png
-    │   │       │   ├── 5.png
-    │   │       │   └── 6.png
-    │   │       ├── 55032/
-    │   │       │   ├── 2.png
-    │   │       │   ├── 3.png
-    │   │       │   ├── 4.png
-    │   │       │   ├── 5.png
-    │   │       │   └── 6.png
-    │   │       ├── 55033/
-    │   │       │   ├── 2.png
-    │   │       │   ├── 3.png
-    │   │       │   ├── 4.png
-    │   │       │   ├── 5.png
-    │   │       │   └── 6.png
-    │   │       ├── 55034/
-    │   │       │   ├── 2.png
-    │   │       │   ├── 3.png
-    │   │       │   ├── 4.png
-    │   │       │   ├── 5.png
-    │   │       │   └── 6.png
-    │   │       ├── 55035/
-    │   │       │   ├── 2.png
-    │   │       │   ├── 3.png
-    │   │       │   ├── 4.png
-    │   │       │   ├── 5.png
-    │   │       │   └── 6.png
-    │   │       └── 55036/
-    │   │           ├── 2.png
-    │   │           ├── 3.png
-    │   │           ├── 4.png
-    │   │           ├── 5.png
-    │   │           └── 6.png
+    │   │   │   └── Battle Queen Katarina 55035 Blade6.zip
+    │   │   └── Battle Queen Katarina (55036)/
+    │   │       ├── Battle Queen Katarina 55036 Blade2.zip
+    │   │       ├── Battle Queen Katarina 55036 Blade3.zip
+    │   │       ├── Battle Queen Katarina 55036 Blade4.zip
+    │   │       ├── Battle Queen Katarina 55036 Blade5.zip
+    │   │       └── Battle Queen Katarina 55036 Blade6.zip
     │   ├── chromas/
     │   │   ├── Battle Academia Katarina/
     │   │   │   ├── Battle Academia Katarina 55013.zip
@@ -3585,6 +3532,13 @@ Directory structure:
     │   │   │   ├── Battle Academia Katarina 55019.zip
     │   │   │   └── Battle Academia Katarina 55020.zip
     │   │   ├── Battle Queen Katarina/
+    │   │   │   ├── Battle Queen Katarina (55030).zip
+    │   │   │   ├── Battle Queen Katarina (55031).zip
+    │   │   │   ├── Battle Queen Katarina (55032).zip
+    │   │   │   ├── Battle Queen Katarina (55033).zip
+    │   │   │   ├── Battle Queen Katarina (55034).zip
+    │   │   │   ├── Battle Queen Katarina (55035).zip
+    │   │   │   ├── Battle Queen Katarina (55036).zip
     │   │   │   ├── Battle Queen Katarina 55030.zip
     │   │   │   ├── Battle Queen Katarina 55031.zip
     │   │   │   ├── Battle Queen Katarina 55032.zip
@@ -3634,7 +3588,6 @@ Directory structure:
     │   │   └── Warring Kingdoms Katarina/
     │   │       └── Warring Kingdoms Katarina 55011.zip
     │   ├── Battle Academia Katarina.zip
-    │   ├── Battle Queen Katarina.zip
     │   ├── Bilgewater Katarina.zip
     │   ├── Blood Moon Katarina.zip
     │   ├── Chosen of the Wolf Katarina.zip
@@ -3642,6 +3595,7 @@ Directory structure:
     │   ├── Faerie Court Katarina.zip
     │   ├── High Command Katarina.zip
     │   ├── High Noon Katarina.zip
+    │   ├── Katarina.zip
     │   ├── Kitty Cat Katarina.zip
     │   ├── Mercenary Katarina.zip
     │   ├── PROJECT Katarina.zip
@@ -4541,16 +4495,16 @@ Directory structure:
     │   ├── Wicked Lulu.zip
     │   └── Winter Wonder Lulu.zip
     ├── Lux/
-    │   ├── Forms/
+    │   ├── Elementalist Forms/
+    │   │   ├── Elementalist Lux Air.zip
+    │   │   ├── Elementalist Lux Dark.zip
     │   │   ├── Elementalist Lux Fire.zip
-    │   │   ├── Lux Elementalist Air.zip
-    │   │   ├── Lux Elementalist Dark.zip
-    │   │   ├── Lux Elementalist Ice.zip
-    │   │   ├── Lux Elementalist Magma.zip
-    │   │   ├── Lux Elementalist Mystic.zip
-    │   │   ├── Lux Elementalist Nature.zip
-    │   │   ├── Lux Elementalist Storm.zip
-    │   │   └── Lux Elementalist Water.zip
+    │   │   ├── Elementalist Lux Ice.zip
+    │   │   ├── Elementalist Lux Magma.zip
+    │   │   ├── Elementalist Lux Mystic.zip
+    │   │   ├── Elementalist Lux Nature.zip
+    │   │   ├── Elementalist Lux Storm.zip
+    │   │   └── Elementalist Lux Water.zip
     │   ├── chromas/
     │   │   ├── Empyrean Lux/
     │   │   │   ├── Empyrean Lux 99043.zip
@@ -4995,6 +4949,15 @@ Directory structure:
     │   │       ├── Ruined Miss Fortune 21028.zip
     │   │       ├── Ruined Miss Fortune 21029.zip
     │   │       └── Ruined Miss Fortune 21030.zip
+    │   ├── Form Images/
+    │   │   ├── 1.png
+    │   │   ├── 2.png
+    │   │   └── 3.png
+    │   ├── Gun Goddess Miss Fortune Forms/
+    │   │   ├── Gun Goddess Miss Fortune Weapon1.zip
+    │   │   ├── Gun Goddess Miss Fortune Weapon2.zip
+    │   │   ├── Gun Goddess Miss Fortune Weapon3.zip
+    │   │   └── README.MD
     │   ├── Admiral Battle Bunny Miss Fortune.zip
     │   ├── Arcade Miss Fortune.zip
     │   ├── Battle Bunny Miss Fortune.zip
@@ -5079,8 +5042,7 @@ Directory structure:
     │   ├── Old God Mordekaiser.zip
     │   ├── PROJECT Mordekaiser.zip
     │   ├── Pentakill III Lost Chapter Mordekaiser.zip
-    │   ├── Pentakill Mordekaiser.zip
-    │   └── Sahn-Uzal Mordekaiser.zip
+    │   └── Pentakill Mordekaiser.zip
     ├── Morgana/
     │   ├── chromas/
     │   │   ├── Bewitching Morgana/
@@ -5169,7 +5131,6 @@ Directory structure:
     │   ├── Prestige Bewitching Morgana.zip
     │   ├── Sinful Succulence Morgana.zip
     │   ├── Snow Moon Morgana.zip
-    │   ├── Spirit Blossom Morgana.zip
     │   ├── Star Nemesis Morgana.zip
     │   └── Victorious Morgana.zip
     ├── Naafiri/
@@ -5446,6 +5407,7 @@ Directory structure:
     │   │       ├── Winter Wonder Neeko 518007.zip
     │   │       ├── Winter Wonder Neeko 518008.zip
     │   │       └── Winter Wonder Neeko 518009.zip
+    │   ├── Beeko Neeko.zip
     │   ├── Bewitching Neeko.zip
     │   ├── Cosplayer Neeko.zip
     │   ├── Neeko.zip
@@ -6933,9 +6895,6 @@ Directory structure:
     │   ├── Obsidian Dragon Sett.zip
     │   ├── Pool Party Sett.zip
     │   ├── Prestige Obsidian Dragon Sett.zip
-    │   ├── Radiant Serpent Sett - Blue.zip
-    │   ├── Radiant Serpent Sett - Gold.zip
-    │   ├── Radiant Serpent Sett.zip
     │   ├── Sett.zip
     │   ├── Soul Fighter Sett.zip
     │   ├── Spirit Blossom Sett.zip
@@ -7299,6 +7258,7 @@ Directory structure:
     │   ├── Cosmic Sting Skarner.zip
     │   ├── Earthrune Skarner.zip
     │   ├── Guardian of the Sands Skarner.zip
+    │   ├── Mecha Kingdoms Skarner.zip
     │   ├── Sandscourge Skarner.zip
     │   └── Skarner.zip
     ├── Smolder/
@@ -9797,6 +9757,8 @@ Directory structure:
     │   │   │   ├── Pool Party Zoe 142006.zip
     │   │   │   ├── Pool Party Zoe 142007.zip
     │   │   │   └── Pool Party Zoe 142008.zip
+    │   │   ├── Prestige Eternal Aspect Zoe/
+    │   │   │   └── Prestige Eternal Aspect Zoe 142044.zip
     │   │   ├── Star Guardian Zoe/
     │   │   │   ├── Star Guardian Zoe 142010.zip
     │   │   │   ├── Star Guardian Zoe 142011.zip
@@ -9822,6 +9784,7 @@ Directory structure:
     │   ├── EDG Zoe.zip
     │   ├── Pool Party Zoe.zip
     │   ├── Prestige Arcanist Zoe.zip
+    │   ├── Prestige Eternal Aspect Zoe.zip
     │   ├── Star Guardian Zoe.zip
     │   ├── Winterblessed Zoe.zip
     │   └── Zoe.zip
@@ -9909,4 +9872,4 @@ Directory structure:
         ├── Wildfire Zyra.zip
         └── Zyra.zip
     
-    1325 directories, 8584 files
+    1320 directories, 8552 files
