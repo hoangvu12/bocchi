@@ -1372,6 +1372,14 @@ Directory structure:
     │   ├── UFO Corki.zip
     │   └── Urfrider Corki.zip
     ├── Darius/
+    │   ├── Chromas/
+    │   │   └── Mecha Kingdoms Darius/
+    │   │       ├── Mecha Kingdoms Darius 122068.zip
+    │   │       ├── Mecha Kingdoms Darius 122069.zip
+    │   │       ├── Mecha Kingdoms Darius 122070.zip
+    │   │       ├── Mecha Kingdoms Darius 122071.zip
+    │   │       ├── Mecha Kingdoms Darius 122072.zip
+    │   │       └── Mecha Kingdoms Darius 122073.zip
     │   ├── chromas/
     │   │   ├── Crime City Nightmare Darius/
     │   │   │   ├── Crime City Nightmare Darius 122034.zip
@@ -1443,6 +1451,7 @@ Directory structure:
     │   ├── High Noon Darius.zip
     │   ├── Lord Darius.zip
     │   ├── Lunar Beast Darius.zip
+    │   ├── Mecha Kingdoms Darius.zip
     │   ├── Porcelain Darius.zip
     │   ├── Prestige Triumphant General Darius.zip
     │   ├── Spirit Blossom Darius.zip
@@ -3472,55 +3481,6 @@ Directory structure:
     │   ├── Pre-Void Kassadin.zip
     │   └── Shockblade Kassadin.zip
     ├── Katarina/
-    │   ├── Battle Queen Katarina Blades/
-    │   │   ├── Battle Queen Katarina/
-    │   │   │   ├── Battle Queen Katarina Blade2.zip
-    │   │   │   ├── Battle Queen Katarina Blade3.zip
-    │   │   │   ├── Battle Queen Katarina Blade4.zip
-    │   │   │   ├── Battle Queen Katarina Blade5.zip
-    │   │   │   └── Battle Queen Katarina Blade6.zip
-    │   │   ├── Battle Queen Katarina (55030)/
-    │   │   │   ├── Battle Queen Katarina 55030 Blade2.zip
-    │   │   │   ├── Battle Queen Katarina 55030 Blade3.zip
-    │   │   │   ├── Battle Queen Katarina 55030 Blade4.zip
-    │   │   │   ├── Battle Queen Katarina 55030 Blade5.zip
-    │   │   │   └── Battle Queen Katarina 55030 Blade6.zip
-    │   │   ├── Battle Queen Katarina (55031)/
-    │   │   │   ├── Battle Queen Katarina 55031 Blade2.zip
-    │   │   │   ├── Battle Queen Katarina 55031 Blade3.zip
-    │   │   │   ├── Battle Queen Katarina 55031 Blade4.zip
-    │   │   │   ├── Battle Queen Katarina 55031 Blade5.zip
-    │   │   │   └── Battle Queen Katarina 55031 Blade6.zip
-    │   │   ├── Battle Queen Katarina (55032)/
-    │   │   │   ├── Battle Queen Katarina 55032 Blade2.zip
-    │   │   │   ├── Battle Queen Katarina 55032 Blade3.zip
-    │   │   │   ├── Battle Queen Katarina 55032 Blade4.zip
-    │   │   │   ├── Battle Queen Katarina 55032 Blade5.zip
-    │   │   │   └── Battle Queen Katarina 55032 Blade6.zip
-    │   │   ├── Battle Queen Katarina (55033)/
-    │   │   │   ├── Battle Queen Katarina 55033 Blade2.zip
-    │   │   │   ├── Battle Queen Katarina 55033 Blade3.zip
-    │   │   │   ├── Battle Queen Katarina 55033 Blade4.zip
-    │   │   │   ├── Battle Queen Katarina 55033 Blade5.zip
-    │   │   │   └── Battle Queen Katarina 55033 Blade6.zip
-    │   │   ├── Battle Queen Katarina (55034)/
-    │   │   │   ├── Battle Queen Katarina 55034 Blade2.zip
-    │   │   │   ├── Battle Queen Katarina 55034 Blade3.zip
-    │   │   │   ├── Battle Queen Katarina 55034 Blade4.zip
-    │   │   │   ├── Battle Queen Katarina 55034 Blade5.zip
-    │   │   │   └── Battle Queen Katarina 55034 Blade6.zip
-    │   │   ├── Battle Queen Katarina (55035)/
-    │   │   │   ├── Battle Queen Katarina 55035 Blade2.zip
-    │   │   │   ├── Battle Queen Katarina 55035 Blade3.zip
-    │   │   │   ├── Battle Queen Katarina 55035 Blade4.zip
-    │   │   │   ├── Battle Queen Katarina 55035 Blade5.zip
-    │   │   │   └── Battle Queen Katarina 55035 Blade6.zip
-    │   │   └── Battle Queen Katarina (55036)/
-    │   │       ├── Battle Queen Katarina 55036 Blade2.zip
-    │   │       ├── Battle Queen Katarina 55036 Blade3.zip
-    │   │       ├── Battle Queen Katarina 55036 Blade4.zip
-    │   │       ├── Battle Queen Katarina 55036 Blade5.zip
-    │   │       └── Battle Queen Katarina 55036 Blade6.zip
     │   ├── chromas/
     │   │   ├── Battle Academia Katarina/
     │   │   │   ├── Battle Academia Katarina 55013.zip
@@ -3532,13 +3492,6 @@ Directory structure:
     │   │   │   ├── Battle Academia Katarina 55019.zip
     │   │   │   └── Battle Academia Katarina 55020.zip
     │   │   ├── Battle Queen Katarina/
-    │   │   │   ├── Battle Queen Katarina (55030).zip
-    │   │   │   ├── Battle Queen Katarina (55031).zip
-    │   │   │   ├── Battle Queen Katarina (55032).zip
-    │   │   │   ├── Battle Queen Katarina (55033).zip
-    │   │   │   ├── Battle Queen Katarina (55034).zip
-    │   │   │   ├── Battle Queen Katarina (55035).zip
-    │   │   │   ├── Battle Queen Katarina (55036).zip
     │   │   │   ├── Battle Queen Katarina 55030.zip
     │   │   │   ├── Battle Queen Katarina 55031.zip
     │   │   │   ├── Battle Queen Katarina 55032.zip
@@ -3588,6 +3541,7 @@ Directory structure:
     │   │   └── Warring Kingdoms Katarina/
     │   │       └── Warring Kingdoms Katarina 55011.zip
     │   ├── Battle Academia Katarina.zip
+    │   ├── Battle Queen Katarina.zip
     │   ├── Bilgewater Katarina.zip
     │   ├── Blood Moon Katarina.zip
     │   ├── Chosen of the Wolf Katarina.zip
@@ -4495,16 +4449,16 @@ Directory structure:
     │   ├── Wicked Lulu.zip
     │   └── Winter Wonder Lulu.zip
     ├── Lux/
-    │   ├── Elementalist Forms/
-    │   │   ├── Elementalist Lux Air.zip
-    │   │   ├── Elementalist Lux Dark.zip
-    │   │   ├── Elementalist Lux Fire.zip
-    │   │   ├── Elementalist Lux Ice.zip
-    │   │   ├── Elementalist Lux Magma.zip
-    │   │   ├── Elementalist Lux Mystic.zip
-    │   │   ├── Elementalist Lux Nature.zip
-    │   │   ├── Elementalist Lux Storm.zip
-    │   │   └── Elementalist Lux Water.zip
+    │   ├── Chromas/
+    │   │   └── Panda Pal Lux/
+    │   │       ├── Panda Pal Lux 99073.zip
+    │   │       ├── Panda Pal Lux 99074.zip
+    │   │       ├── Panda Pal Lux 99075.zip
+    │   │       ├── Panda Pal Lux 99076.zip
+    │   │       ├── Panda Pal Lux 99077.zip
+    │   │       ├── Panda Pal Lux 99078.zip
+    │   │       ├── Panda Pal Lux 99079.zip
+    │   │       └── Panda Pal Lux 99080.zip
     │   ├── chromas/
     │   │   ├── Empyrean Lux/
     │   │   │   ├── Empyrean Lux 99043.zip
@@ -4574,6 +4528,7 @@ Directory structure:
     │   ├── Lunar Empress Lux.zip
     │   ├── Lux.zip
     │   ├── Pajama Guardian Lux.zip
+    │   ├── Panda Pal Lux.zip
     │   ├── Porcelain Lux.zip
     │   ├── Prestige Battle Academia Lux 2022.zip
     │   ├── Prestige Battle Academia Lux.zip
@@ -4949,15 +4904,6 @@ Directory structure:
     │   │       ├── Ruined Miss Fortune 21028.zip
     │   │       ├── Ruined Miss Fortune 21029.zip
     │   │       └── Ruined Miss Fortune 21030.zip
-    │   ├── Form Images/
-    │   │   ├── 1.png
-    │   │   ├── 2.png
-    │   │   └── 3.png
-    │   ├── Gun Goddess Miss Fortune Forms/
-    │   │   ├── Gun Goddess Miss Fortune Weapon1.zip
-    │   │   ├── Gun Goddess Miss Fortune Weapon2.zip
-    │   │   ├── Gun Goddess Miss Fortune Weapon3.zip
-    │   │   └── README.MD
     │   ├── Admiral Battle Bunny Miss Fortune.zip
     │   ├── Arcade Miss Fortune.zip
     │   ├── Battle Bunny Miss Fortune.zip
@@ -8741,6 +8687,16 @@ Directory structure:
     │   ├── Viego.zip
     │   └── Worlds 2024 Viego.zip
     ├── Viktor/
+    │   ├── Chromas/
+    │   │   └── Machine Herald Viktor/
+    │   │       ├── Machine Herald Viktor 112026.zip
+    │   │       ├── Machine Herald Viktor 112027.zip
+    │   │       ├── Machine Herald Viktor 112028.zip
+    │   │       ├── Machine Herald Viktor 112029.zip
+    │   │       ├── Machine Herald Viktor 112030.zip
+    │   │       ├── Machine Herald Viktor 112031.zip
+    │   │       ├── Machine Herald Viktor 112032.zip
+    │   │       └── Machine Herald Viktor 112033.zip
     │   ├── chromas/
     │   │   ├── High Noon Viktor/
     │   │   │   ├── High Noon Viktor 112015.zip
@@ -8766,6 +8722,7 @@ Directory structure:
     │   ├── Death Sworn Viktor.zip
     │   ├── Full Machine Viktor.zip
     │   ├── High Noon Viktor.zip
+    │   ├── Machine Herald Viktor.zip
     │   ├── Prototype Viktor.zip
     │   ├── PsyOps Viktor.zip
     │   └── Viktor.zip
@@ -8949,6 +8906,15 @@ Directory structure:
     │   │   │   └── Elderwood Wukong 62024.zip
     │   │   ├── Jade Dragon Wukong/
     │   │   │   └── Jade Dragon Wukong 62025.zip
+    │   │   ├── Mecha Kingdoms Wukong/
+    │   │   │   ├── Mecha Kingdoms Wukong 62029.zip
+    │   │   │   ├── Mecha Kingdoms Wukong 62030.zip
+    │   │   │   ├── Mecha Kingdoms Wukong 62031.zip
+    │   │   │   ├── Mecha Kingdoms Wukong 62032.zip
+    │   │   │   ├── Mecha Kingdoms Wukong 62033.zip
+    │   │   │   ├── Mecha Kingdoms Wukong 62034.zip
+    │   │   │   ├── Mecha Kingdoms Wukong 62035.zip
+    │   │   │   └── Mecha Kingdoms Wukong 62036.zip
     │   │   └── Underworld Wukong/
     │   │       └── Underworld Wukong 62027.zip
     │   ├── Battle Academia Wukong.zip
@@ -8956,6 +8922,7 @@ Directory structure:
     │   ├── General Wukong.zip
     │   ├── Jade Dragon Wukong.zip
     │   ├── Lancer Stratus Wukong.zip
+    │   ├── Mecha Kingdoms Wukong.zip
     │   ├── Radiant Wukong.zip
     │   ├── Underworld Wukong.zip
     │   ├── Volcanic Wukong.zip
@@ -9872,4 +9839,4 @@ Directory structure:
         ├── Wildfire Zyra.zip
         └── Zyra.zip
     
-    1320 directories, 8552 files
+    1315 directories, 8524 files
