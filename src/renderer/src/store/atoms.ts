@@ -178,7 +178,7 @@ class LRUCache<K, V> {
 
 // Global chroma data cache with LRU
 export const chromaDataCacheAtom = atom<LRUCache<string, Chroma[]>>(
-  new LRUCache(50)
+  new LRUCache<string, Chroma[]>(50)
 )
 
 // Derived atom for reading

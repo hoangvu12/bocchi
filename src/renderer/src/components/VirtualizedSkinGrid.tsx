@@ -159,13 +159,14 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       if (customSkins.length === 0) return
 
       const modPaths = customSkins
-        .map(({ champion, skin }) =>
-          downloadedSkins.find(
-            (ds) =>
-              ds.skinName.startsWith('[User]') &&
-              ds.skinName.includes(skin.name) &&
-              (champion.key === 'Custom' || ds.championName === champion.key)
-          )?.localPath
+        .map(
+          ({ champion, skin }) =>
+            downloadedSkins.find(
+              (ds) =>
+                ds.skinName.startsWith('[User]') &&
+                ds.skinName.includes(skin.name) &&
+                (champion.key === 'Custom' || ds.championName === champion.key)
+            )?.localPath
         )
         .filter((path): path is string => !!path)
 
@@ -175,7 +176,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
       const result = await window.api.getCustomSkinImages(modPaths)
 
       if (result.success) {
-        setCustomImages(prev => ({
+        setCustomImages((prev) => ({
           ...prev,
           ...result.images
         }))
@@ -187,8 +188,8 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
 
   // Create Maps for O(1) lookup
   const downloadedSkinsMap = useMemo(() => {
-    const map = new Map<string, typeof downloadedSkins[0]>()
-    downloadedSkins.forEach(ds => {
+    const map = new Map<string, (typeof downloadedSkins)[0]>()
+    downloadedSkins.forEach((ds) => {
       // Create multiple keys for different lookup patterns
       const key1 = `${ds.championName}:${ds.skinName}`
       const key2 = ds.localPath || ''
@@ -200,7 +201,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
 
   const selectedSkinsMap = useMemo(() => {
     const map = new Map<string, SelectedSkin>()
-    selectedSkins.forEach(s => {
+    selectedSkins.forEach((s) => {
       const key = `${s.championKey}:${s.skinId}:${s.chromaId || ''}:${s.variantId || ''}`
       map.set(key, s)
     })
@@ -235,7 +236,7 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
 
       // Backward compatibility check
       if (!isSelected && skin.id.startsWith('custom_')) {
-        for (const [key, s] of selectedSkinsMap) {
+        for (const [, s] of selectedSkinsMap) {
           if (
             s.skinId.startsWith('custom_') &&
             isOldFormatCustomId(s.skinId) &&
