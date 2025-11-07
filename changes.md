@@ -1,1 +1,2 @@
 - Support multiple repositories
+- Implement Vanguard workaround for mod tools with automatic folder renaming every run
