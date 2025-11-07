@@ -26,7 +26,6 @@ export class LCUConnector extends EventEmitter {
   private connected: boolean = false
   private pollInterval: NodeJS.Timeout | null = null
   private subscriptions: Set<string> = new Set()
-  private options: Required<LCUConnectionOptions>
   private axiosInstance: any = null
   private cachedLockfilePath: string | null = null
   private lockfileCacheExpiry: number = 0
@@ -34,10 +33,8 @@ export class LCUConnector extends EventEmitter {
 
   constructor(options: LCUConnectionOptions = {}) {
     super()
-    this.options = {
-      pollInterval: options.pollInterval ?? 3000,
-      maxRetries: options.maxRetries ?? 10
-    }
+    // Options currently not used but kept for future extensibility
+    void options
   }
 
   async connect(): Promise<boolean> {

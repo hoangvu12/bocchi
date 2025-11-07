@@ -8,6 +8,7 @@ interface Settings {
   gamePath?: string
   minimizeToTray?: boolean
   autoExtractImages?: boolean
+  modToolsPath?: string
   [key: string]: any
 }
 
@@ -72,6 +73,15 @@ export class SettingsService {
 
   clear(): void {
     this.settings = {}
+    this.save()
+  }
+
+  getModToolsPath(): string | null {
+    return this.settings.modToolsPath || null
+  }
+
+  setModToolsPath(path: string): void {
+    this.settings.modToolsPath = path
     this.save()
   }
 }

@@ -2,10 +2,10 @@ import { spawn, ChildProcess } from 'child_process'
 import path from 'path'
 import fs from 'fs/promises'
 import { app, BrowserWindow } from 'electron'
-import { ToolsDownloader } from './toolsDownloader'
+import { settingsService } from './settingsService'
+import crypto from 'crypto'
 
 export class ModToolsWrapper {
-  private modToolsPath: string
   private profilesPath: string
   private installedPath: string
   private runningProcess: ChildProcess | null = null
@@ -18,13 +18,15 @@ export class ModToolsWrapper {
   private importedMods: string[] = [] // Track successfully imported mods for cleanup
 
   constructor() {
-    const toolsDownloader = new ToolsDownloader()
-    const toolsPath = toolsDownloader.getToolsPath()
-    this.modToolsPath = path.join(toolsPath, 'mod-tools.exe')
-
     const userData = app.getPath('userData')
     this.profilesPath = path.join(userData, 'profiles')
     this.installedPath = path.join(userData, 'cslol_installed')
+  }
+
+  private getModToolsExePath(): string | null {
+    const toolsPath = settingsService.getModToolsPath()
+    if (!toolsPath) return null
+    return path.join(toolsPath, 'mod-tools.exe')
   }
 
   setToolsTimeout(seconds: number): void {
@@ -37,7 +39,10 @@ export class ModToolsWrapper {
 
   async checkModToolsExist(): Promise<boolean> {
     try {
-      await fs.access(this.modToolsPath, fs.constants.F_OK)
+      const modToolsPath = this.getModToolsExePath()
+      if (!modToolsPath) return false
+
+      await fs.access(modToolsPath, fs.constants.F_OK)
       return true
     } catch {
       return false
@@ -78,6 +83,75 @@ export class ModToolsWrapper {
         resolve()
       })
     })
+  }
+
+  private sendProgress(message: string): void {
+    if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+      this.mainWindow.webContents.send('patcher-status', message)
+    }
+  }
+
+  private generateRandomFolderName(): string {
+    const randomHex = crypto.randomBytes(4).toString('hex')
+    return `cslol-${randomHex}`
+  }
+
+  private async performVanguardWorkaround(currentPath: string): Promise<string> {
+    const modToolsExe = path.join(currentPath, 'mod-tools.exe')
+
+    // 1. Verify exe exists
+    try {
+      await fs.access(modToolsExe, fs.constants.F_OK)
+    } catch {
+      throw new Error('mod-tools.exe not found in ' + currentPath)
+    }
+
+    // 2. Send progress
+    this.sendProgress('Performing Vanguard workaround...')
+    console.log('[ModToolsWrapper] Starting Vanguard workaround')
+
+    // 3. Spawn process briefly to let Vanguard detect it
+    this.sendProgress('Running initial detection process...')
+    const process = spawn(modToolsExe, ['--help'], { detached: true })
+
+    // 4. Wait 2 seconds for Vanguard to detect
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+
+    // 5. Kill process
+    this.sendProgress('Stopping process...')
+    try {
+      process.kill()
+    } catch (error) {
+      console.warn('[ModToolsWrapper] Failed to kill process normally:', error)
+    }
+
+    // Wait for cleanup
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
+    // 6. Generate random name
+    this.sendProgress('Renaming folder...')
+    const parentDir = path.dirname(currentPath)
+    const randomName = this.generateRandomFolderName()
+    const newPath = path.join(parentDir, randomName)
+
+    console.log(`[ModToolsWrapper] Renaming ${currentPath} to ${newPath}`)
+
+    // 7. Rename folder
+    try {
+      await fs.rename(currentPath, newPath)
+    } catch (error) {
+      throw new Error(
+        `Failed to rename folder: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
+    }
+
+    // 8. Save to settings
+    settingsService.setModToolsPath(newPath)
+
+    this.sendProgress('Workaround complete, proceeding with skin application...')
+    console.log('[ModToolsWrapper] Vanguard workaround completed successfully')
+
+    return newPath
   }
 
   private async ensureCleanDirectoryWithRetry(dirPath: string, retries = 3): Promise<void> {
@@ -201,10 +275,21 @@ export class ModToolsWrapper {
     this.importedMods = []
 
     try {
+      // Step 0: Always perform Vanguard workaround (every run)
+      const savedPath = settingsService.getModToolsPath()
+      if (!savedPath) {
+        return { success: false, message: 'Mod tools not installed. Please download them first.' }
+      }
+
       const toolsExist = await this.checkModToolsExist()
       if (!toolsExist) {
         return { success: false, message: 'CS:LOL tools not found. Please download them first.' }
       }
+
+      // Always perform workaround with new random name
+      console.log('[ModToolsWrapper] Performing Vanguard workaround (every run)')
+      await this.performVanguardWorkaround(savedPath)
+      // Path has been updated in settings by performVanguardWorkaround
 
       await this.stopOverlay()
 
@@ -421,8 +506,13 @@ export class ModToolsWrapper {
             `[ModToolsWrapper] Importing ${op.index + 1}/${validSkinMods.length}: ${op.targetName}`
           )
 
+          const modToolsPath = this.getModToolsExePath()
+          if (!modToolsPath) {
+            throw new Error('Mod tools path not found')
+          }
+
           await this.execToolWithTimeout(
-            this.modToolsPath,
+            modToolsPath,
             [
               'import',
               path.normalize(op.modPath),
@@ -478,6 +568,11 @@ export class ModToolsWrapper {
             await new Promise((resolve) => setTimeout(resolve, 500))
           }
 
+          const modToolsPath = this.getModToolsExePath()
+          if (!modToolsPath) {
+            throw new Error('Mod tools path not found')
+          }
+
           const mkoverlayArgs = [
             'mkoverlay',
             path.normalize(this.installedPath),
@@ -491,7 +586,7 @@ export class ModToolsWrapper {
             `[ModToolsWrapper] Executing mkoverlay (Attempt ${attempt}): ${mkoverlayArgs.join(' ')}`
           )
 
-          await this.execToolWithTimeout(this.modToolsPath, mkoverlayArgs, this.timeout, true)
+          await this.execToolWithTimeout(modToolsPath, mkoverlayArgs, this.timeout, true)
 
           overlaySuccess = true
           console.info('[ModToolsWrapper] Overlay created successfully')
@@ -518,9 +613,14 @@ export class ModToolsWrapper {
         throw new Error('Operation cancelled by user')
       }
 
+      const modToolsPath = this.getModToolsExePath()
+      if (!modToolsPath) {
+        throw new Error('Mod tools path not found')
+      }
+
       console.info('[ModToolsWrapper] Starting runoverlay process...')
       this.runningProcess = spawn(
-        this.modToolsPath,
+        modToolsPath,
         [
           'runoverlay',
           path.normalize(profilePath),

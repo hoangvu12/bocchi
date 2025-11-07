@@ -1529,7 +1529,21 @@ function setupIpcHandlers(): void {
 
   ipcMain.handle('download-tools', async (event) => {
     try {
-      await toolsDownloader.downloadAndExtractTools((progress, details) => {
+      // Get game path before downloading
+      const { GamePathService } = await import('./services/gamePathService')
+      const gamePathService = GamePathService.getInstance()
+      const gamePath = await gamePathService.getGamePath()
+
+      if (!gamePath) {
+        return {
+          success: false,
+          error: 'Game not detected. Please locate your League of Legends installation first.',
+          errorType: 'validation',
+          canRetry: false
+        }
+      }
+
+      await toolsDownloader.downloadAndExtractTools(gamePath, (progress, details) => {
         event.sender.send('tools-download-progress', progress)
         if (details) {
           event.sender.send('tools-download-details', details)
@@ -2087,7 +2101,19 @@ function setupIpcHandlers(): void {
         // Download tools automatically with progress reporting
         sendStatus('Downloading cslol-tools (mod-tools.exe) for mod extraction...')
         try {
-          await toolsDownloader.downloadAndExtractTools((progress, details) => {
+          // Get game path before downloading
+          const { GamePathService } = await import('./services/gamePathService')
+          const gamePathService = GamePathService.getInstance()
+          const gamePath = await gamePathService.getGamePath()
+
+          if (!gamePath) {
+            return {
+              success: false,
+              error: 'Game not detected. Please locate your League of Legends installation first.'
+            }
+          }
+
+          await toolsDownloader.downloadAndExtractTools(gamePath, (progress, details) => {
             // Send progress to renderer
             event.sender.send('tools-download-progress', progress)
             if (details) {

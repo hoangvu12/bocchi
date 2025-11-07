@@ -3,6 +3,7 @@ import axios, { AxiosError } from 'axios'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as StreamZip from 'node-stream-zip'
+import { settingsService } from './settingsService'
 
 export interface DownloadProgress {
   loaded: number
@@ -19,7 +20,6 @@ export interface ToolsError {
 }
 
 export class ToolsDownloader {
-  private toolsPath: string
   private multiRitoFixesPath: string
   private multiRitoFixesVersionPath: string
   private ritoddstexPath: string
@@ -28,8 +28,7 @@ export class ToolsDownloader {
   private imageMagickVersionPath: string
 
   constructor() {
-    // Store tools in user data directory so they persist across app updates
-    this.toolsPath = path.join(app.getPath('userData'), 'cslol-tools')
+    // Other tools still stored in userData
     this.multiRitoFixesPath = path.join(app.getPath('userData'), 'MultiRitoFixes.exe')
     this.multiRitoFixesVersionPath = path.join(app.getPath('userData'), 'multiritofix-version.txt')
     this.ritoddstexPath = path.join(app.getPath('userData'), 'tools', 'ritoddstex', 'tex2dds.exe')
@@ -44,14 +43,14 @@ export class ToolsDownloader {
       'tools',
       'imagemagick-version.txt'
     )
-
-    // Migrate tools from old location if they exist
-    this.migrateToolsFromOldLocation()
   }
 
   async checkToolsExist(): Promise<boolean> {
     try {
-      const modToolsPath = path.join(this.toolsPath, 'mod-tools.exe')
+      const toolsPath = settingsService.getModToolsPath()
+      if (!toolsPath) return false
+
+      const modToolsPath = path.join(toolsPath, 'mod-tools.exe')
       await fs.promises.access(modToolsPath, fs.constants.F_OK)
       return true
     } catch {
@@ -97,10 +96,21 @@ export class ToolsDownloader {
   }
 
   async downloadAndExtractTools(
+    gamePath: string,
     onProgress?: (progress: number, details?: DownloadProgress) => void
   ): Promise<void> {
     let tempDir: string | undefined
     try {
+      // Validate game path
+      if (!gamePath) {
+        throw this.createError(
+          'validation',
+          'Game path not provided',
+          'Cannot install mod tools without game directory',
+          false
+        )
+      }
+
       const { downloadUrl, size } = await this.getLatestReleaseInfo()
 
       // Create temp directory
@@ -223,20 +233,19 @@ export class ToolsDownloader {
         )
       }
 
-      // Create parent directory if needed
-      const parentDir = path.dirname(this.toolsPath)
-      await fs.promises.mkdir(parentDir, { recursive: true })
+      // Install to game folder
+      const targetPath = path.join(gamePath, 'cslol-tools')
 
       // Remove existing tools directory if it exists
       try {
-        await fs.promises.rm(this.toolsPath, { recursive: true, force: true })
+        await fs.promises.rm(targetPath, { recursive: true, force: true })
       } catch {
         // Ignore if doesn't exist
       }
 
-      // Move the cslol-tools folder to the correct location
+      // Move the cslol-tools folder to the game directory
       try {
-        await this.copyDirectory(cslolToolsSource, this.toolsPath)
+        await this.copyDirectory(cslolToolsSource, targetPath)
       } catch (error) {
         throw this.createError(
           'filesystem',
@@ -247,7 +256,7 @@ export class ToolsDownloader {
       }
 
       // Final verification
-      const installedModTools = path.join(this.toolsPath, 'mod-tools.exe')
+      const installedModTools = path.join(targetPath, 'mod-tools.exe')
       const verifyInstall = await fs.promises
         .access(installedModTools, fs.constants.F_OK | fs.constants.X_OK)
         .then(() => true)
@@ -261,6 +270,9 @@ export class ToolsDownloader {
           true
         )
       }
+
+      // Save path to settings
+      settingsService.setModToolsPath(targetPath)
 
       // Clean up temp files
       await fs.promises.rm(tempDir, { recursive: true, force: true })
@@ -297,8 +309,8 @@ export class ToolsDownloader {
     }
   }
 
-  getToolsPath(): string {
-    return this.toolsPath
+  getToolsPath(): string | null {
+    return settingsService.getModToolsPath()
   }
 
   async checkMultiRitoFixesExist(): Promise<boolean> {
@@ -748,47 +760,5 @@ export class ToolsDownloader {
       error instanceof Error ? error.message : String(error),
       true
     )
-  }
-
-  private async migrateToolsFromOldLocation(): Promise<void> {
-    try {
-      // Determine old location based on environment
-      let oldToolsPath: string
-      if (process.env.NODE_ENV === 'development') {
-        const appPath = app.getAppPath()
-        oldToolsPath = path.join(path.dirname(appPath), '..', 'cslol-tools')
-      } else {
-        oldToolsPath = path.join(path.dirname(app.getPath('exe')), 'cslol-tools')
-      }
-
-      // Check if old location exists and new location doesn't
-      const oldExists = await fs.promises
-        .access(oldToolsPath)
-        .then(() => true)
-        .catch(() => false)
-      const newExists = await fs.promises
-        .access(this.toolsPath)
-        .then(() => true)
-        .catch(() => false)
-
-      if (oldExists && !newExists) {
-        console.log(`Migrating CS:LOL tools from ${oldToolsPath} to ${this.toolsPath}`)
-
-        // Create parent directory if needed
-        const parentDir = path.dirname(this.toolsPath)
-        await fs.promises.mkdir(parentDir, { recursive: true })
-
-        // Move the tools to new location
-        await this.copyDirectory(oldToolsPath, this.toolsPath)
-
-        // Remove old location after successful copy
-        await fs.promises.rm(oldToolsPath, { recursive: true, force: true })
-
-        console.log('CS:LOL tools migration completed successfully')
-      }
-    } catch (error) {
-      console.error('Error during tools migration:', error)
-      // Don't throw - migration failure shouldn't break the app
-    }
   }
 }
