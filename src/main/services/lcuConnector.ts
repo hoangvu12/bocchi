@@ -5,6 +5,8 @@ import * as https from 'https'
 import WebSocket from 'ws'
 import { app } from 'electron'
 import axios from 'axios'
+import { exec } from 'child_process'
+import { promisify } from 'util'
 import { GamePathService } from './gamePathService'
 
 interface LCUCredentials {
@@ -342,8 +344,6 @@ export class LCUConnector extends EventEmitter {
   private async findLockfileFromProcess(): Promise<LCUCredentials | null> {
     if (process.platform === 'win32') {
       try {
-        const { exec } = await import('child_process')
-        const { promisify } = await import('util')
         const execAsync = promisify(exec)
 
         // Use WMIC to find the League client process and its command line

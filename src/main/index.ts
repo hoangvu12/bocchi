@@ -28,6 +28,7 @@ import { autoBanPickService } from './services/autoBanPickService'
 import { multiRitoFixesService } from './services/multiRitoFixesService'
 import { skinMigrationService } from './services/skinMigrationService'
 import { repositoryService } from './services/repositoryService'
+import { GamePathService } from './services/gamePathService'
 import {
   translationService,
   supportedLanguages,
@@ -580,7 +581,6 @@ function setupIpcHandlers(): void {
   // Game detection
   ipcMain.handle('detect-game', async () => {
     try {
-      const { GamePathService } = await import('./services/gamePathService')
       const gamePathService = GamePathService.getInstance()
       const gamePath = await gamePathService.forceDetect()
       return { success: true, gamePath }
@@ -597,7 +597,6 @@ function setupIpcHandlers(): void {
     })
 
     if (!result.canceled && result.filePaths.length > 0) {
-      const { GamePathService } = await import('./services/gamePathService')
       const gamePathService = GamePathService.getInstance()
       const success = await gamePathService.setGamePath(result.filePaths[0])
 
@@ -1609,7 +1608,6 @@ function setupIpcHandlers(): void {
   ipcMain.handle('download-tools', async (event) => {
     try {
       // Get game path before downloading
-      const { GamePathService } = await import('./services/gamePathService')
       const gamePathService = GamePathService.getInstance()
       const gamePath = await gamePathService.getGamePath()
 
@@ -1698,7 +1696,6 @@ function setupIpcHandlers(): void {
 
     // If game path is being set, update the GamePathService cache
     if (key === 'gamePath' && typeof value === 'string') {
-      const { GamePathService } = await import('./services/gamePathService')
       const gamePathService = GamePathService.getInstance()
       await gamePathService.setGamePath(value)
     }
@@ -2213,7 +2210,6 @@ function setupIpcHandlers(): void {
         sendStatus('Downloading cslol-tools (mod-tools.exe) for mod extraction...')
         try {
           // Get game path before downloading
-          const { GamePathService } = await import('./services/gamePathService')
           const gamePathService = GamePathService.getInstance()
           const gamePath = await gamePathService.getGamePath()
 
