@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { useAtom } from 'jotai'
 import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
-import { selectedSkinsAtom, autoSyncedSkinsAtom } from '../store/atoms'
+import { selectedSkinsAtom, autoSyncedSkinsAtom, type SelectedSkin } from '../store/atoms'
 import {
   leagueClientEnabledAtom,
   smartApplyEnabledAtom,
@@ -40,7 +40,9 @@ export function useSmartSkinApply({
   parentApplyFunction
 }: UseSmartSkinApplyProps & { parentApplyFunction?: (championIds?: number[]) => void } = {}) {
   const { t } = useTranslation()
-  const [selectedSkins] = useAtom(selectedSkinsAtom)
+  const [selectedSkinsRaw] = useAtom(selectedSkinsAtom)
+  // Ensure selectedSkins is properly typed (atomWithStorage might load as unknown)
+  const selectedSkins = selectedSkinsRaw as unknown as SelectedSkin[]
   const [autoSyncedSkinsMap] = useAtom(autoSyncedSkinsAtom)
   const [teamComposition, setTeamComposition] = useState<TeamComposition | null>(null)
   const [leagueClientEnabled] = useAtom(leagueClientEnabledAtom)
@@ -317,34 +319,8 @@ export function useSmartSkinApply({
             onApplyComplete?.(false)
           }
         } else {
-          // Fallback to regular apply
-          const skinKeys = selectedSkins.map((skin) => {
-            // Handle custom mods without champion (old format)
-            if (skin.championKey === 'Custom') {
-              return `Custom/[User] ${skin.skinName}`
-            }
-
-            // Handle custom mods with champion assigned (new format)
-            // These have skinId starting with "custom_[User] "
-            if (skin.skinId.startsWith('custom_[User] ')) {
-              // Extract the filename from skinId after "custom_"
-              const modFileName = skin.skinId.replace('custom_', '')
-              return `${skin.championKey}/${modFileName}`
-            }
-
-            // Regular skins from repository
-            // Use proper name priority for downloading from repository: lolSkinsName -> nameEn -> name
-            const skinNameToUse = (skin.lolSkinsName || skin.skinNameEn || skin.skinName).replace(
-              /:/g,
-              ''
-            )
-            const skinNameWithChroma = skin.chromaId
-              ? `${skinNameToUse} ${skin.chromaId}.zip`
-              : `${skinNameToUse}.zip`
-            return `${skin.championKey}/${skinNameWithChroma}`
-          })
-
-          const result = await window.api.runPatcher(gamePath, skinKeys)
+          // Fallback to regular apply - pass selectedSkins directly
+          const result = await window.api.runPatcher(gamePath, selectedSkins)
 
           if (result.success) {
             onApplyComplete?.(true)

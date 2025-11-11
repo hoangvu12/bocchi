@@ -164,29 +164,41 @@ export function SettingsDialog({
 
   const loadSettings = async () => {
     try {
-      const settings = await window.api.getSettings()
+      const settingsData = await window.api.getSettings()
+      // Cast to record type for safe property access
+      const settings = settingsData as Record<string, unknown>
       // Default to true if not set (except autoViewSkins which defaults to false)
-      setLeagueClientEnabled(settings.leagueClientEnabled !== false)
-      setChampionDetection(settings.championDetection !== false)
-      setAutoViewSkinsEnabled(settings.autoViewSkinsEnabled === true)
-      setSmartApplyEnabled(settings.smartApplyEnabled !== false)
-      setAutoApplyEnabled(settings.autoApplyEnabled !== false)
-      setAutoApplyTriggerTime(settings.autoApplyTriggerTime || 15)
-      setAutoRandomSkinEnabled(settings.autoRandomSkinEnabled === true)
-      setAutoRandomRaritySkinEnabled(settings.autoRandomRaritySkinEnabled === true)
-      setAutoRandomFavoriteSkinEnabled(settings.autoRandomFavoriteSkinEnabled === true)
-      setAutoRandomHighestWinRateSkinEnabled(settings.autoRandomHighestWinRateSkinEnabled === true)
-      setAutoRandomHighestPickRateSkinEnabled(
-        settings.autoRandomHighestPickRateSkinEnabled === true
+      setLeagueClientEnabled((settings.leagueClientEnabled as boolean | undefined) !== false)
+      setChampionDetection((settings.championDetection as boolean | undefined) !== false)
+      setAutoViewSkinsEnabled((settings.autoViewSkinsEnabled as boolean | undefined) === true)
+      setSmartApplyEnabled((settings.smartApplyEnabled as boolean | undefined) !== false)
+      setAutoApplyEnabled((settings.autoApplyEnabled as boolean | undefined) !== false)
+      setAutoApplyTriggerTime((settings.autoApplyTriggerTime as number | undefined) || 15)
+      setAutoRandomSkinEnabled((settings.autoRandomSkinEnabled as boolean | undefined) === true)
+      setAutoRandomRaritySkinEnabled(
+        (settings.autoRandomRaritySkinEnabled as boolean | undefined) === true
       )
-      setAutoRandomMostPlayedSkinEnabled(settings.autoRandomMostPlayedSkinEnabled === true)
-      setAllowMultipleSkinsPerChampion(settings.allowMultipleSkinsPerChampion === true)
-      setInGameOverlayEnabled(settings.inGameOverlayEnabled === true)
-      setAutoAcceptEnabled(settings.autoAcceptEnabled === true)
-      setAutoFixModIssues(settings.autoFixModIssues === true)
-      setMinimizeToTray(settings.minimizeToTray === true)
-      setAutoExtractImages(settings.autoExtractImages === true)
-      setModToolsTimeout(settings.modToolsTimeout || 300) // Default 300 seconds
+      setAutoRandomFavoriteSkinEnabled(
+        (settings.autoRandomFavoriteSkinEnabled as boolean | undefined) === true
+      )
+      setAutoRandomHighestWinRateSkinEnabled(
+        (settings.autoRandomHighestWinRateSkinEnabled as boolean | undefined) === true
+      )
+      setAutoRandomHighestPickRateSkinEnabled(
+        (settings.autoRandomHighestPickRateSkinEnabled as boolean | undefined) === true
+      )
+      setAutoRandomMostPlayedSkinEnabled(
+        (settings.autoRandomMostPlayedSkinEnabled as boolean | undefined) === true
+      )
+      setAllowMultipleSkinsPerChampion(
+        (settings.allowMultipleSkinsPerChampion as boolean | undefined) === true
+      )
+      setInGameOverlayEnabled((settings.inGameOverlayEnabled as boolean | undefined) === true)
+      setAutoAcceptEnabled((settings.autoAcceptEnabled as boolean | undefined) === true)
+      setAutoFixModIssues((settings.autoFixModIssues as boolean | undefined) === true)
+      setMinimizeToTray((settings.minimizeToTray as boolean | undefined) === true)
+      setAutoExtractImages((settings.autoExtractImages as boolean | undefined) === true)
+      setModToolsTimeout((settings.modToolsTimeout as number | undefined) || 300) // Default 300 seconds
     } catch (error) {
       console.error('Failed to load settings:', error)
     } finally {

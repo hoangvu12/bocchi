@@ -3,23 +3,16 @@ import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
 import { OverlayController, OVERLAY_WINDOW_OPTS } from 'electron-overlay-window'
 import { EventEmitter } from 'events'
-
-interface SelectedSkin {
-  championKey: string
-  championName: string
-  skinId: string
-  skinName: string
-  skinNum: number
-}
+import type { OverlaySkinData, OverlayTheme, OverlaySkinSelection } from '../types/overlay.types'
 
 interface OverlayData {
   championId: number
   championKey: string
   championName: string
-  skins: any[]
+  skins: OverlaySkinData[]
   autoRandomEnabled: boolean
-  autoSelectedSkin?: SelectedSkin
-  theme?: any
+  autoSelectedSkin?: OverlaySkinSelection
+  theme?: OverlayTheme
 }
 
 export class OverlayWindowManager extends EventEmitter {
@@ -35,7 +28,7 @@ export class OverlayWindowManager extends EventEmitter {
 
   private setupIpcHandlers(): void {
     // Handle skin selection from overlay
-    ipcMain.on('overlay:skin-selected', (_event, skin: SelectedSkin) => {
+    ipcMain.on('overlay:skin-selected', (_event, skin: OverlaySkinSelection) => {
       this.emit('skin-selected', skin)
       this.hide()
     })
@@ -209,7 +202,7 @@ export class OverlayWindowManager extends EventEmitter {
     }
   }
 
-  sendTheme(theme: any): void {
+  sendTheme(theme: OverlayTheme): void {
     if (this.overlayWindow) {
       this.overlayWindow.webContents.send('overlay:theme-update', theme)
     }

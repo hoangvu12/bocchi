@@ -166,14 +166,14 @@ export function useAppInitialization() {
         setAutoRandomMostPlayedSkinEnabled(autoRandomMostPlayedSkin === true)
         setSmartApplyEnabled(smartApply !== false) // Default to true
         setAutoApplyEnabled(autoApply !== false) // Default to true
-        setAutoApplyTriggerTime(autoApplyTriggerTime || 15) // Default to 15 seconds
+        setAutoApplyTriggerTime((autoApplyTriggerTime as number | undefined) || 15) // Default to 15 seconds
         setAutoAcceptEnabled(autoAccept === true)
         setAutoPickEnabled(autoPickEnabled === true)
         setAutoPickForce(autoPickForce === true)
-        setAutoPickChampions(autoPickChampions || [])
+        setAutoPickChampions((autoPickChampions as number[] | undefined) || [])
         setAutoBanEnabled(autoBanEnabled === true)
         setAutoBanForce(autoBanForce === true)
-        setAutoBanChampions(autoBanChampions || [])
+        setAutoBanChampions((autoBanChampions as number[] | undefined) || [])
       }
     )
   }, [

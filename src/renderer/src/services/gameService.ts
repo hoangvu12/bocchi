@@ -19,8 +19,8 @@ export const gameService = {
     return window.api.getAppVersion()
   },
 
-  async getSettings<T = any>(key: string): Promise<T> {
-    return window.api.getSettings(key)
+  async getSettings<T = unknown>(key: string): Promise<T> {
+    return window.api.getSettings(key) as Promise<T>
   },
 
   async setSetting(key: string, value: any): Promise<void> {

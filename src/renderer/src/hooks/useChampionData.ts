@@ -29,13 +29,19 @@ export function useChampionData() {
     async (preserveSelection = false) => {
       const result = await window.api.loadChampionData(currentLanguage)
       if (result.success && result.data) {
-        setChampionData(result.data)
+        // Cast the data to ChampionData type
+        const championData = result.data as unknown as {
+          version: string
+          lastUpdated: string
+          champions: Array<{ key: string; [key: string]: unknown }>
+        }
+        setChampionData(championData as any)
 
         // Try to restore selected champion from persisted key
         if (selectedChampionKey && selectedChampionKey !== 'all') {
-          const champion = result.data.champions.find((c) => c.key === selectedChampionKey)
+          const champion = championData.champions.find((c) => c.key === selectedChampionKey)
           if (champion) {
-            setSelectedChampion(champion)
+            setSelectedChampion(champion as any)
           }
         } else if (selectedChampionKey === 'all') {
           setSelectedChampion(null)
@@ -43,13 +49,13 @@ export function useChampionData() {
 
         // Handle preserve selection
         if (preserveSelection && selectedChampion) {
-          const sameChampion = result.data.champions.find((c) => c.key === selectedChampion.key)
+          const sameChampion = championData.champions.find((c) => c.key === selectedChampion.key)
           if (sameChampion) {
-            setSelectedChampion(sameChampion)
+            setSelectedChampion(sameChampion as any)
           }
         }
 
-        return result.data
+        return championData as any
       }
       return null
     },

@@ -15,7 +15,11 @@ export const LocaleProvider: React.FC<LocaleProviderProps> = ({ children }) => {
   useEffect(() => {
     const loadSavedLanguage = async () => {
       const savedLang = await window.api.getSettings?.('language')
-      if (savedLang && supportedLanguages.some((lang) => lang.code === savedLang)) {
+      if (
+        savedLang &&
+        typeof savedLang === 'string' &&
+        supportedLanguages.some((lang) => lang.code === savedLang)
+      ) {
         setCurrentLanguage(savedLang as LanguageCode)
         await i18n.changeLanguage(savedLang)
       } else {

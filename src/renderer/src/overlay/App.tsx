@@ -4,6 +4,7 @@ import { AutoSelectedSkin } from './components/AutoSelectedSkin'
 import { useOverlayData } from './hooks/useOverlayData'
 import { applyTheme } from '../themes/utils'
 import { defaultDarkTheme } from '../themes/themes'
+import type { Theme } from '../themes/types'
 
 export default function App() {
   const { overlayData, theme } = useOverlayData()
@@ -11,7 +12,7 @@ export default function App() {
 
   // Apply theme when it changes or use default dark theme
   useEffect(() => {
-    const themeToApply = theme || defaultDarkTheme
+    const themeToApply = (theme as unknown as Theme) || defaultDarkTheme
     applyTheme(themeToApply)
   }, [theme])
 
@@ -33,6 +34,21 @@ export default function App() {
     return null
   }
 
+  // Transform the autoSelectedSkin to match the expected format
+  const transformedSkin = overlayData.autoSelectedSkin
+    ? {
+        skinId: String(overlayData.autoSelectedSkin.id),
+        skinName: overlayData.autoSelectedSkin.name,
+        skinNum: 0, // Will be set properly by the main process
+        splashPath: undefined,
+        rarity: undefined
+      }
+    : null
+
+  if (!transformedSkin) {
+    return null
+  }
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -44,7 +60,7 @@ export default function App() {
           className="w-full h-full relative"
         >
           <AutoSelectedSkin
-            skin={overlayData.autoSelectedSkin}
+            skin={transformedSkin}
             championName={overlayData.championName}
             onClose={handleClose}
           />

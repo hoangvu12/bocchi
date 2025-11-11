@@ -90,8 +90,8 @@ export const championSkinsMapAtom = atom((get) => {
   // Build map for regular champions
   for (const champion of championData.champions) {
     const skins = champion.skins
-      .filter(skin => skin.num !== 0)
-      .map(skin => ({ champion, skin }))
+      .filter((skin) => skin.num !== 0)
+      .map((skin) => ({ champion, skin }))
     map.set(champion.key, skins)
   }
 
@@ -192,9 +192,7 @@ export const searchFilteredSkinsAtom = atom((get) => {
   if (searchQuery.trim()) {
     const searchLower = searchQuery.toLowerCase()
     const allSkins = Array.from(championSkinsMap.values()).flat()
-    return allSkins.filter(({ skin }) =>
-      skin.name.toLowerCase().includes(searchLower)
-    )
+    return allSkins.filter(({ skin }) => skin.name.toLowerCase().includes(searchLower))
   }
 
   return skins
@@ -225,7 +223,7 @@ export const downloadFilteredSkinsAtom = atom((get) => {
   return skins.filter(({ champion, skin }) => {
     const skinFileName = `${skin.nameEn || skin.name}.zip`.replace(/:/g, '')
     const isDownloaded = downloadedSkins.some(
-      ds => ds.championName === champion.key && ds.skinName === skinFileName
+      (ds) => ds.championName === champion.key && ds.skinName === skinFileName
     )
     return filters.downloadStatus === 'downloaded' ? isDownloaded : !isDownloaded
   })
@@ -267,54 +265,48 @@ export const tagFilteredSkinsAtom = atom((get) => {
 })
 
 // 9. Sorting (using memoize-one)
-const sortSkins = memoizeOne(
-  (skins: DisplaySkin[], sortBy: string) => {
-    return [...skins].sort((a, b) => {
-      switch (sortBy) {
-        case 'name-asc':
-          return (a.skin.nameEn || a.skin.name).localeCompare(
-            b.skin.nameEn || b.skin.name
-          )
-        case 'name-desc':
-          return (b.skin.nameEn || b.skin.name).localeCompare(
-            a.skin.nameEn || a.skin.name
-          )
-        case 'skin-asc':
-          return a.skin.num - b.skin.num
-        case 'skin-desc':
-          return b.skin.num - a.skin.num
-        case 'champion':
-          return (a.champion.nameEn || a.champion.name).localeCompare(
-            b.champion.nameEn || b.champion.name
-          )
-        case 'rarity-asc': {
-          const aIndex = rarityOrder.indexOf(a.skin.rarity)
-          const bIndex = rarityOrder.indexOf(b.skin.rarity)
-          return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex)
-        }
-        case 'rarity-desc': {
-          const aIndex = rarityOrder.indexOf(a.skin.rarity)
-          const bIndex = rarityOrder.indexOf(b.skin.rarity)
-          return (bIndex === -1 ? 999 : bIndex) - (aIndex === -1 ? 999 : aIndex)
-        }
-        case 'winrate-desc':
-          return (b.skin.winRate || 0) - (a.skin.winRate || 0)
-        case 'winrate-asc':
-          return (a.skin.winRate || 0) - (b.skin.winRate || 0)
-        case 'pickrate-desc':
-          return (b.skin.pickRate || 0) - (a.skin.pickRate || 0)
-        case 'pickrate-asc':
-          return (a.skin.pickRate || 0) - (b.skin.pickRate || 0)
-        case 'totalgames-desc':
-          return (b.skin.totalGames || 0) - (a.skin.totalGames || 0)
-        case 'totalgames-asc':
-          return (a.skin.totalGames || 0) - (b.skin.totalGames || 0)
-        default:
-          return 0
+const sortSkins = memoizeOne((skins: DisplaySkin[], sortBy: string) => {
+  return [...skins].sort((a, b) => {
+    switch (sortBy) {
+      case 'name-asc':
+        return (a.skin.nameEn || a.skin.name).localeCompare(b.skin.nameEn || b.skin.name)
+      case 'name-desc':
+        return (b.skin.nameEn || b.skin.name).localeCompare(a.skin.nameEn || a.skin.name)
+      case 'skin-asc':
+        return a.skin.num - b.skin.num
+      case 'skin-desc':
+        return b.skin.num - a.skin.num
+      case 'champion':
+        return (a.champion.nameEn || a.champion.name).localeCompare(
+          b.champion.nameEn || b.champion.name
+        )
+      case 'rarity-asc': {
+        const aIndex = rarityOrder.indexOf(a.skin.rarity)
+        const bIndex = rarityOrder.indexOf(b.skin.rarity)
+        return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex)
       }
-    })
-  }
-)
+      case 'rarity-desc': {
+        const aIndex = rarityOrder.indexOf(a.skin.rarity)
+        const bIndex = rarityOrder.indexOf(b.skin.rarity)
+        return (bIndex === -1 ? 999 : bIndex) - (aIndex === -1 ? 999 : aIndex)
+      }
+      case 'winrate-desc':
+        return (b.skin.winRate || 0) - (a.skin.winRate || 0)
+      case 'winrate-asc':
+        return (a.skin.winRate || 0) - (b.skin.winRate || 0)
+      case 'pickrate-desc':
+        return (b.skin.pickRate || 0) - (a.skin.pickRate || 0)
+      case 'pickrate-asc':
+        return (a.skin.pickRate || 0) - (b.skin.pickRate || 0)
+      case 'totalgames-desc':
+        return (b.skin.totalGames || 0) - (a.skin.totalGames || 0)
+      case 'totalgames-asc':
+        return (a.skin.totalGames || 0) - (b.skin.totalGames || 0)
+      default:
+        return 0
+    }
+  })
+})
 
 export const displaySkinsAtom = atom((get) => {
   const skins = get(tagFilteredSkinsAtom)

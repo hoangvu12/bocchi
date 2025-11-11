@@ -23,7 +23,7 @@ export class PresetServiceClient {
     }))
 
     const result = await window.api.createPreset(name, description, presetSkins)
-    if (!result.success) {
+    if (!result.success || !result.data) {
       throw new Error(result.error || 'Failed to create preset')
     }
 
@@ -32,12 +32,12 @@ export class PresetServiceClient {
 
   async listPresets(): Promise<Preset[]> {
     const result = await window.api.listPresets()
-    if (!result.success) {
+    if (!result.success || !result.data) {
       throw new Error(result.error || 'Failed to list presets')
     }
 
     // Parse dates from JSON
-    return (result.data || []).map((preset: any) => ({
+    return result.data.map((preset: any) => ({
       ...preset,
       createdAt: new Date(preset.createdAt),
       updatedAt: new Date(preset.updatedAt)
@@ -61,7 +61,7 @@ export class PresetServiceClient {
 
   async updatePreset(id: string, updates: Partial<Preset>): Promise<Preset> {
     const result = await window.api.updatePreset(id, updates)
-    if (!result.success) {
+    if (!result.success || !result.data) {
       throw new Error(result.error || 'Failed to update preset')
     }
 
@@ -81,7 +81,7 @@ export class PresetServiceClient {
 
   async duplicatePreset(id: string, newName: string): Promise<Preset> {
     const result = await window.api.duplicatePreset(id, newName)
-    if (!result.success) {
+    if (!result.success || !result.data) {
       throw new Error(result.error || 'Failed to duplicate preset')
     }
 
@@ -94,7 +94,7 @@ export class PresetServiceClient {
 
   async validatePreset(id: string): Promise<PresetValidationResult> {
     const result = await window.api.validatePreset(id)
-    if (!result.success) {
+    if (!result.success || !result.data) {
       throw new Error(result.error || 'Failed to validate preset')
     }
 
@@ -112,7 +112,7 @@ export class PresetServiceClient {
 
   async importPreset(): Promise<Preset> {
     const result = await window.api.importPreset()
-    if (!result.success) {
+    if (!result.success || !result.data) {
       throw new Error(result.error || 'Failed to import preset')
     }
 

@@ -1,18 +1,41 @@
 import { useState, useEffect } from 'react'
 
+interface OverlaySkinData {
+  id: string | number
+  name: string
+  num: number
+  image?: string
+  rarity?: string
+}
+
+interface OverlayTheme {
+  mode: 'light' | 'dark'
+  colors?: {
+    primary?: string
+    secondary?: string
+    background?: string
+    surface?: string
+    text?: string
+  }
+}
+
 interface OverlayData {
   championId: number
   championKey: string
   championName: string
-  skins: any[]
+  championImage: string
+  skins: OverlaySkinData[]
   autoRandomEnabled: boolean
-  autoSelectedSkin?: any
-  theme?: any
+  autoSelectedSkin?: {
+    id: string | number
+    name: string
+  }
+  theme?: OverlayTheme
 }
 
 export function useOverlayData() {
   const [overlayData, setOverlayData] = useState<OverlayData | null>(null)
-  const [theme, setTheme] = useState<any>(null)
+  const [theme, setTheme] = useState<OverlayTheme | null>(null)
 
   useEffect(() => {
     // Listen for overlay data
@@ -24,7 +47,7 @@ export function useOverlayData() {
     })
 
     // Listen for theme updates
-    const unsubscribeTheme = window.overlayApi.onThemeUpdate((newTheme: any) => {
+    const unsubscribeTheme = window.overlayApi.onThemeUpdate((newTheme: OverlayTheme) => {
       setTheme(newTheme)
     })
 

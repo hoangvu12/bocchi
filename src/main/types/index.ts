@@ -4,6 +4,15 @@ export interface Preset {
   description: string
   selectedMods?: string[]
   selectedSkins?: string[]
+  skins: Array<{
+    championKey: string
+    championName: string
+    skinId: string
+    skinName: string
+    skinNum: number
+    chromaId?: string
+  }>
+  skinCount: number
   gamePath: string
   noTFT?: boolean
   ignoreConflict?: boolean
@@ -63,7 +72,16 @@ export interface P2PRoom {
 export interface P2PRoomMember {
   id: string
   name: string
-  activeSkins: any[] // Using any to avoid circular dependency, actual type is SelectedSkin from renderer
+  activeSkins: Array<{
+    championKey: string
+    championName: string
+    championId?: number
+    skinId: string
+    skinName: string
+    skinNum: number
+    chromaId?: string
+    variantId?: string
+  }>
   isHost: boolean
   connected: boolean
   selectedChampion?: {
