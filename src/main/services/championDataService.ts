@@ -86,6 +86,9 @@ export class ChampionDataService {
     'https://raw.githubusercontent.com/hoangvu12/bocchi/refs/heads/champion-data/data'
   private cachedData: Map<string, { version: string; champions: Champion[] }> = new Map()
   private skinMappings: Map<string, string> = new Map() // key: "championKey_skinNum", value: lolSkinsName
+  private championIdCache: Map<string, Map<number, Champion>> = new Map() // key: language, value: Map<championId, Champion>
+  private championNameCache: Map<string, Map<string, Champion>> = new Map() // key: language, value: Map<championName, Champion>
+
   constructor() {
     this.loadSkinMappings()
   }
@@ -114,6 +117,7 @@ export class ChampionDataService {
     try {
       // Clear cached data to ensure fresh data is loaded
       this.cachedData.delete(language)
+      this.championIdCache.delete(language)
 
       // Try to fetch from GitHub first
       const githubUrl = `${this.githubDataUrl}/champion-data-${language}.json`
@@ -329,6 +333,150 @@ export class ChampionDataService {
   public async reloadSkinMappings(): Promise<void> {
     this.skinMappings.clear()
     await this.loadSkinMappings()
+  }
+
+  /**
+   * Builds the champion ID lookup cache for fast ID-based lookups
+   */
+  private buildChampionIdCache(language: string, champions: Champion[]): void {
+    const idCache = new Map<number, Champion>()
+    const nameCache = new Map<string, Champion>()
+
+    champions.forEach((champion) => {
+      idCache.set(champion.id, champion)
+      // Index by both name and key for flexible lookups
+      nameCache.set(champion.name.toLowerCase(), champion)
+      nameCache.set(champion.key.toLowerCase(), champion)
+      if (champion.nameEn) {
+        nameCache.set(champion.nameEn.toLowerCase(), champion)
+      }
+    })
+
+    this.championIdCache.set(language, idCache)
+    this.championNameCache.set(language, nameCache)
+  }
+
+  /**
+   * Gets a champion by numeric ID (for ID-based repositories)
+   */
+  public async getChampionByNumericId(
+    championId: number,
+    language: string = 'en_US'
+  ): Promise<Champion | null> {
+    // Ensure we have data loaded
+    const data = await this.loadChampionData(language)
+    if (!data) {
+      return null
+    }
+
+    // Build cache if not exists
+    if (!this.championIdCache.has(language)) {
+      this.buildChampionIdCache(language, data.champions)
+    }
+
+    const cache = this.championIdCache.get(language)
+    return cache?.get(championId) || null
+  }
+
+  /**
+   * Gets a skin by champion ID and skin ID
+   */
+  public async getSkinByIds(
+    championId: number,
+    skinId: string,
+    language: string = 'en_US'
+  ): Promise<Skin | null> {
+    const champion = await this.getChampionByNumericId(championId, language)
+    if (!champion) {
+      return null
+    }
+
+    const skin = champion.skins.find((s) => s.id === skinId || s.num.toString() === skinId)
+    return skin || null
+  }
+
+  /**
+   * Gets the lol-skins name for a skin by IDs (convenience method for ID-based repos)
+   */
+  public async getSkinLolSkinsNameById(
+    championId: number,
+    skinId: string,
+    language: string = 'en_US'
+  ): Promise<string | null> {
+    const skin = await this.getSkinByIds(championId, skinId, language)
+    if (!skin) {
+      return null
+    }
+
+    return this.getSkinLolSkinsName(skin)
+  }
+
+  /**
+   * Gets champion name by numeric ID (for fallback naming)
+   */
+  public async getChampionNameById(
+    championId: number,
+    language: string = 'en_US'
+  ): Promise<string | null> {
+    const champion = await this.getChampionByNumericId(championId, language)
+    return champion ? champion.name : null
+  }
+
+  /**
+   * Clears the ID lookup cache (call when data is refreshed)
+   */
+  public clearIdCache(): void {
+    this.championIdCache.clear()
+    this.championNameCache.clear()
+  }
+
+  /**
+   * SYNCHRONOUS champion lookup by name (for URL construction)
+   * Returns null if champion not found or data not loaded
+   */
+  public getChampionByNameSync(championName: string, language: string = 'en_US'): Champion | null {
+    // Ensure cache is built
+    const data = this.cachedData.get(language)
+    if (!data) {
+      return null
+    }
+
+    if (!this.championNameCache.has(language)) {
+      this.buildChampionIdCache(language, data.champions)
+    }
+
+    const cache = this.championNameCache.get(language)
+    return cache?.get(championName.toLowerCase()) || null
+  }
+
+  /**
+   * SYNCHRONOUS champion lookup by numeric ID (for ID-based URL parsing)
+   * Returns null if champion not found or data not loaded
+   */
+  public getChampionByIdSync(championId: number, language: string = 'en_US'): Champion | null {
+    // Ensure cache is built
+    const data = this.cachedData.get(language)
+    if (!data) {
+      console.warn(
+        `[ChampionData] getChampionByIdSync: No data loaded for language ${language}. Champion ID: ${championId}`
+      )
+      return null
+    }
+
+    if (!this.championIdCache.has(language)) {
+      this.buildChampionIdCache(language, data.champions)
+    }
+
+    const cache = this.championIdCache.get(language)
+    const champion = cache?.get(championId) || null
+
+    if (!champion) {
+      console.warn(
+        `[ChampionData] getChampionByIdSync: Champion not found in cache for ID ${championId}, language ${language}`
+      )
+    }
+
+    return champion
   }
 }
 

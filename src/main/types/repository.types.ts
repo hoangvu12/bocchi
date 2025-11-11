@@ -1,3 +1,12 @@
+export type RepositoryStructureType = 'name-based' | 'id-based'
+
+export interface RepositoryStructure {
+  type: RepositoryStructureType
+  skinsPath: string
+  chromaPattern?: string
+  autoDetected: boolean
+}
+
 export interface SkinRepository {
   id: string
   name: string
@@ -6,10 +15,7 @@ export interface SkinRepository {
   branch: string
   isDefault: boolean
   isCustom: boolean
-  structure?: {
-    skinsPath?: string
-    chromaPattern?: string
-  }
+  structure?: RepositoryStructure
   lastChecked?: Date
   status?: 'active' | 'error' | 'checking' | 'unchecked'
 }
@@ -20,6 +26,20 @@ export interface RepositorySettings {
   allowMultipleActive: boolean
 }
 
+export interface RepositoryDetectionResult {
+  type: RepositoryStructureType
+  confidence: number
+  skinsPath: string
+  sampledPaths: string[]
+  error?: string
+}
+
+export const DEFAULT_REPOSITORY_STRUCTURE: RepositoryStructure = {
+  type: 'name-based',
+  skinsPath: 'skins',
+  autoDetected: false
+}
+
 export const DEFAULT_REPOSITORY: SkinRepository = {
   id: 'darkseal-default',
   name: 'DarkSeal Official',
@@ -28,5 +48,6 @@ export const DEFAULT_REPOSITORY: SkinRepository = {
   branch: 'main',
   isDefault: true,
   isCustom: false,
+  structure: DEFAULT_REPOSITORY_STRUCTURE,
   status: 'unchecked'
 }

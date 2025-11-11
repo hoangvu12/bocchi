@@ -500,6 +500,10 @@ if (gotTheLock) {
     const savedLanguage = settingsService.get('language') || 'en_US'
     translationService.setLanguage(savedLanguage as LanguageCode)
 
+    // Preload champion data for the saved language
+    // This ensures sync methods like getChampionByIdSync() work immediately
+    await championDataService.loadChampionData(savedLanguage)
+
     // Set up IPC handlers
     setupIpcHandlers()
 
@@ -1765,6 +1769,33 @@ function setupIpcHandlers(): void {
     try {
       const result = repositoryService.updateRepository(repositoryId, updates)
       return { success: result }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+    }
+  })
+
+  ipcMain.handle(
+    'repository:add-with-detection',
+    async (_, owner: string, repo: string, branch: string = 'main', name?: string) => {
+      try {
+        const result = await repositoryService.addRepositoryWithDetection(owner, repo, branch, name)
+        return {
+          success: true,
+          data: {
+            repository: result.repository,
+            detection: result.detection
+          }
+        }
+      } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+      }
+    }
+  )
+
+  ipcMain.handle('repository:redetect-structure', async (_, repositoryId: string) => {
+    try {
+      const detection = await repositoryService.redetectRepositoryStructure(repositoryId)
+      return { success: true, data: detection }
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
     }

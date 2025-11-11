@@ -27,6 +27,9 @@ export interface SkinMetadata {
   fileSize?: number
   githubPath?: string
   version?: number
+  championId?: number // For ID-based repositories
+  skinId?: string // For ID-based repositories
+  chromaId?: string // For ID-based repository chromas
 }
 
 export interface SkinUpdateInfo {

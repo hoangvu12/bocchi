@@ -281,6 +281,10 @@ const api = {
   repositorySetActive: (repositoryId: string) =>
     ipcRenderer.invoke('repository:set-active', repositoryId),
   repositoryAdd: (repository: any) => ipcRenderer.invoke('repository:add', repository),
+  repositoryAddWithDetection: (owner: string, repo: string, branch?: string, name?: string) =>
+    ipcRenderer.invoke('repository:add-with-detection', owner, repo, branch, name),
+  repositoryRedetectStructure: (repositoryId: string) =>
+    ipcRenderer.invoke('repository:redetect-structure', repositoryId),
   repositoryRemove: (repositoryId: string) => ipcRenderer.invoke('repository:remove', repositoryId),
   repositoryValidate: (repositoryId: string) =>
     ipcRenderer.invoke('repository:validate', repositoryId),

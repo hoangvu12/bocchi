@@ -13,6 +13,7 @@ import { skinMigrationService } from './skinMigrationService'
 import { ModToolsWrapper } from './modToolsWrapper'
 import { repositoryService } from './repositoryService'
 import { SkinRepository } from '../types/repository.types'
+import { championDataService } from './championDataService'
 
 interface BulkDownloadProgress {
   phase: 'downloading' | 'extracting' | 'processing' | 'completed'
@@ -193,7 +194,7 @@ export class SkinDownloader {
       relativePath = relativePath.substring(skinsPath.length + 1)
     }
 
-    // First try to match chroma pattern
+    // First try to match name-based chroma pattern (has "chromas" keyword)
     const chromaPattern = /^([^/]+)\/chromas\/([^/]+)\/([^/]+)$/
     const chromaMatch = relativePath.match(chromaPattern)
 
@@ -210,23 +211,107 @@ export class SkinDownloader {
       }
     }
 
-    // Try to match variant patterns with nested subdirectories (like forms/SkinName/FileName.zip)
+    // Try ID-based patterns BEFORE variant patterns
+    // ID-based chroma pattern (e.g., 236/236000/236003/236003.zip)
+    const idBasedChromaPattern = /^(\d+)\/(\d+)\/(\d+)\/(\d+)\.zip$/
+    const idBasedChromaMatch = relativePath.match(idBasedChromaPattern)
+
+    if (idBasedChromaMatch) {
+      const championId = parseInt(idBasedChromaMatch[1], 10)
+      const skinId = idBasedChromaMatch[2]
+      const chromaId = idBasedChromaMatch[3]
+
+      // Resolve IDs to names for proper cache storage
+      const champion = championDataService.getChampionByIdSync(championId)
+      let championName = `Champion_${championId}` // Fallback
+      let skinName = `${chromaId}.zip` // Fallback
+
+      if (champion) {
+        championName = champion.name
+
+        // Find the skin by matching chroma ID
+        for (const skin of champion.skins) {
+          if (skin.chromas && skin.chromaList) {
+            const chroma = skin.chromaList.find((c) => c.id.toString() === chromaId)
+            if (chroma) {
+              // Use skin name + chroma ID format (same as name-based repos)
+              const baseSkinName = skin.lolSkinsName || skin.nameEn || skin.name
+              skinName = `${baseSkinName} ${chromaId}.zip`
+              break
+            }
+          }
+        }
+      }
+
+      return {
+        championName,
+        skinName,
+        url,
+        source: 'repository' as const,
+        metadata: {
+          championId,
+          skinId,
+          chromaId
+        } as any
+      }
+    }
+
+    // Try ID-based regular skin pattern (e.g., 266/1/1.zip or 266/1000/1000.zip)
+    const idBasedPattern = /^(\d+)\/(\d+)\/(\d+)\.zip$/
+    const idBasedMatch = relativePath.match(idBasedPattern)
+
+    if (idBasedMatch) {
+      const championId = parseInt(idBasedMatch[1], 10)
+      const skinId = idBasedMatch[2]
+      const fileId = idBasedMatch[3]
+
+      // Resolve IDs to names for proper cache storage
+      const champion = championDataService.getChampionByIdSync(championId)
+      let championName = `Champion_${championId}` // Fallback
+      let skinName = `${fileId}.zip` // Fallback
+
+      if (champion) {
+        championName = champion.name
+
+        // Find the skin by extracting skin num from skinId
+        // skinId format is typically: championId + skinNum (e.g., "157007" = champion 157, skin 7)
+        const skinNumStr = skinId.replace(championId.toString(), '')
+        const skinNum = parseInt(skinNumStr, 10)
+
+        const skin = champion.skins.find((s) => s.num === skinNum)
+        if (skin) {
+          const baseSkinName = skin.lolSkinsName || skin.nameEn || skin.name
+          skinName = `${baseSkinName}.zip`
+        }
+      }
+
+      return {
+        championName,
+        skinName,
+        url,
+        source: 'repository' as const,
+        metadata: {
+          championId,
+          skinId
+        } as any
+      }
+    }
+
+    // Try variant patterns (checked after ID-based patterns)
+    // Nested variant pattern (4 levels, like forms/SkinName/FileName.zip)
     const nestedVariantPattern = /^([^/]+)\/([^/]+)\/([^/]+)\/([^/]+)$/
     const nestedVariantMatch = relativePath.match(nestedVariantPattern)
 
     if (nestedVariantMatch) {
       const championName = decodeURIComponent(nestedVariantMatch[1])
-      const variantDir = decodeURIComponent(nestedVariantMatch[2]) // e.g., "forms"
-      const skinSubDir = decodeURIComponent(nestedVariantMatch[3]) // e.g., "Elementalist Lux"
+      // nestedVariantMatch[2] is the variant dir (e.g., "forms")
+      // nestedVariantMatch[3] is the skin subdir (e.g., "Elementalist Lux")
       const variantFileName = decodeURIComponent(nestedVariantMatch[4])
 
       // If the last part has an extension, it's a nested variant
       const hasFileExtension = /\.(zip|wad|fantome)$/i.test(variantFileName)
 
       if (hasFileExtension) {
-        console.log(
-          `Detected nested variant URL: champion=${championName}, dir=${variantDir}, subdir=${skinSubDir}, file=${variantFileName}`
-        )
         return {
           championName,
           skinName: variantFileName, // Use the variant filename directly
@@ -236,13 +321,13 @@ export class SkinDownloader {
       }
     }
 
-    // Try to match variant patterns (subdirectories like Exalted, forms, etc.)
+    // Variant pattern (3 levels, like Exalted/SkinName.zip)
     const variantPattern = /^([^/]+)\/([^/]+)\/([^/]+)$/
     const variantMatch = relativePath.match(variantPattern)
 
     if (variantMatch) {
       const championName = decodeURIComponent(variantMatch[1])
-      const variantDir = decodeURIComponent(variantMatch[2])
+      // variantMatch[2] is the variant dir (e.g., "Exalted", "forms")
       const variantFileName = decodeURIComponent(variantMatch[3])
 
       // For variant URLs, the middle part is a subdirectory, not the skin file
@@ -250,9 +335,6 @@ export class SkinDownloader {
       const hasFileExtension = /\.(zip|wad|fantome)$/i.test(variantFileName)
 
       if (hasFileExtension) {
-        console.log(
-          `Detected variant URL: champion=${championName}, dir=${variantDir}, file=${variantFileName}`
-        )
         return {
           championName,
           skinName: variantFileName, // Use the variant filename directly
@@ -274,7 +356,9 @@ export class SkinDownloader {
           '- Regular skin: https://github.com/[owner]/[repo]/(blob|raw)/[branch]/[skins]/[Champion]/[SkinName].zip\n' +
           '- Chroma: .../[skins]/[Champion]/chromas/[SkinName]/[ChromaFile].zip\n' +
           '- Variant: .../[skins]/[Champion]/[VariantDir]/[VariantFile].zip\n' +
-          '- Nested Variant: .../[skins]/[Champion]/[VariantDir]/[SkinName]/[VariantFile].zip'
+          '- Nested Variant: .../[skins]/[Champion]/[VariantDir]/[SkinName]/[VariantFile].zip\n' +
+          '- ID-based: .../[skins]/[ChampionId]/[SkinId]/[SkinId].zip\n' +
+          '- ID-based Chroma: .../[skins]/[ChampionId]/[SkinId]/[ChromaId]/[ChromaId].zip'
       )
     }
 
