@@ -108,6 +108,35 @@ export function RepositorySettings({ disabled }: RepositorySettingsProps) {
     }
   }
 
+  const handleRedetect = async (repositoryId: string) => {
+    try {
+      setValidating(repositoryId) // Reuse loading state
+      toast.info('Re-detecting repository structure...')
+
+      const result = await window.api.repositoryRedetectStructure(repositoryId)
+
+      if (result.success && result.data) {
+        const structureType = result.data.type === 'id-based' ? 'ID-based' : 'Name-based'
+        toast.success(
+          `Structure re-detected:\n` +
+            `Type: ${structureType}\n` +
+            `Confidence: ${result.data.confidence}%\n` +
+            `Path: ${result.data.skinsPath}`,
+          { duration: 5000 }
+        )
+
+        await loadRepositories()
+      } else {
+        toast.error(result.error || 'Failed to re-detect structure')
+      }
+    } catch (error) {
+      console.error('Failed to re-detect structure:', error)
+      toast.error('Failed to re-detect structure')
+    } finally {
+      setValidating(null)
+    }
+  }
+
   const handleRemove = async (repositoryId: string) => {
     // Prevent removing the active repository
     if (repositoryId === activeRepositoryId) {
@@ -190,28 +219,47 @@ export function RepositorySettings({ disabled }: RepositorySettingsProps) {
 
     try {
       setAddingRepo(true)
-      const result = await window.api.repositoryAdd({
-        name: newRepo.name,
-        owner: newRepo.owner,
-        repo: newRepo.repo,
-        branch: newRepo.branch || 'main'
-      })
+
+      // Show detecting message
+      toast.info('Detecting repository structure...')
+
+      // Use add-with-detection instead of regular add
+      const result = await window.api.repositoryAddWithDetection(
+        newRepo.owner,
+        newRepo.repo,
+        newRepo.branch || 'main',
+        newRepo.name
+      )
 
       if (result.success && result.data) {
-        setRepositories([...repositories, result.data])
+        const { repository, detection } = result.data
+
+        setRepositories([...repositories, repository])
         setShowAddDialog(false)
         setNewRepo({ name: '', owner: '', repo: '', branch: 'main' })
         setRepoUrl('')
-        toast.success(t('settings.repositories.addSuccess'))
+
+        // Show detection result to user with details
+        const structureType = detection.type === 'id-based' ? 'ID-based' : 'Name-based'
+        toast.success(
+          `Repository added successfully!\n` +
+            `Structure: ${structureType}\n` +
+            `Confidence: ${detection.confidence}%\n` +
+            `Path: ${detection.skinsPath}`,
+          { duration: 5000 }
+        )
 
         // Validate the new repository
-        handleValidate(result.data.id)
+        handleValidate(repository.id)
       } else {
         toast.error(result.error || t('settings.repositories.addError'))
       }
     } catch (error) {
       console.error('Failed to add repository:', error)
-      toast.error(t('settings.repositories.addError'))
+      toast.error(
+        `Failed to add repository.\n` +
+          `Error: ${error instanceof Error ? error.message : 'Unknown error'}`
+      )
     } finally {
       setAddingRepo(false)
     }
@@ -365,8 +413,22 @@ export function RepositorySettings({ disabled }: RepositorySettingsProps) {
                   onClick={() => handleValidate(repo.id)}
                   disabled={disabled || validating === repo.id}
                   className="p-1"
+                  title="Validate repository"
                 >
                   <RefreshCw
+                    className={`w-3.5 h-3.5 ${validating === repo.id ? 'animate-spin' : ''}`}
+                  />
+                </Button>
+
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => handleRedetect(repo.id)}
+                  disabled={disabled || validating === repo.id}
+                  className="p-1"
+                  title="Re-detect repository structure"
+                >
+                  <Github
                     className={`w-3.5 h-3.5 ${validating === repo.id ? 'animate-spin' : ''}`}
                   />
                 </Button>

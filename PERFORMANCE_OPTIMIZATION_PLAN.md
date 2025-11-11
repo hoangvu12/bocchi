@@ -1,4 +1,5 @@
 # Bocchi Performance Optimization Plan
+
 **Status:** Ready for Implementation
 **Last Updated:** 2025-10-04
 **Codex Review:** ✅ Completed with corrections applied
@@ -8,6 +9,7 @@
 ## Executive Summary
 
 This plan addresses critical performance issues in Bocchi:
+
 - **Backend:** 360-420 LCU requests/minute → **50-80 requests/minute** (85% reduction)
 - **Frontend:** Massive atom recomputation → **Focused, minimal recalculation**
 - **Expected Results:** 70-80% CPU reduction, smooth 60fps UI, stable memory
@@ -17,6 +19,7 @@ This plan addresses critical performance issues in Bocchi:
 ## Phase 1: Critical Backend Fixes (Week 1 - Days 1-3)
 
 ### 1.1 Shared LCU Request Manager ⭐ HIGH PRIORITY
+
 **File:** `src/main/services/lcuRequestManager.ts` (NEW)
 **Time:** 2-3 hours
 **Risk:** Low
@@ -93,6 +96,7 @@ export const lcuRequestManager = new LCURequestManager()
 ```
 
 **Usage in services:**
+
 ```typescript
 // Before:
 const session = await lcuConnector.getChampSelectSession()
@@ -108,6 +112,7 @@ const session = await lcuRequestManager.request(
 ---
 
 ### 1.2 Fix Auto Ban/Pick Polling ⭐ HIGH PRIORITY
+
 **File:** `src/main/services/autoBanPickService.ts`
 **Time:** 30 minutes
 **Risk:** Low
@@ -150,6 +155,7 @@ private async checkAndPerformActions(): Promise<void> {
 ---
 
 ### 1.3 Disable Redundant Polling When WebSocket Active
+
 **File:** `src/main/services/gameflowMonitor.ts`
 **Time:** 1-2 hours
 **Risk:** Medium (need thorough testing)
@@ -217,6 +223,7 @@ private stopBackupPolling(): void {
 ---
 
 ### 1.4 Cache Lockfile Path
+
 **File:** `src/main/services/lcuConnector.ts`
 **Time:** 1 hour
 **Risk:** Low
@@ -291,6 +298,7 @@ private parseLockfileContent(content: string): LCUCredentials | null {
 ---
 
 ### 1.5 Use WebSocket State for Connection Health
+
 **File:** `src/main/services/lcuConnector.ts`
 **Time:** 1-2 hours
 **Risk:** Medium
@@ -333,6 +341,7 @@ private startPolling(): void {
 ## Phase 2: Frontend Critical Fixes (Week 1 - Days 4-7)
 
 ### 2.1 Split displaySkinsAtom into Focused Atoms ⭐ HIGH PRIORITY
+
 **File:** `src/renderer/src/store/atoms/computed.atoms.ts`
 **Time:** 4-6 hours
 **Risk:** Medium (requires thorough testing)
@@ -351,8 +360,8 @@ const championSkinsMapAtom = atom((get) => {
 
   for (const champion of championData.champions) {
     const skins = champion.skins
-      .filter(skin => skin.num !== 0)
-      .map(skin => ({ champion, skin }))
+      .filter((skin) => skin.num !== 0)
+      .map((skin) => ({ champion, skin }))
     map.set(champion.key, skins)
   }
 
@@ -383,9 +392,7 @@ export const searchFilteredSkinsAtom = atom((get) => {
   if (!searchQuery.trim()) return skins
 
   const searchLower = searchQuery.toLowerCase()
-  return skins.filter(({ skin }) =>
-    skin.name.toLowerCase().includes(searchLower)
-  )
+  return skins.filter(({ skin }) => skin.name.toLowerCase().includes(searchLower))
 })
 
 // 4. Favorites filter (only active when enabled)
@@ -413,36 +420,30 @@ export const downloadFilteredSkinsAtom = atom((get) => {
   return skins.filter(({ champion, skin }) => {
     const skinFileName = `${skin.nameEn || skin.name}.zip`.replace(/:/g, '')
     const isDownloaded = downloadedSkins.some(
-      ds => ds.championName === champion.key && ds.skinName === skinFileName
+      (ds) => ds.championName === champion.key && ds.skinName === skinFileName
     )
     return filters.downloadStatus === 'downloaded' ? isDownloaded : !isDownloaded
   })
 })
 
 // 6. Sorting (using memoize-one, NOT useMemo - Codex correction)
-const sortSkins = memoizeOne(
-  (skins: DisplaySkin[], sortBy: string) => {
-    return [...skins].sort((a, b) => {
-      switch (sortBy) {
-        case 'name-asc':
-          return (a.skin.nameEn || a.skin.name).localeCompare(
-            b.skin.nameEn || b.skin.name
-          )
-        case 'name-desc':
-          return (b.skin.nameEn || b.skin.name).localeCompare(
-            a.skin.nameEn || a.skin.name
-          )
-        case 'skin-asc':
-          return a.skin.num - b.skin.num
-        case 'skin-desc':
-          return b.skin.num - a.skin.num
-        // ... other cases
-        default:
-          return 0
-      }
-    })
-  }
-)
+const sortSkins = memoizeOne((skins: DisplaySkin[], sortBy: string) => {
+  return [...skins].sort((a, b) => {
+    switch (sortBy) {
+      case 'name-asc':
+        return (a.skin.nameEn || a.skin.name).localeCompare(b.skin.nameEn || b.skin.name)
+      case 'name-desc':
+        return (b.skin.nameEn || b.skin.name).localeCompare(a.skin.nameEn || a.skin.name)
+      case 'skin-asc':
+        return a.skin.num - b.skin.num
+      case 'skin-desc':
+        return b.skin.num - a.skin.num
+      // ... other cases
+      default:
+        return 0
+    }
+  })
+})
 
 export const displaySkinsAtom = atom((get) => {
   const skins = get(downloadFilteredSkinsAtom)
@@ -457,6 +458,7 @@ export const displaySkinsAtom = atom((get) => {
 ---
 
 ### 2.2 Memoize VirtualizedSkinGrid Cell ⭐ HIGH PRIORITY
+
 **File:** `src/renderer/src/components/VirtualizedSkinGrid.tsx`
 **Time:** 3-4 hours
 **Risk:** Medium
@@ -597,6 +599,7 @@ const Cell = useCallback(({ columnIndex, rowIndex, style }) => {
 ---
 
 ### 2.3 Batch Custom Image Loading
+
 **File:** Multiple files
 **Time:** 2-3 hours
 **Risk:** Low
@@ -604,6 +607,7 @@ const Cell = useCallback(({ columnIndex, rowIndex, style }) => {
 **CORRECTED: Full IPC setup** (Codex caught missing preload exposure)
 
 **Step 1: Backend handler**
+
 ```typescript
 // src/main/index.ts - Add handler
 ipcMain.handle('get-custom-skin-images', async (_, modPaths: string[]) => {
@@ -628,6 +632,7 @@ ipcMain.handle('get-custom-skin-images', async (_, modPaths: string[]) => {
 ```
 
 **Step 2: Preload exposure** (Codex correction - this was missing!)
+
 ```typescript
 // src/preload/index.ts - Add to exposed API
 contextBridge.exposeInMainWorld('api', {
@@ -639,6 +644,7 @@ contextBridge.exposeInMainWorld('api', {
 ```
 
 **Step 3: Type definitions**
+
 ```typescript
 // src/preload/index.d.ts - Add type
 export interface ElectronAPI {
@@ -651,23 +657,26 @@ export interface ElectronAPI {
 ```
 
 **Step 4: Renderer usage**
+
 ```typescript
 // src/renderer/src/components/VirtualizedSkinGrid.tsx
 useEffect(() => {
   const loadCustomImages = async () => {
     const customSkins = skins.filter(
-      s => s.champion.key === 'Custom' || s.skin.id.startsWith('custom_')
+      (s) => s.champion.key === 'Custom' || s.skin.id.startsWith('custom_')
     )
 
     if (customSkins.length === 0) return
 
     const modPaths = customSkins
-      .map(({ champion, skin }) =>
-        downloadedSkins.find(ds =>
-          ds.skinName.startsWith('[User]') &&
-          ds.skinName.includes(skin.name) &&
-          (champion.key === 'Custom' || ds.championName === champion.key)
-        )?.localPath
+      .map(
+        ({ champion, skin }) =>
+          downloadedSkins.find(
+            (ds) =>
+              ds.skinName.startsWith('[User]') &&
+              ds.skinName.includes(skin.name) &&
+              (champion.key === 'Custom' || ds.championName === champion.key)
+          )?.localPath
       )
       .filter((path): path is string => !!path)
 
@@ -677,7 +686,7 @@ useEffect(() => {
     const result = await window.api.getCustomSkinImages(modPaths)
 
     if (result.success) {
-      setCustomImages(prev => ({
+      setCustomImages((prev) => ({
         ...prev,
         ...result.images
       }))
@@ -693,6 +702,7 @@ useEffect(() => {
 ---
 
 ### 2.4 Add Bounded Cache for chromaDataAtom
+
 **File:** `src/renderer/src/store/atoms.ts`
 **Time:** 1 hour
 **Risk:** Low
@@ -744,9 +754,7 @@ class LRUCache<K, V> {
 }
 
 // Atom with immutable updates (Codex correction)
-export const chromaDataCacheAtom = atom<LRUCache<string, Chroma[]>>(
-  new LRUCache(50)
-)
+export const chromaDataCacheAtom = atom<LRUCache<string, Chroma[]>>(new LRUCache(50))
 
 // Derived atom for reading
 export const chromaDataAtom = atom(
@@ -769,10 +777,12 @@ export const chromaDataAtom = atom(
 ## Phase 3: Code Organization (Week 2)
 
 ### 3.1 Extract App.tsx Callbacks
+
 **Time:** 4-6 hours
 **Risk:** Low
 
 **New files:**
+
 ```
 src/renderer/src/hooks/useAutoSkinSelection.ts (460 lines extracted)
 src/renderer/src/hooks/useChampionSelectEffects.ts
@@ -783,6 +793,7 @@ src/renderer/src/hooks/useFileAssociationHandler.ts
 ---
 
 ### 3.2 Optimize react-window Configuration
+
 **File:** `src/renderer/src/components/VirtualizedSkinGrid.tsx`
 **Time:** 30 minutes
 **Risk:** Low
@@ -805,6 +816,7 @@ const overscanCount = useMemo(() => {
 ## Phase 4: Monitoring & Validation (Ongoing)
 
 ### 4.1 Add Performance Monitoring
+
 **File:** `src/renderer/src/utils/performanceMonitor.ts` (NEW)
 
 ```typescript
@@ -842,7 +854,7 @@ class PerformanceMonitor {
 
   logAll(): void {
     console.table(
-      Array.from(this.metrics.keys()).map(label => ({
+      Array.from(this.metrics.keys()).map((label) => ({
         label,
         ...this.getStats(label)
       }))
@@ -858,6 +870,7 @@ export const perfMonitor = new PerformanceMonitor()
 ## Implementation Sequence (Codex Recommendation)
 
 ### ✅ Week 1 - Days 1-3: Backend
+
 1. Phase 1.1: LCU Request Manager (2-3h)
 2. Phase 1.2: Fix Auto Ban/Pick (30m)
 3. Phase 1.4: Cache lockfile (1h)
@@ -867,6 +880,7 @@ export const perfMonitor = new PerformanceMonitor()
 **Test after each:** Verify request count drops, no regressions
 
 ### ✅ Week 1 - Days 4-7: Frontend Core
+
 1. Phase 2.1: Split displaySkinsAtom (4-6h)
    - Write unit tests first
    - Deploy incrementally
@@ -877,6 +891,7 @@ export const perfMonitor = new PerformanceMonitor()
 **Test after each:** Profile with React DevTools, verify smooth scrolling
 
 ### Week 2: Polish & Monitor
+
 1. Phase 3.1: Extract App.tsx (4-6h)
 2. Phase 3.2: Optimize react-window (30m)
 3. Phase 4.1: Add monitoring (2h)
@@ -888,6 +903,7 @@ export const perfMonitor = new PerformanceMonitor()
 ## Testing Strategy (Codex Recommendations)
 
 ### Unit Tests
+
 ```typescript
 // Test LCURequestManager
 describe('LCURequestManager', () => {
@@ -895,15 +911,23 @@ describe('LCURequestManager', () => {
     let callCount = 0
     const manager = new LCURequestManager()
 
-    const result1 = await manager.request('test', async () => {
-      callCount++
-      return 'data'
-    }, 1000)
+    const result1 = await manager.request(
+      'test',
+      async () => {
+        callCount++
+        return 'data'
+      },
+      1000
+    )
 
-    const result2 = await manager.request('test', async () => {
-      callCount++
-      return 'data'
-    }, 1000)
+    const result2 = await manager.request(
+      'test',
+      async () => {
+        callCount++
+        return 'data'
+      },
+      1000
+    )
 
     expect(callCount).toBe(1)
     expect(result1).toBe(result2)
@@ -915,7 +939,7 @@ describe('LCURequestManager', () => {
 
     const promise1 = manager.request('test', async () => {
       callCount++
-      await new Promise(resolve => setTimeout(resolve, 100))
+      await new Promise((resolve) => setTimeout(resolve, 100))
       return 'data'
     })
 
@@ -941,6 +965,7 @@ describe('displaySkinsAtom', () => {
 ```
 
 ### Performance Tests
+
 ```typescript
 // Measure atom recomputation
 describe('Performance', () => {
@@ -964,6 +989,7 @@ describe('Performance', () => {
 ```
 
 ### Integration Tests
+
 - Monitor actual LCU request count over 5 minutes
 - Profile champion switching time
 - Measure scroll FPS with React DevTools
@@ -974,26 +1000,29 @@ describe('Performance', () => {
 ## Expected Results
 
 ### Backend
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| LCU requests/min | 360-420 | 50-80 | **-85%** |
-| Connection tests/min | 20 | 2 | **-90%** |
-| Lockfile reads/connect | 15+ | 1 | **-93%** |
+
+| Metric                 | Before  | After | Change   |
+| ---------------------- | ------- | ----- | -------- |
+| LCU requests/min       | 360-420 | 50-80 | **-85%** |
+| Connection tests/min   | 20      | 2     | **-90%** |
+| Lockfile reads/connect | 15+     | 1     | **-93%** |
 
 ### Frontend
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| displaySkinsAtom recomputes/sec | 10-20 | <5 | **-75%** |
-| Cell renders/scroll | All cells | Visible only | **-80%** |
-| Custom image IPC calls | N (sequential) | 1 (batched) | **-90%** |
+
+| Metric                          | Before         | After        | Change   |
+| ------------------------------- | -------------- | ------------ | -------- |
+| displaySkinsAtom recomputes/sec | 10-20          | <5           | **-75%** |
+| Cell renders/scroll             | All cells      | Visible only | **-80%** |
+| Custom image IPC calls          | N (sequential) | 1 (batched)  | **-90%** |
 
 ### User Experience
-| Action | Before | After | Target |
-|--------|--------|-------|--------|
-| Champion switch | 300ms | <50ms | ✅ |
-| Search keystroke | Laggy | Instant | ✅ |
-| Scroll performance | Stuttery | 60fps | ✅ |
-| Memory growth | Unbounded | Stable | ✅ |
+
+| Action             | Before    | After   | Target |
+| ------------------ | --------- | ------- | ------ |
+| Champion switch    | 300ms     | <50ms   | ✅     |
+| Search keystroke   | Laggy     | Instant | ✅     |
+| Scroll performance | Stuttery  | 60fps   | ✅     |
+| Memory growth      | Unbounded | Stable  | ✅     |
 
 ---
 

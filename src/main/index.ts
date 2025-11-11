@@ -113,6 +113,13 @@ function sendFilesToRenderer(filePaths: string[]): void {
   }
 }
 
+/**
+ * Checks if a SelectedSkin represents a custom/user-imported skin
+ */
+function isCustomSkin(skin: SelectedSkin): boolean {
+  return skin.championKey === 'Custom' || skin.skinId.startsWith('custom_')
+}
+
 // Request single instance lock
 const gotTheLock = app.requestSingleInstanceLock()
 
@@ -760,10 +767,20 @@ function setupIpcHandlers(): void {
 
       // Build a map for championKey → championId for efficient lookup
       const championIdMap = new Map<string, number>()
+      // Build a map for skinKey → SelectedSkin for context lookup
+      const skinContextMap = new Map<string, SelectedSkin>()
+
       for (const skin of selectedSkins) {
         if (skin.championId) {
           championIdMap.set(skin.championKey, skin.championId)
         }
+        // Store the full context for each skin
+        const filename =
+          skin.downloadedFilename || `${skin.lolSkinsName || skin.skinNameEn || skin.skinName}.zip`
+        const skinKey = skin.chromaId
+          ? `${skin.championKey}/${skin.lolSkinsName || skin.skinNameEn || skin.skinName} ${skin.chromaId}.zip`
+          : `${skin.championKey}/${filename}`
+        skinContextMap.set(skinKey, skin)
       }
 
       // Convert to skin keys format for processing
@@ -832,9 +849,13 @@ function setupIpcHandlers(): void {
           const [champion, skinFile] = skinKey.split('/')
 
           // Handle user-imported skins
-          if (skinFile.includes('[User]')) {
-            const skinNameWithExt = skinFile.replace('[User] ', '')
-            // Extract the actual filename without extension more carefully
+          // Check if this is a custom skin using the context map
+          const skinContext = skinContextMap.get(skinKey)
+          const isCustomMod = skinContext && isCustomSkin(skinContext)
+
+          if (isCustomMod) {
+            // Extract skin name from the context
+            const skinNameWithExt = skinContext.downloadedFilename || `${skinContext.skinName}.zip`
             const extMatch = skinNameWithExt.match(/\.(wad\.client|wad|zip|fantome)$/i)
             const skinName = extMatch
               ? skinNameWithExt.slice(0, -extMatch[0].length)
@@ -1091,10 +1112,23 @@ function setupIpcHandlers(): void {
 
         // Build a map for championKey → championId for efficient lookup
         const championIdMap = new Map<string, number>()
+        // Build a map for skinKey → SelectedSkin for context lookup
+        const skinContextMap = new Map<string, SelectedSkin>()
+
         for (const skin of filteredSkins) {
           if (skin.championId) {
             championIdMap.set(skin.championKey, skin.championId)
           }
+          // Store the full context for each skin (build early for context lookup)
+          const skinNameToUse = (skin.lolSkinsName || skin.skinNameEn || skin.skinName).replace(
+            /:/g,
+            ''
+          )
+          const skinNameWithChroma = skin.chromaId
+            ? `${skinNameToUse} ${skin.chromaId}.zip`
+            : `${skinNameToUse}.zip`
+          const preliminarySkinKey = `${skin.championKey}/${skinNameWithChroma}`
+          skinContextMap.set(preliminarySkinKey, skin)
         }
 
         // Convert to the format expected by run-patcher
@@ -1148,9 +1182,14 @@ function setupIpcHandlers(): void {
           skinKeys.map(async (skinKey) => {
             const [champion, skinFile] = skinKey.split('/')
 
-            if (skinFile.includes('[User]')) {
-              const skinNameWithExt = skinFile.replace('[User] ', '')
-              // Extract the actual filename without extension more carefully
+            // Check if this is a custom skin using the context map
+            const skinContext = skinContextMap.get(skinKey)
+            const isCustomMod = skinContext && isCustomSkin(skinContext)
+
+            if (isCustomMod) {
+              // Extract skin name from the context
+              const skinNameWithExt =
+                skinContext.downloadedFilename || `${skinContext.skinName}.zip`
               const extMatch = skinNameWithExt.match(/\.(wad\.client|wad|zip|fantome)$/i)
               const skinName = extMatch
                 ? skinNameWithExt.slice(0, -extMatch[0].length)

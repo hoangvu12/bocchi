@@ -1,18 +1,21 @@
-## v1.24.1
+## v1.24.2
 
-### Features
-- Pass championId directly from UI to download service for ID-based repositories
-- Eliminates error-prone name→ID conversions for better reliability
-- Improved URL construction for ID-based skin repositories
+### Bug Fixes
+
+- Fixed custom skins failing to apply after v1.24.0 refactor
+- Fixed custom skins not appearing in Custom section of sidebar
+- Fixed repository structure detection not providing user feedback
 
 ### Improvements
-- Replace all 'any' types with proper TypeScript types across the entire codebase
-- Add comprehensive type definitions (preload.types.ts, overlay.types.ts)
-- Full end-to-end type safety across IPC communication
-- Better IDE support with proper autocomplete and IntelliSense
+
+- Repository structure now detected upfront when adding repositories
+- Added re-detect button for manual repository structure refresh
+- Improved error messages with detailed logging for skin mapping failures
+- Enhanced 404 errors with specific causes and actionable suggestions
 
 ### Technical Changes
-- Support both 5 and 6 digit chroma IDs
-- Reorder URL pattern matching for better accuracy (ID-based patterns checked before variants)
-- Enhanced Preset and P2PRoomMember interfaces with proper types
-- 0 TypeScript errors with strict type checking enabled
+
+- Changed custom skin detection from string matching to property-based checks
+- Added skinContextMap to preserve full SelectedSkin context in patcher
+- Custom skins now appear in both Custom section and their champion's list
+- Repository detection results shown to user with confidence levels

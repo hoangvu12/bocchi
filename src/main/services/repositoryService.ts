@@ -487,9 +487,21 @@ export class RepositoryService {
     })
 
     if (!matchingSkin) {
-      console.error(
-        `[ID-Based URL] Skin not found in champion data: "${baseName}" (tried lolSkinsName, nameEn, name)`
-      )
+      // Log detailed error information
+      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.error('⚠️  SKIN MAPPING NOT FOUND')
+      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.error(`Repository: ${repo.name}`)
+      console.error(`Champion: ${champion.name} (ID: ${championId})`)
+      console.error(`Looking for: "${baseName}"`)
+      console.error(`Available skins in champion data:`)
+      champion.skins.forEach((s, i) => {
+        const skinName = s.lolSkinsName || s.nameEn || s.name
+        console.error(`  ${i + 1}. "${skinName}"`)
+      })
+      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.error('Falling back to name-based URL construction...')
+
       // Fallback
       return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/${encodeURIComponent(skinFile)}`
     }
@@ -571,7 +583,19 @@ export class RepositoryService {
     })
 
     if (!matchingSkin) {
-      console.error(`[ID-Based URL Direct] Skin not found in champion data: "${baseName}"`)
+      // Log detailed error information
+      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.error('⚠️  SKIN MAPPING NOT FOUND (Direct ID method)')
+      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.error(`Repository: ${repo.name}`)
+      console.error(`Champion: ${champion.name} (ID: ${championId})`)
+      console.error(`Looking for: "${baseName}"`)
+      console.error(`Available skins in champion data:`)
+      champion.skins.forEach((s, i) => {
+        const skinName = s.lolSkinsName || s.nameEn || s.name
+        console.error(`  ${i + 1}. "${skinName}"`)
+      })
+      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       throw new Error(`Skin "${baseName}" not found for champion ${champion.name}`)
     }
 

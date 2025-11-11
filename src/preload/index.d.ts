@@ -320,6 +320,42 @@ export interface IApi {
     error?: string
   }>
   repositoryRemove: (repositoryId: string) => Promise<{ success: boolean; error?: string }>
+  repositoryAddWithDetection: (
+    owner: string,
+    repo: string,
+    branch?: string,
+    name?: string
+  ) => Promise<{
+    success: boolean
+    data?: {
+      repository: {
+        id: string
+        name: string
+        owner: string
+        repo: string
+        branch: string
+        isDefault: boolean
+        isCustom: boolean
+      }
+      detection: {
+        type: string
+        confidence: number
+        skinsPath: string
+        sampledPaths?: string[]
+      }
+    }
+    error?: string
+  }>
+  repositoryRedetectStructure: (repositoryId: string) => Promise<{
+    success: boolean
+    data?: {
+      type: string
+      confidence: number
+      skinsPath: string
+      sampledPaths?: string[]
+    }
+    error?: string
+  }>
   repositoryValidate: (
     repositoryId: string
   ) => Promise<{ success: boolean; data?: boolean; error?: string }>

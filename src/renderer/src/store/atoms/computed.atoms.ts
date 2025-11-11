@@ -142,12 +142,14 @@ export const championSkinsMapAtom = atom((get) => {
 
       const displaySkin = { champion, skin: customSkin }
 
+      // Always add to customSkins array (for "Custom" section in sidebar)
+      customSkins.push(displaySkin)
+
+      // Also add to champion-specific list if assigned to a real champion
       if (champion.key !== 'Custom') {
         const existing = championCustomSkins.get(champion.key) || []
         existing.push(displaySkin)
         championCustomSkins.set(champion.key, existing)
-      } else {
-        customSkins.push(displaySkin)
       }
     }
   })

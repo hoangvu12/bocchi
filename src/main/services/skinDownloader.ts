@@ -167,7 +167,23 @@ export class SkinDownloader {
 
       // Check if it's a 404 error
       if (axios.isAxiosError(error) && error.response?.status === 404) {
-        throw new Error('errors.skinNotAvailable')
+        const errorMessage = [
+          'Skin not found (404 Error)',
+          '',
+          `URL: ${rawUrl}`,
+          '',
+          'Possible causes:',
+          '• Skin not available in this repository',
+          '• Repository structure incorrectly detected',
+          '• Skin name mapping mismatch in champion data',
+          '',
+          'Suggested actions:',
+          '• Try a different skin from the same champion',
+          '• Go to Settings → Repository → Re-detect Structure',
+          '• Report this issue with the skin name and champion'
+        ].join('\n')
+
+        throw new Error(errorMessage)
       }
 
       throw new Error(
