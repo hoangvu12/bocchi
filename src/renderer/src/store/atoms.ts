@@ -27,6 +27,7 @@ export const skinSearchQueryAtom = atom<string>('')
 export interface SelectedSkin {
   championKey: string
   championName: string
+  championId?: number // Numeric champion ID for ID-based repositories
   skinId: string
   skinName: string
   skinNameEn?: string

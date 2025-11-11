@@ -416,7 +416,8 @@ export function useSkinManagement() {
         }
 
         // Run patcher with filtered skins
-        const patcherResult = await window.api.runPatcher(gamePath, skinKeys)
+        // Pass both skinKeys (for backward compat) and full skin objects (for championId)
+        const patcherResult = await window.api.runPatcher(gamePath, skinsToApply)
         if (patcherResult.success) {
           if (isUsingSmartApply) {
             setStatusMessage(

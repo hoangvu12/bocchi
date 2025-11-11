@@ -59,10 +59,15 @@ export class RepositoryService {
   private migrateRepositories(): void {
     let migrated = false
 
+    console.log(`[Migration] Checking ${this.repositories.length} repositories for migration...`)
+
     this.repositories = this.repositories.map((repo) => {
       // If repository doesn't have structure field, add default structure
       if (!repo.structure || !repo.structure.type) {
         migrated = true
+        console.log(
+          `[Migration] Migrating ${repo.owner}/${repo.repo} - adding default 'name-based' structure`
+        )
         return {
           ...repo,
           structure: {
@@ -73,13 +78,18 @@ export class RepositoryService {
           }
         }
       }
+      console.log(
+        `[Migration] ${repo.owner}/${repo.repo} already has structure: type="${repo.structure.type}", autoDetected=${repo.structure.autoDetected}`
+      )
       return repo
     })
 
     // Save if any migration happened
     if (migrated) {
-      console.log('Migrated repositories to new format with structure types')
+      console.log('[Migration] Saving migrated repositories...')
       this.saveRepositories()
+    } else {
+      console.log('[Migration] No migration needed')
     }
 
     // Auto-detect repositories that weren't auto-detected yet (async in background)
@@ -95,22 +105,29 @@ export class RepositoryService {
       (repo) => repo.structure && !repo.structure.autoDetected && !repo.isDefault
     )
 
+    console.log(
+      `[Auto-Detection] Total repositories: ${this.repositories.length}, Undetected: ${undetectedRepos.length}`
+    )
+
     if (undetectedRepos.length === 0) {
+      console.log(`[Auto-Detection] No repositories need auto-detection`)
       return
     }
 
-    console.log(
-      `Auto-detecting structure for ${undetectedRepos.length} repositories in background...`
-    )
+    console.log(`[Auto-Detection] Starting detection for ${undetectedRepos.length} repositories...`)
 
     for (const repo of undetectedRepos) {
       try {
-        console.log(`Auto-detecting ${repo.owner}/${repo.repo}...`)
+        console.log(`[Auto-Detection] Detecting ${repo.owner}/${repo.repo}...`)
         const detection = await repositoryDetector.detectRepositoryStructure(
           repo.owner,
           repo.repo,
           repo.branch,
           repo.structure?.skinsPath
+        )
+
+        console.log(
+          `[Auto-Detection] ${repo.owner}/${repo.repo} detected as: "${detection.type}" (confidence: ${detection.confidence})`
         )
 
         // Update the repository structure
@@ -121,6 +138,8 @@ export class RepositoryService {
             autoDetected: true
           }
         })
+
+        console.log(`[Auto-Detection] ${repo.owner}/${repo.repo} updated successfully`)
 
         console.log(
           `✓ Detected ${repo.owner}/${repo.repo} as ${detection.type} (${detection.confidence}% confidence)`
@@ -360,23 +379,45 @@ export class RepositoryService {
     championName: string,
     skinFile: string,
     isChroma: boolean = false,
-    chromaBase?: string
+    chromaBase?: string,
+    championId?: number
   ): string {
     const repo = this.getActiveRepository()
     const structure = repo.structure || DEFAULT_REPOSITORY_STRUCTURE
     const skinsPath = structure.skinsPath
 
+    console.log(
+      `[constructGitHubUrl] Called with championName="${championName}", skinFile="${skinFile}", isChroma=${isChroma}, championId=${championId || 'undefined'}`
+    )
+    console.log(`[constructGitHubUrl] Active repository: ${repo.owner}/${repo.repo}`)
+    console.log(
+      `[constructGitHubUrl] Repository structure type: "${structure.type}", skinsPath: "${skinsPath}", autoDetected: ${structure.autoDetected}`
+    )
+
     // If ID-based repository, convert names to IDs
     if (structure.type === 'id-based') {
+      console.log(`[constructGitHubUrl] Using ID-based URL construction`)
+      // If championId is provided, use it directly
+      if (championId) {
+        console.log(`[constructGitHubUrl] Using provided championId: ${championId}`)
+        return this.constructIdBasedUrlWithId(championId, skinFile, repo, skinsPath)
+      }
+      // Otherwise fallback to name lookup (backward compatibility)
+      console.log(`[constructGitHubUrl] championId not provided, falling back to name lookup`)
       return this.constructIdBasedUrl(championName, skinFile, repo, skinsPath)
     }
 
     // Name-based repository (default)
+    console.log(`[constructGitHubUrl] Using name-based URL construction`)
     if (isChroma && chromaBase) {
-      return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/chromas/${encodeURIComponent(chromaBase)}/${encodeURIComponent(skinFile)}`
+      const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/chromas/${encodeURIComponent(chromaBase)}/${encodeURIComponent(skinFile)}`
+      console.log(`[constructGitHubUrl] Name-based chroma URL: ${url}`)
+      return url
     }
 
-    return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/${encodeURIComponent(skinFile)}`
+    const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/${encodeURIComponent(skinFile)}`
+    console.log(`[constructGitHubUrl] Name-based URL: ${url}`)
+    return url
   }
 
   /**
@@ -388,20 +429,27 @@ export class RepositoryService {
     repo: SkinRepository,
     skinsPath: string
   ): string {
+    console.log(
+      `[ID-Based URL] Constructing URL for championName="${championName}", skinFile="${skinFile}"`
+    )
+
     // Look up champion by name (sync)
     const champion = championDataService.getChampionByNameSync(championName)
     if (!champion) {
-      console.error(`Champion not found in cache: ${championName}`)
+      console.error(`[ID-Based URL] Champion not found in cache: ${championName}`)
       // Fallback to name-based URL to avoid breaking
       return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/${encodeURIComponent(skinFile)}`
     }
 
     const championId = champion.id
+    console.log(`[ID-Based URL] Champion found: ${champion.name} (ID: ${championId})`)
 
-    // Check if this is a chroma (has 6-digit ID in filename)
-    const chromaMatch = skinFile.match(/(\d{6})\.zip$/i)
+    // Check if this is a chroma (has 5-6 digit ID in filename)
+    // Chroma IDs can be 5 or 6 digits (e.g., 62034 or 236003)
+    const chromaMatch = skinFile.match(/(\d{5,6})\.zip$/i)
     if (chromaMatch) {
       const chromaId = chromaMatch[1]
+      console.log(`[ID-Based URL] Detected chroma file with chromaId=${chromaId}`)
 
       // Find the skin that has this chroma
       let skinId = ''
@@ -411,31 +459,129 @@ export class RepositoryService {
           if (hasChroma) {
             // Construct skin ID from champion ID + skin num
             skinId = championId.toString() + skin.num.toString().padStart(3, '0')
+            console.log(`[ID-Based URL] Chroma found in skin: num=${skin.num}, skinId=${skinId}`)
             break
           }
         }
       }
 
       if (skinId) {
-        return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${chromaId}/${chromaId}.zip`
+        const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${chromaId}/${chromaId}.zip`
+        console.log(`[ID-Based URL] Chroma URL: ${url}`)
+        return url
+      } else {
+        console.warn(`[ID-Based URL] Chroma ${chromaId} not found in any skin, using fallback`)
       }
     }
 
     // Regular skin (not a chroma)
     const baseName = skinFile.replace('.zip', '')
+    console.log(`[ID-Based URL] Looking for regular skin with baseName="${baseName}"`)
+    console.log(
+      `[ID-Based URL] Available skins: ${champion.skins.map((s) => `${s.num}:${s.lolSkinsName || s.nameEn || s.name}`).join(', ')}`
+    )
+
     const matchingSkin = champion.skins.find((s) => {
       const skinName = s.lolSkinsName || s.nameEn || s.name
       return skinName === baseName
     })
 
     if (!matchingSkin) {
-      console.error(`Skin not found in champion data: ${baseName}`)
+      console.error(
+        `[ID-Based URL] Skin not found in champion data: "${baseName}" (tried lolSkinsName, nameEn, name)`
+      )
       // Fallback
       return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/${encodeURIComponent(skinFile)}`
     }
 
     const skinId = championId.toString() + matchingSkin.num.toString().padStart(3, '0')
-    return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${skinId}.zip`
+    const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${skinId}.zip`
+    console.log(
+      `[ID-Based URL] Skin matched: num=${matchingSkin.num}, name=${matchingSkin.lolSkinsName || matchingSkin.nameEn || matchingSkin.name}, skinId=${skinId}`
+    )
+    console.log(`[ID-Based URL] Final URL: ${url}`)
+    return url
+  }
+
+  /**
+   * Constructs URL for ID-based repositories using championId directly (avoids name→ID lookup)
+   */
+  private constructIdBasedUrlWithId(
+    championId: number,
+    skinFile: string,
+    repo: SkinRepository,
+    skinsPath: string
+  ): string {
+    console.log(
+      `[ID-Based URL Direct] Constructing URL with championId=${championId}, skinFile="${skinFile}"`
+    )
+
+    // Look up champion by ID (sync)
+    const champion = championDataService.getChampionByIdSync(championId)
+    if (!champion) {
+      console.error(`[ID-Based URL Direct] Champion not found for ID: ${championId}`)
+      // Fallback - cannot construct URL without champion data
+      throw new Error(`Champion not found for ID: ${championId}`)
+    }
+
+    console.log(`[ID-Based URL Direct] Champion found: ${champion.name} (ID: ${championId})`)
+
+    // Check if this is a chroma (has 5-6 digit ID in filename)
+    const chromaMatch = skinFile.match(/(\d{5,6})\.zip$/i)
+    if (chromaMatch) {
+      const chromaId = chromaMatch[1]
+      console.log(`[ID-Based URL Direct] Detected chroma file with chromaId=${chromaId}`)
+
+      // Find the skin that has this chroma
+      let skinId = ''
+      for (const skin of champion.skins) {
+        if (skin.chromas && skin.chromaList) {
+          const hasChroma = skin.chromaList.some((c) => c.id.toString() === chromaId)
+          if (hasChroma) {
+            // Construct skin ID from champion ID + skin num
+            skinId = championId.toString() + skin.num.toString().padStart(3, '0')
+            console.log(
+              `[ID-Based URL Direct] Chroma found in skin: num=${skin.num}, skinId=${skinId}`
+            )
+            break
+          }
+        }
+      }
+
+      if (skinId) {
+        const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${chromaId}/${chromaId}.zip`
+        console.log(`[ID-Based URL Direct] Chroma URL: ${url}`)
+        return url
+      } else {
+        console.warn(`[ID-Based URL Direct] Chroma ${chromaId} not found in any skin`)
+        throw new Error(`Chroma ${chromaId} not found for champion ${champion.name}`)
+      }
+    }
+
+    // Regular skin (not a chroma)
+    const baseName = skinFile.replace('.zip', '')
+    console.log(`[ID-Based URL Direct] Looking for regular skin with baseName="${baseName}"`)
+    console.log(
+      `[ID-Based URL Direct] Available skins: ${champion.skins.map((s) => `${s.num}:${s.lolSkinsName || s.nameEn || s.name}`).join(', ')}`
+    )
+
+    const matchingSkin = champion.skins.find((s) => {
+      const skinName = s.lolSkinsName || s.nameEn || s.name
+      return skinName === baseName
+    })
+
+    if (!matchingSkin) {
+      console.error(`[ID-Based URL Direct] Skin not found in champion data: "${baseName}"`)
+      throw new Error(`Skin "${baseName}" not found for champion ${champion.name}`)
+    }
+
+    const skinId = championId.toString() + matchingSkin.num.toString().padStart(3, '0')
+    const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${skinId}.zip`
+    console.log(
+      `[ID-Based URL Direct] Skin matched: num=${matchingSkin.num}, name=${matchingSkin.lolSkinsName || matchingSkin.nameEn || matchingSkin.name}, skinId=${skinId}`
+    )
+    console.log(`[ID-Based URL Direct] Final URL: ${url}`)
+    return url
   }
 
   /**

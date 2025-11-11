@@ -1,5 +1,19 @@
-import { contextBridge, ipcRenderer, webUtils } from 'electron'
+import { contextBridge, ipcRenderer, webUtils, IpcRendererEvent } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import {
+  SelectedSkin,
+  AutoSyncedSkin,
+  UpdateInfo,
+  UpdateProgress,
+  DownloadProgress,
+  ImportProgress,
+  ImportOptions,
+  PreselectModeData,
+  PreselectChampion,
+  PreselectSnapshot,
+  PresetUpdate
+} from '../main/types/preload.types'
+import { SkinInfo } from '../main/types'
 
 // Custom APIs for renderer
 const api = {
@@ -22,8 +36,8 @@ const api = {
   resumeBatchDownload: () => ipcRenderer.invoke('resume-batch-download'),
   cancelBatchDownload: () => ipcRenderer.invoke('cancel-batch-download'),
   getBatchDownloadState: () => ipcRenderer.invoke('get-batch-download-state'),
-  onDownloadAllSkinsProgress: (callback: (progress: any) => void) => {
-    const handler = (_: any, progress: any) => callback(progress)
+  onDownloadAllSkinsProgress: (callback: (progress: DownloadProgress) => void) => {
+    const handler = (_: IpcRendererEvent, progress: DownloadProgress) => callback(progress)
     ipcRenderer.on('download-all-skins-progress', handler)
     return () => ipcRenderer.removeListener('download-all-skins-progress', handler)
   },
@@ -39,8 +53,8 @@ const api = {
     overwriteExisting: boolean
     concurrency?: number
   }) => ipcRenderer.invoke('download-all-skins-bulk', options),
-  onDownloadAllSkinsBulkProgress: (callback: (progress: any) => void) => {
-    const handler = (_: any, progress: any) => callback(progress)
+  onDownloadAllSkinsBulkProgress: (callback: (progress: DownloadProgress) => void) => {
+    const handler = (_: IpcRendererEvent, progress: DownloadProgress) => callback(progress)
     ipcRenderer.on('download-all-skins-bulk-progress', handler)
     return () => ipcRenderer.removeListener('download-all-skins-bulk-progress', handler)
   },
@@ -68,13 +82,13 @@ const api = {
   getPendingFiles: () => ipcRenderer.invoke('get-pending-files'),
   clearPendingFiles: () => ipcRenderer.invoke('clear-pending-files'),
   onFilesToImport: (callback: (filePaths: string[]) => void) => {
-    const handler = (_: any, filePaths: string[]) => callback(filePaths)
+    const handler = (_: IpcRendererEvent, filePaths: string[]) => callback(filePaths)
     ipcRenderer.on('files-to-import', handler)
     return () => ipcRenderer.removeListener('files-to-import', handler)
   },
 
   // Patcher controls
-  runPatcher: (gamePath: string, selectedSkins: string[]) =>
+  runPatcher: (gamePath: string, selectedSkins: SelectedSkin[]) =>
     ipcRenderer.invoke('run-patcher', gamePath, selectedSkins),
   stopPatcher: () => ipcRenderer.invoke('stop-patcher'),
   isPatcherRunning: () => ipcRenderer.invoke('is-patcher-running'),
@@ -87,9 +101,9 @@ const api = {
   getCacheInfo: () => ipcRenderer.invoke('get-cache-info'),
   smartApplySkins: (
     gamePath: string,
-    selectedSkins: any[],
+    selectedSkins: SelectedSkin[],
     teamChampionIds: number[],
-    autoSyncedSkins?: any[]
+    autoSyncedSkins?: AutoSyncedSkin[]
   ) =>
     ipcRenderer.invoke(
       'smart-apply-skins',
@@ -123,11 +137,12 @@ const api = {
     ipcRenderer.invoke('get-favorites-by-champion', championKey),
 
   // Preset management
-  createPreset: (name: string, description: string | undefined, skins: any[]) =>
+  createPreset: (name: string, description: string | undefined, skins: SelectedSkin[]) =>
     ipcRenderer.invoke('preset:create', name, description, skins),
   listPresets: () => ipcRenderer.invoke('preset:list'),
   getPreset: (id: string) => ipcRenderer.invoke('preset:get', id),
-  updatePreset: (id: string, updates: any) => ipcRenderer.invoke('preset:update', id, updates),
+  updatePreset: (id: string, updates: PresetUpdate) =>
+    ipcRenderer.invoke('preset:update', id, updates),
   deletePreset: (id: string) => ipcRenderer.invoke('preset:delete', id),
   duplicatePreset: (id: string, newName: string) =>
     ipcRenderer.invoke('preset:duplicate', id, newName),
@@ -140,14 +155,17 @@ const api = {
   downloadTools: (attempt?: number) => ipcRenderer.invoke('download-tools', attempt),
   getToolsInfo: () => ipcRenderer.invoke('get-tools-info'),
   onToolsDownloadProgress: (callback: (progress: number) => void) => {
-    const handler = (_: any, progress: number) => callback(progress)
+    const handler = (_: IpcRendererEvent, progress: number) => callback(progress)
     ipcRenderer.on('tools-download-progress', handler)
     return () => ipcRenderer.removeListener('tools-download-progress', handler)
   },
   onToolsDownloadDetails: (
     callback: (details: { loaded: number; total: number; speed: number }) => void
   ) => {
-    const handler = (_: any, details: any) => callback(details)
+    const handler = (
+      _: IpcRendererEvent,
+      details: { loaded: number; total: number; speed: number }
+    ) => callback(details)
     ipcRenderer.on('tools-download-details', handler)
     return () => ipcRenderer.removeListener('tools-download-details', handler)
   },
@@ -160,7 +178,7 @@ const api = {
 
   // Settings
   getSettings: (key?: string) => ipcRenderer.invoke('get-settings', key),
-  setSettings: (key: string, value: any) => ipcRenderer.invoke('set-settings', key, value),
+  setSettings: (key: string, value: unknown) => ipcRenderer.invoke('set-settings', key, value),
   getSystemLocale: () => ipcRenderer.invoke('get-system-locale'),
 
   // Auto-updater
@@ -174,8 +192,8 @@ const api = {
     ipcRenderer.on('update-checking', callback)
     return () => ipcRenderer.removeListener('update-checking', callback)
   },
-  onUpdateAvailable: (callback: (info: any) => void) => {
-    const handler = (_: any, info: any) => callback(info)
+  onUpdateAvailable: (callback: (info: UpdateInfo) => void) => {
+    const handler = (_: IpcRendererEvent, info: UpdateInfo) => callback(info)
     ipcRenderer.on('update-available', handler)
     return () => ipcRenderer.removeListener('update-available', handler)
   },
@@ -184,12 +202,12 @@ const api = {
     return () => ipcRenderer.removeListener('update-not-available', callback)
   },
   onUpdateError: (callback: (error: string) => void) => {
-    const handler = (_: any, error: string) => callback(error)
+    const handler = (_: IpcRendererEvent, error: string) => callback(error)
     ipcRenderer.on('update-error', handler)
     return () => ipcRenderer.removeListener('update-error', handler)
   },
-  onUpdateDownloadProgress: (callback: (progress: any) => void) => {
-    const handler = (_: any, progress: any) => callback(progress)
+  onUpdateDownloadProgress: (callback: (progress: UpdateProgress) => void) => {
+    const handler = (_: IpcRendererEvent, progress: UpdateProgress) => callback(progress)
     ipcRenderer.on('update-download-progress', handler)
     return () => ipcRenderer.removeListener('update-download-progress', handler)
   },
@@ -222,7 +240,7 @@ const api = {
   extractImageFromMod: (modFilePath: string) =>
     ipcRenderer.invoke('extract-image-from-mod', modFilePath),
   onExtractImageStatus: (callback: (status: string) => void) => {
-    const handler = (_: any, status: string) => callback(status)
+    const handler = (_: IpcRendererEvent, status: string) => callback(status)
     ipcRenderer.on('extract-image-status', handler)
     return () => ipcRenderer.removeListener('extract-image-status', handler)
   },
@@ -230,35 +248,35 @@ const api = {
 
   // Skin update management
   checkSkinUpdates: (skinPaths?: string[]) => ipcRenderer.invoke('check-skin-updates', skinPaths),
-  updateSkin: (skinInfo: any) => ipcRenderer.invoke('update-skin', skinInfo),
-  bulkUpdateSkins: (skinInfos: any[]) => ipcRenderer.invoke('bulk-update-skins', skinInfos),
+  updateSkin: (skinInfo: SkinInfo) => ipcRenderer.invoke('update-skin', skinInfo),
+  bulkUpdateSkins: (skinInfos: SkinInfo[]) => ipcRenderer.invoke('bulk-update-skins', skinInfos),
   generateMetadataForExistingSkins: () =>
     ipcRenderer.invoke('generate-metadata-for-existing-skins'),
 
   // Patcher events
   onPatcherStatus: (callback: (status: string) => void) => {
-    const handler = (_: any, status: string) => {
+    const handler = (_: IpcRendererEvent, status: string) => {
       callback(status)
     }
     ipcRenderer.on('patcher-status', handler)
     return () => ipcRenderer.removeListener('patcher-status', handler)
   },
   onPatcherMessage: (callback: (message: string) => void) => {
-    const handler = (_: any, message: string) => {
+    const handler = (_: IpcRendererEvent, message: string) => {
       callback(message)
     }
     ipcRenderer.on('patcher-message', handler)
     return () => ipcRenderer.removeListener('patcher-message', handler)
   },
   onPatcherError: (callback: (error: string) => void) => {
-    const handler = (_: any, error: string) => {
+    const handler = (_: IpcRendererEvent, error: string) => {
       callback(error)
     }
     ipcRenderer.on('patcher-error', handler)
     return () => ipcRenderer.removeListener('patcher-error', handler)
   },
-  onImportProgress: (callback: (data: any) => void) => {
-    const handler = (_: any, data: any) => {
+  onImportProgress: (callback: (data: ImportProgress) => void) => {
+    const handler = (_: IpcRendererEvent, data: ImportProgress) => {
       callback(data)
     }
     ipcRenderer.on('import-progress', handler)
@@ -272,7 +290,7 @@ const api = {
   prepareTempFile: (fileName: string) => ipcRenderer.invoke('prepare-temp-file', fileName),
   writeFileFromChunks: (filePath: string, chunks: ArrayBuffer[], expectedHash: string) =>
     ipcRenderer.invoke('write-file-from-chunks', filePath, chunks, expectedHash),
-  importFile: (filePath: string, options?: any) =>
+  importFile: (filePath: string, options?: ImportOptions) =>
     ipcRenderer.invoke('import-file', filePath, options),
 
   // Repository management APIs
@@ -280,7 +298,7 @@ const api = {
   repositoryGetActive: () => ipcRenderer.invoke('repository:get-active'),
   repositorySetActive: (repositoryId: string) =>
     ipcRenderer.invoke('repository:set-active', repositoryId),
-  repositoryAdd: (repository: any) => ipcRenderer.invoke('repository:add', repository),
+  repositoryAdd: (repository: unknown) => ipcRenderer.invoke('repository:add', repository),
   repositoryAddWithDetection: (owner: string, repo: string, branch?: string, name?: string) =>
     ipcRenderer.invoke('repository:add-with-detection', owner, repo, branch, name),
   repositoryRedetectStructure: (repositoryId: string) =>
@@ -288,14 +306,23 @@ const api = {
   repositoryRemove: (repositoryId: string) => ipcRenderer.invoke('repository:remove', repositoryId),
   repositoryValidate: (repositoryId: string) =>
     ipcRenderer.invoke('repository:validate', repositoryId),
-  repositoryUpdate: (repositoryId: string, updates: any) =>
+  repositoryUpdate: (repositoryId: string, updates: unknown) =>
     ipcRenderer.invoke('repository:update', repositoryId, updates),
   repositoryConstructUrl: (
     championName: string,
     skinFile: string,
     isChroma?: boolean,
-    chromaBase?: string
-  ) => ipcRenderer.invoke('repository:construct-url', championName, skinFile, isChroma, chromaBase),
+    chromaBase?: string,
+    championId?: number
+  ) =>
+    ipcRenderer.invoke(
+      'repository:construct-url',
+      championName,
+      skinFile,
+      isChroma,
+      chromaBase,
+      championId
+    ),
 
   // LCU Connection APIs
   lcuConnect: () => ipcRenderer.invoke('lcu:connect'),
@@ -322,14 +349,18 @@ const api = {
     return () => ipcRenderer.removeListener('lcu:disconnected', callback)
   },
   onLcuPhaseChanged: (callback: (data: { phase: string; previousPhase: string }) => void) => {
-    const handler = (_: any, data: any) => callback(data)
+    const handler = (_: IpcRendererEvent, data: { phase: string; previousPhase: string }) =>
+      callback(data)
     ipcRenderer.on('lcu:phase-changed', handler)
     return () => ipcRenderer.removeListener('lcu:phase-changed', handler)
   },
   onLcuChampionSelected: (
     callback: (data: { championId: number; isLocked: boolean; isHover: boolean }) => void
   ) => {
-    const handler = (_: any, data: any) => callback(data)
+    const handler = (
+      _: IpcRendererEvent,
+      data: { championId: number; isLocked: boolean; isHover: boolean }
+    ) => callback(data)
     ipcRenderer.on('lcu:champion-selected', handler)
     return () => ipcRenderer.removeListener('lcu:champion-selected', handler)
   },
@@ -338,7 +369,7 @@ const api = {
     return () => ipcRenderer.removeListener('lcu:ready-check-accepted', callback)
   },
   onLcuQueueIdDetected: (callback: (data: { queueId: number }) => void) => {
-    const handler = (_: any, data: any) => callback(data)
+    const handler = (_: IpcRendererEvent, data: { queueId: number }) => callback(data)
     ipcRenderer.on('lcu:queue-id-detected', handler)
     return () => ipcRenderer.removeListener('lcu:queue-id-detected', handler)
   },
@@ -347,9 +378,9 @@ const api = {
   getTeamComposition: () => ipcRenderer.invoke('team:get-composition'),
   isReadyForSmartApply: () => ipcRenderer.invoke('team:is-ready-for-smart-apply'),
   getSmartApplySummary: (
-    selectedSkins: any[],
+    selectedSkins: SelectedSkin[],
     teamChampionIds: number[],
-    autoSyncedSkins?: any[]
+    autoSyncedSkins?: AutoSyncedSkin[]
   ) =>
     ipcRenderer.invoke(
       'team:get-smart-apply-summary',
@@ -366,7 +397,10 @@ const api = {
       inFinalization: boolean
     }) => void
   ) => {
-    const handler = (_: any, data: any) => callback(data)
+    const handler = (
+      _: IpcRendererEvent,
+      data: { championIds: number[]; allLocked: boolean; inFinalization: boolean }
+    ) => callback(data)
     ipcRenderer.on('team:composition-updated', handler)
     return () => ipcRenderer.removeListener('team:composition-updated', handler)
   },
@@ -377,14 +411,17 @@ const api = {
       inFinalization: boolean
     }) => void
   ) => {
-    const handler = (_: any, data: any) => {
+    const handler = (
+      _: IpcRendererEvent,
+      data: { championIds: number[]; allLocked: boolean; inFinalization: boolean }
+    ) => {
       callback(data)
     }
     ipcRenderer.on('team:ready-for-smart-apply', handler)
     return () => ipcRenderer.removeListener('team:ready-for-smart-apply', handler)
   },
   onTeamReset: (callback: (newPhase?: string) => void) => {
-    const handler = (_: any, newPhase?: string) => callback(newPhase)
+    const handler = (_: IpcRendererEvent, newPhase?: string) => callback(newPhase)
     ipcRenderer.on('team:reset', handler)
     return () => ipcRenderer.removeListener('team:reset', handler)
   },
@@ -396,23 +433,23 @@ const api = {
   getLobbyData: () => ipcRenderer.invoke('lcu:get-lobby-data'),
 
   // Preselect Lobby Events
-  onPreselectModeDetected: (callback: (data: { queueId: number; champions: any[] }) => void) => {
-    const handler = (_: any, data: any) => callback(data)
+  onPreselectModeDetected: (callback: (data: PreselectModeData) => void) => {
+    const handler = (_: IpcRendererEvent, data: PreselectModeData) => callback(data)
     ipcRenderer.on('preselect:mode-detected', handler)
     return () => ipcRenderer.removeListener('preselect:mode-detected', handler)
   },
-  onPreselectChampionsChanged: (callback: (champions: any[]) => void) => {
-    const handler = (_: any, champions: any[]) => callback(champions)
+  onPreselectChampionsChanged: (callback: (champions: PreselectChampion[]) => void) => {
+    const handler = (_: IpcRendererEvent, champions: PreselectChampion[]) => callback(champions)
     ipcRenderer.on('preselect:champions-changed', handler)
     return () => ipcRenderer.removeListener('preselect:champions-changed', handler)
   },
-  onPreselectSnapshotTaken: (callback: (snapshot: any) => void) => {
-    const handler = (_: any, snapshot: any) => callback(snapshot)
+  onPreselectSnapshotTaken: (callback: (snapshot: PreselectSnapshot) => void) => {
+    const handler = (_: IpcRendererEvent, snapshot: PreselectSnapshot) => callback(snapshot)
     ipcRenderer.on('preselect:snapshot-taken', handler)
     return () => ipcRenderer.removeListener('preselect:snapshot-taken', handler)
   },
-  onPreselectMatchFound: (callback: (snapshot: any) => void) => {
-    const handler = (_: any, snapshot: any) => callback(snapshot)
+  onPreselectMatchFound: (callback: (snapshot: PreselectSnapshot) => void) => {
+    const handler = (_: IpcRendererEvent, snapshot: PreselectSnapshot) => callback(snapshot)
     ipcRenderer.on('preselect:match-found', handler)
     return () => ipcRenderer.removeListener('preselect:match-found', handler)
   },
@@ -426,8 +463,8 @@ const api = {
     ipcRenderer.on('preselect:cancel-apply', handler)
     return () => ipcRenderer.removeListener('preselect:cancel-apply', handler)
   },
-  onPreselectReadyForApply: (callback: (snapshot: any) => void) => {
-    const handler = (_: any, snapshot: any) => callback(snapshot)
+  onPreselectReadyForApply: (callback: (snapshot: PreselectSnapshot) => void) => {
+    const handler = (_: IpcRendererEvent, snapshot: PreselectSnapshot) => callback(snapshot)
     ipcRenderer.on('preselect:ready-for-apply', handler)
     return () => ipcRenderer.removeListener('preselect:ready-for-apply', handler)
   },
@@ -454,19 +491,19 @@ const api = {
   downloadMultiRitoFixTool: () => ipcRenderer.invoke('download-multiritofix-tool'),
   fixModIssues: (modPath: string) => ipcRenderer.invoke('fix-mod-issues', modPath),
   onMultiRitoFixDownloadProgress: (callback: (progress: number) => void) => {
-    const handler = (_: any, progress: number) => callback(progress)
+    const handler = (_: IpcRendererEvent, progress: number) => callback(progress)
     ipcRenderer.on('multiritofix-download-progress', handler)
     return () => ipcRenderer.removeListener('multiritofix-download-progress', handler)
   },
   onFixModProgress: (callback: (message: string) => void) => {
-    const handler = (_: any, message: string) => callback(message)
+    const handler = (_: IpcRendererEvent, message: string) => callback(message)
     ipcRenderer.on('fix-mod-progress', handler)
     return () => ipcRenderer.removeListener('fix-mod-progress', handler)
   },
 
   // Settings change events from tray
-  onSettingsChanged: (callback: (key: string, value: any) => void) => {
-    const handler = (_: any, key: string, value: any) => callback(key, value)
+  onSettingsChanged: (callback: (key: string, value: unknown) => void) => {
+    const handler = (_: IpcRendererEvent, key: string, value: unknown) => callback(key, value)
     ipcRenderer.on('settings-changed', handler)
     return () => ipcRenderer.removeListener('settings-changed', handler)
   },
@@ -477,7 +514,7 @@ const api = {
   },
 
   onLanguageChanged: (callback: (language: string) => void) => {
-    const handler = (_: any, language: string) => callback(language)
+    const handler = (_: IpcRendererEvent, language: string) => callback(language)
     ipcRenderer.on('language-changed', handler)
     return () => ipcRenderer.removeListener('language-changed', handler)
   }

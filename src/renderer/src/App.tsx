@@ -459,6 +459,7 @@ function AppContent(): React.JSX.Element {
         newSelectedSkin = {
           championKey: champion.key,
           championName: champion.name,
+          championId: champion.id, // Store numeric ID for ID-based repositories
           skinId: `custom_${randomCustomSkin.skinName}`, // Format: custom_[User] skinName
           skinName: randomCustomSkin.skinName,
           skinNameEn: randomCustomSkin.skinName, // Custom skins don't have separate EN names
@@ -475,6 +476,7 @@ function AppContent(): React.JSX.Element {
         newSelectedSkin = {
           championKey: champion.key,
           championName: champion.name,
+          championId: champion.id, // Store numeric ID for ID-based repositories
           skinId: randomSkin.id,
           skinName: randomSkin.name,
           skinNameEn: randomSkin.nameEn,
@@ -755,6 +757,7 @@ function AppContent(): React.JSX.Element {
         const newSelectedSkin = {
           championKey: champion.key,
           championName: champion.name,
+          championId: champion.id, // Store numeric ID for ID-based repositories
           skinId: skin.id,
           skinName: skin.name,
           skinNameEn: skin.nameEn,

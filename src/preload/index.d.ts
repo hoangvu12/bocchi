@@ -1,5 +1,20 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
-import { SkinInfo } from '../main/types'
+import { SkinInfo, Preset } from '../main/types'
+import {
+  SelectedSkin,
+  AutoSyncedSkin,
+  UpdateInfo,
+  UpdateProgress,
+  ImportOptions,
+  ChampSelectSession,
+  LCUChampion,
+  LobbySession,
+  PreselectModeData,
+  PreselectChampion,
+  PreselectSnapshot,
+  PresetUpdate,
+  ApplySummary
+} from '../main/types/preload.types'
 
 export interface IApi {
   detectGame: () => Promise<{ success: boolean; gamePath?: string | null; error?: string }>
@@ -122,7 +137,7 @@ export interface IApi {
 
   runPatcher: (
     gamePath: string,
-    selectedSkins: string[]
+    selectedSkins: SelectedSkin[]
   ) => Promise<{ success: boolean; message?: string }>
   stopPatcher: () => Promise<{ success: boolean; error?: string }>
   isPatcherRunning: () => Promise<boolean>
@@ -140,7 +155,9 @@ export interface IApi {
   fetchChampionData: (
     language?: string
   ) => Promise<{ success: boolean; message: string; championCount?: number }>
-  loadChampionData: (language?: string) => Promise<{ success: boolean; data?: any; error?: string }>
+  loadChampionData: (
+    language?: string
+  ) => Promise<{ success: boolean; data?: { champions: unknown[] }; error?: string }>
   checkChampionUpdates: (
     language?: string
   ) => Promise<{ success: boolean; needsUpdate?: boolean; error?: string }>
@@ -159,31 +176,53 @@ export interface IApi {
     chromaId?: string
   ) => Promise<{ success: boolean; error?: string }>
   isFavorite: (championKey: string, skinId: string, chromaId?: string) => Promise<boolean>
-  getFavorites: () => Promise<{ success: boolean; favorites?: any[]; error?: string }>
-  getFavoritesByChampion: (
-    championKey: string
-  ) => Promise<{ success: boolean; favorites?: any[]; error?: string }>
+  getFavorites: () => Promise<{
+    success: boolean
+    favorites?: Array<{
+      championKey: string
+      skinId: string
+      skinName: string
+      chromaId?: string
+      chromaName?: string
+      addedAt: Date
+    }>
+    error?: string
+  }>
+  getFavoritesByChampion: (championKey: string) => Promise<{
+    success: boolean
+    favorites?: Array<{
+      championKey: string
+      skinId: string
+      skinName: string
+      chromaId?: string
+      chromaName?: string
+      addedAt: Date
+    }>
+    error?: string
+  }>
 
   // Preset management
   createPreset: (
     name: string,
     description: string | undefined,
-    skins: any[]
-  ) => Promise<{ success: boolean; data?: any; error?: string }>
-  listPresets: () => Promise<{ success: boolean; data?: any[]; error?: string }>
-  getPreset: (id: string) => Promise<{ success: boolean; data?: any; error?: string }>
+    skins: SelectedSkin[]
+  ) => Promise<{ success: boolean; data?: Preset; error?: string }>
+  listPresets: () => Promise<{ success: boolean; data?: Preset[]; error?: string }>
+  getPreset: (id: string) => Promise<{ success: boolean; data?: Preset; error?: string }>
   updatePreset: (
     id: string,
-    updates: any
-  ) => Promise<{ success: boolean; data?: any; error?: string }>
+    updates: PresetUpdate
+  ) => Promise<{ success: boolean; data?: Preset; error?: string }>
   deletePreset: (id: string) => Promise<{ success: boolean; error?: string }>
   duplicatePreset: (
     id: string,
     newName: string
-  ) => Promise<{ success: boolean; data?: any; error?: string }>
-  validatePreset: (id: string) => Promise<{ success: boolean; data?: any; error?: string }>
+  ) => Promise<{ success: boolean; data?: Preset; error?: string }>
+  validatePreset: (
+    id: string
+  ) => Promise<{ success: boolean; data?: PresetValidationResult; error?: string }>
   exportPreset: (id: string) => Promise<{ success: boolean; filePath?: string; error?: string }>
-  importPreset: () => Promise<{ success: boolean; data?: any; error?: string }>
+  importPreset: () => Promise<{ success: boolean; data?: Preset; error?: string }>
 
   // Tools management
   checkToolsExist: () => Promise<boolean>
@@ -213,39 +252,80 @@ export interface IApi {
   isWindowMaximized: () => Promise<boolean>
 
   // Settings
-  getSettings: (key?: string) => Promise<any>
-  setSettings: (key: string, value: any) => Promise<void>
+  getSettings: (key?: string) => Promise<unknown>
+  setSettings: (key: string, value: unknown) => Promise<void>
   getSystemLocale: () => Promise<{ success: boolean; locale: string }>
 
   // Auto-updater
-  checkForUpdates: () => Promise<{ success: boolean; updateInfo?: any; error?: string }>
+  checkForUpdates: () => Promise<{ success: boolean; updateInfo?: UpdateInfo; error?: string }>
   downloadUpdate: () => Promise<{ success: boolean; error?: string }>
   quitAndInstall: () => void
   cancelUpdate: () => Promise<{ success: boolean }>
   getUpdateChangelog: () => Promise<{ success: boolean; changelog?: string | null; error?: string }>
-  getUpdateInfo: () => Promise<any>
+  getUpdateInfo: () => Promise<UpdateInfo | null>
   onUpdateChecking: (callback: () => void) => () => void
-  onUpdateAvailable: (callback: (info: any) => void) => () => void
+  onUpdateAvailable: (callback: (info: UpdateInfo) => void) => () => void
   onUpdateNotAvailable: (callback: () => void) => () => void
   onUpdateError: (callback: (error: string) => void) => () => void
-  onUpdateDownloadProgress: (callback: (progress: any) => void) => () => void
+  onUpdateDownloadProgress: (callback: (progress: UpdateProgress) => void) => () => void
   onUpdateDownloaded: (callback: () => void) => () => void
 
   // App info
   getAppVersion: () => Promise<string>
 
   // Repository management
-  repositoryGetAll: () => Promise<{ success: boolean; data?: any[]; error?: string }>
-  repositoryGetActive: () => Promise<{ success: boolean; data?: any; error?: string }>
+  repositoryGetAll: () => Promise<{
+    success: boolean
+    data?: Array<{
+      id: string
+      name: string
+      owner: string
+      repo: string
+      branch: string
+      isDefault: boolean
+      isCustom: boolean
+    }>
+    error?: string
+  }>
+  repositoryGetActive: () => Promise<{
+    success: boolean
+    data?: {
+      id: string
+      name: string
+      owner: string
+      repo: string
+      branch: string
+      isDefault: boolean
+      isCustom: boolean
+    }
+    error?: string
+  }>
   repositorySetActive: (repositoryId: string) => Promise<{ success: boolean; error?: string }>
-  repositoryAdd: (repository: any) => Promise<{ success: boolean; data?: any; error?: string }>
+  repositoryAdd: (repository: {
+    name: string
+    owner: string
+    repo: string
+    branch: string
+  }) => Promise<{
+    success: boolean
+    data?: {
+      id: string
+      name: string
+      owner: string
+      repo: string
+      branch: string
+      isDefault: boolean
+      isCustom: boolean
+    }
+    error?: string
+  }>
   repositoryRemove: (repositoryId: string) => Promise<{ success: boolean; error?: string }>
   repositoryValidate: (
     repositoryId: string
   ) => Promise<{ success: boolean; data?: boolean; error?: string }>
   repositoryUpdate: (
     repositoryId: string,
-    updates: any
+    updates: { name?: string; owner?: string; repo?: string; branch?: string }
   ) => Promise<{ success: boolean; error?: string }>
   repositoryConstructUrl: (
     championName: string,
@@ -317,7 +397,7 @@ export interface IApi {
   ) => Promise<{ success: boolean; error?: string }>
   importFile: (
     filePath: string,
-    options?: any
+    options?: ImportOptions
   ) => Promise<{ success: boolean; skinInfo?: SkinInfo; error?: string }>
 
   // LCU Connection APIs
@@ -325,9 +405,17 @@ export interface IApi {
   lcuDisconnect: () => Promise<{ success: boolean }>
   lcuGetStatus: () => Promise<{ connected: boolean; gameflowPhase: string }>
   lcuGetCurrentPhase: () => Promise<{ success: boolean; phase?: string; error?: string }>
-  lcuGetChampSelectSession: () => Promise<{ success: boolean; session?: any; error?: string }>
-  lcuGetOwnedChampions: () => Promise<{ success: boolean; champions?: any[]; error?: string }>
-  lcuGetAllChampions: () => Promise<{ success: boolean; champions?: any[]; error?: string }>
+  lcuGetChampSelectSession: () => Promise<{
+    success: boolean
+    session?: ChampSelectSession
+    error?: string
+  }>
+  lcuGetOwnedChampions: () => Promise<{
+    success: boolean
+    champions?: LCUChampion[]
+    error?: string
+  }>
+  lcuGetAllChampions: () => Promise<{ success: boolean; champions?: LCUChampion[]; error?: string }>
 
   // Auto Ban/Pick APIs
   setAutoPickChampions: (championIds: number[]) => Promise<{ success: boolean; error?: string }>
@@ -353,16 +441,16 @@ export interface IApi {
   }>
   isReadyForSmartApply: () => Promise<{ success: boolean; ready?: boolean; error?: string }>
   getSmartApplySummary: (
-    selectedSkins: any[],
+    selectedSkins: SelectedSkin[],
     teamChampionIds: number[],
-    autoSyncedSkins?: any[]
-  ) => Promise<{ success: boolean; summary?: any; error?: string }>
+    autoSyncedSkins?: AutoSyncedSkin[]
+  ) => Promise<{ success: boolean; summary?: ApplySummary; error?: string }>
   smartApplySkins: (
     gamePath: string,
-    selectedSkins: any[],
+    selectedSkins: SelectedSkin[],
     teamChampionIds: number[],
-    autoSyncedSkins?: any[]
-  ) => Promise<{ success: boolean; summary?: any; error?: string }>
+    autoSyncedSkins?: AutoSyncedSkin[]
+  ) => Promise<{ success: boolean; summary?: ApplySummary; error?: string }>
 
   // Team Composition Events
   onTeamCompositionUpdated: (
@@ -422,20 +510,18 @@ export interface IApi {
   }>
   getLobbyData: () => Promise<{
     success: boolean
-    data?: any
+    data?: LobbySession
     error?: string
   }>
 
   // Preselect Lobby Events
-  onPreselectModeDetected: (
-    callback: (data: { queueId: number; champions: any[] }) => void
-  ) => () => void
-  onPreselectChampionsChanged: (callback: (champions: any[]) => void) => () => void
-  onPreselectSnapshotTaken: (callback: (snapshot: any) => void) => () => void
-  onPreselectMatchFound: (callback: (snapshot: any) => void) => () => void
+  onPreselectModeDetected: (callback: (data: PreselectModeData) => void) => () => void
+  onPreselectChampionsChanged: (callback: (champions: PreselectChampion[]) => void) => () => void
+  onPreselectSnapshotTaken: (callback: (snapshot: PreselectSnapshot) => void) => () => void
+  onPreselectMatchFound: (callback: (snapshot: PreselectSnapshot) => void) => () => void
   onPreselectQueueCancelled: (callback: () => void) => () => void
   onPreselectCancelApply: (callback: () => void) => () => void
-  onPreselectReadyForApply: (callback: (snapshot: any) => void) => () => void
+  onPreselectReadyForApply: (callback: (snapshot: PreselectSnapshot) => void) => () => void
   onPreselectStateReset: (callback: () => void) => () => void
 
   // Overlay management
@@ -458,14 +544,24 @@ export interface IApi {
   onFixModProgress: (callback: (message: string) => void) => () => void
 
   // Settings change events from tray
-  onSettingsChanged: (callback: (key: string, value: any) => void) => () => void
+  onSettingsChanged: (callback: (key: string, value: unknown) => void) => () => void
   onOpenSettings: (callback: () => void) => () => void
   onLanguageChanged: (callback: (language: string) => void) => () => void
 
   // Skin update management
-  checkSkinUpdates: (
-    skinPaths?: string[]
-  ) => Promise<{ success: boolean; data?: Record<string, any>; error?: string }>
+  checkSkinUpdates: (skinPaths?: string[]) => Promise<{
+    success: boolean
+    data?: Record<
+      string,
+      {
+        hasUpdate: boolean
+        currentCommitSha?: string
+        latestCommitSha?: string
+        canCheck: boolean
+      }
+    >
+    error?: string
+  }>
   updateSkin: (skinInfo: SkinInfo) => Promise<{ success: boolean; data?: SkinInfo; error?: string }>
   bulkUpdateSkins: (skinInfos: SkinInfo[]) => Promise<{
     success: boolean

@@ -36,19 +36,15 @@ import {
 import { SkinInfo } from './types'
 import { PresetService } from './services/presetService'
 import { urlDownloadService } from './services/urlDownloadService'
-// Import SelectedSkin type from renderer atoms
-interface SelectedSkin {
-  championKey: string
-  championName: string
-  skinId: string
-  skinName: string
-  skinNameEn?: string
-  lolSkinsName?: string
-  skinNum: number
-  chromaId?: string
-  isDownloaded?: boolean
-  downloadedFilename?: string
-}
+import { FileImportOptions } from './services/fileImportService'
+import {
+  SelectedSkin,
+  PresetUpdate,
+  PreselectModeData,
+  PreselectSnapshot,
+  PreselectChampion
+} from './types/preload.types'
+import { SkinRepository } from './types/repository.types'
 
 // Initialize services
 const skinDownloader = new SkinDownloader()
@@ -646,7 +642,7 @@ function setupIpcHandlers(): void {
   })
 
   // File import handlers
-  ipcMain.handle('import-skin-file', async (_, filePath: string, options?: any) => {
+  ipcMain.handle('import-skin-file', async (_, filePath: string, options?: FileImportOptions) => {
     try {
       const result = await fileImportService.importFile(filePath, options)
       return result
@@ -758,19 +754,37 @@ function setupIpcHandlers(): void {
   })
 
   // Patcher controls
-  ipcMain.handle('run-patcher', async (_, gamePath: string, selectedSkins: string[]) => {
+  ipcMain.handle('run-patcher', async (_, gamePath: string, selectedSkins: SelectedSkin[]) => {
     try {
       console.log(selectedSkins)
 
+      // Build a map for championKey → championId for efficient lookup
+      const championIdMap = new Map<string, number>()
+      for (const skin of selectedSkins) {
+        if (skin.championId) {
+          championIdMap.set(skin.championKey, skin.championId)
+        }
+      }
+
+      // Convert to skin keys format for processing
+      const skinKeys = selectedSkins.map((skin) => {
+        const filename =
+          skin.downloadedFilename || `${skin.lolSkinsName || skin.skinNameEn || skin.skinName}.zip`
+        if (skin.chromaId) {
+          return `${skin.championKey}/${skin.lolSkinsName || skin.skinNameEn || skin.skinName} ${skin.chromaId}.zip`
+        }
+        return `${skin.championKey}/${filename}`
+      })
+
       // 0. Filter out base skins when their chromas are selected
-      const filteredSkins = selectedSkins.filter((skinKey) => {
+      const filteredSkins = skinKeys.filter((skinKey) => {
         const [champion, skinFile] = skinKey.split('/')
 
         // Check if this is a base skin
         const baseSkinName = skinFile.replace('.zip', '')
 
         // Check if any chroma of this skin is also selected
-        const hasChromaSelected = selectedSkins.some((otherKey) => {
+        const hasChromaSelected = skinKeys.some((otherKey) => {
           if (otherKey === skinKey) return false
           const [otherChampion, otherFile] = otherKey.split('/')
           if (champion !== otherChampion) return false
@@ -941,7 +955,14 @@ function setupIpcHandlers(): void {
           }
 
           // For regular skins, try to download
-          const url = repositoryService.constructGitHubUrl(champion, skinFile)
+          const championId = championIdMap.get(champion)
+          const url = repositoryService.constructGitHubUrl(
+            champion,
+            skinFile,
+            false,
+            undefined,
+            championId
+          )
           console.log(`[Patcher] Downloading skin: ${url}`)
           return skinDownloader.downloadSkin(url)
         })
@@ -1067,6 +1088,14 @@ function setupIpcHandlers(): void {
 
         // Filter skins based on team composition
         const filteredSkins = await skinApplyService.getSmartApplySkins(allSkins, teamChampionIds)
+
+        // Build a map for championKey → championId for efficient lookup
+        const championIdMap = new Map<string, number>()
+        for (const skin of filteredSkins) {
+          if (skin.championId) {
+            championIdMap.set(skin.championKey, skin.championId)
+          }
+        }
 
         // Convert to the format expected by run-patcher
         const skinKeys = filteredSkins.map((skin) => {
@@ -1241,7 +1270,14 @@ function setupIpcHandlers(): void {
             }
 
             // For regular skins, try to download
-            const url = repositoryService.constructGitHubUrl(champion, skinFile)
+            const championId = championIdMap.get(champion)
+            const url = repositoryService.constructGitHubUrl(
+              champion,
+              skinFile,
+              false,
+              undefined,
+              championId
+            )
             console.log(`[SmartApply] Downloading skin: ${url}`)
             return skinDownloader.downloadSkin(url)
           })
@@ -1408,7 +1444,7 @@ function setupIpcHandlers(): void {
   // Preset management
   ipcMain.handle(
     'preset:create',
-    async (_, name: string, description: string | undefined, skins: any[]) => {
+    async (_, name: string, description: string | undefined, skins: SelectedSkin[]) => {
       try {
         const preset = await presetService.createPreset(name, description, skins)
         return { success: true, data: preset }
@@ -1436,7 +1472,7 @@ function setupIpcHandlers(): void {
     }
   })
 
-  ipcMain.handle('preset:update', async (_, id: string, updates: any) => {
+  ipcMain.handle('preset:update', async (_, id: string, updates: PresetUpdate) => {
     try {
       const preset = await presetService.updatePreset(id, updates)
       return { success: true, data: preset }
@@ -1613,7 +1649,7 @@ function setupIpcHandlers(): void {
     return settingsService.get(key)
   })
 
-  ipcMain.handle('set-settings', async (_, key: string, value: any) => {
+  ipcMain.handle('set-settings', async (_, key: string, value: unknown) => {
     settingsService.set(key, value)
 
     // If mod tools timeout is being set, update the wrapper
@@ -1734,7 +1770,7 @@ function setupIpcHandlers(): void {
     }
   })
 
-  ipcMain.handle('repository:add', async (_, repository: any) => {
+  ipcMain.handle('repository:add', async (_, repository: Omit<SkinRepository, 'id' | 'status'>) => {
     try {
       const newRepo = await repositoryService.addRepository(repository)
       return { success: true, data: newRepo }
@@ -1765,14 +1801,17 @@ function setupIpcHandlers(): void {
     }
   })
 
-  ipcMain.handle('repository:update', async (_, repositoryId: string, updates: any) => {
-    try {
-      const result = repositoryService.updateRepository(repositoryId, updates)
-      return { success: result }
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+  ipcMain.handle(
+    'repository:update',
+    async (_, repositoryId: string, updates: Partial<SkinRepository>) => {
+      try {
+        const result = repositoryService.updateRepository(repositoryId, updates)
+        return { success: result }
+      } catch (error) {
+        return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+      }
     }
-  })
+  )
 
   ipcMain.handle(
     'repository:add-with-detection',
@@ -1808,14 +1847,16 @@ function setupIpcHandlers(): void {
       championName: string,
       skinFile: string,
       isChroma: boolean = false,
-      chromaBase?: string
+      chromaBase?: string,
+      championId?: number
     ) => {
       try {
         const url = repositoryService.constructGitHubUrl(
           championName,
           skinFile,
           isChroma,
-          chromaBase
+          chromaBase,
+          championId
         )
         return { success: true, url }
       } catch (error) {
@@ -2081,7 +2122,7 @@ function setupIpcHandlers(): void {
   )
 
   // Import file (alias for import-skin-file used by file transfer)
-  ipcMain.handle('import-file', async (_, filePath: string, options?: any) => {
+  ipcMain.handle('import-file', async (_, filePath: string, options?: FileImportOptions) => {
     try {
       const result = await fileImportService.importFile(filePath, options)
       return result
@@ -2594,18 +2635,26 @@ async function showOverlayWithAutoSelectedSkin(championKey: string): Promise<voi
     }
 
     // Prepare overlay data
-    const overlayData: any = {
+    const overlayData = {
       championId: currentChampionId || parseInt(championKey), // Use stored ID or fallback
       championKey: champData.key,
       championName: champData.name,
-      skins: (champData.skins || []).map((skin: any) => ({
+      skins: (champData.skins || []).map((skin) => ({
         ...skin,
         splashPath: `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champData.key}_${skin.num}.jpg`,
         tilePath: `https://ddragon.leagueoflegends.com/cdn/img/champion/loading/${champData.key}_${skin.num}.jpg`
       })),
       autoRandomEnabled,
-      autoSelectedSkin: rendererAutoSelectedSkin,
-      theme: null // Will be set by renderer based on current theme
+      autoSelectedSkin: rendererAutoSelectedSkin
+        ? {
+            championKey: rendererAutoSelectedSkin.championKey,
+            championName: rendererAutoSelectedSkin.championName,
+            skinId: String(rendererAutoSelectedSkin.skinId),
+            skinName: rendererAutoSelectedSkin.skinName,
+            skinNum: rendererAutoSelectedSkin.skinNum
+          }
+        : undefined,
+      theme: undefined // Will be set by renderer based on current theme
     }
 
     // Ensure we only show overlay when we have valid auto-selected skin data
@@ -2716,25 +2765,25 @@ function setupLCUConnection(): void {
   })
 
   // Forward preselectLobbyMonitor events
-  preselectLobbyMonitor.on('preselect-mode-detected', (data: any) => {
+  preselectLobbyMonitor.on('preselect-mode-detected', (data: PreselectModeData) => {
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send('preselect:mode-detected', data)
     })
   })
 
-  preselectLobbyMonitor.on('champions-changed', (champions: any[]) => {
+  preselectLobbyMonitor.on('champions-changed', (champions: PreselectChampion[]) => {
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send('preselect:champions-changed', champions)
     })
   })
 
-  preselectLobbyMonitor.on('snapshot-taken', (snapshot: any) => {
+  preselectLobbyMonitor.on('snapshot-taken', (snapshot: PreselectSnapshot) => {
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send('preselect:snapshot-taken', snapshot)
     })
   })
 
-  preselectLobbyMonitor.on('match-found', (snapshot: any) => {
+  preselectLobbyMonitor.on('match-found', (snapshot: PreselectSnapshot) => {
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send('preselect:match-found', snapshot)
     })
@@ -2752,7 +2801,7 @@ function setupLCUConnection(): void {
     })
   })
 
-  preselectLobbyMonitor.on('ready-for-preselect-apply', (snapshot: any) => {
+  preselectLobbyMonitor.on('ready-for-preselect-apply', (snapshot: PreselectSnapshot) => {
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send('preselect:ready-for-apply', snapshot)
     })
