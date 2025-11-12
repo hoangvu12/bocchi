@@ -946,10 +946,17 @@ function setupIpcHandlers(): void {
           // Handle remote skins
           // First check if the skin is already downloaded
           const downloadedSkins = await skinDownloader.listDownloadedSkins()
+          // Get context for proper champion name matching
+          const skinCtx = skinContextMap.get(skinKey)
+          const properChampionName = skinCtx?.championName || champion
           // Try both the original champion name and URL-decoded version (for champions with spaces)
+          // Also check against the proper display name to handle both old and new folder structures
           const existingSkin = downloadedSkins.find(
             (ds) =>
-              (ds.championName === champion || decodeURIComponent(ds.championName) === champion) &&
+              (ds.championName === champion ||
+                decodeURIComponent(ds.championName) === champion ||
+                ds.championName === properChampionName ||
+                decodeURIComponent(ds.championName) === properChampionName) &&
               ds.skinName === skinFile
           )
 
@@ -1281,11 +1288,17 @@ function setupIpcHandlers(): void {
 
             // First check if the skin is already downloaded
             const downloadedSkins = await skinDownloader.listDownloadedSkins()
+            // Get context for proper champion name matching
+            const skinCtx = skinContextMap.get(skinKey)
+            const properChampionName = skinCtx?.championName || champion
             // Try both the original champion name and URL-decoded version (for champions with spaces)
+            // Also check against the proper display name to handle both old and new folder structures
             const existingSkin = downloadedSkins.find(
               (ds) =>
                 (ds.championName === champion ||
-                  decodeURIComponent(ds.championName) === champion) &&
+                  decodeURIComponent(ds.championName) === champion ||
+                  ds.championName === properChampionName ||
+                  decodeURIComponent(ds.championName) === properChampionName) &&
                 ds.skinName === skinFile
             )
 
