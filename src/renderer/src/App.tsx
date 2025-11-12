@@ -563,7 +563,9 @@ function AppContent(): React.JSX.Element {
         const urlResult = await window.api.repositoryConstructUrl(
           championNameForUrl,
           skinFileName,
-          false
+          false,
+          undefined, // chromaBase
+          champion.id // Pass championId for ID-based repositories
         )
         if (!urlResult.success || !urlResult.url) {
           console.error('Failed to construct download URL for auto-selected skin')

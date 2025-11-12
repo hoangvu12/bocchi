@@ -975,9 +975,12 @@ function setupIpcHandlers(): void {
           }
 
           // For regular skins, try to download
-          const championId = championIdMap.get(champion)
+          // Get the SelectedSkin context to access proper championName and championId
+          const selectedSkinContext = skinContextMap.get(skinKey)
+          const championId = selectedSkinContext?.championId
+          const championName = selectedSkinContext?.championName || champion // Fallback to key if context not found
           const url = repositoryService.constructGitHubUrl(
-            champion,
+            championName, // Use championName for proper URL construction (e.g., "Aurelion Sol" not "AurelionSol")
             skinFile,
             false,
             undefined,
@@ -1308,9 +1311,12 @@ function setupIpcHandlers(): void {
             }
 
             // For regular skins, try to download
-            const championId = championIdMap.get(champion)
+            // Get the SelectedSkin context to access proper championName and championId
+            const selectedSkinContext = skinContextMap.get(skinKey)
+            const championId = selectedSkinContext?.championId
+            const championName = selectedSkinContext?.championName || champion // Fallback to key if context not found
             const url = repositoryService.constructGitHubUrl(
-              champion,
+              championName, // Use championName for proper URL construction (e.g., "Aurelion Sol" not "AurelionSol")
               skinFile,
               false,
               undefined,

@@ -349,7 +349,8 @@ export function useSkinManagement() {
                   championNameForUrl,
                   skinFileName,
                   true,
-                  downloadName
+                  downloadName,
+                  champion.id // Pass championId for ID-based repositories
                 )
                 if (!urlResult.success || !urlResult.url) {
                   throw new Error('Failed to construct download URL')
@@ -364,7 +365,9 @@ export function useSkinManagement() {
                 const urlResult = await window.api.repositoryConstructUrl(
                   championNameForUrl,
                   skinFileName,
-                  false
+                  false,
+                  undefined, // chromaBase
+                  champion.id // Pass championId for ID-based repositories
                 )
                 if (!urlResult.success || !urlResult.url) {
                   throw new Error('Failed to construct download URL')

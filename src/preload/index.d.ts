@@ -367,7 +367,8 @@ export interface IApi {
     championName: string,
     skinFile: string,
     isChroma?: boolean,
-    chromaBase?: string
+    chromaBase?: string,
+    championId?: number
   ) => Promise<{ success: boolean; url?: string; error?: string }>
 
   // Custom skin images
