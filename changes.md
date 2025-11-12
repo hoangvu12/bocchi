@@ -1,21 +1,13 @@
-## v1.24.2
+## v1.24.3
 
 ### Bug Fixes
 
-- Fixed custom skins failing to apply after v1.24.0 refactor
-- Fixed custom skins not appearing in Custom section of sidebar
-- Fixed repository structure detection not providing user feedback
-
-### Improvements
-
-- Repository structure now detected upfront when adding repositories
-- Added re-detect button for manual repository structure refresh
-- Improved error messages with detailed logging for skin mapping failures
-- Enhanced 404 errors with specific causes and actionable suggestions
+- Fixed champion names using internal keys (AurelionSol, Kaisa, MonkeyKing) instead of display names (Aurelion Sol, Kai'Sa, Wukong) for name-based repository URLs
+- Fixed skins failing to download from name-based repositories due to incorrect directory paths
+- Improved champion name matching for existing downloaded skins to support both old and new folder name formats
 
 ### Technical Changes
 
-- Changed custom skin detection from string matching to property-based checks
-- Added skinContextMap to preserve full SelectedSkin context in patcher
-- Custom skins now appear in both Custom section and their champion's list
-- Repository detection results shown to user with confidence levels
+- Use champion display names for name-based repository URL construction
+- Pass championId to repository URL construction for better ID-based repository support
+- Enhanced backward compatibility with existing downloaded skins in different folder name formats
