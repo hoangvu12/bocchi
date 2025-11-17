@@ -140,7 +140,7 @@ export class SkinMetadataService {
 
   private extractGitHubPath(url: string): string {
     // Convert GitHub URL to file path for API
-    // Example: https://github.com/darkseal-org/lol-skins/blob/main/skins/Aatrox/Blood%20Moon%20Aatrox.zip
+    // Example: https://github.com/Alban1911/LeagueSkins/blob/main/skins/266/266002/266002.zip
     // Result: skins/Aatrox/Blood Moon Aatrox.zip
 
     try {

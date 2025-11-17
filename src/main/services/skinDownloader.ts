@@ -14,6 +14,7 @@ import { ModToolsWrapper } from './modToolsWrapper'
 import { repositoryService } from './repositoryService'
 import { SkinRepository } from '../types/repository.types'
 import { championDataService } from './championDataService'
+import { generateSkinFilename } from '../../shared/utils/skinFilename'
 
 interface BulkDownloadProgress {
   phase: 'downloading' | 'extracting' | 'processing' | 'completed'
@@ -40,6 +41,24 @@ interface BulkDownloadOptions {
 }
 
 type BulkProgressCallback = (progress: BulkDownloadProgress) => void
+
+type ChampionSkinData = {
+  id: string
+  num: number
+  name: string
+  nameEn?: string
+  lolSkinsName?: string
+  chromas: boolean
+  chromaList?: Array<{ id: number }>
+}
+
+type ChampionRecord = {
+  id: number
+  key: string
+  name: string
+  nameEn?: string
+  skins: ChampionSkinData[]
+}
 
 export class SkinDownloader {
   private cacheDir: string
@@ -775,21 +794,34 @@ export class SkinDownloader {
 
       // Phase 3: Process and copy files
       console.log('[SkinDownloader] Processing skins')
+      try {
+        await championDataService.loadChampionData()
+      } catch (error) {
+        console.warn(
+          '[SkinDownloader] Failed to ensure champion data before bulk processing:',
+          error
+        )
+      }
       const repoFolder = `${repository.repo}-${repository.branch}`
       const skinsRelPath = repository.structure?.skinsPath || 'skins'
       const skinsPath = path.join(extractPath, repoFolder, skinsRelPath)
-      await this.processSkins(skinsPath, options, (processed, total, current, skipped, failed) => {
-        const progressPercent = 40 + Math.round((processed / total) * 60) // 40-100%
-        onProgress?.({
-          phase: 'processing',
-          processedFiles: processed,
-          totalFiles: total,
-          currentFile: current,
-          skippedFiles: skipped,
-          failedFiles: failed,
-          overallProgress: progressPercent
-        })
-      })
+      await this.processSkins(
+        skinsPath,
+        options,
+        repository,
+        (processed, total, current, skipped, failed) => {
+          const progressPercent = 40 + Math.round((processed / total) * 60) // 40-100%
+          onProgress?.({
+            phase: 'processing',
+            processedFiles: processed,
+            totalFiles: total,
+            currentFile: current,
+            skippedFiles: skipped,
+            failedFiles: failed,
+            overallProgress: progressPercent
+          })
+        }
+      )
 
       // Phase 4: Cleanup
       console.log('[SkinDownloader] Cleaning up temporary files')
@@ -844,6 +876,7 @@ export class SkinDownloader {
   private async processSkins(
     skinsPath: string,
     options: BulkDownloadOptions,
+    repository: SkinRepository,
     onProgress?: (
       processed: number,
       total: number,
@@ -859,6 +892,7 @@ export class SkinDownloader {
       championName: string
       skinName: string
     }> = []
+    const isIdBased = repository.structure?.type === 'id-based'
 
     // Collect all files to process
     for (const championDir of championDirs) {
@@ -866,6 +900,16 @@ export class SkinDownloader {
       const stat = await fs.stat(championPath)
 
       if (!stat.isDirectory()) continue
+
+      if (isIdBased) {
+        const idBasedFiles = await this.collectIdBasedChampionFiles(
+          championDir,
+          championPath,
+          options
+        )
+        files.push(...idBasedFiles)
+        continue
+      }
 
       const skinFiles = await fs.readdir(championPath)
 
@@ -965,6 +1009,135 @@ export class SkinDownloader {
         processed++
         onProgress?.(processed, filteredFiles.length, file.skinName, skipped, failed)
       }
+    }
+  }
+
+  private async collectIdBasedChampionFiles(
+    championDir: string,
+    championPath: string,
+    options: BulkDownloadOptions
+  ): Promise<
+    Array<{
+      source: string
+      destination: string
+      championName: string
+      skinName: string
+    }>
+  > {
+    const files: Array<{
+      source: string
+      destination: string
+      championName: string
+      skinName: string
+    }> = []
+
+    if (!/^\d+$/.test(championDir)) {
+      console.warn(
+        `[SkinDownloader] Skipping unexpected directory "${championDir}" in ID-based repository`
+      )
+      return files
+    }
+
+    const championId = parseInt(championDir, 10)
+    const champion = championDataService.getChampionByIdSync(championId) as ChampionRecord | null
+    const championName =
+      champion?.nameEn || champion?.name || champion?.key || `Champion_${championId}`
+
+    const skinDirs = await fs.readdir(championPath)
+    for (const skinDir of skinDirs) {
+      const skinDirPath = path.join(championPath, skinDir)
+      const skinStat = await fs.stat(skinDirPath)
+      if (!skinStat.isDirectory()) continue
+
+      const matchedSkin = champion?.skins.find((skin) =>
+        this.matchesSkinId(championId, skin, skinDir)
+      )
+
+      const baseFileName = matchedSkin
+        ? generateSkinFilename({
+            name: matchedSkin.name,
+            nameEn: matchedSkin.nameEn,
+            lolSkinsName: matchedSkin.lolSkinsName
+          })
+        : `${skinDir}.zip`
+
+      const baseZipPath = path.join(skinDirPath, `${skinDir}.zip`)
+      if (await this.fileExists(baseZipPath)) {
+        files.push({
+          source: baseZipPath,
+          destination: path.join(this.cacheDir, championName, baseFileName),
+          championName,
+          skinName: baseFileName
+        })
+      }
+
+      if (options.excludeChromas) {
+        continue
+      }
+
+      const chromaDirs = await fs.readdir(skinDirPath)
+      for (const chromaDir of chromaDirs) {
+        const chromaPath = path.join(skinDirPath, chromaDir)
+        const chromaStat = await fs.stat(chromaPath)
+        if (!chromaStat.isDirectory()) continue
+        if (!/^\d+$/.test(chromaDir)) continue
+
+        const chromaZipPath = path.join(chromaPath, `${chromaDir}.zip`)
+        if (!(await this.fileExists(chromaZipPath))) continue
+
+        const chromaFileName = this.getChromaFileName(matchedSkin, chromaDir, baseFileName)
+        files.push({
+          source: chromaZipPath,
+          destination: path.join(this.cacheDir, championName, chromaFileName),
+          championName,
+          skinName: chromaFileName
+        })
+      }
+    }
+
+    return files
+  }
+
+  private matchesSkinId(
+    championId: number,
+    skin: ChampionSkinData,
+    directoryName: string
+  ): boolean {
+    if (skin.id && skin.id === directoryName) {
+      return true
+    }
+    const paddedNum = skin.num.toString().padStart(3, '0')
+    const combinedId = `${championId}${paddedNum}`
+    return combinedId === directoryName || skin.num.toString() === directoryName
+  }
+
+  private getChromaFileName(
+    skin: ChampionSkinData | undefined,
+    chromaId: string,
+    fallbackBase: string
+  ): string {
+    if (skin) {
+      const chroma = skin.chromaList?.find((c) => c.id.toString() === chromaId)
+      if (chroma) {
+        return generateSkinFilename({
+          name: skin.name,
+          nameEn: skin.nameEn,
+          lolSkinsName: skin.lolSkinsName,
+          chromaId: chromaId
+        })
+      }
+    }
+
+    const baseName = fallbackBase.replace(/\.zip$/i, '')
+    return `${baseName} ${chromaId}.zip`
+  }
+
+  private async fileExists(filePath: string): Promise<boolean> {
+    try {
+      await fs.access(filePath)
+      return true
+    } catch {
+      return false
     }
   }
 

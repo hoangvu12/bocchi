@@ -215,17 +215,22 @@ export const VirtualizedSkinGrid: React.FC<VirtualizedSkinGridProps> = ({
 
       const { champion, skin } = skins[index]
       const skinFileName = generateSkinFilename(skin)
-      const downloadedSkin = downloadedSkins.find((ds) => {
-        if (champion.key === 'Custom') {
-          // For custom mods, match by [User] prefix and skin name
-          return ds.skinName.startsWith('[User]') && ds.skinName.includes(skin.name)
-        }
-        return (
-          ds.championName === champion.key &&
-          (ds.skinName === skinFileName ||
-            (ds.skinName.includes(`[User]`) && ds.skinName.includes(skin.name)))
+
+      let downloadedSkin: (typeof downloadedSkins)[number] | undefined
+      if (champion.key === 'Custom') {
+        downloadedSkin = downloadedSkins.find(
+          (ds) => ds.skinName.startsWith('[User]') && ds.skinName.includes(skin.name)
         )
-      })
+      } else {
+        downloadedSkin =
+          downloadedSkinsMap.get(`${champion.key}:${skinFileName}`) ||
+          downloadedSkins.find(
+            (ds) =>
+              ds.championName === champion.key &&
+              ds.skinName.includes(`[User]`) &&
+              ds.skinName.includes(skin.name)
+          )
+      }
       const isDownloaded = !!downloadedSkin
       const isUserSkin = downloadedSkin?.skinName?.includes('[User]')
       const isFavorite = favorites.has(`${champion.key}_${skin.id}_base`)

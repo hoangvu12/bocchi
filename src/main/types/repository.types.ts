@@ -41,13 +41,17 @@ export const DEFAULT_REPOSITORY_STRUCTURE: RepositoryStructure = {
 }
 
 export const DEFAULT_REPOSITORY: SkinRepository = {
-  id: 'darkseal-default',
-  name: 'DarkSeal Official',
-  owner: 'darkseal-org',
-  repo: 'lol-skins',
+  id: 'leagueskins-default',
+  name: 'LeagueSkins Official',
+  owner: 'Alban1911',
+  repo: 'LeagueSkins',
   branch: 'main',
   isDefault: true,
   isCustom: false,
-  structure: DEFAULT_REPOSITORY_STRUCTURE,
+  structure: {
+    type: 'id-based',
+    skinsPath: 'skins',
+    autoDetected: true
+  },
   status: 'unchecked'
 }

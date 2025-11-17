@@ -117,24 +117,20 @@ export function useDownloadAllSkins() {
           )
             continue
 
-          // Use the English name or fallback to localized name for URL generation
+          // Use the English name or fallback to localized name for identification
           const championKey = champion.key
           const skinName = skin.nameEn || skin.name
 
-          // Generate GitHub URL for skin
-          const encodedChampionKey = encodeURIComponent(championKey)
-          const encodedSkinName = encodeURIComponent(`${skinName}.zip`)
-          const url = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${encodedChampionKey}/${encodedSkinName}`
-
-          urls.push(url)
+          // Store a pseudo identifier so we can count skins without relying on a specific repository
+          const identifier = `${championKey}/${skinName}.zip`
+          urls.push(identifier)
 
           // Add chromas if they exist and not excluded
           if (!options.excludeChromas && skin.chromas && skin.chromaList) {
             for (const chroma of skin.chromaList) {
               const chromaName = `${skinName} ${chroma.id}.zip`
-              const encodedChromaName = encodeURIComponent(chromaName)
-              const chromaUrl = `https://github.com/darkseal-org/lol-skins/blob/main/skins/${encodedChampionKey}/chromas/${encodedSkinName.replace('.zip', '')}/${encodedChromaName}`
-              urls.push(chromaUrl)
+              const chromaIdentifier = `${championKey}/${chromaName}`
+              urls.push(chromaIdentifier)
             }
           }
         }

@@ -30,19 +30,23 @@ export class RepositoryService {
     try {
       const settings = settingsService.get('repositorySettings') as RepositorySettings
       if (settings) {
-        this.repositories = settings.repositories || [DEFAULT_REPOSITORY]
+        const storedRepositories = Array.isArray(settings.repositories) ? settings.repositories : []
+        this.repositories =
+          storedRepositories.length > 0 ? storedRepositories : [{ ...DEFAULT_REPOSITORY }]
         this.activeRepositoryId = settings.activeRepositoryId || DEFAULT_REPOSITORY.id
 
-        // Ensure default repository exists
-        if (!this.repositories.find((r) => r.id === DEFAULT_REPOSITORY.id)) {
-          this.repositories.unshift(DEFAULT_REPOSITORY)
-        }
+        // Handle migration from lol-skins to LeagueSkins default
+        const defaultChanged = this.migrateDefaultRepository()
 
         // Migrate repositories without structure field
         this.migrateRepositories()
+
+        if (defaultChanged) {
+          this.saveRepositories()
+        }
       } else {
         // Initialize with default repository
-        this.repositories = [DEFAULT_REPOSITORY]
+        this.repositories = [{ ...DEFAULT_REPOSITORY }]
         this.activeRepositoryId = DEFAULT_REPOSITORY.id
         this.saveRepositories()
       }
@@ -94,6 +98,105 @@ export class RepositoryService {
 
     // Auto-detect repositories that weren't auto-detected yet (async in background)
     this.autoDetectUndetectedRepositories()
+  }
+
+  /**
+   * Ensures the LeagueSkins repository is set as default and removes legacy lol-skins entry
+   */
+  private migrateDefaultRepository(): boolean {
+    let hasChanges = false
+
+    // Remove legacy default from darkseal-org/lol-skins
+    const filteredRepositories: SkinRepository[] = []
+    for (const repo of this.repositories) {
+      const isLegacyDefault =
+        repo.id === 'darkseal-default' ||
+        (repo.isDefault && repo.owner === 'darkseal-org' && repo.repo === 'lol-skins')
+
+      if (isLegacyDefault) {
+        hasChanges = true
+        if (this.activeRepositoryId === repo.id) {
+          this.activeRepositoryId = DEFAULT_REPOSITORY.id
+        }
+        continue
+      }
+
+      filteredRepositories.push(repo)
+    }
+    this.repositories = filteredRepositories
+
+    // Find existing LeagueSkins repositories (users might have added one manually)
+    const leagueSkinsEntries = this.repositories.filter((repo) =>
+      this.isLeagueSkinsRepository(repo)
+    )
+
+    let defaultRepositoryIndex = -1
+
+    if (leagueSkinsEntries.length > 0) {
+      hasChanges = true
+
+      // Prefer the entry that was already marked as default, otherwise use the first one
+      const primaryEntry =
+        leagueSkinsEntries.find((repo) => repo.isDefault) ?? leagueSkinsEntries[0]
+
+      // Remove other duplicates of LeagueSkins
+      this.repositories = this.repositories.filter((repo) => {
+        if (!this.isLeagueSkinsRepository(repo)) {
+          return true
+        }
+        return repo === primaryEntry
+      })
+
+      defaultRepositoryIndex = this.repositories.findIndex((repo) => repo === primaryEntry)
+
+      if (this.activeRepositoryId === primaryEntry.id) {
+        this.activeRepositoryId = DEFAULT_REPOSITORY.id
+      }
+
+      const normalizedStructure = {
+        type: 'id-based' as const,
+        skinsPath: primaryEntry.structure?.skinsPath || 'skins',
+        chromaPattern: primaryEntry.structure?.chromaPattern,
+        autoDetected: true
+      }
+
+      const normalizedRepo: SkinRepository = {
+        ...DEFAULT_REPOSITORY,
+        branch: primaryEntry.branch || DEFAULT_REPOSITORY.branch,
+        structure: normalizedStructure,
+        lastChecked: primaryEntry.lastChecked,
+        status: primaryEntry.status || DEFAULT_REPOSITORY.status
+      }
+
+      if (defaultRepositoryIndex !== -1) {
+        this.repositories[defaultRepositoryIndex] = normalizedRepo
+      } else {
+        this.repositories.unshift(normalizedRepo)
+      }
+    }
+
+    // Ensure default repository exists if no existing LeagueSkins entry was found
+    if (leagueSkinsEntries.length === 0) {
+      if (!this.repositories.find((repo) => repo.id === DEFAULT_REPOSITORY.id)) {
+        this.repositories.unshift({ ...DEFAULT_REPOSITORY })
+        hasChanges = true
+      }
+    }
+
+    // Ensure active repository points to a valid entry
+    if (!this.repositories.find((repo) => repo.id === this.activeRepositoryId)) {
+      this.activeRepositoryId = DEFAULT_REPOSITORY.id
+      hasChanges = true
+    }
+
+    return hasChanges
+  }
+
+  private isLeagueSkinsRepository(repo: SkinRepository): boolean {
+    return (
+      repo.owner?.toLowerCase() === DEFAULT_REPOSITORY.owner.toLowerCase() &&
+      repo.repo?.toLowerCase() === DEFAULT_REPOSITORY.repo.toLowerCase()
+    )
   }
 
   /**
