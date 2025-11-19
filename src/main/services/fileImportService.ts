@@ -303,18 +303,45 @@ export class FileImportService {
       }
 
       const metaInfoPath = path.join(tempExtractPath, 'META', 'info.json')
-      if (!(await this.fileExists(metaInfoPath))) {
-        throw new Error('Invalid mod structure: META/info.json not found')
+      let info: any
+
+      // Try to read existing info.json, or create one if missing/malformed
+      try {
+        if (await this.fileExists(metaInfoPath)) {
+          const infoContent = await fs.readFile(metaInfoPath, 'utf-8')
+          info = JSON.parse(infoContent)
+        } else {
+          // No info.json found, create from scratch
+          info = null
+        }
+      } catch (error) {
+        // Malformed JSON or read error, create from scratch
+        console.warn(
+          `Failed to parse META/info.json: ${error instanceof Error ? error.message : 'Unknown error'}. Creating new metadata.`
+        )
+        info = null
       }
 
-      const infoContent = await fs.readFile(metaInfoPath, 'utf-8')
-      const info = JSON.parse(infoContent)
+      // Create info.json from scratch if it doesn't exist or was malformed
+      if (!info) {
+        const metaDir = path.join(tempExtractPath, 'META')
+        await fs.mkdir(metaDir, { recursive: true })
 
-      // Update author if provided in options
-      if (options.author) {
-        info.Author = options.author
-        // Write back the updated info
+        info = {
+          Author: options.author || 'User Import',
+          Description: `Imported from ${path.basename(zipPath)}`,
+          Name: options.skinName || fileName,
+          Version: '1.0.0'
+        }
+
         await fs.writeFile(metaInfoPath, JSON.stringify(info, null, 2))
+      } else {
+        // Update author if provided in options
+        if (options.author) {
+          info.Author = options.author
+          // Write back the updated info
+          await fs.writeFile(metaInfoPath, JSON.stringify(info, null, 2))
+        }
       }
 
       // Handle custom image if provided
