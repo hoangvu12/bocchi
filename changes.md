@@ -1,5 +1,4 @@
-- Remove vanguard workaround (cslol-tools now has built-in workaround)
-- Add auto-update mechanism for cslol-tools with version tracking
-- Add update dialog notification for cslol-tools updates
-- Fix browse button being disabled when cslol-tools not installed
-- Change cslol-tools installation location to %appdata%/bocchi
+- Add support for .exe cslol-manager releases (7z SFX)
+- Switch from node-7z-archive to node-7z for better compatibility
+- Fix update check to only run when cslol-tools exists
+- Support both .zip (old releases) and .exe (new releases) formats

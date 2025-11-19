@@ -1,6 +1,6 @@
 {
   "name": "bocchi",
-  "version": "1.24.5",
+  "version": "1.24.6",
   "description": "Bocchi - League of Legends Skin Changer",
   "main": "./out/main/index.js",
   "author": "Bocchi Team",
