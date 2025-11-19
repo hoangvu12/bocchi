@@ -1,1 +1,5 @@
-- Remove lol-skins, make LeagueSkins default repository
+- Remove vanguard workaround (cslol-tools now has built-in workaround)
+- Add auto-update mechanism for cslol-tools with version tracking
+- Add update dialog notification for cslol-tools updates
+- Fix browse button being disabled when cslol-tools not installed
+- Change cslol-tools installation location to %appdata%/bocchi
