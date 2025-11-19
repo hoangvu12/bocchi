@@ -3,6 +3,8 @@ import axios, { AxiosError } from 'axios'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as StreamZip from 'node-stream-zip'
+import { extractFull } from 'node-7z'
+import sevenBin from '7zip-bin'
 import { settingsService } from './settingsService'
 
 export interface DownloadProgress {
@@ -60,7 +62,13 @@ export class ToolsDownloader {
     }
   }
 
-  async getLatestReleaseInfo(): Promise<{ downloadUrl: string; version: string; size: number }> {
+  async getLatestReleaseInfo(): Promise<{
+    downloadUrl: string
+    version: string
+    size: number
+    fileType: 'zip' | 'exe'
+    fileName: string
+  }> {
     try {
       const response = await axios.get(
         'https://api.github.com/repos/LeagueToolkit/cslol-manager/releases/latest',
@@ -73,13 +81,24 @@ export class ToolsDownloader {
       )
 
       const release = response.data
-      const asset = release.assets.find((a: any) => a.name === 'cslol-manager.zip')
+
+      // First try to find .zip (old releases)
+      let asset = release.assets.find((a: any) => a.name === 'cslol-manager.zip')
+      let fileType: 'zip' | 'exe' = 'zip'
+      let fileName = 'cslol-manager.zip'
+
+      // Fall back to .exe (new releases)
+      if (!asset) {
+        asset = release.assets.find((a: any) => a.name === 'cslol-manager-windows.exe')
+        fileType = 'exe'
+        fileName = 'cslol-manager-windows.exe'
+      }
 
       if (!asset) {
         throw this.createError(
           'validation',
-          'Could not find cslol-manager.zip in latest release',
-          'The release format may have changed',
+          'Could not find cslol-manager archive in latest release',
+          'Neither .zip nor .exe format found',
           false
         )
       }
@@ -87,7 +106,9 @@ export class ToolsDownloader {
       return {
         downloadUrl: asset.browser_download_url,
         version: release.tag_name,
-        size: asset.size
+        size: asset.size,
+        fileType,
+        fileName
       }
     } catch (error) {
       if (error instanceof Error && 'type' in error) {
@@ -102,13 +123,13 @@ export class ToolsDownloader {
   ): Promise<void> {
     let tempDir: string | undefined
     try {
-      const { downloadUrl, size, version } = await this.getLatestReleaseInfo()
+      const { downloadUrl, size, version, fileType, fileName } = await this.getLatestReleaseInfo()
 
       // Create temp directory
       tempDir = path.join(app.getPath('temp'), 'cslol-download')
       await fs.promises.mkdir(tempDir, { recursive: true })
 
-      const zipPath = path.join(tempDir, 'cslol-manager.zip')
+      const downloadPath = path.join(tempDir, fileName)
 
       // Download the file with progress tracking
       const startTime = Date.now()
@@ -138,7 +159,7 @@ export class ToolsDownloader {
       })
 
       // Save to file with error handling
-      const writer = fs.createWriteStream(zipPath)
+      const writer = fs.createWriteStream(downloadPath)
       response.data.pipe(writer)
 
       await new Promise<void>((resolve, reject) => {
@@ -152,7 +173,7 @@ export class ToolsDownloader {
       })
 
       // Verify download size
-      const stats = await fs.promises.stat(zipPath)
+      const stats = await fs.promises.stat(downloadPath)
       if (stats.size === 0) {
         throw this.createError(
           'validation',
@@ -162,31 +183,54 @@ export class ToolsDownloader {
         )
       }
 
-      // Extract the zip with validation
+      // Extract based on file type
       const extractPath = path.join(tempDir, 'extracted')
-      const zip = new StreamZip.async({ file: zipPath })
 
-      try {
-        // Test zip integrity
-        const entries = await zip.entries()
-        const entryCount = Object.keys(entries).length
-        if (entryCount === 0) {
-          throw new Error('ZIP archive is empty')
+      if (fileType === 'zip') {
+        // Extract ZIP file
+        const zip = new StreamZip.async({ file: downloadPath })
+
+        try {
+          // Test zip integrity
+          const entries = await zip.entries()
+          const entryCount = Object.keys(entries).length
+          if (entryCount === 0) {
+            throw new Error('ZIP archive is empty')
+          }
+
+          // Extract all files
+          await zip.extract(null, extractPath)
+        } catch (error) {
+          throw this.createError(
+            'extraction',
+            error instanceof Error && error.message.includes('empty')
+              ? 'ZIP archive is empty'
+              : 'Failed to extract ZIP file',
+            error instanceof Error ? error.message : 'Extraction failed',
+            true
+          )
+        } finally {
+          await zip.close()
         }
+      } else {
+        // Extract 7z SFX .exe file using node-7z
+        try {
+          const stream = extractFull(downloadPath, extractPath, {
+            $bin: sevenBin.path7za
+          })
 
-        // Extract all files
-        await zip.extract(null, extractPath)
-      } catch (error) {
-        throw this.createError(
-          'extraction',
-          error instanceof Error && error.message.includes('empty')
-            ? 'ZIP archive is empty'
-            : 'Failed to extract ZIP file',
-          error instanceof Error ? error.message : 'Extraction failed',
-          true
-        )
-      } finally {
-        await zip.close()
+          await new Promise<void>((resolve, reject) => {
+            stream.on('end', () => resolve())
+            stream.on('error', (error: Error) => reject(error))
+          })
+        } catch (error) {
+          throw this.createError(
+            'extraction',
+            'Failed to extract 7z SFX archive',
+            error instanceof Error ? error.message : 'Extraction failed',
+            true
+          )
+        }
       }
 
       // Find the cslol-tools folder

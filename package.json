@@ -22,6 +22,7 @@
     "fetch-champion-data:sequential": "bun run scripts/fetch-champion-data.ts --sequential"
   },
   "dependencies": {
+    "7zip-bin": "^5.2.0",
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
     "@radix-ui/react-accordion": "^1.2.11",
@@ -51,6 +52,7 @@
     "lucide-react": "^0.525.0",
     "memoize-one": "^6.0.0",
     "next-themes": "^0.4.6",
+    "node-7z": "^3.0.0",
     "node-stream-zip": "^1.15.0",
     "peerjs": "^1.5.5",
     "react-easy-sort": "^1.6.0",

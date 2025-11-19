@@ -78,10 +78,18 @@ export function useAppInitialization() {
     loadAppVersion()
   }, [setAppVersion])
 
-  // Check for cslol-tools updates on app start
+  // Check for cslol-tools updates on app start (only if tools exist)
   useEffect(() => {
     const checkCslolToolsUpdate = async () => {
       try {
+        // First check if tools exist at all
+        const toolsExist = await window.api.checkToolsExist()
+
+        // Only check for updates if tools are already installed
+        if (!toolsExist) {
+          return // Tools don't exist, skip update check (download modal will show)
+        }
+
         const result = await window.api.checkCslolToolsUpdate()
         if (result.success && result.updateAvailable) {
           // Store update info and show dialog
