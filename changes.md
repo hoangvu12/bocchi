@@ -1,1 +1,1 @@
-- Fix: Unpack 7zip-bin and node-7z from asar for binary execution
+- Fix 7zip binary path resolution for app.asar.unpacked directory
