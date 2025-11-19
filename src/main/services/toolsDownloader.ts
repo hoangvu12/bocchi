@@ -7,6 +7,18 @@ import { extractFull } from 'node-7z'
 import sevenBin from '7zip-bin'
 import { settingsService } from './settingsService'
 
+// Helper to get the correct 7zip binary path (handles asar unpacking)
+function get7zipBinaryPath(): string {
+  let binaryPath = sevenBin.path7za
+
+  // In production, binaries are unpacked to app.asar.unpacked
+  if (app.isPackaged && binaryPath.includes('app.asar')) {
+    binaryPath = binaryPath.replace('app.asar', 'app.asar.unpacked')
+  }
+
+  return binaryPath
+}
+
 export interface DownloadProgress {
   loaded: number
   total: number
@@ -216,7 +228,7 @@ export class ToolsDownloader {
         // Extract 7z SFX .exe file using node-7z
         try {
           const stream = extractFull(downloadPath, extractPath, {
-            $bin: sevenBin.path7za
+            $bin: get7zipBinaryPath()
           })
 
           await new Promise<void>((resolve, reject) => {
