@@ -1,4 +1,1 @@
-- Add support for .exe cslol-manager releases (7z SFX)
-- Switch from node-7z-archive to node-7z for better compatibility
-- Fix update check to only run when cslol-tools exists
-- Support both .zip (old releases) and .exe (new releases) formats
+- Fix: Unpack 7zip-bin and node-7z from asar for binary execution
