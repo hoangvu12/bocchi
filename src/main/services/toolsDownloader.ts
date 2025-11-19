@@ -26,6 +26,7 @@ export class ToolsDownloader {
   private ritoddstexVersionPath: string
   private imageMagickPath: string
   private imageMagickVersionPath: string
+  private cslolToolsVersionPath: string
 
   constructor() {
     // Other tools still stored in userData
@@ -43,6 +44,7 @@ export class ToolsDownloader {
       'tools',
       'imagemagick-version.txt'
     )
+    this.cslolToolsVersionPath = path.join(app.getPath('userData'), 'cslol-tools-version.txt')
   }
 
   async checkToolsExist(): Promise<boolean> {
@@ -96,22 +98,11 @@ export class ToolsDownloader {
   }
 
   async downloadAndExtractTools(
-    gamePath: string,
     onProgress?: (progress: number, details?: DownloadProgress) => void
   ): Promise<void> {
     let tempDir: string | undefined
     try {
-      // Validate game path
-      if (!gamePath) {
-        throw this.createError(
-          'validation',
-          'Game path not provided',
-          'Cannot install mod tools without game directory',
-          false
-        )
-      }
-
-      const { downloadUrl, size } = await this.getLatestReleaseInfo()
+      const { downloadUrl, size, version } = await this.getLatestReleaseInfo()
 
       // Create temp directory
       tempDir = path.join(app.getPath('temp'), 'cslol-download')
@@ -233,8 +224,8 @@ export class ToolsDownloader {
         )
       }
 
-      // Install to game folder
-      const targetPath = path.join(gamePath, 'cslol-tools')
+      // Install to appdata folder
+      const targetPath = path.join(app.getPath('userData'), 'cslol-tools')
 
       // Remove existing tools directory if it exists
       try {
@@ -243,7 +234,7 @@ export class ToolsDownloader {
         // Ignore if doesn't exist
       }
 
-      // Move the cslol-tools folder to the game directory
+      // Move the cslol-tools folder to the appdata directory
       try {
         await this.copyDirectory(cslolToolsSource, targetPath)
       } catch (error) {
@@ -273,6 +264,9 @@ export class ToolsDownloader {
 
       // Save path to settings
       settingsService.setModToolsPath(targetPath)
+
+      // Save version info
+      await fs.promises.writeFile(this.cslolToolsVersionPath, version)
 
       // Clean up temp files
       await fs.promises.rm(tempDir, { recursive: true, force: true })
@@ -311,6 +305,47 @@ export class ToolsDownloader {
 
   getToolsPath(): string | null {
     return settingsService.getModToolsPath()
+  }
+
+  async getCslolToolsVersion(): Promise<string | null> {
+    try {
+      const version = await fs.promises.readFile(this.cslolToolsVersionPath, 'utf-8')
+      return version.trim()
+    } catch {
+      return null
+    }
+  }
+
+  async checkCslolToolsUpdate(): Promise<{
+    updateAvailable: boolean
+    currentVersion: string | null
+    latestVersion: string | null
+  }> {
+    try {
+      const currentVersion = await this.getCslolToolsVersion()
+      const { version: latestVersion } = await this.getLatestReleaseInfo()
+
+      // If no version file exists, assume old version and recommend update
+      if (!currentVersion) {
+        return {
+          updateAvailable: true,
+          currentVersion: null,
+          latestVersion
+        }
+      }
+
+      return {
+        updateAvailable: currentVersion !== latestVersion,
+        currentVersion,
+        latestVersion
+      }
+    } catch {
+      return {
+        updateAvailable: false,
+        currentVersion: null,
+        latestVersion: null
+      }
+    }
   }
 
   async checkMultiRitoFixesExist(): Promise<boolean> {

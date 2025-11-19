@@ -1,13 +1,19 @@
 import { useCallback } from 'react'
 import { useAtom, useSetAtom } from 'jotai'
 import { UpdateDialog } from '../UpdateDialog'
+import { CslolToolsUpdateDialog } from '../CslolToolsUpdateDialog'
 import { ChampionDataUpdateDialog } from '../ChampionDataUpdateDialog'
 import { EditCustomSkinDialog } from '../EditCustomSkinDialog'
 import { DownloadedSkinsDialog } from '../DownloadedSkinsDialog'
 import { FileTransferDialog } from '../FileTransferDialog'
 import { SettingsDialog } from '../SettingsDialog'
 import { PresetsDialog } from '../PresetsDialog'
-import { showUpdateDialogAtom, statusMessageAtom } from '../../store/atoms/game.atoms'
+import {
+  showUpdateDialogAtom,
+  showCslolToolsUpdateDialogAtom,
+  cslolToolsUpdateInfoAtom,
+  statusMessageAtom
+} from '../../store/atoms/game.atoms'
 import { showChampionDataUpdateAtom } from '../../store/atoms/champion.atoms'
 import {
   showEditDialogAtom,
@@ -27,6 +33,10 @@ export function DialogsContainer() {
     useSkinManagement()
 
   const [showUpdateDialog, setShowUpdateDialog] = useAtom(showUpdateDialogAtom)
+  const [showCslolToolsUpdateDialog, setShowCslolToolsUpdateDialog] = useAtom(
+    showCslolToolsUpdateDialogAtom
+  )
+  const [cslolToolsUpdateInfo] = useAtom(cslolToolsUpdateInfoAtom)
   const [showChampionDataUpdate, setShowChampionDataUpdate] = useAtom(showChampionDataUpdateAtom)
   const [showEditDialog, setShowEditDialog] = useAtom(showEditDialogAtom)
   const [editingCustomSkin, setEditingCustomSkin] = useAtom(editingCustomSkinAtom)
@@ -71,6 +81,15 @@ export function DialogsContainer() {
   return (
     <>
       <UpdateDialog isOpen={showUpdateDialog} onClose={() => setShowUpdateDialog(false)} />
+
+      {cslolToolsUpdateInfo && (
+        <CslolToolsUpdateDialog
+          isOpen={showCslolToolsUpdateDialog}
+          onClose={() => setShowCslolToolsUpdateDialog(false)}
+          currentVersion={cslolToolsUpdateInfo.currentVersion}
+          latestVersion={cslolToolsUpdateInfo.latestVersion}
+        />
+      )}
 
       <ChampionDataUpdateDialog
         isOpen={showChampionDataUpdate}

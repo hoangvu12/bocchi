@@ -1624,22 +1624,21 @@ function setupIpcHandlers(): void {
     return await toolsDownloader.checkToolsExist()
   })
 
+  ipcMain.handle('check-cslol-tools-update', async () => {
+    try {
+      const updateInfo = await toolsDownloader.checkCslolToolsUpdate()
+      return { success: true, ...updateInfo }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to check for updates'
+      }
+    }
+  })
+
   ipcMain.handle('download-tools', async (event) => {
     try {
-      // Get game path before downloading
-      const gamePathService = GamePathService.getInstance()
-      const gamePath = await gamePathService.getGamePath()
-
-      if (!gamePath) {
-        return {
-          success: false,
-          error: 'Game not detected. Please locate your League of Legends installation first.',
-          errorType: 'validation',
-          canRetry: false
-        }
-      }
-
-      await toolsDownloader.downloadAndExtractTools(gamePath, (progress, details) => {
+      await toolsDownloader.downloadAndExtractTools((progress, details) => {
         event.sender.send('tools-download-progress', progress)
         if (details) {
           event.sender.send('tools-download-details', details)
@@ -2228,18 +2227,7 @@ function setupIpcHandlers(): void {
         // Download tools automatically with progress reporting
         sendStatus('Downloading cslol-tools (mod-tools.exe) for mod extraction...')
         try {
-          // Get game path before downloading
-          const gamePathService = GamePathService.getInstance()
-          const gamePath = await gamePathService.getGamePath()
-
-          if (!gamePath) {
-            return {
-              success: false,
-              error: 'Game not detected. Please locate your League of Legends installation first.'
-            }
-          }
-
-          await toolsDownloader.downloadAndExtractTools(gamePath, (progress, details) => {
+          await toolsDownloader.downloadAndExtractTools((progress, details) => {
             // Send progress to renderer
             event.sender.send('tools-download-progress', progress)
             if (details) {

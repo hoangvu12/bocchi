@@ -2,7 +2,7 @@ import { memo } from 'react'
 import { Heart } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAtom, useAtomValue } from 'jotai'
-import { gamePathAtom, toolsExistAtom } from '../../store/atoms/game.atoms'
+import { gamePathAtom } from '../../store/atoms/game.atoms'
 import { championDataAtom } from '../../store/atoms/champion.atoms'
 import { showFavoritesOnlyAtom } from '../../store/atoms'
 import { showSettingsDialogAtom } from '../../store/atoms/ui.atoms'
@@ -19,7 +19,6 @@ import { RoomPanel } from '../RoomPanel'
 export const AppHeader = memo(() => {
   const { t } = useTranslation()
   const gamePath = useAtomValue(gamePathAtom)
-  const toolsExist = useAtomValue(toolsExistAtom)
   const championData = useAtomValue(championDataAtom)
   const [showFavoritesOnly, setShowFavoritesOnly] = useAtom(showFavoritesOnlyAtom)
   const [, setShowSettingsDialog] = useAtom(showSettingsDialogAtom)
@@ -31,7 +30,7 @@ export const AppHeader = memo(() => {
   const { browseForGame } = useGameDetection()
   const { fetchChampionData, isLoadingChampionData } = useChampionData()
 
-  const loading = isLoadingChampionData || !toolsExist
+  const loading = isLoadingChampionData
 
   return (
     <div className="flex items-center justify-between px-8 py-5 bg-surface border-b-2 border-border shadow-sm dark:shadow-none">

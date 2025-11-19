@@ -3,7 +3,6 @@ import path from 'path'
 import fs from 'fs/promises'
 import { app, BrowserWindow } from 'electron'
 import { settingsService } from './settingsService'
-import crypto from 'crypto'
 
 export class ModToolsWrapper {
   private profilesPath: string
@@ -83,75 +82,6 @@ export class ModToolsWrapper {
         resolve()
       })
     })
-  }
-
-  private sendProgress(message: string): void {
-    if (this.mainWindow && !this.mainWindow.isDestroyed()) {
-      this.mainWindow.webContents.send('patcher-status', message)
-    }
-  }
-
-  private generateRandomFolderName(): string {
-    const randomHex = crypto.randomBytes(4).toString('hex')
-    return `cslol-${randomHex}`
-  }
-
-  private async performVanguardWorkaround(currentPath: string): Promise<string> {
-    const modToolsExe = path.join(currentPath, 'mod-tools.exe')
-
-    // 1. Verify exe exists
-    try {
-      await fs.access(modToolsExe, fs.constants.F_OK)
-    } catch {
-      throw new Error('mod-tools.exe not found in ' + currentPath)
-    }
-
-    // 2. Send progress
-    this.sendProgress('Performing Vanguard workaround...')
-    console.log('[ModToolsWrapper] Starting Vanguard workaround')
-
-    // 3. Spawn process briefly to let Vanguard detect it
-    this.sendProgress('Running initial detection process...')
-    const process = spawn(modToolsExe, ['--help'], { detached: true })
-
-    // 4. Wait 2 seconds for Vanguard to detect
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
-    // 5. Kill process
-    this.sendProgress('Stopping process...')
-    try {
-      process.kill()
-    } catch (error) {
-      console.warn('[ModToolsWrapper] Failed to kill process normally:', error)
-    }
-
-    // Wait for cleanup
-    await new Promise((resolve) => setTimeout(resolve, 500))
-
-    // 6. Generate random name
-    this.sendProgress('Renaming folder...')
-    const parentDir = path.dirname(currentPath)
-    const randomName = this.generateRandomFolderName()
-    const newPath = path.join(parentDir, randomName)
-
-    console.log(`[ModToolsWrapper] Renaming ${currentPath} to ${newPath}`)
-
-    // 7. Rename folder
-    try {
-      await fs.rename(currentPath, newPath)
-    } catch (error) {
-      throw new Error(
-        `Failed to rename folder: ${error instanceof Error ? error.message : 'Unknown error'}`
-      )
-    }
-
-    // 8. Save to settings
-    settingsService.setModToolsPath(newPath)
-
-    this.sendProgress('Workaround complete, proceeding with skin application...')
-    console.log('[ModToolsWrapper] Vanguard workaround completed successfully')
-
-    return newPath
   }
 
   private async ensureCleanDirectoryWithRetry(dirPath: string, retries = 3): Promise<void> {
@@ -275,21 +205,10 @@ export class ModToolsWrapper {
     this.importedMods = []
 
     try {
-      // Step 0: Always perform Vanguard workaround (every run)
-      const savedPath = settingsService.getModToolsPath()
-      if (!savedPath) {
-        return { success: false, message: 'Mod tools not installed. Please download them first.' }
-      }
-
       const toolsExist = await this.checkModToolsExist()
       if (!toolsExist) {
         return { success: false, message: 'CS:LOL tools not found. Please download them first.' }
       }
-
-      // Always perform workaround with new random name
-      console.log('[ModToolsWrapper] Performing Vanguard workaround (every run)')
-      await this.performVanguardWorkaround(savedPath)
-      // Path has been updated in settings by performVanguardWorkaround
 
       await this.stopOverlay()
 

@@ -226,6 +226,13 @@ export interface IApi {
 
   // Tools management
   checkToolsExist: () => Promise<boolean>
+  checkCslolToolsUpdate: () => Promise<{
+    success: boolean
+    updateAvailable?: boolean
+    currentVersion?: string | null
+    latestVersion?: string | null
+    error?: string
+  }>
   downloadTools: (attempt?: number) => Promise<{
     success: boolean
     error?: string

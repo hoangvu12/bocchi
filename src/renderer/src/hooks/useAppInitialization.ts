@@ -1,6 +1,11 @@
 import { useEffect } from 'react'
 import { useSetAtom } from 'jotai'
-import { appVersionAtom, showUpdateDialogAtom } from '../store/atoms/game.atoms'
+import {
+  appVersionAtom,
+  showUpdateDialogAtom,
+  showCslolToolsUpdateDialogAtom,
+  cslolToolsUpdateInfoAtom
+} from '../store/atoms/game.atoms'
 import { championSearchQueryAtom, skinSearchQueryAtom } from '../store/atoms'
 import {
   leagueClientEnabledAtom,
@@ -32,6 +37,8 @@ import { showSettingsDialogAtom } from '../store/atoms/ui.atoms'
 export function useAppInitialization() {
   const setAppVersion = useSetAtom(appVersionAtom)
   const setShowUpdateDialog = useSetAtom(showUpdateDialogAtom)
+  const setShowCslolToolsUpdateDialog = useSetAtom(showCslolToolsUpdateDialogAtom)
+  const setCslolToolsUpdateInfo = useSetAtom(cslolToolsUpdateInfoAtom)
   const setChampionSearchQuery = useSetAtom(championSearchQueryAtom)
   const setSkinSearchQuery = useSetAtom(skinSearchQueryAtom)
   const setLeagueClientEnabled = useSetAtom(leagueClientEnabledAtom)
@@ -70,6 +77,29 @@ export function useAppInitialization() {
 
     loadAppVersion()
   }, [setAppVersion])
+
+  // Check for cslol-tools updates on app start
+  useEffect(() => {
+    const checkCslolToolsUpdate = async () => {
+      try {
+        const result = await window.api.checkCslolToolsUpdate()
+        if (result.success && result.updateAvailable) {
+          // Store update info and show dialog
+          setCslolToolsUpdateInfo({
+            currentVersion: result.currentVersion || null,
+            latestVersion: result.latestVersion || null
+          })
+          setShowCslolToolsUpdateDialog(true)
+        }
+      } catch (error) {
+        console.error('Failed to check for cslol-tools updates:', error)
+      }
+    }
+
+    // Check for updates 2 seconds after app starts
+    const timer = setTimeout(checkCslolToolsUpdate, 2000)
+    return () => clearTimeout(timer)
+  }, [setCslolToolsUpdateInfo, setShowCslolToolsUpdateDialog])
 
   // Set up update event listeners
   useEffect(() => {

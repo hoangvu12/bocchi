@@ -152,6 +152,7 @@ const api = {
 
   // Tools management
   checkToolsExist: () => ipcRenderer.invoke('check-tools-exist'),
+  checkCslolToolsUpdate: () => ipcRenderer.invoke('check-cslol-tools-update'),
   downloadTools: (attempt?: number) => ipcRenderer.invoke('download-tools', attempt),
   getToolsInfo: () => ipcRenderer.invoke('get-tools-info'),
   onToolsDownloadProgress: (callback: (progress: number) => void) => {

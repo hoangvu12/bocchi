@@ -49,3 +49,10 @@ export const appVersionAtom = atom<string>('')
 
 // Update dialog atom
 export const showUpdateDialogAtom = atom<boolean>(false)
+
+// cslol-tools update dialog atoms
+export const showCslolToolsUpdateDialogAtom = atom<boolean>(false)
+export const cslolToolsUpdateInfoAtom = atom<{
+  currentVersion: string | null
+  latestVersion: string | null
+} | null>(null)
