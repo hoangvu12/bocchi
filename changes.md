@@ -1,1 +1,1 @@
-- Fix 7zip binary path resolution for app.asar.unpacked directory
+- Fix: Handle missing or malformed META/info.json in ZIP imports gracefully
