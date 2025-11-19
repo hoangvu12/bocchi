@@ -1,1 +1,1 @@
-- Fix: Handle missing or malformed META/info.json in ZIP imports gracefully
+- Fix: sanitize custom mod names during patching so batch imports no longer fail with missing files

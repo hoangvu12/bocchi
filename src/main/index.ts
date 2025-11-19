@@ -57,6 +57,36 @@ const fileImportService = new FileImportService()
 const imageService = new ImageService()
 const presetService = new PresetService()
 
+const MOD_FILE_EXTENSION_REGEX = /\.(wad\.client|wad|zip|fantome)$/i
+
+function resolveSkinFileInfo(
+  skinContext: SelectedSkin
+): { baseName: string; extension: string } {
+  const downloadedName = skinContext.downloadedFilename?.trim()
+  let skinNameWithExt: string
+
+  if (downloadedName) {
+    skinNameWithExt = downloadedName
+  } else {
+    const normalizedSkinName = (skinContext.skinName || '').trim()
+    skinNameWithExt = MOD_FILE_EXTENSION_REGEX.test(normalizedSkinName)
+      ? normalizedSkinName
+      : `${normalizedSkinName}.zip`
+  }
+
+  const extMatch = skinNameWithExt.match(MOD_FILE_EXTENSION_REGEX)
+  let baseName = extMatch
+    ? skinNameWithExt.slice(0, -extMatch[0].length)
+    : skinNameWithExt
+
+  baseName = baseName.replace(/^\[User\]\s*/, '').trim()
+
+  return {
+    baseName,
+    extension: extMatch ? extMatch[0] : ''
+  }
+}
+
 // Store auto-selected skin data from renderer for overlay display
 let rendererAutoSelectedSkin: {
   championKey: string
@@ -854,12 +884,7 @@ function setupIpcHandlers(): void {
 
           if (isCustomMod) {
             // Extract skin name from the context
-            const skinNameWithExt = skinContext.downloadedFilename || `${skinContext.skinName}.zip`
-            const extMatch = skinNameWithExt.match(/\.(wad\.client|wad|zip|fantome)$/i)
-            const skinName = extMatch
-              ? skinNameWithExt.slice(0, -extMatch[0].length)
-              : skinNameWithExt
-            const fileExt = extMatch ? extMatch[0] : ''
+            const { baseName: skinName, extension: fileExt } = resolveSkinFileInfo(skinContext)
 
             console.log(
               `[Patcher] Processing custom mod: champion=${champion}, skinFile=${skinFile}, skinName=${skinName}, fileExt=${fileExt}`
@@ -1197,13 +1222,7 @@ function setupIpcHandlers(): void {
 
             if (isCustomMod) {
               // Extract skin name from the context
-              const skinNameWithExt =
-                skinContext.downloadedFilename || `${skinContext.skinName}.zip`
-              const extMatch = skinNameWithExt.match(/\.(wad\.client|wad|zip|fantome)$/i)
-              const skinName = extMatch
-                ? skinNameWithExt.slice(0, -extMatch[0].length)
-                : skinNameWithExt
-              const fileExt = extMatch ? extMatch[0] : ''
+              const { baseName: skinName, extension: fileExt } = resolveSkinFileInfo(skinContext)
 
               console.log(
                 `[SmartApply] Processing custom mod: champion=${champion}, skinFile=${skinFile}, skinName=${skinName}, fileExt=${fileExt}`
