@@ -28,8 +28,6 @@ files:
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
 asarUnpack:
   - resources/**
-  - node_modules/7zip-bin/**/*
-  - node_modules/node-7z/**/*
 win:
   executableName: Bocchi
   target:

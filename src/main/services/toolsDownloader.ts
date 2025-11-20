@@ -3,21 +3,8 @@ import axios, { AxiosError } from 'axios'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as StreamZip from 'node-stream-zip'
-import { extractFull } from 'node-7z'
-import sevenBin from '7zip-bin'
+import SevenZipWasm from '7z-wasm'
 import { settingsService } from './settingsService'
-
-// Helper to get the correct 7zip binary path (handles asar unpacking)
-function get7zipBinaryPath(): string {
-  let binaryPath = sevenBin.path7za
-
-  // In production, binaries are unpacked to app.asar.unpacked
-  if (app.isPackaged && binaryPath.includes('app.asar')) {
-    binaryPath = binaryPath.replace('app.asar', 'app.asar.unpacked')
-  }
-
-  return binaryPath
-}
 
 export interface DownloadProgress {
   loaded: number
@@ -225,16 +212,33 @@ export class ToolsDownloader {
           await zip.close()
         }
       } else {
-        // Extract 7z SFX .exe file using node-7z
+        // Extract 7z SFX .exe file using 7z-wasm (pure JavaScript, no binary dependencies)
         try {
-          const stream = extractFull(downloadPath, extractPath, {
-            $bin: get7zipBinaryPath()
-          })
+          console.log('[ToolsDownloader] Initializing 7z-wasm for extraction')
 
-          await new Promise<void>((resolve, reject) => {
-            stream.on('end', () => resolve())
-            stream.on('error', (error: Error) => reject(error))
-          })
+          // Create extract directory if it doesn't exist
+          await fs.promises.mkdir(extractPath, { recursive: true })
+
+          // Initialize 7z-wasm module
+          const sevenZip = await SevenZipWasm()
+
+          // Mount Node.js filesystem for 7z-wasm
+          const mountRoot = '/nodefs'
+          sevenZip.FS.mkdir(mountRoot)
+          sevenZip.FS.mount(sevenZip.NODEFS, { root: tempDir }, mountRoot)
+          sevenZip.FS.chdir(mountRoot)
+
+          console.log(`[ToolsDownloader] Extracting ${fileName} to ${extractPath}`)
+
+          // Extract the archive - using relative paths within mounted filesystem
+          const downloadFileName = path.basename(downloadPath)
+          const extractDirName = path.basename(extractPath)
+
+          // callMain is synchronous and blocks until extraction completes
+          // It will throw if extraction fails
+          sevenZip.callMain(['x', downloadFileName, `-o${extractDirName}`, '-y'])
+
+          console.log('[ToolsDownloader] 7z extraction completed successfully')
         } catch (error) {
           throw this.createError(
             'extraction',

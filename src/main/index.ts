@@ -59,9 +59,7 @@ const presetService = new PresetService()
 
 const MOD_FILE_EXTENSION_REGEX = /\.(wad\.client|wad|zip|fantome)$/i
 
-function resolveSkinFileInfo(
-  skinContext: SelectedSkin
-): { baseName: string; extension: string } {
+function resolveSkinFileInfo(skinContext: SelectedSkin): { baseName: string; extension: string } {
   const downloadedName = skinContext.downloadedFilename?.trim()
   let skinNameWithExt: string
 
@@ -75,9 +73,7 @@ function resolveSkinFileInfo(
   }
 
   const extMatch = skinNameWithExt.match(MOD_FILE_EXTENSION_REGEX)
-  let baseName = extMatch
-    ? skinNameWithExt.slice(0, -extMatch[0].length)
-    : skinNameWithExt
+  let baseName = extMatch ? skinNameWithExt.slice(0, -extMatch[0].length) : skinNameWithExt
 
   baseName = baseName.replace(/^\[User\]\s*/, '').trim()
 
