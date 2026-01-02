@@ -3,6 +3,11 @@ import path from 'path'
 import fs from 'fs/promises'
 import { app, BrowserWindow } from 'electron'
 import { settingsService } from './settingsService'
+import axios from 'axios'
+
+// Version that requires DLL replacement
+const DLL_FIX_REQUIRED_VERSION = '2025-12-03-2dfb8fe'
+const DLL_DOWNLOAD_URL = 'https://github.com/hoangvu12/bocchi/raw/cslol-dll/cslol-dll.dll'
 
 export class ModToolsWrapper {
   private profilesPath: string
@@ -82,6 +87,64 @@ export class ModToolsWrapper {
         resolve()
       })
     })
+  }
+
+  private async getCslolToolsVersion(): Promise<string | null> {
+    try {
+      const versionPath = path.join(app.getPath('userData'), 'cslol-tools-version.txt')
+      const version = await fs.readFile(versionPath, 'utf-8')
+      return version.trim()
+    } catch {
+      return null
+    }
+  }
+
+  private async checkAndReplaceDll(): Promise<void> {
+    try {
+      const currentVersion = await this.getCslolToolsVersion()
+
+      // Only apply fix for the specific version
+      if (currentVersion !== DLL_FIX_REQUIRED_VERSION) {
+        console.log(
+          `[ModToolsWrapper] DLL fix not needed for version: ${currentVersion || 'unknown'}`
+        )
+        return
+      }
+
+      // Check if we already did the replacement for this version
+      const dllReplacedVersion = settingsService.get('dllReplacedVersion')
+      if (dllReplacedVersion === currentVersion) {
+        console.log('[ModToolsWrapper] DLL already replaced for this version, skipping')
+        return
+      }
+
+      const toolsPath = settingsService.getModToolsPath()
+      if (!toolsPath) {
+        console.warn('[ModToolsWrapper] No mod tools path configured, skipping DLL replacement')
+        return
+      }
+
+      const dllTargetPath = path.join(toolsPath, 'cslol-dll.dll')
+
+      console.log('[ModToolsWrapper] Downloading DLL fix from GitHub...')
+
+      // Download the DLL from GitHub
+      const response = await axios.get(DLL_DOWNLOAD_URL, {
+        responseType: 'arraybuffer',
+        timeout: 30000
+      })
+
+      // Write the DLL to the mod-tools folder
+      await fs.writeFile(dllTargetPath, Buffer.from(response.data))
+
+      // Mark as done for this version
+      settingsService.set('dllReplacedVersion', currentVersion)
+
+      console.log('[ModToolsWrapper] DLL fix applied successfully')
+    } catch (error) {
+      console.error('[ModToolsWrapper] Failed to apply DLL fix:', error)
+      // Don't throw - we don't want to block the patcher if DLL replacement fails
+    }
   }
 
   private async ensureCleanDirectoryWithRetry(dirPath: string, retries = 3): Promise<void> {
@@ -536,6 +599,9 @@ export class ModToolsWrapper {
       if (!modToolsPath) {
         throw new Error('Mod tools path not found')
       }
+
+      // Check and apply DLL fix if needed before running overlay
+      await this.checkAndReplaceDll()
 
       console.info('[ModToolsWrapper] Starting runoverlay process...')
       this.runningProcess = spawn(
