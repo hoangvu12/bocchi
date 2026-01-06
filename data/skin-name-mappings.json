@@ -1,0 +1,1266 @@
+{
+  "version": "15.24.1",
+  "lastUpdated": "2026-01-06T04:21:54.187Z",
+  "skinMappings": [
+    {
+      "championKey": "Aatrox",
+      "championName": "Aatrox",
+      "skinNum": 20,
+      "ddragonName": "Prestige Blood Moon Aatrox (2022)",
+      "lolSkinsName": "Prestige Blood Moon Aatrox 2022"
+    },
+    {
+      "championKey": "Ahri",
+      "championName": "Ahri",
+      "skinNum": 15,
+      "ddragonName": "K/DA Ahri",
+      "lolSkinsName": "KDA Ahri"
+    },
+    {
+      "championKey": "Ahri",
+      "championName": "Ahri",
+      "skinNum": 16,
+      "ddragonName": "Prestige K/DA Ahri",
+      "lolSkinsName": "Prestige KDA Ahri"
+    },
+    {
+      "championKey": "Ahri",
+      "championName": "Ahri",
+      "skinNum": 28,
+      "ddragonName": "K/DA ALL OUT Ahri",
+      "lolSkinsName": "KDA ALL OUT Ahri"
+    },
+    {
+      "championKey": "Ahri",
+      "championName": "Ahri",
+      "skinNum": 65,
+      "ddragonName": "Prestige K/DA Ahri (2022)",
+      "lolSkinsName": "Prestige KDA Ahri 2022"
+    },
+    {
+      "championKey": "Ahri",
+      "championName": "Ahri",
+      "skinNum": 86,
+      "ddragonName": "Immortalized Legend Ahri",
+      "lolSkinsName": "Ahri"
+    },
+    {
+      "championKey": "Akali",
+      "championName": "Akali",
+      "skinNum": 9,
+      "ddragonName": "K/DA Akali",
+      "lolSkinsName": "KDA Akali"
+    },
+    {
+      "championKey": "Akali",
+      "championName": "Akali",
+      "skinNum": 13,
+      "ddragonName": "Prestige K/DA Akali",
+      "lolSkinsName": "Prestige KDA Akali"
+    },
+    {
+      "championKey": "Akali",
+      "championName": "Akali",
+      "skinNum": 14,
+      "ddragonName": "PROJECT: Akali",
+      "lolSkinsName": "PROJECT Akali"
+    },
+    {
+      "championKey": "Akali",
+      "championName": "Akali",
+      "skinNum": 32,
+      "ddragonName": "K/DA ALL OUT Akali",
+      "lolSkinsName": "KDA ALL OUT Akali"
+    },
+    {
+      "championKey": "Akali",
+      "championName": "Akali",
+      "skinNum": 60,
+      "ddragonName": "Prestige K/DA Akali (2022)",
+      "lolSkinsName": "Prestige KDA Akali 2022"
+    },
+    {
+      "championKey": "Amumu",
+      "championName": "Amumu",
+      "skinNum": 3,
+      "ddragonName": "Emumu",
+      "lolSkinsName": "Amumu"
+    },
+    {
+      "championKey": "Anivia",
+      "championName": "Anivia",
+      "skinNum": 37,
+      "ddragonName": "Bewitching Batnivia",
+      "lolSkinsName": "Bewitching Batnivia Anivia"
+    },
+    {
+      "championKey": "Ashe",
+      "championName": "Ashe",
+      "skinNum": 8,
+      "ddragonName": "PROJECT: Ashe",
+      "lolSkinsName": "PROJECT Ashe"
+    },
+    {
+      "championKey": "Belveth",
+      "championName": "Bel'Veth",
+      "skinNum": 1,
+      "ddragonName": "Battle Boss Bel'Veth",
+      "lolSkinsName": "Battle Boss BelVeth"
+    },
+    {
+      "championKey": "Belveth",
+      "championName": "Bel'Veth",
+      "skinNum": 10,
+      "ddragonName": "Cosmic Matriarch Bel'Veth",
+      "lolSkinsName": "Cosmic Matriarch BelVeth"
+    },
+    {
+      "championKey": "Belveth",
+      "championName": "Bel'Veth",
+      "skinNum": 19,
+      "ddragonName": "Primordian Bel'Veth",
+      "lolSkinsName": "Primordian BelVeth"
+    },
+    {
+      "championKey": "Blitzcrank",
+      "championName": "Blitzcrank",
+      "skinNum": 22,
+      "ddragonName": "Witch's Brew Blitzcrank",
+      "lolSkinsName": "Witchs Brew Blitzcrank"
+    },
+    {
+      "championKey": "Blitzcrank",
+      "championName": "Blitzcrank",
+      "skinNum": 56,
+      "ddragonName": "Beezcrank",
+      "lolSkinsName": "Beezcrank Blitzcrank"
+    },
+    {
+      "championKey": "Caitlyn",
+      "championName": "Caitlyn",
+      "skinNum": 29,
+      "ddragonName": "Prestige Arcade Caitlyn (2022)",
+      "lolSkinsName": "Prestige Arcade Caitlyn 2022"
+    },
+    {
+      "championKey": "Chogath",
+      "championName": "Cho'Gath",
+      "skinNum": 1,
+      "ddragonName": "Nightmare Cho'Gath",
+      "lolSkinsName": "Nightmare ChoGath"
+    },
+    {
+      "championKey": "Chogath",
+      "championName": "Cho'Gath",
+      "skinNum": 2,
+      "ddragonName": "Gentleman Cho'Gath",
+      "lolSkinsName": "Gentleman ChoGath"
+    },
+    {
+      "championKey": "Chogath",
+      "championName": "Cho'Gath",
+      "skinNum": 3,
+      "ddragonName": "Loch Ness Cho'Gath",
+      "lolSkinsName": "Loch Ness ChoGath"
+    },
+    {
+      "championKey": "Chogath",
+      "championName": "Cho'Gath",
+      "skinNum": 4,
+      "ddragonName": "Jurassic Cho'Gath",
+      "lolSkinsName": "Jurassic ChoGath"
+    },
+    {
+      "championKey": "Chogath",
+      "championName": "Cho'Gath",
+      "skinNum": 5,
+      "ddragonName": "Battlecast Prime Cho'Gath",
+      "lolSkinsName": "Battlecast Prime ChoGath"
+    },
+    {
+      "championKey": "Chogath",
+      "championName": "Cho'Gath",
+      "skinNum": 6,
+      "ddragonName": "Prehistoric Cho'Gath",
+      "lolSkinsName": "Prehistoric ChoGath"
+    },
+    {
+      "championKey": "Chogath",
+      "championName": "Cho'Gath",
+      "skinNum": 7,
+      "ddragonName": "Dark Star Cho'Gath",
+      "lolSkinsName": "Dark Star ChoGath"
+    },
+    {
+      "championKey": "Chogath",
+      "championName": "Cho'Gath",
+      "skinNum": 14,
+      "ddragonName": "Shan Hai Scrolls Cho'Gath",
+      "lolSkinsName": "Shan Hai Scrolls ChoGath"
+    },
+    {
+      "championKey": "Chogath",
+      "championName": "Cho'Gath",
+      "skinNum": 23,
+      "ddragonName": "Broken Covenant Cho'Gath",
+      "lolSkinsName": "Broken Covenant ChoGath"
+    },
+    {
+      "championKey": "Chogath",
+      "championName": "Cho'Gath",
+      "skinNum": 32,
+      "ddragonName": "Toy Terror Cho'Gath",
+      "lolSkinsName": "Toy Terror ChoGath"
+    },
+    {
+      "championKey": "DrMundo",
+      "championName": "Dr. Mundo",
+      "skinNum": 1,
+      "ddragonName": "Toxic Dr. Mundo",
+      "lolSkinsName": "Toxic Dr Mundo"
+    },
+    {
+      "championKey": "DrMundo",
+      "championName": "Dr. Mundo",
+      "skinNum": 2,
+      "ddragonName": "Mr. Mundoverse",
+      "lolSkinsName": "Mr Mundoverse"
+    },
+    {
+      "championKey": "DrMundo",
+      "championName": "Dr. Mundo",
+      "skinNum": 21,
+      "ddragonName": "Street Demons Dr. Mundo",
+      "lolSkinsName": "Street Demons Dr Mundo"
+    },
+    {
+      "championKey": "Draven",
+      "championName": "Draven",
+      "skinNum": 68,
+      "ddragonName": "Victorious Draven",
+      "lolSkinsName": "Draven"
+    },
+    {
+      "championKey": "Ekko",
+      "championName": "Ekko",
+      "skinNum": 3,
+      "ddragonName": "PROJECT: Ekko",
+      "lolSkinsName": "PROJECT Ekko"
+    },
+    {
+      "championKey": "Evelynn",
+      "championName": "Evelynn",
+      "skinNum": 6,
+      "ddragonName": "K/DA Evelynn",
+      "lolSkinsName": "KDA Evelynn"
+    },
+    {
+      "championKey": "Evelynn",
+      "championName": "Evelynn",
+      "skinNum": 7,
+      "ddragonName": "Prestige K/DA Evelynn",
+      "lolSkinsName": "Prestige KDA Evelynn"
+    },
+    {
+      "championKey": "Evelynn",
+      "championName": "Evelynn",
+      "skinNum": 15,
+      "ddragonName": "K/DA ALL OUT Evelynn",
+      "lolSkinsName": "KDA ALL OUT Evelynn"
+    },
+    {
+      "championKey": "Evelynn",
+      "championName": "Evelynn",
+      "skinNum": 31,
+      "ddragonName": "Prestige K/DA Evelynn (2022)",
+      "lolSkinsName": "Prestige KDA Evelynn 2022"
+    },
+    {
+      "championKey": "FiddleSticks",
+      "championName": "Fiddlesticks",
+      "skinNum": 5,
+      "ddragonName": "Fiddle Me Timbers",
+      "lolSkinsName": "Fiddle Me Timbers Fiddlesticks"
+    },
+    {
+      "championKey": "Fiora",
+      "championName": "Fiora",
+      "skinNum": 4,
+      "ddragonName": "PROJECT: Fiora",
+      "lolSkinsName": "PROJECT Fiora"
+    },
+    {
+      "championKey": "Fizz",
+      "championName": "Fizz",
+      "skinNum": 25,
+      "ddragonName": "Prestige Fuzz Fizz (2022)",
+      "lolSkinsName": "Prestige Fuzz Fizz 2022"
+    },
+    {
+      "championKey": "Galio",
+      "championName": "Galio",
+      "skinNum": 6,
+      "ddragonName": "Birdio",
+      "lolSkinsName": "Birdio Galio"
+    },
+    {
+      "championKey": "Gangplank",
+      "championName": "Gangplank",
+      "skinNum": 33,
+      "ddragonName": "PROJECT: Gangplank",
+      "lolSkinsName": "PROJECT Gangplank"
+    },
+    {
+      "championKey": "Gragas",
+      "championName": "Gragas",
+      "skinNum": 4,
+      "ddragonName": "Gragas, Esq.",
+      "lolSkinsName": "Gragas Esq"
+    },
+    {
+      "championKey": "Gwen",
+      "championName": "Gwen",
+      "skinNum": 39,
+      "ddragonName": "Rain Shepherd Gwen",
+      "lolSkinsName": "Gwen"
+    },
+    {
+      "championKey": "Heimerdinger",
+      "championName": "Heimerdinger",
+      "skinNum": 4,
+      "ddragonName": "Snowmerdinger",
+      "lolSkinsName": "Snowmerdinger Heimerdinger"
+    },
+    {
+      "championKey": "Heimerdinger",
+      "championName": "Heimerdinger",
+      "skinNum": 24,
+      "ddragonName": "Heimerstinger",
+      "lolSkinsName": "Heimerdinger"
+    },
+    {
+      "championKey": "Irelia",
+      "championName": "Irelia",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Irelia",
+      "lolSkinsName": "PROJECT Irelia"
+    },
+    {
+      "championKey": "Irelia",
+      "championName": "Irelia",
+      "skinNum": 17,
+      "ddragonName": "Prestige PROJECT: Irelia",
+      "lolSkinsName": "Prestige PROJECT Irelia"
+    },
+    {
+      "championKey": "Irelia",
+      "championName": "Irelia",
+      "skinNum": 36,
+      "ddragonName": "Prestige PROJECT: Irelia (2022)",
+      "lolSkinsName": "Prestige PROJECT Irelia 2022"
+    },
+    {
+      "championKey": "Jax",
+      "championName": "Jax",
+      "skinNum": 33,
+      "ddragonName": "PROJECT: Jax",
+      "lolSkinsName": "PROJECT Jax"
+    },
+    {
+      "championKey": "Jhin",
+      "championName": "Jhin",
+      "skinNum": 4,
+      "ddragonName": "PROJECT: Jhin",
+      "lolSkinsName": "PROJECT Jhin"
+    },
+    {
+      "championKey": "Jinx",
+      "championName": "Jinx",
+      "skinNum": 20,
+      "ddragonName": "PROJECT: Jinx",
+      "lolSkinsName": "PROJECT Jinx"
+    },
+    {
+      "championKey": "Jinx",
+      "championName": "Jinx",
+      "skinNum": 60,
+      "ddragonName": "Arcane Fractured Jinx",
+      "lolSkinsName": "Jinx"
+    },
+    {
+      "championKey": "KSante",
+      "championName": "K'Sante",
+      "skinNum": 1,
+      "ddragonName": "Empyrean K'Sante",
+      "lolSkinsName": "Empyrean KSante"
+    },
+    {
+      "championKey": "KSante",
+      "championName": "K'Sante",
+      "skinNum": 2,
+      "ddragonName": "Prestige Empyrean K'Sante",
+      "lolSkinsName": "Prestige Empyrean KSante"
+    },
+    {
+      "championKey": "KSante",
+      "championName": "K'Sante",
+      "skinNum": 8,
+      "ddragonName": "HEARTSTEEL K'Sante",
+      "lolSkinsName": "HEARTSTEEL KSante"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 1,
+      "ddragonName": "Bullet Angel Kai'Sa",
+      "lolSkinsName": "Bullet Angel KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 14,
+      "ddragonName": "K/DA Kai'Sa",
+      "lolSkinsName": "KDA KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 15,
+      "ddragonName": "Prestige K/DA Kai'Sa",
+      "lolSkinsName": "Prestige KDA KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 16,
+      "ddragonName": "iG Kai'Sa",
+      "lolSkinsName": "iG KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 17,
+      "ddragonName": "Arcade Kai'Sa",
+      "lolSkinsName": "Arcade KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 26,
+      "ddragonName": "K/DA ALL OUT Kai'Sa",
+      "lolSkinsName": "KDA ALL OUT KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 27,
+      "ddragonName": "Prestige K/DA ALL OUT Kai'Sa",
+      "lolSkinsName": "Prestige KDA ALL OUT KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 29,
+      "ddragonName": "Lagoon Dragon Kai'Sa",
+      "lolSkinsName": "Lagoon Dragon KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 39,
+      "ddragonName": "Prestige K/DA Kai'Sa (2022)",
+      "lolSkinsName": "Prestige KDA KaiSa 2022"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 40,
+      "ddragonName": "Star Guardian Kai'Sa",
+      "lolSkinsName": "Star Guardian KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 48,
+      "ddragonName": "Inkshadow Kai'Sa",
+      "lolSkinsName": "Inkshadow KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 59,
+      "ddragonName": "Heavenscale Kai'Sa",
+      "lolSkinsName": "Heavenscale KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 69,
+      "ddragonName": "Dark Star Kai'Sa",
+      "lolSkinsName": "Dark Star KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 70,
+      "ddragonName": "Risen Legend Kai'Sa",
+      "lolSkinsName": "Risen Legend KaiSa"
+    },
+    {
+      "championKey": "Kaisa",
+      "championName": "Kai'Sa",
+      "skinNum": 71,
+      "ddragonName": "Immortalized Legend Kai'Sa",
+      "lolSkinsName": "KaiSa"
+    },
+    {
+      "championKey": "Karthus",
+      "championName": "Karthus",
+      "skinNum": 17,
+      "ddragonName": "Pentakill III: Lost Chapter Karthus",
+      "lolSkinsName": "Pentakill III Lost Chapter Karthus"
+    },
+    {
+      "championKey": "Katarina",
+      "championName": "Katarina",
+      "skinNum": 9,
+      "ddragonName": "PROJECT: Katarina",
+      "lolSkinsName": "PROJECT Katarina"
+    },
+    {
+      "championKey": "Kayle",
+      "championName": "Kayle",
+      "skinNum": 33,
+      "ddragonName": "Pentakill III: Lost Chapter Kayle",
+      "lolSkinsName": "Pentakill III Lost Chapter Kayle"
+    },
+    {
+      "championKey": "Kennen",
+      "championName": "Kennen",
+      "skinNum": 4,
+      "ddragonName": "Kennen M.D.",
+      "lolSkinsName": "Kennen MD"
+    },
+    {
+      "championKey": "Khazix",
+      "championName": "Kha'Zix",
+      "skinNum": 1,
+      "ddragonName": "Mecha Kha'Zix",
+      "lolSkinsName": "Mecha KhaZix"
+    },
+    {
+      "championKey": "Khazix",
+      "championName": "Kha'Zix",
+      "skinNum": 2,
+      "ddragonName": "Guardian of the Sands Kha'Zix",
+      "lolSkinsName": "Guardian of the Sands KhaZix"
+    },
+    {
+      "championKey": "Khazix",
+      "championName": "Kha'Zix",
+      "skinNum": 3,
+      "ddragonName": "Death Blossom Kha'Zix",
+      "lolSkinsName": "Death Blossom KhaZix"
+    },
+    {
+      "championKey": "Khazix",
+      "championName": "Kha'Zix",
+      "skinNum": 4,
+      "ddragonName": "Dark Star Kha'Zix",
+      "lolSkinsName": "Dark Star KhaZix"
+    },
+    {
+      "championKey": "Khazix",
+      "championName": "Kha'Zix",
+      "skinNum": 11,
+      "ddragonName": "Worlds 2018 Kha'Zix",
+      "lolSkinsName": "Worlds 2018 KhaZix"
+    },
+    {
+      "championKey": "Khazix",
+      "championName": "Kha'Zix",
+      "skinNum": 60,
+      "ddragonName": "Odyssey Kha'Zix",
+      "lolSkinsName": "Odyssey KhaZix"
+    },
+    {
+      "championKey": "Khazix",
+      "championName": "Kha'Zix",
+      "skinNum": 69,
+      "ddragonName": "Lunar Guardian Kha'Zix",
+      "lolSkinsName": "Lunar Guardian KhaZix"
+    },
+    {
+      "championKey": "Khazix",
+      "championName": "Kha'Zix",
+      "skinNum": 79,
+      "ddragonName": "Crystalis Indomitus Kha'Zix",
+      "lolSkinsName": "Crystalis Indomitus KhaZix"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 1,
+      "ddragonName": "Caterpillar Kog'Maw",
+      "lolSkinsName": "Caterpillar KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 2,
+      "ddragonName": "Sonoran Kog'Maw",
+      "lolSkinsName": "Sonoran KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 3,
+      "ddragonName": "Monarch Kog'Maw",
+      "lolSkinsName": "Monarch KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 4,
+      "ddragonName": "Reindeer Kog'Maw",
+      "lolSkinsName": "Reindeer KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 5,
+      "ddragonName": "Lion Dance Kog'Maw",
+      "lolSkinsName": "Lion Dance KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 6,
+      "ddragonName": "Deep Sea Kog'Maw",
+      "lolSkinsName": "Deep Sea KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 7,
+      "ddragonName": "Jurassic Kog'Maw",
+      "lolSkinsName": "Jurassic KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 8,
+      "ddragonName": "Battlecast Kog'Maw",
+      "lolSkinsName": "Battlecast KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 9,
+      "ddragonName": "Pug'Maw",
+      "lolSkinsName": "PugMaw KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 10,
+      "ddragonName": "Hextech Kog'Maw",
+      "lolSkinsName": "Hextech KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 19,
+      "ddragonName": "Arcanist Kog'Maw",
+      "lolSkinsName": "Arcanist KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 28,
+      "ddragonName": "Bee'Maw",
+      "lolSkinsName": "BeeMaw KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 37,
+      "ddragonName": "Zap'Maw",
+      "lolSkinsName": "ZapMaw KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 46,
+      "ddragonName": "Shan Hai Scrolls Kog'Maw",
+      "lolSkinsName": "Shan Hai Scrolls KogMaw"
+    },
+    {
+      "championKey": "KogMaw",
+      "championName": "Kog'Maw",
+      "skinNum": 55,
+      "ddragonName": "Victorious Kog'Maw",
+      "lolSkinsName": "Victorious KogMaw"
+    },
+    {
+      "championKey": "LeeSin",
+      "championName": "Lee Sin",
+      "skinNum": 39,
+      "ddragonName": "Prestige Nightbringer Lee Sin (2022)",
+      "lolSkinsName": "Prestige Nightbringer Lee Sin 2022"
+    },
+    {
+      "championKey": "Leona",
+      "championName": "Leona",
+      "skinNum": 8,
+      "ddragonName": "PROJECT: Leona",
+      "lolSkinsName": "PROJECT Leona"
+    },
+    {
+      "championKey": "Lucian",
+      "championName": "Lucian",
+      "skinNum": 6,
+      "ddragonName": "PROJECT: Lucian",
+      "lolSkinsName": "PROJECT Lucian"
+    },
+    {
+      "championKey": "Lucian",
+      "championName": "Lucian",
+      "skinNum": 72,
+      "ddragonName": "Sunken Shadows Lucian",
+      "lolSkinsName": "Lucian"
+    },
+    {
+      "championKey": "Lux",
+      "championName": "Lux",
+      "skinNum": 39,
+      "ddragonName": "Prestige Battle Academia Lux (2022)",
+      "lolSkinsName": "Prestige Battle Academia Lux 2022"
+    },
+    {
+      "championKey": "Malzahar",
+      "championName": "Malzahar",
+      "skinNum": 18,
+      "ddragonName": "Beezahar",
+      "lolSkinsName": "Beezahar Malzahar"
+    },
+    {
+      "championKey": "Maokai",
+      "championName": "Maokai",
+      "skinNum": 6,
+      "ddragonName": "Meowkai",
+      "lolSkinsName": "Meowkai Maokai"
+    },
+    {
+      "championKey": "MasterYi",
+      "championName": "Master Yi",
+      "skinNum": 9,
+      "ddragonName": "PROJECT: Yi",
+      "lolSkinsName": "PROJECT Yi"
+    },
+    {
+      "championKey": "Mel",
+      "championName": "Mel",
+      "skinNum": 10,
+      "ddragonName": "Prestige Winterblessed Mel",
+      "lolSkinsName": "Mel"
+    },
+    {
+      "championKey": "Milio",
+      "championName": "Milio",
+      "skinNum": 20,
+      "ddragonName": "Winter Wonder Milio",
+      "lolSkinsName": "Milio"
+    },
+    {
+      "championKey": "MissFortune",
+      "championName": "Miss Fortune",
+      "skinNum": 33,
+      "ddragonName": "Prestige Bewitching Miss Fortune (2022)",
+      "lolSkinsName": "Prestige Bewitching Miss Fortune 2022"
+    },
+    {
+      "championKey": "Mordekaiser",
+      "championName": "Mordekaiser",
+      "skinNum": 13,
+      "ddragonName": "PROJECT: Mordekaiser",
+      "lolSkinsName": "PROJECT Mordekaiser"
+    },
+    {
+      "championKey": "Mordekaiser",
+      "championName": "Mordekaiser",
+      "skinNum": 23,
+      "ddragonName": "Pentakill III: Lost Chapter Mordekaiser",
+      "lolSkinsName": "Pentakill III Lost Chapter Mordekaiser"
+    },
+    {
+      "championKey": "Mordekaiser",
+      "championName": "Mordekaiser",
+      "skinNum": 54,
+      "ddragonName": "Sahn-Uzal Mordekaiser",
+      "lolSkinsName": "Mordekaiser"
+    },
+    {
+      "championKey": "Morgana",
+      "championName": "Morgana",
+      "skinNum": 80,
+      "ddragonName": "Spirit Blossom Morgana",
+      "lolSkinsName": "Morgana"
+    },
+    {
+      "championKey": "Naafiri",
+      "championName": "Naafiri",
+      "skinNum": 11,
+      "ddragonName": "PROJECT: Naafiri",
+      "lolSkinsName": "PROJECT Naafiri"
+    },
+    {
+      "championKey": "Nami",
+      "championName": "Nami",
+      "skinNum": 68,
+      "ddragonName": "Sunken Shadows Nami",
+      "lolSkinsName": "Nami"
+    },
+    {
+      "championKey": "Neeko",
+      "championName": "Neeko",
+      "skinNum": 21,
+      "ddragonName": "Prestige Star Guardian Neeko (2022)",
+      "lolSkinsName": "Prestige Star Guardian Neeko 2022"
+    },
+    {
+      "championKey": "Neeko",
+      "championName": "Neeko",
+      "skinNum": 49,
+      "ddragonName": "Beeko",
+      "lolSkinsName": "Beeko Neeko"
+    },
+    {
+      "championKey": "Nidalee",
+      "championName": "Nidalee",
+      "skinNum": 39,
+      "ddragonName": "Kittalee",
+      "lolSkinsName": "Kittalee Nidalee"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 1,
+      "ddragonName": "Sasquatch Nunu & Willump",
+      "lolSkinsName": "Sasquatch Nunu Willump"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 2,
+      "ddragonName": "Workshop Nunu & Willump",
+      "lolSkinsName": "Workshop Nunu Willump"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 3,
+      "ddragonName": "Grungy Nunu & Willump",
+      "lolSkinsName": "Grungy Nunu Willump"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 4,
+      "ddragonName": "Nunu & Willump Bot",
+      "lolSkinsName": "Nunu Willump Bot"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 5,
+      "ddragonName": "Demolisher Nunu & Willump",
+      "lolSkinsName": "Demolisher Nunu Willump"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 6,
+      "ddragonName": "TPA Nunu & Willump",
+      "lolSkinsName": "TPA Nunu Willump"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 7,
+      "ddragonName": "Zombie Nunu & Willump",
+      "lolSkinsName": "Zombie Nunu Willump"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 8,
+      "ddragonName": "Papercraft Nunu & Willump",
+      "lolSkinsName": "Papercraft Nunu Willump"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 16,
+      "ddragonName": "Space Groove Nunu & Willump",
+      "lolSkinsName": "Space Groove Nunu Willump"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 26,
+      "ddragonName": "Nunu & Beelump",
+      "lolSkinsName": "Nunu Beelump"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 35,
+      "ddragonName": "Cosmic Paladins Nunu & Willump",
+      "lolSkinsName": "Cosmic Paladins Nunu Willump"
+    },
+    {
+      "championKey": "Nunu",
+      "championName": "Nunu & Willump",
+      "skinNum": 44,
+      "ddragonName": "Fright Night Nunu & Willump",
+      "lolSkinsName": "Fright Night Nunu Willump"
+    },
+    {
+      "championKey": "Olaf",
+      "championName": "Olaf",
+      "skinNum": 35,
+      "ddragonName": "Pentakill III: Lost Chapter Olaf",
+      "lolSkinsName": "Pentakill III Lost Chapter Olaf"
+    },
+    {
+      "championKey": "Orianna",
+      "championName": "Orianna",
+      "skinNum": 20,
+      "ddragonName": "Orbeeanna",
+      "lolSkinsName": "Orbeeanna Orianna"
+    },
+    {
+      "championKey": "Pyke",
+      "championName": "Pyke",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Pyke",
+      "lolSkinsName": "PROJECT Pyke"
+    },
+    {
+      "championKey": "Qiyana",
+      "championName": "Qiyana",
+      "skinNum": 21,
+      "ddragonName": "Prestige True Damage Qiyana (2022)",
+      "lolSkinsName": "Prestige True Damage Qiyana 2022"
+    },
+    {
+      "championKey": "RekSai",
+      "championName": "Rek'Sai",
+      "skinNum": 1,
+      "ddragonName": "Eternum Rek'Sai",
+      "lolSkinsName": "Eternum RekSai"
+    },
+    {
+      "championKey": "RekSai",
+      "championName": "Rek'Sai",
+      "skinNum": 2,
+      "ddragonName": "Pool Party Rek'Sai",
+      "lolSkinsName": "Pool Party RekSai"
+    },
+    {
+      "championKey": "RekSai",
+      "championName": "Rek'Sai",
+      "skinNum": 9,
+      "ddragonName": "Blackfrost Rek'Sai",
+      "lolSkinsName": "Blackfrost RekSai"
+    },
+    {
+      "championKey": "RekSai",
+      "championName": "Rek'Sai",
+      "skinNum": 17,
+      "ddragonName": "Elderwood Rek'Sai",
+      "lolSkinsName": "Elderwood RekSai"
+    },
+    {
+      "championKey": "RekSai",
+      "championName": "Rek'Sai",
+      "skinNum": 26,
+      "ddragonName": "Primordian Rek'Sai",
+      "lolSkinsName": "Primordian RekSai"
+    },
+    {
+      "championKey": "Renekton",
+      "championName": "Renekton",
+      "skinNum": 9,
+      "ddragonName": "Renektoy",
+      "lolSkinsName": "Renekton"
+    },
+    {
+      "championKey": "Renekton",
+      "championName": "Renekton",
+      "skinNum": 26,
+      "ddragonName": "PROJECT: Renekton",
+      "lolSkinsName": "PROJECT Renekton"
+    },
+    {
+      "championKey": "Riven",
+      "championName": "Riven",
+      "skinNum": 45,
+      "ddragonName": "Prestige Valiant Sword Riven (2022)",
+      "lolSkinsName": "Prestige Valiant Sword Riven 2022"
+    },
+    {
+      "championKey": "Sejuani",
+      "championName": "Sejuani",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Sejuani",
+      "lolSkinsName": "PROJECT Sejuani"
+    },
+    {
+      "championKey": "Senna",
+      "championName": "Senna",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Senna",
+      "lolSkinsName": "PROJECT Senna"
+    },
+    {
+      "championKey": "Seraphine",
+      "championName": "Seraphine",
+      "skinNum": 1,
+      "ddragonName": "K/DA ALL OUT Seraphine Indie",
+      "lolSkinsName": "KDA ALL OUT Seraphine Indie"
+    },
+    {
+      "championKey": "Sett",
+      "championName": "Sett",
+      "skinNum": 66,
+      "ddragonName": "Radiant Serpent Sett",
+      "lolSkinsName": "Sett"
+    },
+    {
+      "championKey": "Shaco",
+      "championName": "Shaco",
+      "skinNum": 3,
+      "ddragonName": "Nutcracko",
+      "lolSkinsName": "Nutcracko Shaco"
+    },
+    {
+      "championKey": "Smolder",
+      "championName": "Smolder",
+      "skinNum": 11,
+      "ddragonName": "Reindeer Smolder",
+      "lolSkinsName": "Smolder"
+    },
+    {
+      "championKey": "Sona",
+      "championName": "Sona",
+      "skinNum": 26,
+      "ddragonName": "Pentakill III: Lost Chapter Sona",
+      "lolSkinsName": "Pentakill III Lost Chapter Sona"
+    },
+    {
+      "championKey": "Sylas",
+      "championName": "Sylas",
+      "skinNum": 13,
+      "ddragonName": "PROJECT: Sylas",
+      "lolSkinsName": "PROJECT Sylas"
+    },
+    {
+      "championKey": "Sylas",
+      "championName": "Sylas",
+      "skinNum": 14,
+      "ddragonName": "Prestige PROJECT: Sylas",
+      "lolSkinsName": "Prestige PROJECT Sylas"
+    },
+    {
+      "championKey": "Teemo",
+      "championName": "Teemo",
+      "skinNum": 18,
+      "ddragonName": "Beemo",
+      "lolSkinsName": "Beemo Teemo"
+    },
+    {
+      "championKey": "Thresh",
+      "championName": "Thresh",
+      "skinNum": 38,
+      "ddragonName": "Prestige Pulsefire Thresh (2022)",
+      "lolSkinsName": "Prestige Pulsefire Thresh 2022"
+    },
+    {
+      "championKey": "Tristana",
+      "championName": "Tristana",
+      "skinNum": 70,
+      "ddragonName": "Rain Shepherd Tristana",
+      "lolSkinsName": "Tristana"
+    },
+    {
+      "championKey": "Trundle",
+      "championName": "Trundle",
+      "skinNum": 1,
+      "ddragonName": "Lil' Slugger Trundle",
+      "lolSkinsName": "Lil Slugger Trundle"
+    },
+    {
+      "championKey": "Urgot",
+      "championName": "Urgot",
+      "skinNum": 1,
+      "ddragonName": "Giant Enemy Crabgot",
+      "lolSkinsName": "Giant Enemy Crabgot Urgot"
+    },
+    {
+      "championKey": "Varus",
+      "championName": "Varus",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Varus",
+      "lolSkinsName": "PROJECT Varus"
+    },
+    {
+      "championKey": "Vayne",
+      "championName": "Vayne",
+      "skinNum": 11,
+      "ddragonName": "PROJECT: Vayne",
+      "lolSkinsName": "PROJECT Vayne"
+    },
+    {
+      "championKey": "Vayne",
+      "championName": "Vayne",
+      "skinNum": 33,
+      "ddragonName": "Prestige Firecracker Vayne (2022)",
+      "lolSkinsName": "Prestige Firecracker Vayne 2022"
+    },
+    {
+      "championKey": "Veigar",
+      "championName": "Veigar",
+      "skinNum": 51,
+      "ddragonName": "King Beegar",
+      "lolSkinsName": "King Beegar Veigar"
+    },
+    {
+      "championKey": "Velkoz",
+      "championName": "Vel'Koz",
+      "skinNum": 1,
+      "ddragonName": "Battlecast Vel'Koz",
+      "lolSkinsName": "Battlecast VelKoz"
+    },
+    {
+      "championKey": "Velkoz",
+      "championName": "Vel'Koz",
+      "skinNum": 2,
+      "ddragonName": "Arclight Vel'Koz",
+      "lolSkinsName": "Arclight VelKoz"
+    },
+    {
+      "championKey": "Velkoz",
+      "championName": "Vel'Koz",
+      "skinNum": 3,
+      "ddragonName": "Definitely Not Vel'Koz",
+      "lolSkinsName": "Definitely Not VelKoz"
+    },
+    {
+      "championKey": "Velkoz",
+      "championName": "Vel'Koz",
+      "skinNum": 4,
+      "ddragonName": "Infernal Vel'Koz",
+      "lolSkinsName": "Infernal VelKoz"
+    },
+    {
+      "championKey": "Velkoz",
+      "championName": "Vel'Koz",
+      "skinNum": 11,
+      "ddragonName": "Blackfrost Vel'Koz",
+      "lolSkinsName": "Blackfrost VelKoz"
+    },
+    {
+      "championKey": "Velkoz",
+      "championName": "Vel'Koz",
+      "skinNum": 20,
+      "ddragonName": "Bee'Koz",
+      "lolSkinsName": "BeeKoz VelKoz"
+    },
+    {
+      "championKey": "Vi",
+      "championName": "Vi",
+      "skinNum": 11,
+      "ddragonName": "PROJECT: Vi",
+      "lolSkinsName": "PROJECT Vi"
+    },
+    {
+      "championKey": "Volibear",
+      "championName": "Volibear",
+      "skinNum": 6,
+      "ddragonName": "The Thousand-Pierced Bear",
+      "lolSkinsName": "The Thousand-Pierced Bear Volibear"
+    },
+    {
+      "championKey": "Warwick",
+      "championName": "Warwick",
+      "skinNum": 2,
+      "ddragonName": "Urf the Manatee",
+      "lolSkinsName": "Urf the Manatee Warwick"
+    },
+    {
+      "championKey": "Warwick",
+      "championName": "Warwick",
+      "skinNum": 9,
+      "ddragonName": "Urfwick",
+      "lolSkinsName": "Urfwick Warwick"
+    },
+    {
+      "championKey": "Warwick",
+      "championName": "Warwick",
+      "skinNum": 16,
+      "ddragonName": "PROJECT: Warwick",
+      "lolSkinsName": "PROJECT Warwick"
+    },
+    {
+      "championKey": "Yasuo",
+      "championName": "Yasuo",
+      "skinNum": 2,
+      "ddragonName": "PROJECT: Yasuo",
+      "lolSkinsName": "PROJECT Yasuo"
+    },
+    {
+      "championKey": "Yorick",
+      "championName": "Yorick",
+      "skinNum": 4,
+      "ddragonName": "Meowrick",
+      "lolSkinsName": "Meowrick Yorick"
+    },
+    {
+      "championKey": "Yorick",
+      "championName": "Yorick",
+      "skinNum": 21,
+      "ddragonName": "Pentakill III: Lost Chapter Yorick",
+      "lolSkinsName": "Pentakill III Lost Chapter Yorick"
+    },
+    {
+      "championKey": "Yuumi",
+      "championName": "Yuumi",
+      "skinNum": 19,
+      "ddragonName": "Yuubee",
+      "lolSkinsName": "Yuubee Yuumi"
+    },
+    {
+      "championKey": "Zed",
+      "championName": "Zed",
+      "skinNum": 3,
+      "ddragonName": "PROJECT: Zed",
+      "lolSkinsName": "PROJECT Zed"
+    },
+    {
+      "championKey": "Zed",
+      "championName": "Zed",
+      "skinNum": 30,
+      "ddragonName": "Prestige PROJECT: Zed",
+      "lolSkinsName": "Prestige PROJECT Zed"
+    },
+    {
+      "championKey": "Zeri",
+      "championName": "Zeri",
+      "skinNum": 40,
+      "ddragonName": "Winter Wonder Zeri",
+      "lolSkinsName": "Zeri"
+    }
+  ]
+}
