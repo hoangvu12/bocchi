@@ -111,13 +111,6 @@ export class ModToolsWrapper {
         return
       }
 
-      // Check if we already did the replacement for this version
-      const dllReplacedVersion = settingsService.get('dllReplacedVersion')
-      if (dllReplacedVersion === currentVersion) {
-        console.log('[ModToolsWrapper] DLL already replaced for this version, skipping')
-        return
-      }
-
       const toolsPath = settingsService.getModToolsPath()
       if (!toolsPath) {
         console.warn('[ModToolsWrapper] No mod tools path configured, skipping DLL replacement')
@@ -125,6 +118,19 @@ export class ModToolsWrapper {
       }
 
       const dllTargetPath = path.join(toolsPath, 'cslol-dll.dll')
+
+      // Check if we already did the replacement for this version AND the DLL file exists
+      // This handles cases where users reinstalled/updated cslol-tools but the flag persisted
+      const dllReplacedVersion = settingsService.get('dllReplacedVersion')
+      const dllExists = await fs
+        .access(dllTargetPath)
+        .then(() => true)
+        .catch(() => false)
+
+      if (dllReplacedVersion === currentVersion && dllExists) {
+        console.log('[ModToolsWrapper] DLL already replaced for this version, skipping')
+        return
+      }
 
       console.log('[ModToolsWrapper] Downloading DLL fix from GitHub...')
 

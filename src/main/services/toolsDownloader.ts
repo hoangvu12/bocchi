@@ -6,6 +6,9 @@ import * as StreamZip from 'node-stream-zip'
 import SevenZipWasm from '7z-wasm'
 import { settingsService } from './settingsService'
 
+// Pin cslol-tools to a known working version (newer versions have compatibility issues)
+const PINNED_CSLOL_VERSION = '2025-12-03-2dfb8fe'
+
 export interface DownloadProgress {
   loaded: number
   total: number
@@ -69,8 +72,9 @@ export class ToolsDownloader {
     fileName: string
   }> {
     try {
+      // Fetch the pinned version instead of latest (newer versions have compatibility issues)
       const response = await axios.get(
-        'https://api.github.com/repos/LeagueToolkit/cslol-manager/releases/latest',
+        `https://api.github.com/repos/LeagueToolkit/cslol-manager/releases/tags/${PINNED_CSLOL_VERSION}`,
         {
           headers: {
             Accept: 'application/vnd.github.v3+json'
@@ -327,6 +331,9 @@ export class ToolsDownloader {
 
       // Save version info
       await fs.promises.writeFile(this.cslolToolsVersionPath, version)
+
+      // Reset DLL replacement flag so it gets re-applied for fresh installation
+      settingsService.set('dllReplacedVersion', null)
 
       // Clean up temp files
       await fs.promises.rm(tempDir, { recursive: true, force: true })
