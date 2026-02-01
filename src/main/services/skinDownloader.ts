@@ -12,9 +12,8 @@ import { skinMetadataService } from './skinMetadataService'
 import { skinMigrationService } from './skinMigrationService'
 import { ModToolsWrapper } from './modToolsWrapper'
 import { repositoryService } from './repositoryService'
-import { SkinRepository } from '../types/repository.types'
+import { LEAGUESKINS_REPO } from '../types/repository.types'
 import { championDataService } from './championDataService'
-import { generateSkinFilename } from '../../shared/utils/skinFilename'
 
 interface BulkDownloadProgress {
   phase: 'downloading' | 'extracting' | 'processing' | 'completed'
@@ -41,24 +40,6 @@ interface BulkDownloadOptions {
 }
 
 type BulkProgressCallback = (progress: BulkDownloadProgress) => void
-
-type ChampionSkinData = {
-  id: string
-  num: number
-  name: string
-  nameEn?: string
-  lolSkinsName?: string
-  chromas: boolean
-  chromaList?: Array<{ id: number }>
-}
-
-type ChampionRecord = {
-  id: number
-  key: string
-  name: string
-  nameEn?: string
-  skins: ChampionSkinData[]
-}
 
 export class SkinDownloader {
   private cacheDir: string
@@ -184,25 +165,27 @@ export class SkinDownloader {
     } catch (error) {
       console.error(`Failed to download skin: ${error}`)
 
-      // Check if it's a 404 error
+      // On 404, try .fantome fallback before giving up
       if (axios.isAxiosError(error) && error.response?.status === 404) {
-        const errorMessage = [
-          'Skin not found (404 Error)',
-          '',
-          `URL: ${rawUrl}`,
-          '',
-          'Possible causes:',
-          '• Skin not available in this repository',
-          '• Repository structure incorrectly detected',
-          '• Skin name mapping mismatch in champion data',
-          '',
-          'Suggested actions:',
-          '• Try a different skin from the same champion',
-          '• Go to Settings → Repository → Re-detect Structure',
-          '• Report this issue with the skin name and champion'
-        ].join('\n')
+        if (rawUrl.endsWith('.zip')) {
+          const fantomeUrl = rawUrl.replace(/\.zip$/, '.fantome')
+          console.log(`[SkinDownloader] .zip not found, trying .fantome: ${fantomeUrl}`)
+          try {
+            const fantomeResponse = await axios({
+              method: 'GET',
+              url: fantomeUrl,
+              responseType: 'stream'
+            })
+            const writer = createWriteStream(zipPath)
+            await pipeline(fantomeResponse.data, writer)
+            console.log(`Downloaded skin (fantome): ${skinInfo.skinName} to ${zipPath}`)
+            return skinInfo
+          } catch {
+            console.warn(`[SkinDownloader] .fantome fallback also failed`)
+          }
+        }
 
-        throw new Error(errorMessage)
+        throw new Error(`Skin not found (404): ${rawUrl}`)
       }
 
       throw new Error(
@@ -219,9 +202,7 @@ export class SkinDownloader {
       throw new Error('Invalid GitHub URL format')
     }
 
-    // Get repository info
-    const repository = repositoryService.getRepositoryFromUrl(url)
-    const skinsPath = repository?.structure?.skinsPath || 'skins'
+    const skinsPath = LEAGUESKINS_REPO.skinsPath
 
     // Remove skins path prefix from the parsed path
     let relativePath = parsed.path
@@ -270,7 +251,7 @@ export class SkinDownloader {
             const chroma = skin.chromaList.find((c) => c.id.toString() === chromaId)
             if (chroma) {
               // Use skin name + chroma ID format (same as name-based repos)
-              const baseSkinName = skin.lolSkinsName || skin.nameEn || skin.name
+              const baseSkinName = skin.nameEn || skin.name
               skinName = `${baseSkinName} ${chromaId}.zip`
               break
             }
@@ -315,7 +296,7 @@ export class SkinDownloader {
 
         const skin = champion.skins.find((s) => s.num === skinNum)
         if (skin) {
-          const baseSkinName = skin.lolSkinsName || skin.nameEn || skin.name
+          const baseSkinName = skin.nameEn || skin.name
           skinName = `${baseSkinName}.zip`
         }
       }
@@ -332,7 +313,68 @@ export class SkinDownloader {
       }
     }
 
-    // Try variant patterns (checked after ID-based patterns)
+    // Try LeagueSkins nested name-based patterns (before variant patterns)
+    // Nested name-based chroma: {Champion}/{BaseSkin}/{ChromaName}/{ChromaName}.zip
+    const nestedNameChromaPattern = /^([^/]+)\/([^/]+)\/([^/]+)\/([^/]+)$/
+    const nestedNameChromaMatch = relativePath.match(nestedNameChromaPattern)
+
+    if (nestedNameChromaMatch) {
+      const dir1 = decodeURIComponent(nestedNameChromaMatch[1])
+      const dir2 = decodeURIComponent(nestedNameChromaMatch[2])
+      const dir3 = decodeURIComponent(nestedNameChromaMatch[3])
+      const fileName = decodeURIComponent(nestedNameChromaMatch[4])
+      const fileBase = fileName.replace(/\.(zip|wad|fantome)$/i, '')
+
+      // Detect nested name-based chroma: chroma folder name matches filename
+      // and the folder names are NOT all-numeric (differentiates from ID-based)
+      if (dir3 === fileBase && !/^\d+$/.test(dir1) && /\.(zip|wad|fantome)$/i.test(fileName)) {
+        const championName = dir1
+        const baseSkinName = dir2
+
+        // Try reverse lookup in skin_ids.json to get chromaId for local filename
+        const chromaId = repositoryService.getSkinIdByName(dir3)
+        if (chromaId) {
+          return {
+            championName,
+            skinName: `${baseSkinName} ${chromaId}.zip`,
+            url,
+            source: 'repository' as const
+          }
+        }
+
+        // Fallback: use the chroma name as-is
+        return {
+          championName,
+          skinName: fileName,
+          url,
+          source: 'repository' as const
+        }
+      }
+    }
+
+    // Nested name-based regular skin: {Champion}/{SkinName}/{SkinName}.zip
+    const nestedNameSkinPattern = /^([^/]+)\/([^/]+)\/([^/]+)$/
+    const nestedNameSkinMatch = relativePath.match(nestedNameSkinPattern)
+
+    if (nestedNameSkinMatch) {
+      const dir1 = decodeURIComponent(nestedNameSkinMatch[1])
+      const dir2 = decodeURIComponent(nestedNameSkinMatch[2])
+      const fileName = decodeURIComponent(nestedNameSkinMatch[3])
+      const fileBase = fileName.replace(/\.(zip|wad|fantome)$/i, '')
+
+      // Detect nested name-based skin: skin folder name matches filename
+      // and the folder names are NOT all-numeric
+      if (dir2 === fileBase && !/^\d+$/.test(dir1) && /\.(zip|wad|fantome)$/i.test(fileName)) {
+        return {
+          championName: dir1,
+          skinName: fileName,
+          url,
+          source: 'repository' as const
+        }
+      }
+    }
+
+    // Try variant patterns (checked after nested name-based and ID-based patterns)
     // Nested variant pattern (4 levels, like forms/SkinName/FileName.zip)
     const nestedVariantPattern = /^([^/]+)\/([^/]+)\/([^/]+)\/([^/]+)$/
     const nestedVariantMatch = relativePath.match(nestedVariantPattern)
@@ -759,7 +801,7 @@ export class SkinDownloader {
     options: BulkDownloadOptions,
     onProgress?: BulkProgressCallback
   ): Promise<void> {
-    const repository = repositoryService.getActiveRepository()
+    const repository = LEAGUESKINS_REPO
     const tempDir = path.join(app.getPath('temp'), 'bocchi-bulk-download')
     const archivePath = path.join(tempDir, `${repository.repo}.tar.gz`)
     const extractPath = path.join(tempDir, 'extracted')
@@ -803,7 +845,7 @@ export class SkinDownloader {
         )
       }
       const repoFolder = `${repository.repo}-${repository.branch}`
-      const skinsRelPath = repository.structure?.skinsPath || 'skins'
+      const skinsRelPath = repository.skinsPath
       const skinsPath = path.join(extractPath, repoFolder, skinsRelPath)
       await this.processSkins(
         skinsPath,
@@ -840,7 +882,7 @@ export class SkinDownloader {
 
   private async downloadRepositoryArchive(
     archivePath: string,
-    repository: SkinRepository,
+    repository: typeof LEAGUESKINS_REPO,
     onProgress?: (downloaded: number, total: number) => void
   ): Promise<void> {
     const url = `https://github.com/${repository.owner}/${repository.repo}/archive/refs/heads/${repository.branch}.tar.gz`
@@ -876,7 +918,7 @@ export class SkinDownloader {
   private async processSkins(
     skinsPath: string,
     options: BulkDownloadOptions,
-    repository: SkinRepository,
+    _repository: typeof LEAGUESKINS_REPO,
     onProgress?: (
       processed: number,
       total: number,
@@ -892,7 +934,6 @@ export class SkinDownloader {
       championName: string
       skinName: string
     }> = []
-    const isIdBased = repository.structure?.type === 'id-based'
 
     // Collect all files to process
     for (const championDir of championDirs) {
@@ -901,28 +942,18 @@ export class SkinDownloader {
 
       if (!stat.isDirectory()) continue
 
-      if (isIdBased) {
-        const idBasedFiles = await this.collectIdBasedChampionFiles(
-          championDir,
-          championPath,
-          options
-        )
-        files.push(...idBasedFiles)
-        continue
-      }
+      const skinEntries = await fs.readdir(championPath)
 
-      const skinFiles = await fs.readdir(championPath)
-
-      for (const skinFile of skinFiles) {
-        const skinPath = path.join(championPath, skinFile)
-        const skinStat = await fs.stat(skinPath)
+      for (const skinEntry of skinEntries) {
+        const skinEntryPath = path.join(championPath, skinEntry)
+        const skinStat = await fs.stat(skinEntryPath)
 
         if (skinStat.isDirectory()) {
-          // Handle chromas directory
-          if (skinFile === 'chromas' && !options.excludeChromas) {
-            const chromaDirs = await fs.readdir(skinPath)
+          // Handle legacy chromas/ directory
+          if (skinEntry === 'chromas' && !options.excludeChromas) {
+            const chromaDirs = await fs.readdir(skinEntryPath)
             for (const chromaDir of chromaDirs) {
-              const chromaPath = path.join(skinPath, chromaDir)
+              const chromaPath = path.join(skinEntryPath, chromaDir)
               const chromaStat = await fs.stat(chromaPath)
               if (chromaStat.isDirectory()) {
                 const chromaFiles = await fs.readdir(chromaPath)
@@ -938,14 +969,49 @@ export class SkinDownloader {
                 }
               }
             }
+            continue
           }
-        } else if (skinFile.endsWith('.zip')) {
-          // Regular skin file
+
+          // Nested name-based structure: {SkinName}/{SkinName}.zip + {ChromaName}/{ChromaName}.zip
+          const innerEntries = await fs.readdir(skinEntryPath)
+          for (const inner of innerEntries) {
+            const innerPath = path.join(skinEntryPath, inner)
+            const innerStat = await fs.stat(innerPath)
+
+            if (innerStat.isDirectory() && !options.excludeChromas) {
+              // Chroma subdirectory: look for zip inside
+              const chromaFiles = await fs.readdir(innerPath)
+              for (const chromaFile of chromaFiles) {
+                if (chromaFile.endsWith('.zip')) {
+                  // Use reverse skin_ids.json lookup for local filename
+                  const chromaBase = chromaFile.replace(/\.zip$/i, '')
+                  const chromaId = repositoryService.getSkinIdByName(chromaBase)
+                  const localName = chromaId ? `${skinEntry} ${chromaId}.zip` : chromaFile
+                  files.push({
+                    source: path.join(innerPath, chromaFile),
+                    destination: path.join(this.cacheDir, championDir, localName),
+                    championName: championDir,
+                    skinName: localName
+                  })
+                }
+              }
+            } else if (inner.endsWith('.zip')) {
+              // Skin zip file inside the skin directory
+              files.push({
+                source: innerPath,
+                destination: path.join(this.cacheDir, championDir, inner),
+                championName: championDir,
+                skinName: inner
+              })
+            }
+          }
+        } else if (skinEntry.endsWith('.zip')) {
+          // Flat name-based: regular skin file directly in champion dir
           files.push({
-            source: skinPath,
-            destination: path.join(this.cacheDir, championDir, skinFile),
+            source: skinEntryPath,
+            destination: path.join(this.cacheDir, championDir, skinEntry),
             championName: championDir,
-            skinName: skinFile
+            skinName: skinEntry
           })
         }
       }
@@ -1009,135 +1075,6 @@ export class SkinDownloader {
         processed++
         onProgress?.(processed, filteredFiles.length, file.skinName, skipped, failed)
       }
-    }
-  }
-
-  private async collectIdBasedChampionFiles(
-    championDir: string,
-    championPath: string,
-    options: BulkDownloadOptions
-  ): Promise<
-    Array<{
-      source: string
-      destination: string
-      championName: string
-      skinName: string
-    }>
-  > {
-    const files: Array<{
-      source: string
-      destination: string
-      championName: string
-      skinName: string
-    }> = []
-
-    if (!/^\d+$/.test(championDir)) {
-      console.warn(
-        `[SkinDownloader] Skipping unexpected directory "${championDir}" in ID-based repository`
-      )
-      return files
-    }
-
-    const championId = parseInt(championDir, 10)
-    const champion = championDataService.getChampionByIdSync(championId) as ChampionRecord | null
-    const championName =
-      champion?.nameEn || champion?.name || champion?.key || `Champion_${championId}`
-
-    const skinDirs = await fs.readdir(championPath)
-    for (const skinDir of skinDirs) {
-      const skinDirPath = path.join(championPath, skinDir)
-      const skinStat = await fs.stat(skinDirPath)
-      if (!skinStat.isDirectory()) continue
-
-      const matchedSkin = champion?.skins.find((skin) =>
-        this.matchesSkinId(championId, skin, skinDir)
-      )
-
-      const baseFileName = matchedSkin
-        ? generateSkinFilename({
-            name: matchedSkin.name,
-            nameEn: matchedSkin.nameEn,
-            lolSkinsName: matchedSkin.lolSkinsName
-          })
-        : `${skinDir}.zip`
-
-      const baseZipPath = path.join(skinDirPath, `${skinDir}.zip`)
-      if (await this.fileExists(baseZipPath)) {
-        files.push({
-          source: baseZipPath,
-          destination: path.join(this.cacheDir, championName, baseFileName),
-          championName,
-          skinName: baseFileName
-        })
-      }
-
-      if (options.excludeChromas) {
-        continue
-      }
-
-      const chromaDirs = await fs.readdir(skinDirPath)
-      for (const chromaDir of chromaDirs) {
-        const chromaPath = path.join(skinDirPath, chromaDir)
-        const chromaStat = await fs.stat(chromaPath)
-        if (!chromaStat.isDirectory()) continue
-        if (!/^\d+$/.test(chromaDir)) continue
-
-        const chromaZipPath = path.join(chromaPath, `${chromaDir}.zip`)
-        if (!(await this.fileExists(chromaZipPath))) continue
-
-        const chromaFileName = this.getChromaFileName(matchedSkin, chromaDir, baseFileName)
-        files.push({
-          source: chromaZipPath,
-          destination: path.join(this.cacheDir, championName, chromaFileName),
-          championName,
-          skinName: chromaFileName
-        })
-      }
-    }
-
-    return files
-  }
-
-  private matchesSkinId(
-    championId: number,
-    skin: ChampionSkinData,
-    directoryName: string
-  ): boolean {
-    if (skin.id && skin.id === directoryName) {
-      return true
-    }
-    const paddedNum = skin.num.toString().padStart(3, '0')
-    const combinedId = `${championId}${paddedNum}`
-    return combinedId === directoryName || skin.num.toString() === directoryName
-  }
-
-  private getChromaFileName(
-    skin: ChampionSkinData | undefined,
-    chromaId: string,
-    fallbackBase: string
-  ): string {
-    if (skin) {
-      const chroma = skin.chromaList?.find((c) => c.id.toString() === chromaId)
-      if (chroma) {
-        return generateSkinFilename({
-          name: skin.name,
-          nameEn: skin.nameEn,
-          lolSkinsName: skin.lolSkinsName,
-          chromaId: chromaId
-        })
-      }
-    }
-
-    const baseName = fallbackBase.replace(/\.zip$/i, '')
-    return `${baseName} ${chromaId}.zip`
-  }
-
-  private async fileExists(filePath: string): Promise<boolean> {
-    try {
-      await fs.access(filePath)
-      return true
-    } catch {
-      return false
     }
   }
 

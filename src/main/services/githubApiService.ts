@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { repositoryService } from './repositoryService'
-import { SkinRepository } from '../types/repository.types'
+import { LEAGUESKINS_REPO } from '../types/repository.types'
 
 export interface GitHubCommit {
   sha: string
@@ -14,16 +14,12 @@ export class GitHubApiService {
 
   private lastRequestTime = 0
 
-  async getLatestCommitForSkin(
-    skinPath: string,
-    repository?: SkinRepository
-  ): Promise<GitHubCommit | null> {
+  async getLatestCommitForSkin(skinPath: string): Promise<GitHubCommit | null> {
     try {
       // Rate limiting
       await this.enforceRateLimit()
 
-      // Use provided repository or get active one
-      const repo = repository || repositoryService.getActiveRepository()
+      const repo = LEAGUESKINS_REPO
       const repoPath = `${repo.owner}/${repo.repo}`
 
       const url = `${GitHubApiService.API_BASE}/repos/${repoPath}/commits`

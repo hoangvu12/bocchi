@@ -326,7 +326,6 @@ export function useSkinManagement() {
             })
 
             console.log(`[Download] Generating filename for ${skin.name}:`)
-            console.log(`  lolSkinsName: ${skin.lolSkinsName}`)
             console.log(`  nameEn: ${skin.nameEn}`)
             console.log(`  name: ${skin.name}`)
             console.log(`  chromaId: ${selectedSkin.chromaId}`)

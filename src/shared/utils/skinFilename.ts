@@ -1,5 +1,4 @@
 export interface SkinNameInfo {
-  lolSkinsName?: string
   nameEn?: string
   name: string
   chromaId?: string
@@ -12,7 +11,7 @@ export interface SkinNameInfo {
  */
 export function generateSkinFilename(skin: SkinNameInfo): string {
   // Use the same priority order as the download logic
-  const baseName = (skin.lolSkinsName || skin.nameEn || skin.name).replace(/:/g, '')
+  const baseName = (skin.nameEn || skin.name).replace(/:/g, '')
 
   if (skin.chromaId) {
     return `${baseName} ${skin.chromaId}.zip`

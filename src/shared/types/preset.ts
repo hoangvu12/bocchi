@@ -9,7 +9,6 @@ export interface PresetSkin {
   chromaName?: string
   variantId?: string
   variantName?: string
-  lolSkinsName?: string
   downloadedFilename?: string
 }
 

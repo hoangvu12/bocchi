@@ -165,7 +165,7 @@ function checkIfSkinDownloaded(
   }
 
   // Use the actual name for file checking
-  const actualName = skin.lolSkinsName || skin.skinNameEn || skin.skinName
+  const actualName = skin.skinNameEn || skin.skinName
   const baseName = actualName.replace(/:/g, '')
 
   if (skin.chromaId) {

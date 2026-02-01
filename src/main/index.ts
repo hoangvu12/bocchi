@@ -45,8 +45,6 @@ import {
   PreselectSnapshot,
   PreselectChampion
 } from './types/preload.types'
-import { SkinRepository } from './types/repository.types'
-
 // Initialize services
 const skinDownloader = new SkinDownloader()
 const modToolsWrapper = new ModToolsWrapper()
@@ -800,20 +798,18 @@ function setupIpcHandlers(): void {
           championIdMap.set(skin.championKey, skin.championId)
         }
         // Store the full context for each skin
-        const filename =
-          skin.downloadedFilename || `${skin.lolSkinsName || skin.skinNameEn || skin.skinName}.zip`
+        const filename = skin.downloadedFilename || `${skin.skinNameEn || skin.skinName}.zip`
         const skinKey = skin.chromaId
-          ? `${skin.championKey}/${skin.lolSkinsName || skin.skinNameEn || skin.skinName} ${skin.chromaId}.zip`
+          ? `${skin.championKey}/${skin.skinNameEn || skin.skinName} ${skin.chromaId}.zip`
           : `${skin.championKey}/${filename}`
         skinContextMap.set(skinKey, skin)
       }
 
       // Convert to skin keys format for processing
       const skinKeys = selectedSkins.map((skin) => {
-        const filename =
-          skin.downloadedFilename || `${skin.lolSkinsName || skin.skinNameEn || skin.skinName}.zip`
+        const filename = skin.downloadedFilename || `${skin.skinNameEn || skin.skinName}.zip`
         if (skin.chromaId) {
-          return `${skin.championKey}/${skin.lolSkinsName || skin.skinNameEn || skin.skinName} ${skin.chromaId}.zip`
+          return `${skin.championKey}/${skin.skinNameEn || skin.skinName} ${skin.chromaId}.zip`
         }
         return `${skin.championKey}/${filename}`
       })
@@ -869,6 +865,7 @@ function setupIpcHandlers(): void {
 
       // 1. Download skins that are not local and get all local paths
       const skinProcessingErrors: string[] = []
+      const downloadedSkins = await skinDownloader.listDownloadedSkins()
       const skinInfosToProcess = await Promise.allSettled(
         filteredSkins.map(async (skinKey) => {
           const [champion, skinFile] = skinKey.split('/')
@@ -965,13 +962,9 @@ function setupIpcHandlers(): void {
           }
 
           // Handle remote skins
-          // First check if the skin is already downloaded
-          const downloadedSkins = await skinDownloader.listDownloadedSkins()
-          // Get context for proper champion name matching
+          // Check if the skin is already downloaded (list fetched once before the loop)
           const skinCtx = skinContextMap.get(skinKey)
           const properChampionName = skinCtx?.championName || champion
-          // Try both the original champion name and URL-decoded version (for champions with spaces)
-          // Also check against the proper display name to handle both old and new folder structures
           const existingSkin = downloadedSkins.find(
             (ds) =>
               (ds.championName === champion ||
@@ -1150,10 +1143,7 @@ function setupIpcHandlers(): void {
             championIdMap.set(skin.championKey, skin.championId)
           }
           // Store the full context for each skin (build early for context lookup)
-          const skinNameToUse = (skin.lolSkinsName || skin.skinNameEn || skin.skinName).replace(
-            /:/g,
-            ''
-          )
+          const skinNameToUse = (skin.skinNameEn || skin.skinName).replace(/:/g, '')
           const skinNameWithChroma = skin.chromaId
             ? `${skinNameToUse} ${skin.chromaId}.zip`
             : `${skinNameToUse}.zip`
@@ -1178,11 +1168,8 @@ function setupIpcHandlers(): void {
 
           // Regular skins from repository
           // For chromas, append the chroma ID
-          // Use proper name priority for downloading from repository: lolSkinsName -> nameEn -> name
-          const skinNameToUse = (skin.lolSkinsName || skin.skinNameEn || skin.skinName).replace(
-            /:/g,
-            ''
-          )
+          // Use proper name priority for downloading from repository: nameEn -> name
+          const skinNameToUse = (skin.skinNameEn || skin.skinName).replace(/:/g, '')
           const skinNameWithChroma = skin.chromaId
             ? `${skinNameToUse} ${skin.chromaId}.zip`
             : `${skinNameToUse}.zip`
@@ -1208,6 +1195,7 @@ function setupIpcHandlers(): void {
 
         // Download skins and apply
         const skinProcessingErrors: string[] = []
+        const downloadedSkins = await skinDownloader.listDownloadedSkins()
         const skinInfosToProcess = await Promise.allSettled(
           skinKeys.map(async (skinKey) => {
             const [champion, skinFile] = skinKey.split('/')
@@ -1301,13 +1289,9 @@ function setupIpcHandlers(): void {
               return { localPath: modFilePath }
             }
 
-            // First check if the skin is already downloaded
-            const downloadedSkins = await skinDownloader.listDownloadedSkins()
-            // Get context for proper champion name matching
+            // Check if the skin is already downloaded (list fetched once before the loop)
             const skinCtx = skinContextMap.get(skinKey)
             const properChampionName = skinCtx?.championName || champion
-            // Try both the original champion name and URL-decoded version (for champions with spaces)
-            // Also check against the proper display name to handle both old and new folder structures
             const existingSkin = downloadedSkins.find(
               (ds) =>
                 (ds.championName === champion ||
@@ -1811,104 +1795,7 @@ function setupIpcHandlers(): void {
     return app.getVersion()
   })
 
-  // Repository management
-  ipcMain.handle('repository:get-all', async () => {
-    try {
-      const repositories = repositoryService.getRepositories()
-      return { success: true, data: repositories }
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
-    }
-  })
-
-  ipcMain.handle('repository:get-active', async () => {
-    try {
-      const activeRepository = repositoryService.getActiveRepository()
-      return { success: true, data: activeRepository }
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
-    }
-  })
-
-  ipcMain.handle('repository:set-active', async (_, repositoryId: string) => {
-    try {
-      const result = repositoryService.setActiveRepository(repositoryId)
-      return { success: result }
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
-    }
-  })
-
-  ipcMain.handle('repository:add', async (_, repository: Omit<SkinRepository, 'id' | 'status'>) => {
-    try {
-      const newRepo = await repositoryService.addRepository(repository)
-      return { success: true, data: newRepo }
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
-    }
-  })
-
-  ipcMain.handle('repository:remove', async (_, repositoryId: string) => {
-    try {
-      const result = repositoryService.removeRepository(repositoryId)
-      return { success: result }
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
-    }
-  })
-
-  ipcMain.handle('repository:validate', async (_, repositoryId: string) => {
-    try {
-      const repository = repositoryService.getRepositoryById(repositoryId)
-      if (!repository) {
-        return { success: false, error: 'Repository not found' }
-      }
-      const isValid = await repositoryService.validateRepository(repository)
-      return { success: true, data: isValid }
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
-    }
-  })
-
-  ipcMain.handle(
-    'repository:update',
-    async (_, repositoryId: string, updates: Partial<SkinRepository>) => {
-      try {
-        const result = repositoryService.updateRepository(repositoryId, updates)
-        return { success: result }
-      } catch (error) {
-        return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
-      }
-    }
-  )
-
-  ipcMain.handle(
-    'repository:add-with-detection',
-    async (_, owner: string, repo: string, branch: string = 'main', name?: string) => {
-      try {
-        const result = await repositoryService.addRepositoryWithDetection(owner, repo, branch, name)
-        return {
-          success: true,
-          data: {
-            repository: result.repository,
-            detection: result.detection
-          }
-        }
-      } catch (error) {
-        return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
-      }
-    }
-  )
-
-  ipcMain.handle('repository:redetect-structure', async (_, repositoryId: string) => {
-    try {
-      const detection = await repositoryService.redetectRepositoryStructure(repositoryId)
-      return { success: true, data: detection }
-    } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
-    }
-  })
-
+  // Repository URL construction
   ipcMain.handle(
     'repository:construct-url',
     async (

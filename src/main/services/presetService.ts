@@ -191,8 +191,6 @@ export class PresetService {
       const keysToTry = [
         `${presetSkin.championName}_${presetSkin.downloadedFilename}`,
         `${presetSkin.championKey}_${presetSkin.downloadedFilename}`,
-        `${presetSkin.championName}_${presetSkin.lolSkinsName}`,
-        `${presetSkin.championKey}_${presetSkin.lolSkinsName}`,
         // Try without extension
         `${presetSkin.championName}_${presetSkin.downloadedFilename?.replace(/\.(zip|wad|fantome)$/i, '')}`,
         `${presetSkin.championKey}_${presetSkin.downloadedFilename?.replace(/\.(zip|wad|fantome)$/i, '')}`

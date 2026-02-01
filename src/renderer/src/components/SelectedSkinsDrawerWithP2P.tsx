@@ -56,7 +56,6 @@ interface SelectedSkinsDrawerProps {
         id: string
         nameEn?: string
         name: string
-        lolSkinsName?: string
         chromaList?: Array<{
           id: number
           name: string

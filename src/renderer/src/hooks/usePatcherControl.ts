@@ -137,8 +137,7 @@ export function usePatcherControl() {
                 const downloadedSkin = downloadedSkins.find(
                   (ds) =>
                     ds.championName === skin.championKey &&
-                    (ds.skinName.includes(skin.skinNameEn || skin.skinName) ||
-                      ds.skinName.includes(skin.lolSkinsName || skin.skinName))
+                    ds.skinName.includes(skin.skinNameEn || skin.skinName)
                 )
 
                 if (downloadedSkin) {

@@ -73,13 +73,29 @@ export const AppHeader = memo(() => {
           />
           {t('nav.favorites')}
         </button>
-        {!championData && (
+        {!championData ? (
           <button
             className="px-5 py-2.5 text-sm bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-all duration-200 shadow-soft hover:shadow-medium dark:shadow-dark-soft disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
             onClick={fetchChampionData}
             disabled={loading}
           >
             {t('champion.downloadData')}
+          </button>
+        ) : (
+          <button
+            className="px-3 py-2.5 text-sm bg-surface hover:bg-secondary-100 dark:hover:bg-secondary-800 text-text-primary font-medium rounded-lg transition-all duration-200 border border-border hover:border-border-strong shadow-sm hover:shadow-md dark:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={fetchChampionData}
+            disabled={loading}
+            title={t('champion.refetchData', 'Refetch Data')}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
+            </svg>
           </button>
         )}
         <LCUStatusIndicator

@@ -44,8 +44,7 @@ export const ChromaSelectionDialog: React.FC<ChromaSelectionDialogProps> = ({
   }
 
   const isChromaDownloaded = (chromaId: string) => {
-    const chromaFileName =
-      `${skin.lolSkinsName || skin.nameEn || skin.name} ${chromaId}.zip`.replace(/:/g, '')
+    const chromaFileName = `${skin.nameEn || skin.name} ${chromaId}.zip`.replace(/:/g, '')
     return downloadedSkins.some(
       (ds) => ds.championName === champion.key && ds.skinName === chromaFileName
     )

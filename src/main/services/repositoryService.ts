@@ -1,22 +1,113 @@
 import axios from 'axios'
-import {
-  SkinRepository,
-  RepositorySettings,
-  DEFAULT_REPOSITORY,
-  DEFAULT_REPOSITORY_STRUCTURE,
-  RepositoryDetectionResult
-} from '../types/repository.types'
-import { settingsService } from './settingsService'
+import { app } from 'electron'
+import path from 'path'
+import fs from 'fs/promises'
+import { existsSync } from 'fs'
+import { LEAGUESKINS_REPO } from '../types/repository.types'
 import { championDataService } from './championDataService'
-import { repositoryDetector } from './repositoryDetector'
 
 export class RepositoryService {
   private static instance: RepositoryService
-  private repositories: SkinRepository[] = []
-  private activeRepositoryId: string = DEFAULT_REPOSITORY.id
+
+  // skin_ids.json: maps skin/chroma ID → repo name
+  private skinIdsMap: Map<string, string> = new Map()
+  private skinIdsReverseMap: Map<string, string> = new Map()
+  private skinIdsFetchPromise: Promise<void> | null = null
 
   private constructor() {
-    this.loadRepositories()
+    // Fetch skin IDs in background
+    this.fetchSkinIds()
+  }
+
+  /**
+   * Fetches skin_ids.json from the LeagueSkins repo and caches it
+   */
+  async fetchSkinIds(): Promise<void> {
+    // Deduplicate concurrent calls
+    if (this.skinIdsFetchPromise) return this.skinIdsFetchPromise
+
+    this.skinIdsFetchPromise = this.fetchSkinIdsInternal()
+    try {
+      await this.skinIdsFetchPromise
+    } finally {
+      this.skinIdsFetchPromise = null
+    }
+  }
+
+  private async fetchSkinIdsInternal(): Promise<void> {
+    const cacheDir = path.join(app.getPath('userData'), 'champion-data')
+    const cachePath = path.join(cacheDir, 'skin-ids.json')
+
+    // Try loading from disk cache first
+    try {
+      if (existsSync(cachePath)) {
+        const raw = await fs.readFile(cachePath, 'utf-8')
+        const data = JSON.parse(raw) as Record<string, string>
+        this.buildSkinIdsMaps(data)
+        console.log(`[SkinIds] Loaded ${this.skinIdsMap.size} entries from disk cache`)
+      }
+    } catch {
+      // Cache read failed, will fetch from network
+    }
+
+    // Fetch fresh data from GitHub
+    try {
+      const url =
+        'https://raw.githubusercontent.com/Alban1911/LeagueSkins/refs/heads/main/resources/en/skin_ids.json'
+      const response = await axios.get<Record<string, string>>(url, { timeout: 15000 })
+      const data = response.data
+      this.buildSkinIdsMaps(data)
+
+      // Save to disk
+      try {
+        if (!existsSync(cacheDir)) {
+          await fs.mkdir(cacheDir, { recursive: true })
+        }
+        await fs.writeFile(cachePath, JSON.stringify(data), 'utf-8')
+      } catch (err) {
+        console.error('[SkinIds] Failed to save to disk:', err)
+      }
+
+      console.log(`[SkinIds] Fetched ${this.skinIdsMap.size} entries from GitHub`)
+    } catch (err) {
+      if (this.skinIdsMap.size > 0) {
+        console.warn('[SkinIds] Network fetch failed, using disk cache')
+      } else {
+        console.error('[SkinIds] Failed to fetch skin_ids.json:', err)
+      }
+    }
+  }
+
+  private buildSkinIdsMaps(data: Record<string, string>): void {
+    this.skinIdsMap.clear()
+    this.skinIdsReverseMap.clear()
+    for (const [id, name] of Object.entries(data)) {
+      this.skinIdsMap.set(id, name)
+      this.skinIdsReverseMap.set(name, id)
+    }
+  }
+
+  /**
+   * Look up a skin/chroma name by its Riot ID from skin_ids.json
+   */
+  getSkinNameById(id: string): string | null {
+    return this.skinIdsMap.get(id) || null
+  }
+
+  /**
+   * Reverse lookup: get the Riot ID for a skin/chroma name from skin_ids.json
+   */
+  getSkinIdByName(name: string): string | null {
+    return this.skinIdsReverseMap.get(name) || null
+  }
+
+  /**
+   * Ensures skin IDs are loaded before using them
+   */
+  async ensureSkinIds(): Promise<void> {
+    if (this.skinIdsMap.size === 0) {
+      await this.fetchSkinIds()
+    }
   }
 
   static getInstance(): RepositoryService {
@@ -26,781 +117,61 @@ export class RepositoryService {
     return RepositoryService.instance
   }
 
-  private loadRepositories(): void {
-    try {
-      const settings = settingsService.get('repositorySettings') as RepositorySettings
-      if (settings) {
-        const storedRepositories = Array.isArray(settings.repositories) ? settings.repositories : []
-        this.repositories =
-          storedRepositories.length > 0 ? storedRepositories : [{ ...DEFAULT_REPOSITORY }]
-        this.activeRepositoryId = settings.activeRepositoryId || DEFAULT_REPOSITORY.id
-
-        // Handle migration from lol-skins to LeagueSkins default
-        const defaultChanged = this.migrateDefaultRepository()
-
-        // Migrate repositories without structure field
-        this.migrateRepositories()
-
-        if (defaultChanged) {
-          this.saveRepositories()
-        }
-      } else {
-        // Initialize with default repository
-        this.repositories = [{ ...DEFAULT_REPOSITORY }]
-        this.activeRepositoryId = DEFAULT_REPOSITORY.id
-        this.saveRepositories()
-      }
-    } catch (error) {
-      console.error('Failed to load repositories:', error)
-      this.repositories = [DEFAULT_REPOSITORY]
-      this.activeRepositoryId = DEFAULT_REPOSITORY.id
-    }
-  }
-
-  /**
-   * Migrates repositories from old format to new format with structure field
-   */
-  private migrateRepositories(): void {
-    let migrated = false
-
-    console.log(`[Migration] Checking ${this.repositories.length} repositories for migration...`)
-
-    this.repositories = this.repositories.map((repo) => {
-      // If repository doesn't have structure field, add default structure
-      if (!repo.structure || !repo.structure.type) {
-        migrated = true
-        console.log(
-          `[Migration] Migrating ${repo.owner}/${repo.repo} - adding default 'name-based' structure`
-        )
-        return {
-          ...repo,
-          structure: {
-            type: 'name-based' as const,
-            skinsPath: repo.structure?.skinsPath || 'skins',
-            chromaPattern: repo.structure?.chromaPattern,
-            autoDetected: false
-          }
-        }
-      }
-      console.log(
-        `[Migration] ${repo.owner}/${repo.repo} already has structure: type="${repo.structure.type}", autoDetected=${repo.structure.autoDetected}`
-      )
-      return repo
-    })
-
-    // Save if any migration happened
-    if (migrated) {
-      console.log('[Migration] Saving migrated repositories...')
-      this.saveRepositories()
-    } else {
-      console.log('[Migration] No migration needed')
-    }
-
-    // Auto-detect repositories that weren't auto-detected yet (async in background)
-    this.autoDetectUndetectedRepositories()
-  }
-
-  /**
-   * Ensures the LeagueSkins repository is set as default and removes legacy lol-skins entry
-   */
-  private migrateDefaultRepository(): boolean {
-    let hasChanges = false
-
-    // Remove legacy default from darkseal-org/lol-skins
-    const filteredRepositories: SkinRepository[] = []
-    for (const repo of this.repositories) {
-      const isLegacyDefault =
-        repo.id === 'darkseal-default' ||
-        (repo.isDefault && repo.owner === 'darkseal-org' && repo.repo === 'lol-skins')
-
-      if (isLegacyDefault) {
-        hasChanges = true
-        if (this.activeRepositoryId === repo.id) {
-          this.activeRepositoryId = DEFAULT_REPOSITORY.id
-        }
-        continue
-      }
-
-      filteredRepositories.push(repo)
-    }
-    this.repositories = filteredRepositories
-
-    // Find existing LeagueSkins repositories (users might have added one manually)
-    const leagueSkinsEntries = this.repositories.filter((repo) =>
-      this.isLeagueSkinsRepository(repo)
-    )
-
-    let defaultRepositoryIndex = -1
-
-    if (leagueSkinsEntries.length > 0) {
-      hasChanges = true
-
-      // Prefer the entry that was already marked as default, otherwise use the first one
-      const primaryEntry =
-        leagueSkinsEntries.find((repo) => repo.isDefault) ?? leagueSkinsEntries[0]
-
-      // Remove other duplicates of LeagueSkins
-      this.repositories = this.repositories.filter((repo) => {
-        if (!this.isLeagueSkinsRepository(repo)) {
-          return true
-        }
-        return repo === primaryEntry
-      })
-
-      defaultRepositoryIndex = this.repositories.findIndex((repo) => repo === primaryEntry)
-
-      if (this.activeRepositoryId === primaryEntry.id) {
-        this.activeRepositoryId = DEFAULT_REPOSITORY.id
-      }
-
-      const normalizedStructure = {
-        type: 'id-based' as const,
-        skinsPath: primaryEntry.structure?.skinsPath || 'skins',
-        chromaPattern: primaryEntry.structure?.chromaPattern,
-        autoDetected: true
-      }
-
-      const normalizedRepo: SkinRepository = {
-        ...DEFAULT_REPOSITORY,
-        branch: primaryEntry.branch || DEFAULT_REPOSITORY.branch,
-        structure: normalizedStructure,
-        lastChecked: primaryEntry.lastChecked,
-        status: primaryEntry.status || DEFAULT_REPOSITORY.status
-      }
-
-      if (defaultRepositoryIndex !== -1) {
-        this.repositories[defaultRepositoryIndex] = normalizedRepo
-      } else {
-        this.repositories.unshift(normalizedRepo)
-      }
-    }
-
-    // Ensure default repository exists if no existing LeagueSkins entry was found
-    if (leagueSkinsEntries.length === 0) {
-      if (!this.repositories.find((repo) => repo.id === DEFAULT_REPOSITORY.id)) {
-        this.repositories.unshift({ ...DEFAULT_REPOSITORY })
-        hasChanges = true
-      }
-    }
-
-    // Ensure active repository points to a valid entry
-    if (!this.repositories.find((repo) => repo.id === this.activeRepositoryId)) {
-      this.activeRepositoryId = DEFAULT_REPOSITORY.id
-      hasChanges = true
-    }
-
-    return hasChanges
-  }
-
-  private isLeagueSkinsRepository(repo: SkinRepository): boolean {
-    return (
-      repo.owner?.toLowerCase() === DEFAULT_REPOSITORY.owner.toLowerCase() &&
-      repo.repo?.toLowerCase() === DEFAULT_REPOSITORY.repo.toLowerCase()
-    )
-  }
-
-  /**
-   * Auto-detects structure for repositories that have autoDetected: false
-   * Runs in background without blocking app startup
-   */
-  private async autoDetectUndetectedRepositories(): Promise<void> {
-    const undetectedRepos = this.repositories.filter(
-      (repo) => repo.structure && !repo.structure.autoDetected && !repo.isDefault
-    )
-
-    console.log(
-      `[Auto-Detection] Total repositories: ${this.repositories.length}, Undetected: ${undetectedRepos.length}`
-    )
-
-    if (undetectedRepos.length === 0) {
-      console.log(`[Auto-Detection] No repositories need auto-detection`)
-      return
-    }
-
-    console.log(`[Auto-Detection] Starting detection for ${undetectedRepos.length} repositories...`)
-
-    for (const repo of undetectedRepos) {
-      try {
-        console.log(`[Auto-Detection] Detecting ${repo.owner}/${repo.repo}...`)
-        const detection = await repositoryDetector.detectRepositoryStructure(
-          repo.owner,
-          repo.repo,
-          repo.branch,
-          repo.structure?.skinsPath
-        )
-
-        console.log(
-          `[Auto-Detection] ${repo.owner}/${repo.repo} detected as: "${detection.type}" (confidence: ${detection.confidence})`
-        )
-
-        // Update the repository structure
-        this.updateRepository(repo.id, {
-          structure: {
-            type: detection.type,
-            skinsPath: detection.skinsPath,
-            autoDetected: true
-          }
-        })
-
-        console.log(`[Auto-Detection] ${repo.owner}/${repo.repo} updated successfully`)
-
-        console.log(
-          `✓ Detected ${repo.owner}/${repo.repo} as ${detection.type} (${detection.confidence}% confidence)`
-        )
-      } catch (error) {
-        console.error(`Failed to auto-detect ${repo.owner}/${repo.repo}:`, error)
-        // Keep existing structure, just mark as detected to avoid re-trying
-        this.updateRepository(repo.id, {
-          structure: {
-            ...(repo.structure || { type: 'name-based', skinsPath: 'skins' }),
-            autoDetected: true // Mark as detected even if failed
-          }
-        })
-      }
-    }
-  }
-
-  private saveRepositories(): void {
-    try {
-      const settings: RepositorySettings = {
-        repositories: this.repositories,
-        activeRepositoryId: this.activeRepositoryId,
-        allowMultipleActive: false
-      }
-      settingsService.set('repositorySettings', settings)
-    } catch (error) {
-      console.error('Failed to save repositories:', error)
-    }
-  }
-
-  getRepositories(): SkinRepository[] {
-    return [...this.repositories]
-  }
-
-  getActiveRepository(): SkinRepository {
-    const active = this.repositories.find((r) => r.id === this.activeRepositoryId)
-    return active || DEFAULT_REPOSITORY
-  }
-
-  getRepositoryById(id: string): SkinRepository | undefined {
-    return this.repositories.find((r) => r.id === id)
-  }
-
-  setActiveRepository(id: string): boolean {
-    const repo = this.repositories.find((r) => r.id === id)
-    if (repo) {
-      this.activeRepositoryId = id
-      this.saveRepositories()
-      return true
-    }
-    return false
-  }
-
-  async addRepository(repository: Omit<SkinRepository, 'id' | 'status'>): Promise<SkinRepository> {
-    // Generate unique ID
-    const id = `${repository.owner}-${repository.repo}-${Date.now()}`
-
-    const newRepo: SkinRepository = {
-      ...repository,
-      id,
-      status: 'unchecked',
-      isCustom: true,
-      isDefault: false
-    }
-
-    // Validate before adding
-    const isValid = await this.validateRepository(newRepo)
-    if (!isValid) {
-      throw new Error('Invalid repository structure')
-    }
-
-    this.repositories.push(newRepo)
-    this.saveRepositories()
-    return newRepo
-  }
-
-  /**
-   * Adds a repository with automatic structure detection
-   */
-  async addRepositoryWithDetection(
-    owner: string,
-    repo: string,
-    branch: string = 'main',
-    name?: string
-  ): Promise<{ repository: SkinRepository; detection: RepositoryDetectionResult }> {
-    // Run detection
-    const detection = await repositoryDetector.detectRepositoryStructure(owner, repo, branch)
-
-    // Create repository with detected structure
-    const repository: Omit<SkinRepository, 'id' | 'status'> = {
-      name: name || `${owner}/${repo}`,
-      owner,
-      repo,
-      branch,
-      isDefault: false,
-      isCustom: true,
-      structure: {
-        type: detection.type,
-        skinsPath: detection.skinsPath,
-        autoDetected: true
-      }
-    }
-
-    const newRepo = await this.addRepository(repository)
-    return { repository: newRepo, detection }
-  }
-
-  /**
-   * Re-detects the structure of an existing repository
-   */
-  async redetectRepositoryStructure(id: string): Promise<RepositoryDetectionResult> {
-    const repo = this.getRepositoryById(id)
-    if (!repo) {
-      throw new Error('Repository not found')
-    }
-
-    // Run detection
-    const detection = await repositoryDetector.detectRepositoryStructure(
-      repo.owner,
-      repo.repo,
-      repo.branch,
-      repo.structure?.skinsPath
-    )
-
-    // Update repository structure
-    this.updateRepository(id, {
-      structure: {
-        type: detection.type,
-        skinsPath: detection.skinsPath,
-        autoDetected: true
-      }
-    })
-
-    return detection
-  }
-
-  removeRepository(id: string): boolean {
-    // Cannot remove default repository
-    const repo = this.repositories.find((r) => r.id === id)
-    if (!repo || repo.isDefault) {
-      return false
-    }
-
-    // Cannot remove the active repository
-    if (this.activeRepositoryId === id) {
-      return false
-    }
-
-    this.repositories = this.repositories.filter((r) => r.id !== id)
-    this.saveRepositories()
-    return true
-  }
-
-  updateRepository(id: string, updates: Partial<SkinRepository>): boolean {
-    const index = this.repositories.findIndex((r) => r.id === id)
-    if (index === -1) {
-      return false
-    }
-
-    // Don't allow changing certain fields
-    delete updates.id
-    delete updates.isDefault
-
-    this.repositories[index] = {
-      ...this.repositories[index],
-      ...updates
-    }
-
-    this.saveRepositories()
-    return true
-  }
-
-  async validateRepository(repository: SkinRepository): Promise<boolean> {
-    try {
-      // Update status
-      repository.status = 'checking'
-      this.saveRepositories()
-
-      // Check if repository exists on GitHub
-      const repoUrl = `https://api.github.com/repos/${repository.owner}/${repository.repo}`
-      const repoResponse = await axios.get(repoUrl, {
-        headers: {
-          Accept: 'application/vnd.github.v3+json',
-          'User-Agent': 'Bocchi-LoL-Skin-Manager'
-        },
-        timeout: 10000
-      })
-
-      if (repoResponse.status !== 200) {
-        repository.status = 'error'
-        this.saveRepositories()
-        return false
-      }
-
-      // Check if skins folder exists
-      const skinsPath = repository.structure?.skinsPath || 'skins'
-      const contentsUrl = `https://api.github.com/repos/${repository.owner}/${repository.repo}/contents/${skinsPath}?ref=${repository.branch}`
-
-      try {
-        const contentsResponse = await axios.get(contentsUrl, {
-          headers: {
-            Accept: 'application/vnd.github.v3+json',
-            'User-Agent': 'Bocchi-LoL-Skin-Manager'
-          },
-          timeout: 10000
-        })
-
-        if (contentsResponse.status === 200 && Array.isArray(contentsResponse.data)) {
-          repository.status = 'active'
-          repository.lastChecked = new Date()
-          this.saveRepositories()
-          return true
-        }
-      } catch {
-        // Skins folder doesn't exist
-        console.error(`Skins folder not found in repository ${repository.owner}/${repository.repo}`)
-      }
-
-      repository.status = 'error'
-      this.saveRepositories()
-      return false
-    } catch (error) {
-      console.error(`Failed to validate repository ${repository.owner}/${repository.repo}:`, error)
-      repository.status = 'error'
-      this.saveRepositories()
-      return false
-    }
-  }
-
-  async validateAllRepositories(): Promise<void> {
-    for (const repo of this.repositories) {
-      await this.validateRepository(repo)
-    }
-  }
-
   constructGitHubUrl(
     championName: string,
     skinFile: string,
-    isChroma: boolean = false,
-    chromaBase?: string,
+    _isChroma?: boolean,
+    _chromaBase?: string,
     championId?: number
   ): string {
-    const repo = this.getActiveRepository()
-    const structure = repo.structure || DEFAULT_REPOSITORY_STRUCTURE
-    const skinsPath = structure.skinsPath
+    const { owner, repo, branch, skinsPath } = LEAGUESKINS_REPO
+    const baseUrl = `https://github.com/${owner}/${repo}/blob/${branch}/${skinsPath}`
 
-    console.log(
-      `[constructGitHubUrl] Called with championName="${championName}", skinFile="${skinFile}", isChroma=${isChroma}, championId=${championId || 'undefined'}`
-    )
-    console.log(`[constructGitHubUrl] Active repository: ${repo.owner}/${repo.repo}`)
-    console.log(
-      `[constructGitHubUrl] Repository structure type: "${structure.type}", skinsPath: "${skinsPath}", autoDetected: ${structure.autoDetected}`
-    )
+    // Check if this is a chroma (has 4-6 digit numeric ID at end of filename)
+    const chromaMatch = skinFile.match(/^(.+?)\s+(\d{4,6})\.zip$/i)
+    if (chromaMatch) {
+      const chromaId = chromaMatch[2]
+      const baseSkinName = chromaMatch[1]
 
-    // If ID-based repository, convert names to IDs
-    if (structure.type === 'id-based') {
-      console.log(`[constructGitHubUrl] Using ID-based URL construction`)
-      // If championId is provided, use it directly
+      // Look up chroma name from skin_ids.json
+      const chromaName = this.getSkinNameById(chromaId)
+      if (chromaName) {
+        return `${baseUrl}/${encodeURIComponent(championName)}/${encodeURIComponent(baseSkinName)}/${encodeURIComponent(chromaName)}/${encodeURIComponent(chromaName)}.zip`
+      }
+
+      // Fallback: try constructing from champion data
       if (championId) {
-        console.log(`[constructGitHubUrl] Using provided championId: ${championId}`)
-        return this.constructIdBasedUrlWithId(championId, skinFile, repo, skinsPath)
-      }
-      // Otherwise fallback to name lookup (backward compatibility)
-      console.log(`[constructGitHubUrl] championId not provided, falling back to name lookup`)
-      return this.constructIdBasedUrl(championName, skinFile, repo, skinsPath)
-    }
-
-    // Name-based repository (default)
-    console.log(`[constructGitHubUrl] Using name-based URL construction`)
-    if (isChroma && chromaBase) {
-      const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/chromas/${encodeURIComponent(chromaBase)}/${encodeURIComponent(skinFile)}`
-      console.log(`[constructGitHubUrl] Name-based chroma URL: ${url}`)
-      return url
-    }
-
-    const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/${encodeURIComponent(skinFile)}`
-    console.log(`[constructGitHubUrl] Name-based URL: ${url}`)
-    return url
-  }
-
-  /**
-   * Constructs URL for ID-based repositories (synchronous)
-   */
-  private constructIdBasedUrl(
-    championName: string,
-    skinFile: string,
-    repo: SkinRepository,
-    skinsPath: string
-  ): string {
-    console.log(
-      `[ID-Based URL] Constructing URL for championName="${championName}", skinFile="${skinFile}"`
-    )
-
-    // Look up champion by name (sync)
-    const champion = championDataService.getChampionByNameSync(championName)
-    if (!champion) {
-      console.error(`[ID-Based URL] Champion not found in cache: ${championName}`)
-      // Fallback to name-based URL to avoid breaking
-      return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/${encodeURIComponent(skinFile)}`
-    }
-
-    const championId = champion.id
-    console.log(`[ID-Based URL] Champion found: ${champion.name} (ID: ${championId})`)
-
-    // Check if this is a chroma (has 5-6 digit ID in filename)
-    // Chroma IDs can be 5 or 6 digits (e.g., 62034 or 236003)
-    const chromaMatch = skinFile.match(/(\d{5,6})\.zip$/i)
-    if (chromaMatch) {
-      const chromaId = chromaMatch[1]
-      console.log(`[ID-Based URL] Detected chroma file with chromaId=${chromaId}`)
-
-      // Find the skin that has this chroma
-      let skinId = ''
-      for (const skin of champion.skins) {
-        if (skin.chromas && skin.chromaList) {
-          const hasChroma = skin.chromaList.some((c) => c.id.toString() === chromaId)
-          if (hasChroma) {
-            // Construct skin ID from champion ID + skin num
-            skinId = championId.toString() + skin.num.toString().padStart(3, '0')
-            console.log(`[ID-Based URL] Chroma found in skin: num=${skin.num}, skinId=${skinId}`)
-            break
+        const champion = championDataService.getChampionByIdSync(championId)
+        if (champion) {
+          for (const skin of champion.skins) {
+            if (skin.chromas && skin.chromaList) {
+              const chroma = skin.chromaList.find((c) => c.id.toString() === chromaId)
+              if (chroma) {
+                const fullChromaName = `${skin.nameEn || skin.name} (${chroma.name})`
+                return `${baseUrl}/${encodeURIComponent(championName)}/${encodeURIComponent(skin.nameEn || skin.name)}/${encodeURIComponent(fullChromaName)}/${encodeURIComponent(fullChromaName)}.zip`
+              }
+            }
           }
         }
       }
 
-      if (skinId) {
-        const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${chromaId}/${chromaId}.zip`
-        console.log(`[ID-Based URL] Chroma URL: ${url}`)
-        return url
-      } else {
-        console.warn(`[ID-Based URL] Chroma ${chromaId} not found in any skin, using fallback`)
-      }
+      console.warn(
+        `[LeagueSkins URL] Chroma ${chromaId} not found in skin_ids.json or champion data`
+      )
     }
 
-    // Regular skin (not a chroma)
-    const baseName = skinFile.replace('.zip', '')
-    console.log(`[ID-Based URL] Looking for regular skin with baseName="${baseName}"`)
-    console.log(
-      `[ID-Based URL] Available skins: ${champion.skins.map((s) => `${s.num}:${s.lolSkinsName || s.nameEn || s.name}`).join(', ')}`
-    )
-
-    const matchingSkin = champion.skins.find((s) => {
-      const skinName = s.lolSkinsName || s.nameEn || s.name
-      return skinName === baseName
-    })
-
-    if (!matchingSkin) {
-      // Log detailed error information
-      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.error('⚠️  SKIN MAPPING NOT FOUND')
-      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.error(`Repository: ${repo.name}`)
-      console.error(`Champion: ${champion.name} (ID: ${championId})`)
-      console.error(`Looking for: "${baseName}"`)
-      console.error(`Available skins in champion data:`)
-      champion.skins.forEach((s, i) => {
-        const skinName = s.lolSkinsName || s.nameEn || s.name
-        console.error(`  ${i + 1}. "${skinName}"`)
-      })
-      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.error('Falling back to name-based URL construction...')
-
-      // Fallback
-      return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/${encodeURIComponent(skinFile)}`
-    }
-
-    const skinId = championId.toString() + matchingSkin.num.toString().padStart(3, '0')
-    const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${skinId}.zip`
-    console.log(
-      `[ID-Based URL] Skin matched: num=${matchingSkin.num}, name=${matchingSkin.lolSkinsName || matchingSkin.nameEn || matchingSkin.name}, skinId=${skinId}`
-    )
-    console.log(`[ID-Based URL] Final URL: ${url}`)
-    return url
-  }
-
-  /**
-   * Constructs URL for ID-based repositories using championId directly (avoids name→ID lookup)
-   */
-  private constructIdBasedUrlWithId(
-    championId: number,
-    skinFile: string,
-    repo: SkinRepository,
-    skinsPath: string
-  ): string {
-    console.log(
-      `[ID-Based URL Direct] Constructing URL with championId=${championId}, skinFile="${skinFile}"`
-    )
-
-    // Look up champion by ID (sync)
-    const champion = championDataService.getChampionByIdSync(championId)
-    if (!champion) {
-      console.error(`[ID-Based URL Direct] Champion not found for ID: ${championId}`)
-      // Fallback - cannot construct URL without champion data
-      throw new Error(`Champion not found for ID: ${championId}`)
-    }
-
-    console.log(`[ID-Based URL Direct] Champion found: ${champion.name} (ID: ${championId})`)
-
-    // Check if this is a chroma (has 5-6 digit ID in filename)
-    const chromaMatch = skinFile.match(/(\d{5,6})\.zip$/i)
-    if (chromaMatch) {
-      const chromaId = chromaMatch[1]
-      console.log(`[ID-Based URL Direct] Detected chroma file with chromaId=${chromaId}`)
-
-      // Find the skin that has this chroma
-      let skinId = ''
-      for (const skin of champion.skins) {
-        if (skin.chromas && skin.chromaList) {
-          const hasChroma = skin.chromaList.some((c) => c.id.toString() === chromaId)
-          if (hasChroma) {
-            // Construct skin ID from champion ID + skin num
-            skinId = championId.toString() + skin.num.toString().padStart(3, '0')
-            console.log(
-              `[ID-Based URL Direct] Chroma found in skin: num=${skin.num}, skinId=${skinId}`
-            )
-            break
-          }
-        }
-      }
-
-      if (skinId) {
-        const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${chromaId}/${chromaId}.zip`
-        console.log(`[ID-Based URL Direct] Chroma URL: ${url}`)
-        return url
-      } else {
-        console.warn(`[ID-Based URL Direct] Chroma ${chromaId} not found in any skin`)
-        throw new Error(`Chroma ${chromaId} not found for champion ${champion.name}`)
-      }
-    }
-
-    // Regular skin (not a chroma)
-    const baseName = skinFile.replace('.zip', '')
-    console.log(`[ID-Based URL Direct] Looking for regular skin with baseName="${baseName}"`)
-    console.log(
-      `[ID-Based URL Direct] Available skins: ${champion.skins.map((s) => `${s.num}:${s.lolSkinsName || s.nameEn || s.name}`).join(', ')}`
-    )
-
-    const matchingSkin = champion.skins.find((s) => {
-      const skinName = s.lolSkinsName || s.nameEn || s.name
-      return skinName === baseName
-    })
-
-    if (!matchingSkin) {
-      // Log detailed error information
-      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.error('⚠️  SKIN MAPPING NOT FOUND (Direct ID method)')
-      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      console.error(`Repository: ${repo.name}`)
-      console.error(`Champion: ${champion.name} (ID: ${championId})`)
-      console.error(`Looking for: "${baseName}"`)
-      console.error(`Available skins in champion data:`)
-      champion.skins.forEach((s, i) => {
-        const skinName = s.lolSkinsName || s.nameEn || s.name
-        console.error(`  ${i + 1}. "${skinName}"`)
-      })
-      console.error('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-      throw new Error(`Skin "${baseName}" not found for champion ${champion.name}`)
-    }
-
-    const skinId = championId.toString() + matchingSkin.num.toString().padStart(3, '0')
-    const url = `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${skinId}.zip`
-    console.log(
-      `[ID-Based URL Direct] Skin matched: num=${matchingSkin.num}, name=${matchingSkin.lolSkinsName || matchingSkin.nameEn || matchingSkin.name}, skinId=${skinId}`
-    )
-    console.log(`[ID-Based URL Direct] Final URL: ${url}`)
-    return url
-  }
-
-  /**
-   * Constructs a GitHub URL for ID-based repositories
-   */
-  async constructGitHubUrlFromIds(
-    championId: number,
-    skinId: string,
-    repositoryId?: string,
-    chromaId?: string
-  ): Promise<string> {
-    const repo = repositoryId ? this.getRepositoryById(repositoryId) : this.getActiveRepository()
-    if (!repo) {
-      throw new Error('Repository not found')
-    }
-
-    const skinsPath = repo.structure?.skinsPath || 'skins'
-
-    // If chromaId is provided, construct chroma URL
-    if (chromaId) {
-      const fileName = `${chromaId}.zip`
-      return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${chromaId}/${fileName}`
-    }
-
-    // Otherwise, construct regular skin URL
-    const fileName = `${skinId}.zip`
-    return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championId}/${skinId}/${fileName}`
-  }
-
-  /**
-   * Constructs a GitHub URL that works for both name-based and ID-based repositories
-   * Automatically detects the repository type and constructs the appropriate URL
-   */
-  async constructGitHubUrlAuto(
-    championKeyOrId: string | number,
-    skinFileOrId: string,
-    repositoryId?: string
-  ): Promise<string> {
-    const repo = repositoryId ? this.getRepositoryById(repositoryId) : this.getActiveRepository()
-    if (!repo) {
-      throw new Error('Repository not found')
-    }
-
-    const structure = repo.structure || DEFAULT_REPOSITORY_STRUCTURE
-    const skinsPath = structure.skinsPath
-
-    // If repository is ID-based, construct ID-based URL
-    if (structure.type === 'id-based') {
-      let championId: number
-
-      if (typeof championKeyOrId === 'number') {
-        championId = championKeyOrId
-      } else {
-        // Resolve champion key to ID
-        const champion = await championDataService.getChampionByKey(championKeyOrId)
-        if (!champion) {
-          throw new Error(`Champion not found: ${championKeyOrId}`)
-        }
-        championId = champion.id
-      }
-
-      return this.constructGitHubUrlFromIds(championId, skinFileOrId, repositoryId)
-    }
-
-    // Otherwise, construct name-based URL (default behavior)
-    let championName: string
-
-    if (typeof championKeyOrId === 'number') {
-      // Resolve ID to name
-      const name = await championDataService.getChampionNameById(championKeyOrId)
-      if (!name) {
-        throw new Error(`Champion not found: ${championKeyOrId}`)
-      }
-      championName = name
-    } else {
-      // Try to get champion name from key
-      const champion = await championDataService.getChampionByKey(championKeyOrId)
-      championName = champion ? champion.name : championKeyOrId
-    }
-
-    return `https://github.com/${repo.owner}/${repo.repo}/blob/${repo.branch}/${skinsPath}/${championName}/${encodeURIComponent(skinFileOrId)}`
+    // Regular skin - nested: skins/{champion}/{skinName}/{skinName}.zip
+    const skinName = skinFile.replace(/\.zip$/i, '')
+    return `${baseUrl}/${encodeURIComponent(championName)}/${encodeURIComponent(skinName)}/${encodeURIComponent(skinFile)}`
   }
 
   constructRawUrl(url: string): string {
-    // Convert GitHub URL to raw URL for any repository
     return url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/')
   }
 
   parseGitHubUrl(
     url: string
   ): { owner: string; repo: string; branch: string; path: string } | null {
-    // Parse any GitHub URL to extract repository info
     const patterns = [
       /github\.com\/([^/]+)\/([^/]+)\/(blob|raw)\/([^/]+)\/(.+)$/,
       /raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\/(.+)$/
@@ -828,13 +199,6 @@ export class RepositoryService {
     }
 
     return null
-  }
-
-  getRepositoryFromUrl(url: string): SkinRepository | undefined {
-    const parsed = this.parseGitHubUrl(url)
-    if (!parsed) return undefined
-
-    return this.repositories.find((r) => r.owner === parsed.owner && r.repo === parsed.repo)
   }
 }
 

@@ -294,21 +294,7 @@ const api = {
   importFile: (filePath: string, options?: ImportOptions) =>
     ipcRenderer.invoke('import-file', filePath, options),
 
-  // Repository management APIs
-  repositoryGetAll: () => ipcRenderer.invoke('repository:get-all'),
-  repositoryGetActive: () => ipcRenderer.invoke('repository:get-active'),
-  repositorySetActive: (repositoryId: string) =>
-    ipcRenderer.invoke('repository:set-active', repositoryId),
-  repositoryAdd: (repository: unknown) => ipcRenderer.invoke('repository:add', repository),
-  repositoryAddWithDetection: (owner: string, repo: string, branch?: string, name?: string) =>
-    ipcRenderer.invoke('repository:add-with-detection', owner, repo, branch, name),
-  repositoryRedetectStructure: (repositoryId: string) =>
-    ipcRenderer.invoke('repository:redetect-structure', repositoryId),
-  repositoryRemove: (repositoryId: string) => ipcRenderer.invoke('repository:remove', repositoryId),
-  repositoryValidate: (repositoryId: string) =>
-    ipcRenderer.invoke('repository:validate', repositoryId),
-  repositoryUpdate: (repositoryId: string, updates: unknown) =>
-    ipcRenderer.invoke('repository:update', repositoryId, updates),
+  // Repository URL construction
   repositoryConstructUrl: (
     championName: string,
     skinFile: string,

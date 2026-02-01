@@ -7,7 +7,6 @@ interface SelectedSkin {
   skinId: string
   skinName: string
   skinNameEn?: string
-  lolSkinsName?: string
   skinNum: number
   chromaId?: string
   isDownloaded?: boolean

@@ -18,7 +18,6 @@ export class PresetServiceClient {
       chromaId: skin.chromaId,
       chromaName: skin.chromaId ? `Chroma ${skin.chromaId}` : undefined,
       variantId: skin.variantId,
-      lolSkinsName: skin.lolSkinsName,
       downloadedFilename: skin.downloadedFilename
     }))
 
@@ -131,7 +130,6 @@ export class PresetServiceClient {
       skinId: skin.skinId,
       skinName: skin.skinName,
       skinNameEn: skin.skinNameEn,
-      lolSkinsName: skin.lolSkinsName,
       skinNum: skin.skinNum,
       chromaId: skin.chromaId,
       variantId: skin.variantId,
