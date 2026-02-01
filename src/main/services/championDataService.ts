@@ -1,113 +1,61 @@
-import axios from 'axios'
+import { app } from 'electron'
+import path from 'path'
+import fs from 'fs/promises'
+import { existsSync } from 'fs'
+import {
+  fetchLatestVersion,
+  fetchChampionData as fetchFromApis,
+  type Champion,
+  type Skin
+} from './championFetcher'
 
-interface Champion {
-  id: number
-  key: string
-  name: string
-  nameEn?: string
-  title: string
-  image: string
-  skins: Skin[]
-  tags: string[]
-}
+export type { Champion, Skin }
 
-interface Chroma {
-  id: number
-  name: string
-  chromaPath: string
-  colors: string[]
-}
-
-interface Skin {
-  id: string
-  num: number
-  name: string
-  nameEn?: string // English name for download purposes
-  lolSkinsName?: string // Name used in lol-skins repository if different
-  chromas: boolean
-  chromaList?: Chroma[]
-  rarity: string
-  rarityGemPath: string | null
-  isLegacy: boolean
-  skinType: string
-  skinLines?: Array<{ id: number }>
-  description?: string
-  winRate?: number
-  pickRate?: number
-  totalGames?: number
-}
-
-interface SkinMapping {
-  championKey: string
-  championName: string
-  skinNum: number
-  ddragonName: string
-  lolSkinsName: string
-}
-
-interface SkinMappingsData {
+interface CachedFile {
   version: string
-  lastUpdated: string
-  skinMappings: SkinMapping[]
+  champions: Champion[]
 }
 
 export class ChampionDataService {
-  private supportedLanguages = [
-    'en_US',
-    'en_AU',
-    'en_GB',
-    'en_PH',
-    'en_SG',
-    'vi_VN',
-    'es_AR',
-    'es_ES',
-    'es_MX',
-    'ja_JP',
-    'ko_KR',
-    'zh_CN',
-    'ru_RU',
-    'ar_AE',
-    'pt_BR',
-    'id_ID',
-    'th_TH',
-    'zh_MY',
-    'zh_TW',
-    'cs_CZ',
-    'de_DE',
-    'el_GR',
-    'fr_FR',
-    'hu_HU',
-    'it_IT',
-    'pl_PL',
-    'ro_RO',
-    'tr_TR'
-  ]
-  private githubDataUrl =
-    'https://raw.githubusercontent.com/hoangvu12/bocchi/refs/heads/champion-data/data'
   private cachedData: Map<string, { version: string; champions: Champion[] }> = new Map()
-  private skinMappings: Map<string, string> = new Map() // key: "championKey_skinNum", value: lolSkinsName
-  private championIdCache: Map<string, Map<number, Champion>> = new Map() // key: language, value: Map<championId, Champion>
-  private championNameCache: Map<string, Map<string, Champion>> = new Map() // key: language, value: Map<championName, Champion>
+  private championIdCache: Map<string, Map<number, Champion>> = new Map()
+  private championNameCache: Map<string, Map<string, Champion>> = new Map()
+  private pendingLoads: Map<string, Promise<{ version: string; champions: Champion[] } | null>> =
+    new Map()
 
-  constructor() {
-    this.loadSkinMappings()
+  private getCacheDir(): string {
+    return path.join(app.getPath('userData'), 'champion-data')
   }
 
-  private async loadSkinMappings(): Promise<void> {
+  private getCacheFilePath(language: string): string {
+    return path.join(this.getCacheDir(), `champion-data-${language}.json`)
+  }
+
+  private async ensureCacheDir(): Promise<void> {
+    const dir = this.getCacheDir()
+    if (!existsSync(dir)) {
+      await fs.mkdir(dir, { recursive: true })
+    }
+  }
+
+  private async loadFromDisk(language: string): Promise<CachedFile | null> {
     try {
-      const mappingsUrl = `${this.githubDataUrl}/skin-name-mappings.json`
-      const response = await axios.get<SkinMappingsData>(mappingsUrl)
-      const data = response.data
+      const filePath = this.getCacheFilePath(language)
+      if (!existsSync(filePath)) return null
+      const raw = await fs.readFile(filePath, 'utf-8')
+      return JSON.parse(raw) as CachedFile
+    } catch {
+      return null
+    }
+  }
 
-      // Build mapping lookup table
-      data.skinMappings.forEach((mapping) => {
-        const key = `${mapping.championKey}_${mapping.skinNum}`
-        this.skinMappings.set(key, mapping.lolSkinsName)
-      })
-
-      console.log(`Loaded ${data.skinMappings.length} skin name mappings`)
-    } catch (error) {
-      console.error('Failed to load skin name mappings:', error)
+  private async saveToDisk(language: string, data: CachedFile): Promise<void> {
+    try {
+      await this.ensureCacheDir()
+      const filePath = this.getCacheFilePath(language)
+      await fs.writeFile(filePath, JSON.stringify(data), 'utf-8')
+    } catch (err) {
+      console.error('Failed to save champion data to disk:', err)
     }
   }
 
@@ -115,103 +63,29 @@ export class ChampionDataService {
     language: string = 'en_US'
   ): Promise<{ success: boolean; message: string; championCount?: number }> {
     try {
-      // Clear cached data to ensure fresh data is loaded
+      // Clear caches
       this.cachedData.delete(language)
       this.championIdCache.delete(language)
+      this.championNameCache.delete(language)
 
-      // Try to fetch from GitHub first
-      const githubUrl = `${this.githubDataUrl}/champion-data-${language}.json`
+      console.log(`[ChampionData] Fetching data for ${language} from APIs...`)
 
-      try {
-        const response = await axios.get(githubUrl)
-        const data = response.data
+      const data = await fetchFromApis(language)
 
-        // Log sample data to verify stats are present
-        if (data.champions && data.champions.length > 0) {
-          const firstChampion = data.champions[0]
-          const firstSkinWithStats = firstChampion.skins.find((s: Skin) => s.winRate !== undefined)
-          if (firstSkinWithStats) {
-            console.log(`[ChampionData] Loaded data with OP.GG stats for ${language}:`, {
-              champion: firstChampion.name,
-              skin: firstSkinWithStats.name,
-              winRate: firstSkinWithStats.winRate,
-              pickRate: firstSkinWithStats.pickRate,
-              totalGames: firstSkinWithStats.totalGames
-            })
-          } else {
-            console.log(
-              `[ChampionData] WARNING: No OP.GG stats found in loaded data for ${language}`
-            )
-          }
-        }
+      // Cache in memory
+      this.cachedData.set(language, data)
 
-        // Add lol-skins skin names from pre-generated mappings
-        data.champions.forEach((champion: Champion) => {
-          champion.skins.forEach((skin: Skin) => {
-            if (!skin.lolSkinsName && skin.num > 0) {
-              // Skip default skins
-              const mappingKey = `${champion.key}_${skin.num}`
-              const lolSkinsName = this.skinMappings.get(mappingKey)
-              if (lolSkinsName) {
-                skin.lolSkinsName = lolSkinsName
-              }
-            }
-          })
-        })
+      // Save to disk
+      await this.saveToDisk(language, data)
 
-        // If non-English, also fetch English data to add English skin names
-        if (language !== 'en_US') {
-          try {
-            const englishUrl = `${this.githubDataUrl}/champion-data-en_US.json`
-            const englishResponse = await axios.get(englishUrl)
-            const englishData = englishResponse.data
+      console.log(
+        `[ChampionData] Fetched ${data.champions.length} champions (v${data.version}) for ${language}`
+      )
 
-            // Create maps for English champion and skin names
-            const englishChampionNames: Record<string, string> = {}
-            const englishSkinNames: Record<string, string> = {}
-
-            englishData.champions.forEach((champion: Champion) => {
-              englishChampionNames[champion.key] = champion.name
-              champion.skins.forEach((skin: Skin) => {
-                englishSkinNames[skin.id] = skin.name
-              })
-            })
-
-            // Add English names to non-English champions and skins
-            data.champions.forEach((champion: Champion) => {
-              // Add English champion name
-              const englishChampionName = englishChampionNames[champion.key]
-              if (englishChampionName) {
-                champion.nameEn = englishChampionName
-              }
-
-              // Add English skin names
-              champion.skins.forEach((skin: Skin) => {
-                const englishName = englishSkinNames[skin.id]
-                if (englishName) {
-                  skin.nameEn = englishName
-                }
-              })
-            })
-          } catch (error) {
-            console.error('Failed to fetch English skin names from CDN:', error)
-          }
-        }
-
-        // Cache the data in memory
-        this.cachedData.set(language, data)
-
-        return {
-          success: true,
-          message: `Successfully fetched data for ${data.champions.length} champions from GitHub`,
-          championCount: data.champions.length
-        }
-      } catch (githubError) {
-        console.error('Failed to fetch from GitHub:', githubError)
-        return {
-          success: false,
-          message: `Failed to fetch champion data from GitHub: ${githubError instanceof Error ? githubError.message : 'Unknown error'}`
-        }
+      return {
+        success: true,
+        message: `Successfully fetched data for ${data.champions.length} champions`,
+        championCount: data.champions.length
       }
     } catch (error) {
       console.error('Error fetching champion data:', error)
@@ -222,61 +96,53 @@ export class ChampionDataService {
     }
   }
 
-  public async getChampionById(
-    championId: string,
-    language: string = 'en_US'
-  ): Promise<Champion | null> {
-    // Ensure we have data loaded
-    const data = await this.loadChampionData(language)
-    if (!data) {
-      return null
-    }
-
-    // Find champion by ID (as string or number)
-    const champion = data.champions.find(
-      (c) => c.id.toString() === championId || c.key === championId
-    )
-
-    if (champion) {
-      // Log if this champion has skins with stats
-      const skinsWithStats = champion.skins.filter((s) => s.winRate !== undefined).length
-      console.log(
-        `[ChampionData] Retrieved champion ${champion.name} (${championId}) with ${skinsWithStats}/${champion.skins.length} skins having OP.GG stats`
-      )
-
-      // Log a sample skin with stats if available
-      const sampleSkin = champion.skins.find((s) => s.winRate !== undefined)
-      if (sampleSkin) {
-        console.log(`[ChampionData] Sample skin with stats:`, {
-          name: sampleSkin.name,
-          winRate: sampleSkin.winRate,
-          pickRate: sampleSkin.pickRate,
-          totalGames: sampleSkin.totalGames
-        })
-      }
-    }
-
-    return champion || null
-  }
-
-  public async getChampionByKey(
-    championKey: string,
-    language: string = 'en_US'
-  ): Promise<Champion | null> {
-    // For backward compatibility, this method can handle both ID and key
-    return this.getChampionById(championKey, language)
-  }
-
   public async loadChampionData(
     language: string = 'en_US'
   ): Promise<{ version: string; champions: Champion[] } | null> {
-    // Check if we have cached data
+    // Check memory cache
     const cached = this.cachedData.get(language)
-    if (cached) {
-      return cached
+    if (cached) return cached
+
+    // Deduplicate concurrent loads for the same language
+    const pending = this.pendingLoads.get(language)
+    if (pending) return pending
+
+    const loadPromise = this.loadChampionDataInternal(language)
+    this.pendingLoads.set(language, loadPromise)
+
+    try {
+      return await loadPromise
+    } finally {
+      this.pendingLoads.delete(language)
+    }
+  }
+
+  private async loadChampionDataInternal(
+    language: string
+  ): Promise<{ version: string; champions: Champion[] } | null> {
+    // Check disk cache
+    const diskData = await this.loadFromDisk(language)
+    if (diskData) {
+      // Check if version is still current
+      try {
+        const latestVersion = await fetchLatestVersion()
+        if (diskData.version === latestVersion) {
+          this.cachedData.set(language, diskData)
+          console.log(`[ChampionData] Loaded ${language} from disk cache (v${diskData.version})`)
+          return diskData
+        }
+        console.log(
+          `[ChampionData] Disk cache outdated (${diskData.version} vs ${latestVersion}), refetching...`
+        )
+      } catch {
+        // If version check fails, use disk cache anyway
+        this.cachedData.set(language, diskData)
+        console.log(`[ChampionData] Version check failed, using disk cache for ${language}`)
+        return diskData
+      }
     }
 
-    // If no cached data, fetch it
+    // Fetch fresh data
     const result = await this.fetchAndSaveChampionData(language)
     if (result.success) {
       return this.cachedData.get(language) || null
@@ -285,66 +151,47 @@ export class ChampionDataService {
     return null
   }
 
+  public async getChampionById(
+    championId: string,
+    language: string = 'en_US'
+  ): Promise<Champion | null> {
+    const data = await this.loadChampionData(language)
+    if (!data) return null
+    return (
+      data.champions.find((c) => c.id.toString() === championId || c.key === championId) || null
+    )
+  }
+
+  public async getChampionByKey(
+    championKey: string,
+    language: string = 'en_US'
+  ): Promise<Champion | null> {
+    return this.getChampionById(championKey, language)
+  }
+
   public async checkForUpdates(language: string = 'en_US'): Promise<boolean> {
     try {
       const currentData = this.cachedData.get(language)
-      if (!currentData) return true // No data, needs update
-
-      // Check GitHub version
-      const githubUrl = `${this.githubDataUrl}/champion-data-${language}.json`
-      const response = await axios.get(githubUrl, {
-        headers: {
-          'Cache-Control': 'no-cache'
-        }
-      })
-      const githubData = response.data
-      return currentData.version !== githubData.version
-    } catch (error) {
-      console.error('Error checking for updates:', error)
-      return true // On error, assume update needed
+      if (!currentData) return true
+      const latestVersion = await fetchLatestVersion()
+      return currentData.version !== latestVersion
+    } catch {
+      return true
     }
   }
 
   public async fetchAllLanguages(): Promise<{ success: boolean; message: string }> {
-    try {
-      for (const lang of this.supportedLanguages) {
-        console.log(`Fetching champion data for ${lang}`)
-        await this.fetchAndSaveChampionData(lang)
-      }
-      return {
-        success: true,
-        message: 'Successfully fetched data for all languages'
-      }
-    } catch (error) {
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : 'Failed to fetch data'
-      }
-    }
+    // This is no longer needed since we only fetch the user's current language
+    // Keep for backward compat but just return success
+    return { success: true, message: 'Use fetchAndSaveChampionData with a specific language' }
   }
 
-  // Get the lol-skins name for a skin, useful when downloading skins
-  public getSkinLolSkinsName(skin: Skin): string {
-    // Priority: lolSkinsName > nameEn > name
-    return skin.lolSkinsName || skin.nameEn || skin.name
-  }
-
-  // Reload skin mappings (useful if the mappings file is updated)
-  public async reloadSkinMappings(): Promise<void> {
-    this.skinMappings.clear()
-    await this.loadSkinMappings()
-  }
-
-  /**
-   * Builds the champion ID lookup cache for fast ID-based lookups
-   */
   private buildChampionIdCache(language: string, champions: Champion[]): void {
     const idCache = new Map<number, Champion>()
     const nameCache = new Map<string, Champion>()
 
     champions.forEach((champion) => {
       idCache.set(champion.id, champion)
-      // Index by both name and key for flexible lookups
       nameCache.set(champion.name.toLowerCase(), champion)
       nameCache.set(champion.key.toLowerCase(), champion)
       if (champion.nameEn) {
@@ -356,64 +203,30 @@ export class ChampionDataService {
     this.championNameCache.set(language, nameCache)
   }
 
-  /**
-   * Gets a champion by numeric ID (for ID-based repositories)
-   */
   public async getChampionByNumericId(
     championId: number,
     language: string = 'en_US'
   ): Promise<Champion | null> {
-    // Ensure we have data loaded
     const data = await this.loadChampionData(language)
-    if (!data) {
-      return null
-    }
+    if (!data) return null
 
-    // Build cache if not exists
     if (!this.championIdCache.has(language)) {
       this.buildChampionIdCache(language, data.champions)
     }
 
-    const cache = this.championIdCache.get(language)
-    return cache?.get(championId) || null
+    return this.championIdCache.get(language)?.get(championId) || null
   }
 
-  /**
-   * Gets a skin by champion ID and skin ID
-   */
   public async getSkinByIds(
     championId: number,
     skinId: string,
     language: string = 'en_US'
   ): Promise<Skin | null> {
     const champion = await this.getChampionByNumericId(championId, language)
-    if (!champion) {
-      return null
-    }
-
-    const skin = champion.skins.find((s) => s.id === skinId || s.num.toString() === skinId)
-    return skin || null
+    if (!champion) return null
+    return champion.skins.find((s) => s.id === skinId || s.num.toString() === skinId) || null
   }
 
-  /**
-   * Gets the lol-skins name for a skin by IDs (convenience method for ID-based repos)
-   */
-  public async getSkinLolSkinsNameById(
-    championId: number,
-    skinId: string,
-    language: string = 'en_US'
-  ): Promise<string | null> {
-    const skin = await this.getSkinByIds(championId, skinId, language)
-    if (!skin) {
-      return null
-    }
-
-    return this.getSkinLolSkinsName(skin)
-  }
-
-  /**
-   * Gets champion name by numeric ID (for fallback naming)
-   */
   public async getChampionNameById(
     championId: number,
     language: string = 'en_US'
@@ -422,39 +235,23 @@ export class ChampionDataService {
     return champion ? champion.name : null
   }
 
-  /**
-   * Clears the ID lookup cache (call when data is refreshed)
-   */
   public clearIdCache(): void {
     this.championIdCache.clear()
     this.championNameCache.clear()
   }
 
-  /**
-   * SYNCHRONOUS champion lookup by name (for URL construction)
-   * Returns null if champion not found or data not loaded
-   */
   public getChampionByNameSync(championName: string, language: string = 'en_US'): Champion | null {
-    // Ensure cache is built
     const data = this.cachedData.get(language)
-    if (!data) {
-      return null
-    }
+    if (!data) return null
 
     if (!this.championNameCache.has(language)) {
       this.buildChampionIdCache(language, data.champions)
     }
 
-    const cache = this.championNameCache.get(language)
-    return cache?.get(championName.toLowerCase()) || null
+    return this.championNameCache.get(language)?.get(championName.toLowerCase()) || null
   }
 
-  /**
-   * SYNCHRONOUS champion lookup by numeric ID (for ID-based URL parsing)
-   * Returns null if champion not found or data not loaded
-   */
   public getChampionByIdSync(championId: number, language: string = 'en_US'): Champion | null {
-    // Ensure cache is built
     const data = this.cachedData.get(language)
     if (!data) {
       console.warn(
@@ -467,12 +264,10 @@ export class ChampionDataService {
       this.buildChampionIdCache(language, data.champions)
     }
 
-    const cache = this.championIdCache.get(language)
-    const champion = cache?.get(championId) || null
-
+    const champion = this.championIdCache.get(language)?.get(championId) || null
     if (!champion) {
       console.warn(
-        `[ChampionData] getChampionByIdSync: Champion not found in cache for ID ${championId}, language ${language}`
+        `[ChampionData] getChampionByIdSync: Champion not found for ID ${championId}, language ${language}`
       )
     }
 

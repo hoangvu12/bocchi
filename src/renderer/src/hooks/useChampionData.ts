@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { useAtom, useSetAtom } from 'jotai'
 import { useTranslation } from 'react-i18next'
 import { useLocale } from '../contexts/useLocale'
@@ -110,12 +110,6 @@ export function useChampionData() {
       setLoadingStates((prev) => ({ ...prev, isUpdatingChampionData: false }))
     }
   }, [fetchChampionData, loadChampionData, setLoadingStates, setShowChampionDataUpdate])
-
-  // Load data on mount and when language changes
-  useEffect(() => {
-    loadChampionData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentLanguage])
 
   return {
     championData,

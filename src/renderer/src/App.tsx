@@ -18,6 +18,7 @@ import { MainLayout } from './components/sections/MainLayout'
 import { NoChampionData } from './components/sections/NoChampionData'
 
 // Contexts
+import { useLocale } from './contexts/useLocale'
 import { LocaleProvider } from './contexts/LocaleContextProvider'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { P2PProvider } from './contexts/P2PContext'
@@ -63,7 +64,6 @@ export interface Skin {
   num: number
   name: string
   nameEn?: string
-  lolSkinsName?: string
   isInLolSkins?: boolean
   chromas: boolean
   chromaList?: Array<{
@@ -119,8 +119,9 @@ function AppContent(): React.JSX.Element {
   const [preDownloadedAutoSkin, setPreDownloadedAutoSkin] = useAtom(preDownloadedAutoSkinAtom)
 
   // Hooks
+  const { currentLanguage } = useLocale()
   const { gamePath } = useGameDetection()
-  const { championData } = useChampionData()
+  const { championData, loadChampionData } = useChampionData()
   const {
     downloadedSkins,
     selectedSkins,
@@ -133,6 +134,12 @@ function AppContent(): React.JSX.Element {
   // Initialize P2P skin sync
   useP2PSkinSync(downloadedSkins)
   const { autoSyncedSkins } = useP2PChampionSync({ downloadedSkins })
+
+  // Load champion data once on mount and when language changes
+  useEffect(() => {
+    loadChampionData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentLanguage])
 
   // Refs
   const fileUploadRef = useRef<any>(null)
@@ -463,7 +470,6 @@ function AppContent(): React.JSX.Element {
           skinId: `custom_${randomCustomSkin.skinName}`, // Format: custom_[User] skinName
           skinName: randomCustomSkin.skinName,
           skinNameEn: randomCustomSkin.skinName, // Custom skins don't have separate EN names
-          lolSkinsName: randomCustomSkin.skinName,
           skinNum: -1, // Custom skins don't have a num
           isDownloaded: true, // Custom skins are already downloaded
           isAutoSelected: true,
@@ -480,7 +486,6 @@ function AppContent(): React.JSX.Element {
           skinId: randomSkin.id,
           skinName: randomSkin.name,
           skinNameEn: randomSkin.nameEn,
-          lolSkinsName: randomSkin.lolSkinsName,
           skinNum: randomSkin.num,
           chromaId: selectedChromaId,
           isDownloaded: false,
@@ -763,7 +768,6 @@ function AppContent(): React.JSX.Element {
           skinId: skin.id,
           skinName: skin.name,
           skinNameEn: skin.nameEn,
-          lolSkinsName: skin.lolSkinsName,
           isInLolSkins: skin.isInLolSkins,
           skinNum: skin.num,
           chromaId: chromaId,
