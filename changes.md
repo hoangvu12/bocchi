@@ -1,1 +1,5 @@
-- Fixed the latest Riot patch
+- Adapted to LeagueSkins new name-based repository structure
+- Removed multi-repository feature
+- Added .fantome fallback when .zip is not available
+- Fixed duplicate champion data fetching on startup
+- Fixed duplicate downloaded skins check during patching

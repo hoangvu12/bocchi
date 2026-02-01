@@ -40,6 +40,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Setup Python (for node-gyp)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install setuptools
+        run: pip install setuptools
+
       - name: Setup MSBuild (if needed for native modules)
         uses: microsoft/setup-msbuild@v2
 
